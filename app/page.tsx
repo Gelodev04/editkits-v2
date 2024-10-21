@@ -1,9 +1,49 @@
-import Image from "next/image";
+import Header from "@/components/Header";
+import Typography from "@/components/Typography";
+import Button from "@/components/Button";
+import ToolCard from "@/components/ToolCard";
+import {videoTools} from "@/lib/constants";
+import Footer from "@/components/Footer";
 
 export default function Home() {
-  return (
-    <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <h1 className="text-black">Edit Kits</h1>
-    </div>
-  );
+    return (
+        <div className="bg-neutral-50 min-h-screen font-[family-name:var(--font-geist-sans)]">
+            <Header/>
+            <div className="p-20">
+                <h1 className="text-5xl font-black text-black text-center">
+                    Your <span
+                    className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-blue-400 to-blue-500">All-in-One</span> Media
+                </h1>
+                <Typography
+                    variant="h1"
+                    className="text-5xl font-black text-black text-center"
+                    label="Processing Kit"
+                    center
+                />
+                <div className="px-[37%] py-10">
+                    <Typography
+                        label="Empower your creativity with a suit of powerful but easy to use toolkits for video, image and audio editing"
+                        variant="p"
+                        center
+                    />
+                </div>
+                <div className="flex justify-center">
+                    <Button label="Explore All Tools" variant="secondary" filled width={40}/>
+                </div>
+            </div>
+            <div className="bg-white p-4">
+                <div className="pb-3">
+                    <Typography label="Quick Access" variant="h3" center/>
+                </div>
+                <Typography label="Video Tools" center/>
+                <div className="grid grid-cols-5 gap-y-10 px-40 py-10">
+                    {videoTools.map((tool) => <ToolCard key={tool.name} name={tool.name} icon={tool?.icon}/>)}
+                </div>
+                <div className="flex justify-center">
+                    <Button label="Show All Video Tools" variant="secondary" width={60}/>
+                </div>
+            </div>
+            <Footer />
+        </div>
+    );
 }

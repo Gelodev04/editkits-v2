@@ -1,14 +1,21 @@
+'use client'
 import Header from "@/components/Header";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import ToolCard from "@/components/ToolCard";
 import {videoTools} from "@/lib/constants";
 import Footer from "@/components/Footer";
+import AuthModal from "@/components/modals/Auth";
+import {useState} from "react";
+import {FaChevronRight} from "react-icons/fa";
 
 export default function Home() {
+    const [showAuthModal, setAuthModal] = useState(false);
+    const [type, setType] = useState("Log In");
+
     return (
         <div className="bg-neutral-50 min-h-screen font-[family-name:var(--font-geist-sans)]">
-            <Header/>
+            <Header type={type} setType={setType} setAuthModal={setAuthModal} />
             <div className="p-20">
                 <h1 className="text-5xl font-black text-black text-center">
                     Your <span
@@ -28,7 +35,9 @@ export default function Home() {
                     />
                 </div>
                 <div className="flex justify-center">
-                    <Button label="Explore All Tools" variant="secondary" filled width={40}/>
+                    <div className="flex justify-center w-[10%]">
+                        <Button label="Explore All Tools" variant="secondary" filled width={40}/>
+                    </div>
                 </div>
             </div>
             <div className="bg-white p-4">
@@ -55,11 +64,14 @@ export default function Home() {
                         ))}
                     </div>
                 </div>
-                <div className="flex justify-center py-10">
-                    <Button label="Show All Video Tools" variant="secondary" width={60}/>
+                <div className="flex justify-center">
+                    <div className="flex justify-center justify-between space-between py-10 w-[260px]">
+                        <Button label="Show All Video Tools" variant="secondary" width={60} rightIcon={<FaChevronRight size={15} />} />
+                    </div>
                 </div>
             </div>
             <Footer/>
+            {showAuthModal && <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal} />}
         </div>
     );
 }

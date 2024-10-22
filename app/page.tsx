@@ -36,14 +36,30 @@ export default function Home() {
                     <Typography label="Quick Access" variant="h3" center/>
                 </div>
                 <Typography label="Video Tools" center/>
-                <div className="grid grid-cols-5 gap-y-10 px-40 py-10">
-                    {videoTools.map((tool) => <ToolCard key={tool.name} name={tool.name} icon={tool?.icon}/>)}
+                <div className="grid grid-cols-5 place-items-center gap-y-10 px-40 py-10">
+                    {videoTools.slice(0, 5).map((tool) => (
+                        <ToolCard
+                            key={tool.name}
+                            name={tool.name}
+                            icon={tool?.icon}
+                        />
+                    ))}
+
+                    <div className="col-span-full w-[80%] grid grid-cols-4 gap-x-8">
+                        {videoTools.slice(5).map((tool) => (
+                            <ToolCard
+                                key={tool.name}
+                                name={tool.name}
+                                icon={tool?.icon}
+                            />
+                        ))}
+                    </div>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center py-10">
                     <Button label="Show All Video Tools" variant="secondary" width={60}/>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 }

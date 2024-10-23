@@ -19,8 +19,8 @@ function ButtonStyle(variant: string){
 
 export default function Button(props: ButtonProps) {
     return (
-        <div className={props.variant === "secondary" ? `text-black py-2 text-sm w-full space-x-4 ${props.filled ? "bg-sky-500 text-white": ""} px-4 flex justify-center items-center border-solid border-2 border-zinc-100  rounded rounded-full` : ""}>
-            <button onClick={props.onClick} className={ButtonStyle(props.variant)}>{props.label}</button>
+        <div onClick={props.onClick} className={props.variant === "secondary" ? `text-black py-2 text-sm w-full space-x-4 ${props.filled ? "bg-sky-500 text-white": ""} px-4 flex justify-center items-center border-solid border-2 border-zinc-100  rounded rounded-full cursor-pointer` : ""}>
+            <button className={ButtonStyle(props.variant)}>{props.label}</button>
             {props?.rightIcon}
         </div>
     )

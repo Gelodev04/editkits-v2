@@ -11,7 +11,7 @@ import {FaChevronRight} from "react-icons/fa";
 
 export default function Home() {
     const [showAuthModal, setAuthModal] = useState(false);
-    const [type, setType] = useState("Log In");
+    const [type, setType] = useState("Enter verification code");
 
     return (
         <div className="bg-neutral-50 min-h-screen font-[family-name:var(--font-geist-sans)]">
@@ -71,7 +71,7 @@ export default function Home() {
                 </div>
             </div>
             <Footer/>
-            {showAuthModal && <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal} />}
+            { showAuthModal && <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal} /> }
         </div>
     );
 }

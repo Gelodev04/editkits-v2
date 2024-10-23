@@ -1,8 +1,9 @@
 import React from "react";
 
 type InputProps = {
-    placeholder: string;
+    placeholder?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    type?: string;
 }
 
 export default function Input(props: InputProps) {
@@ -10,7 +11,7 @@ export default function Input(props: InputProps) {
         <input
             className="w-full border border-solid border-2 border-neutral-500 p-2 rounded-md outline-none text-black"
             placeholder={props.placeholder}
-            type="text"
+            type={props.type || "text"}
             onChange={props.onChange}
         />
     )

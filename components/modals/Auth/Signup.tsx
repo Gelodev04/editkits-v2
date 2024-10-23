@@ -63,7 +63,7 @@ export default function Signup(props : AuthModalProps, password: string, setPass
             </div>
             <div className="flex justify-center">
                 <div className="py-3 sm:flex flex justify-center w-[40%]">
-                    <Button label="Signup" variant="secondary" filled/>
+                    <Button onClick={() => props.setType("Enter verification code")} label="Signup" variant="secondary" filled/>
                 </div>
             </div>
             <div className="flex justify-center pb-10">

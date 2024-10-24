@@ -29,7 +29,7 @@ export default function Login(props: AuthModalProps) {
             <div className="px-10">
                 <TextField label="Email" placeholder="Your email"/>
                 <div className="py-4">
-                    <TextField label="Password" placeholder="Your password"/>
+                    <TextField type="password" label="Password" placeholder="Your password"/>
                 </div>
                 <div className="py-3">
                     <div className="pb-2">
@@ -38,8 +38,8 @@ export default function Login(props: AuthModalProps) {
                 </div>
             </div>
             <div className="flex justify-center">
-                <div className="py-3 sm:flex flex justify-center w-[40%]">
-                    <Button onClick={() => props.setType("Sign Up")} label="Login" variant="secondary" filled/>
+                <div className="py-3 sm:flex flex justify-center w-[34%]">
+                    <Button onClick={() => props.setAuthModal(false)} label="Login" variant="secondary" filled/>
                 </div>
             </div>
             <div className="flex justify-center pb-10">

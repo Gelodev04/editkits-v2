@@ -10,9 +10,9 @@ function TypographyStyle(variant?: string, center?: boolean) {
         case "h1":
             return `text-5xl font-black text-black ${center && "text-center"}`;
         case "h2":
-            return `text-4xl font-black text-black ${center && "text-center"}`;
+            return `text-4xl font-black text-black font-bold ${center && "text-center"}`;
         case "h3":
-            return `text-3xl font-black text-black ${center && "text-center"}`;
+            return `text-3xl font-black text-black font-bold ${center && "text-center"}`;
         case "h4":
             return `text-2xl font-black text-black ${center && "text-center"}`;
         case "h5":
@@ -22,7 +22,7 @@ function TypographyStyle(variant?: string, center?: boolean) {
         case "sm":
             return `text-sm text-black ${center && "text-center"}`;
         default:
-            return `text-sm font-light text-gray-900 ${center && "text-center"}`;
+            return `text-sm font-light text-gray-900 font-normal ${center && "text-center"}`;
     }
 }
 

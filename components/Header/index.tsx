@@ -29,10 +29,10 @@ export default function Header(props: HeaderProps) {
                 <Button label="Pricing" variant="primary"/>
             </div>
             <div className="flex space-x-6 justify-center">
-                <div className="w-40">
+                <div className="w-32">
                     <Button onClick={onSignup} label="Signup" variant="secondary"/>
                 </div>
-                <div className="w-40">
+                <div className="w-32">
                     <Button onClick={onLogin} label="Login" variant="secondary" filled/>
                 </div>
             </div>

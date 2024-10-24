@@ -70,7 +70,7 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
         </div>
       </div>
       <div className="flex justify-center pb-8">
-        <div className="py-3 sm:flex flex justify-center w-[40%]">
+        <div className="py-3 sm:flex flex justify-center w-[34%]">
           <Button onClick={() => props.setAuthModal(false)} label="Verify" variant="secondary" filled/>
         </div>
       </div>

@@ -17,8 +17,9 @@ export default function TextField(props: TextFieldProps) {
       <div className="pt-2">
         {props.type === "password" ? (
           <PasswordInput onChange={props.onChange} placeholder={props.placeholder}/>
-        ) : <Input type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>}
-
+        ) : (
+          <Input type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
+        )}
       </div>
     </>
   )

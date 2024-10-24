@@ -64,7 +64,7 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
             />
           ))}
         </div>
-        <div className="flex pt-8 pb-20 min-h-44">
+        <div className="flex pt-8 pb-20 min-h-44 justify-center items-center gap-1">
           <Typography label="Didn't get the code ?"  />
           <Button label="Click to resend" variant="primary" />
         </div>

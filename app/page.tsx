@@ -11,7 +11,7 @@ import {FaChevronRight} from "react-icons/fa";
 
 export default function Home() {
   const [showAuthModal, setAuthModal] = useState(true);
-  const [type, setType] = useState("Sign Up");
+  const [type, setType] = useState("Enter verification code");
 
   return (
     <div className="bg-neutral-50 min-h-screen font-[family-name:var(--font-geist-sans)]">

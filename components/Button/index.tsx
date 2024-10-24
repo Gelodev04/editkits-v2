@@ -14,7 +14,7 @@ function ButtonStyle(variant: string, filled?: boolean) {
   if (variant === "primary") {
     return "text-neutral-500 text-sky-800 text-sm font-semibold"
   } else if (variant === "secondary") {
-    return `font-normal text-black py-2 text-sm w-full space-x-4 ${filled ? "bg-sky-500 text-white hover:bg-sky-600" : "hover:bg-sky-100"} hover:scale-105 transition-transform duration-300  border-solid border-2 border-zinc-100 flex justify-center items-center gap-4 rounded rounded-full cursor-pointer`
+    return `font-bold py-4 text-sm w-full ${filled ? "bg-sky-500 text-white hover:bg-sky-600" : "hover:bg-sky-100 text-zinc-500"} hover:scale-105 transition duration-300 border-2 border-zinc-100 flex justify-center items-center gap-4 rounded-full cursor-pointer`;
   }
 }
 

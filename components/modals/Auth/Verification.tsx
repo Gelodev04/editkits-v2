@@ -28,7 +28,7 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
 
   return (
     <>
-      <div className="bg-white px-4 pt-5 sm:p-6 sm:pb-36">
+      <div className="bg-white px-4 pt-5 sm:p-6 sm:pb-10">
         <div className="sm:flex justify-center pt-6">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
             <Typography
@@ -64,9 +64,9 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
             />
           ))}
         </div>
-        <div className="flex pt-8 pb-20 min-h-44 justify-center items-center gap-1">
-          <Typography label="Didn't get the code ?"  />
-          <Button label="Click to resend" variant="primary" />
+        <div className="flex pb-10 pt-5 justify-center items-center gap-1">
+          <Typography label="Didn't get the code ?"/>
+          <Button label="Click to resend" variant="primary"/>
         </div>
       </div>
       <div className="flex justify-center pb-8">

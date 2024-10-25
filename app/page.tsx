@@ -14,7 +14,7 @@ export default function Home() {
   const [type, setType] = useState("Enter verification code");
 
   return (
-    <div className="bg-neutral-50 min-h-screen font-[family-name:var(--font-geist-sans)]">
+    <div className="bg-neutral-50 min-h-screen">
       <Header type={type} setType={setType} setAuthModal={setAuthModal}/>
       <div className="p-20">
         <h1 className="text-5xl font-extrabold text-black text-center">
@@ -27,33 +27,35 @@ export default function Home() {
           label="Processing Kit"
           center
         />
-        <div className="px-[37%] py-10">
+        <div className="2xl:px-[37%] xl:px-[26%] lg:px-[20%] py-10">
           <Typography
             label="Empower your creativity with a suit of powerful but easy to use toolkits for video, image and audio editing"
             center
           />
         </div>
         <div className="flex justify-center">
-          <div className="flex justify-center w-[9%]">
+          <div className="flex justify-center 2xl:w-[9%] xl:w-[16%] lg:w-[20%]">
             <Button label="Explore All Tools" variant="secondary" filled width={40}/>
           </div>
         </div>
       </div>
-      <div className="bg-white p-4">
+      <div className="bg-white py-4 2xl:px-[20%]">
         <div className="pb-3">
           <Typography label="Quick Access" variant="h3" center/>
         </div>
         <Typography label="Video Tools" center/>
-        <div className="grid grid-cols-5 place-items-center gap-y-10 px-40 py-10">
-          {videoTools.slice(0, 5).map((tool) => (
-            <ToolCard
-              key={tool.name}
-              name={tool.name}
-              icon={tool?.icon}
-            />
-          ))}
+        <div className="place-items-center ">
+          <div className="grid grid-cols-5 gap-y-10 py-10 gap-x-10 ">
+            {videoTools.slice(0, 5).map((tool) => (
+              <ToolCard
+                key={tool.name}
+                name={tool.name}
+                icon={tool?.icon}
+              />
+            ))}
+          </div>
 
-          <div className="col-span-full w-[80%] grid grid-cols-4 gap-x-8">
+          <div className="grid grid-cols-4 col-span-full 2xl:min-w-[60%] xl:min-w-[65%] lg:min-w-[70%] 2xl:gap-x-8 lg:gap-x-8">
             {videoTools.slice(5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -64,13 +66,17 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="flex justify-center justify-between space-between py-10 w-[12%]">
-            <Button label="Show All Video Tools" variant="secondary" width={60}
-                    rightIcon={<FaChevronRight size={15}/>}/>
+          <div className="flex justify-center justify-between space-between py-10 sm:w-[12%] xl:w-[20%] 2xl:w-72 lg:w-[21%]">
+            <Button
+              label="Show All Video Tools"
+              variant="secondary"
+              width={60}
+              rightIcon={<FaChevronRight size={15}/>}
+            />
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
       <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal}/>
     </div>
   );

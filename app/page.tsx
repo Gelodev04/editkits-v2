@@ -17,7 +17,7 @@ export default function Home() {
     <div className="bg-neutral-50 min-h-screen">
       <Header type={type} setType={setType} setAuthModal={setAuthModal}/>
       <div className="p-20">
-        <h1 className="text-5xl font-extrabold text-[#363939] text-center">
+        <h1 className="text-5xl font-extrabold text-[#4f4f4f] text-center">
           Your <span
           className="text-transparent bg-clip-text bg-gradient-to-r from-[#C938AE] via-[#8467C7] to-[#17ABDB]">All-in-One</span> Media
         </h1>
@@ -39,13 +39,13 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="bg-white py-4 2xl:px-[20%]">
+      <div className="bg-white py-4 2xl:px-[15%]">
         <div className="pb-3">
           <Typography label="Quick Access" variant="h3" center/>
         </div>
         <Typography label="Video Tools" center/>
         <div className="place-items-center ">
-          <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-y-10 py-10 gap-x-10 ">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 py-10 gap-x-10 ">
             {videoTools.slice(0, 5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -55,7 +55,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 col-span-full 2xl:min-w-[60%] xl:min-w-[65%] sm:gap-8 lg:min-w-[70%] 2xl:gap-x-8 lg:gap-x-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full 2xl:min-w-[60%] xl:min-w-[65%] sm:gap-8 lg:min-w-[70%] 2xl:gap-x-8 lg:gap-x-8">
             {videoTools.slice(5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -66,7 +66,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="flex justify-center justify-between space-between py-10 sm:w-[12%] xl:w-[20%] 2xl:w-72 lg:w-[21%]">
+          <div className="flex justify-center justify-between space-between py-10 w-[26%] xl:w-[20%] 2xl:w-72 lg:w-[21%]">
             <Button
               label="Show All Video Tools"
               variant="secondary"

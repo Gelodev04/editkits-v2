@@ -15,7 +15,7 @@ export default function Toggle(props: ToggleProps) {
   };
 
   return (
-    <label className="inline-flex items-center cursor-pointer gap-2">
+    <label className="inline-flex items-center cursor-pointer gap-3">
       <div className="flex items-center">
         <button
           type="button"
@@ -31,7 +31,7 @@ export default function Toggle(props: ToggleProps) {
         />
         </button>
       </div>
-      <Typography label={props.label} />
+      <Typography label={props.label} variant="p" />
     </label>
   )
 }

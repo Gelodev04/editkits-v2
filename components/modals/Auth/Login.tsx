@@ -32,9 +32,9 @@ export default function Login(props: AuthModalProps) {
           <TextField type="password" label="Password" placeholder="Your password"/>
         </div>
         <div className="py-3">
-          <div className="pb-2 flex justify-between">
+          <div className="flex justify-between items-center">
             <Toggle name="remember-me" label="Remember me"/>
-            <Typography label="Remember me" />
+            <Typography label="Forget password" variant="p" bold />
           </div>
         </div>
       </div>

@@ -70,7 +70,8 @@ export default function Signup(props: AuthModalProps, password: string, setPassw
           <Button onClick={() => props.setType("Enter verification code")} label="Create account" variant="secondary" filled/>
         </div>
       </div>
-      <div className="flex justify-center pb-10">
+      <div className="flex justify-center pb-10 gap-4">
+        <Typography label="Already have an account?" />
         <Button onClick={() => props.setType("Log In")} label="Login" variant="primary" filled width={40}/>
       </div>
     </>

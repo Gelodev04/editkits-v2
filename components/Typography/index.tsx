@@ -21,6 +21,8 @@ function TypographyStyle(variant?: string, center?: boolean) {
       return `text-lg font-black text-black ${center && "text-center"}`;
     case "sm":
       return `text-sm text-black ${center && "text-center"}`;
+    case "p":
+      return `text-md font-light text-gray-900 font-normal ${center && "text-center"}`
     default:
       return `text-sm font-light text-gray-900 font-normal ${center && "text-center"}`;
   }

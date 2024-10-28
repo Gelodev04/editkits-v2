@@ -19,11 +19,11 @@ export default function Home() {
       <div className="p-20">
         <h1 className="text-5xl font-extrabold text-black text-center">
           Your <span
-          className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-blue-400 to-blue-500">All-in-One</span> Media
+          // style={{color: 'background: linear-gradient(92.99deg, #FF0000 -2.91%, #C938AE 39.54%, #8467C7 72.43%, #17ABDB 99.59%)'}}
+          className="text-transparent bg-clip-text bg-gradient-to-r from-[#C938AE] via-[#8467C7] to-[#17ABDB]">All-in-One</span> Media
         </h1>
         <Typography
           variant="h1"
-          className="text-5xl font-black text-black text-center"
           label="Processing Kit"
           center
         />
@@ -46,7 +46,7 @@ export default function Home() {
         </div>
         <Typography label="Video Tools" center/>
         <div className="place-items-center ">
-          <div className="grid grid-cols-5 gap-y-10 py-10 gap-x-10 ">
+          <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-y-10 py-10 gap-x-10 ">
             {videoTools.slice(0, 5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -56,7 +56,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="grid grid-cols-4 col-span-full 2xl:min-w-[60%] xl:min-w-[65%] lg:min-w-[70%] 2xl:gap-x-8 lg:gap-x-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 col-span-full 2xl:min-w-[60%] xl:min-w-[65%] sm:gap-8 lg:min-w-[70%] 2xl:gap-x-8 lg:gap-x-8">
             {videoTools.slice(5).map((tool) => (
               <ToolCard
                 key={tool.name}

@@ -1,5 +1,5 @@
 import Image, {StaticImageData} from "next/image";
-import Logo from "@/assets/img/logo.png"
+import Logo from "@/assets/img/logo.svg"
 import Button from "@/components/Button";
 import React from "react";
 
@@ -23,7 +23,7 @@ export default function Header(props: HeaderProps) {
 
   return (
     <div className="grid grid-cols-3 py-5 sm:px-10 xl:px-48 2xl:px-96 bg-white">
-      <Image src={Logo} className="w-[187px] h-[54px]" alt="Logo"/>
+      <Image src={Logo} className="w-[187px]" alt="Logo"/>
       <div className="flex space-x-6 justify-center">
         <Button label="Tools" variant="primary"/>
         <Button label="Pricing" variant="primary"/>

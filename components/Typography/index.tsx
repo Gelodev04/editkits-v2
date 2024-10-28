@@ -9,7 +9,7 @@ type TypographyProps = {
 function TypographyStyle(variant?: string, center?: boolean, bold?: boolean) {
   switch (variant) {
     case "h1":
-      return `text-5xl font-black text-black ${center && "text-center"}`;
+      return `text-5xl font-black text-[#363939] ${center && "text-center"}`;
     case "h2":
       return `text-4xl font-black text-black font-bold ${center && "text-center"}`;
     case "h3":

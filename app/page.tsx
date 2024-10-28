@@ -17,9 +17,8 @@ export default function Home() {
     <div className="bg-neutral-50 min-h-screen">
       <Header type={type} setType={setType} setAuthModal={setAuthModal}/>
       <div className="p-20">
-        <h1 className="text-5xl font-extrabold text-black text-center">
+        <h1 className="text-5xl font-extrabold text-[#363939] text-center">
           Your <span
-          // style={{color: 'background: linear-gradient(92.99deg, #FF0000 -2.91%, #C938AE 39.54%, #8467C7 72.43%, #17ABDB 99.59%)'}}
           className="text-transparent bg-clip-text bg-gradient-to-r from-[#C938AE] via-[#8467C7] to-[#17ABDB]">All-in-One</span> Media
         </h1>
         <Typography

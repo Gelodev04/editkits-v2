@@ -3,9 +3,10 @@ type TypographyProps = {
   variant?: string;
   center?: boolean;
   className?: string;
+  bold?: boolean;
 }
 
-function TypographyStyle(variant?: string, center?: boolean) {
+function TypographyStyle(variant?: string, center?: boolean, bold?: boolean) {
   switch (variant) {
     case "h1":
       return `text-5xl font-black text-black ${center && "text-center"}`;
@@ -21,11 +22,13 @@ function TypographyStyle(variant?: string, center?: boolean) {
       return `text-lg font-black text-black ${center && "text-center"}`;
     case "sm":
       return `text-sm text-black ${center && "text-center"}`;
+    case "p":
+      return `text-md text-gray-900 ${center && "text-center"} ${bold ? "font-semibold": "font-light"}`
     default:
       return `text-sm font-light text-gray-900 font-normal ${center && "text-center"}`;
   }
 }
 
 export default function Typography(props: TypographyProps) {
-  return <p className={TypographyStyle(props.variant, props.center)}>{props.label}</p>
+  return <p className={TypographyStyle(props.variant, props.center, props.bold)}>{props.label}</p>
 }

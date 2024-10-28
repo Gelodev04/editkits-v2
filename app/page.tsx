@@ -10,8 +10,8 @@ import {useState} from "react";
 import {FaChevronRight} from "react-icons/fa";
 
 export default function Home() {
-  const [showAuthModal, setAuthModal] = useState(true);
-  const [type, setType] = useState("Enter verification code");
+  const [showAuthModal, setAuthModal] = useState(false);
+  const [type, setType] = useState("");
 
   return (
     <div className="bg-neutral-50 min-h-screen">
@@ -31,6 +31,7 @@ export default function Home() {
           <Typography
             label="Empower your creativity with a suit of powerful but easy to use toolkits for video, image and audio editing"
             center
+            variant="p"
           />
         </div>
         <div className="flex justify-center">

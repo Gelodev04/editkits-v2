@@ -1,18 +1,21 @@
-import {MdOutlineLibraryAdd, MdOutlineVideoLibrary} from "react-icons/md";
-import { AiOutlineRotateLeft } from "react-icons/ai";
-import {LuFastForward, LuFileVideo2, LuRotateCw} from "react-icons/lu";
-import {TbResize} from "react-icons/tb";
-import {BsImages} from "react-icons/bs";
-import {FiCrop} from "react-icons/fi";
+import OverlayVideo from "../assets/img/tools/overlay.png"
+import Rotate from "../assets/img/tools/rotate.png"
+import Trim from "../assets/img/tools/trim.png"
+import Speed from "../assets/img/tools/speed_up_down.png"
+import Resize from "../assets/img/tools/resize.png"
+import OverlayImage from "../assets/img/tools/overlay_image.png"
+import Crop from "../assets/img/tools/crop.png"
+import Loop from "../assets/img/tools/loop.png"
+import Join from "../assets/img/tools/join.png"
 
 export const videoTools = [
-    {name: "Overlay Video", icon: (<MdOutlineVideoLibrary size={48} color="#3f3f46" />)},
-    {name: "Rotate Video", icon: <AiOutlineRotateLeft size={48} color="#3f3f46" />},
-    {name: "Trim Video", icon: <LuFileVideo2 size={48} color="#3f3f46" />},
-    {name: "Speed Up/Down Video", icon: <LuFastForward size={48} color="#3f3f46" />},
-    {name: "Resize Video", icon: <TbResize size={48} color="#3f3f46" />},
-    {name: "Overlay Image on Video", icon: <BsImages size={48} color="#3f3f46" />},
-    {name: "Crop Video", icon: <FiCrop size={48} color="#3f3f46" />},
-    {name: "Loop Video", icon: <LuRotateCw size={48} color="#3f3f46" />},
-    {name: "Join Video/Image", icon: <MdOutlineLibraryAdd size={48} color="#3f3f46" />},
+    {name: "Overlay Video", icon: OverlayVideo},
+    {name: "Rotate Video", icon: Rotate},
+    {name: "Trim Video", icon: Trim },
+    {name: "Speed Up/Down Video", icon: Speed},
+    {name: "Resize Video", icon: Resize},
+    {name: "Overlay Image on Video", icon: OverlayImage},
+    {name: "Crop Video", icon: Crop},
+    {name: "Loop Video", icon: Loop},
+    {name: "Join Video/Image", icon: Join},
 ]

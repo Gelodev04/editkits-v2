@@ -58,7 +58,7 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
               //@ts-ignore
               onPaste={handlePaste}
               maxLength={1}
-              className="w-12 h-12 text-[#4f4f4f] text-center text-2xl border-b-2 border-neutral-300 outline-none"
+              className="w-12 h-12 text-[#2c2c2c] text-center text-2xl border-b-2 border-neutral-300 outline-none"
               accept="number"
 
             />

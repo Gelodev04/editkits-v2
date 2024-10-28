@@ -16,7 +16,7 @@ export default function PasswordInput(props: InputProps) {
     return (
       <div className="relative w-full">
           <input
-            className="w-full border border-solid border-2 border-slate-200 p-3 rounded-md outline-none text-[#4f4f4f] pr-10"
+            className="w-full border border-solid border-2 border-slate-200 p-3 rounded-md outline-none text-[#2c2c2c] pr-10"
             placeholder={props.placeholder}
             type={showPassword ? "text" : "password"}
             onChange={props.onChange}

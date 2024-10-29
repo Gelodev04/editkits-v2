@@ -30,7 +30,7 @@ export default function Home() {
           <Typography
             label="Empower your creativity with a suit of powerful but easy to use toolkits for video, image and audio editing"
             center
-            variant="p"
+            variant="body"
           />
         </div>
         <div className="flex justify-center">

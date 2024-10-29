@@ -6,6 +6,8 @@ import Toggle from "@/components/Toggle";
 import {TbSquareRoundedCheckFilled} from "react-icons/tb";
 import Button from "@/components/Button";
 import {AuthModalProps} from "@/components/modals/Auth/index";
+import {CiCircleCheck} from "react-icons/ci";
+import {FaCheckCircle} from "react-icons/fa";
 
 export default function Signup(props: AuthModalProps, password: string, setPassword: (e: React.SetStateAction<string>) => void) {
   return (
@@ -16,20 +18,21 @@ export default function Signup(props: AuthModalProps, password: string, setPassw
             <Typography
               label={props.type}
               center
-              variant="h2"
+              variant="h3"
             />
 
             <div className="mt-2">
               <Typography
                 label="Enter the field below to get started"
                 center
+                variant="b3"
               />
             </div>
           </div>
         </div>
       </div>
       <div className="px-10">
-        <TextField label="Email" placeholder="Your email"/>
+        <TextField label="Email" placeholder="Your email" />
         <div className="py-4">
           <TextField
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
@@ -44,23 +47,23 @@ export default function Signup(props: AuthModalProps, password: string, setPassw
             <Toggle name="remember-me" label="Remember me"/>
           </div>
           <div className="flex gap-x-6">
-            <div className="flex items-center">
-              <TbSquareRoundedCheckFilled size={30} color={/[a-z]/.test(password) ? "#0ea5e9" : ""}/>
-              <Typography variant="sm" label="One lowercase character"/>
+            <div className="flex items-center gap-x-2">
+              <FaCheckCircle size={20} color={/[a-z]/.test(password) ? "#0ea5e9" : ""}/>
+              <Typography variant="b4" label="One lowercase character"/>
             </div>
-            <div className="flex items-center">
-              <TbSquareRoundedCheckFilled size={30} color={/[!@#$%^&*(),.?":{}|<>]/.test(password) ? "#0ea5e9" : ""}/>
-              <Typography variant="sm" label="One special character"/>
+            <div className="flex items-center gap-x-2">
+              <FaCheckCircle size={20} color={/[!@#$%^&*(),.?":{}|<>]/.test(password) ? "#0ea5e9" : ""}/>
+              <Typography variant="b4" label="One special character"/>
             </div>
           </div>
           <div className="flex gap-x-5">
-            <div className="flex items-center">
-              <TbSquareRoundedCheckFilled size={30} color={/[A-Z]/.test(password) ? "#0ea5e9" : ""}/>
-              <Typography variant="sm" label="One uppercase character"/>
+            <div className="flex items-center gap-x-2">
+              <FaCheckCircle size={20} color={/[A-Z]/.test(password) ? "#0ea5e9" : ""}/>
+              <Typography variant="b4" label="One uppercase character"/>
             </div>
-            <div className="flex items-center">
-              <TbSquareRoundedCheckFilled size={30} color={password.length >= 8 ? "#0ea5e9" : ""}/>
-              <Typography variant="sm" label="8 character minimum"/>
+            <div className="flex items-center gap-x-2">
+              <FaCheckCircle size={20} color={password.length >= 8 ? "#0ea5e9" : ""}/>
+              <Typography variant="b4" label="8 character minimum"/>
             </div>
           </div>
         </div>

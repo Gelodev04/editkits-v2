@@ -13,7 +13,7 @@ type TextFieldProps = {
 export default function TextField(props: TextFieldProps) {
   return (
     <>
-      <Typography label={props.label}/>
+      <Typography label={props.label} variant="b3" />
       <div className="pt-2">
         {props.type === "password" ? (
           <PasswordInput onChange={props.onChange} placeholder={props.placeholder}/>

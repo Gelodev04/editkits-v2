@@ -3,10 +3,8 @@ import React from 'react';
 import Typography from "@/components/Typography";
 import TextField from "@/components/TextField";
 import Toggle from "@/components/Toggle";
-import {TbSquareRoundedCheckFilled} from "react-icons/tb";
 import Button from "@/components/Button";
 import {AuthModalProps} from "@/components/modals/Auth/index";
-import {CiCircleCheck} from "react-icons/ci";
 import {FaCheckCircle} from "react-icons/fa";
 
 export default function Signup(props: AuthModalProps, password: string, setPassword: (e: React.SetStateAction<string>) => void) {
@@ -42,27 +40,25 @@ export default function Signup(props: AuthModalProps, password: string, setPassw
           />
         </div>
         <TextField type="password" label="Confirm Password" placeholder="Confirm password"/>
-        <div className="py-3">
-          <div className="pb-2">
+        <div className="py-4">
+          <div className="pb-4">
             <Toggle name="remember-me" label="Remember me"/>
           </div>
-          <div className="flex gap-x-6">
+          <div className="grid grid-cols-2 gap-y-1">
             <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={/[a-z]/.test(password) ? "#0ea5e9" : ""}/>
+              <FaCheckCircle size={20} color={/[a-z]/.test(password) ? "#0ea5e9" : "#d9d9d9"}/>
               <Typography variant="b4" label="One lowercase character"/>
             </div>
             <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={/[!@#$%^&*(),.?":{}|<>]/.test(password) ? "#0ea5e9" : ""}/>
+              <FaCheckCircle size={20} color={/[!@#$%^&*(),.?":{}|<>]/.test(password) ? "#0ea5e9" : "#d9d9d9"}/>
               <Typography variant="b4" label="One special character"/>
             </div>
-          </div>
-          <div className="flex gap-x-5">
             <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={/[A-Z]/.test(password) ? "#0ea5e9" : ""}/>
+              <FaCheckCircle size={20} color={/[A-Z]/.test(password) ? "#0ea5e9" : "#d9d9d9"}/>
               <Typography variant="b4" label="One uppercase character"/>
             </div>
             <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={password.length >= 8 ? "#0ea5e9" : ""}/>
+              <FaCheckCircle size={20} color={password.length >= 8 ? "#0ea5e9" : "#d9d9d9"}/>
               <Typography variant="b4" label="8 character minimum"/>
             </div>
           </div>

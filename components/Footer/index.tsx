@@ -1,14 +1,20 @@
+'use client'
+
 import Button from "@/components/Button";
 import Typography from "@/components/Typography";
 import {FaChevronUp} from "react-icons/fa";
 import {MdLanguage} from "react-icons/md";
+import Link from "next/link";
 
 export default function Footer() {
+
   return (
-    <div className="pt-10">
+    <div className="pt-10 bg-neutral-50 pb-5">
       <div className="flex space-x-6 justify-center pb-8">
         <Button label="Home" variant="primary"/>
-        <Button label="Tools" variant="primary"/>
+        <Link href="/tools">
+          <Button label="Tools" variant="primary"/>
+        </Link>
         <Button label="Pricing" variant="primary"/>
       </div>
       <div className="2xl:px-[32%] xl:px-[18%] lg:px-[12%]">

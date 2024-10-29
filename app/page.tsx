@@ -1,21 +1,16 @@
 'use client'
-import Header from "@/components/Header";
+
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import ToolCard from "@/components/ToolCard";
 import {videoTools} from "@/lib/constants";
 import Footer from "@/components/Footer";
-import AuthModal from "@/components/modals/Auth";
-import {useState} from "react";
 import {FaChevronRight} from "react-icons/fa";
 
 export default function Home() {
-  const [showAuthModal, setAuthModal] = useState(false);
-  const [type, setType] = useState("");
 
   return (
-    <div className="bg-neutral-50 min-h-screen">
-      <Header type={type} setType={setType} setAuthModal={setAuthModal}/>
+    <>
       <div className="p-20">
         <h1 className="text-5xl font-extrabold text-[#2c2c2c] text-center">
           Your <span
@@ -51,6 +46,7 @@ export default function Home() {
                 key={tool.name}
                 name={tool.name}
                 icon={tool?.icon}
+                home
               />
             ))}
           </div>
@@ -61,6 +57,7 @@ export default function Home() {
                 key={tool.name}
                 name={tool.name}
                 icon={tool?.icon}
+                home
               />
             ))}
           </div>
@@ -77,7 +74,6 @@ export default function Home() {
         </div>
       </div>
       <Footer />
-      <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal}/>
-    </div>
+    </>
   );
 }

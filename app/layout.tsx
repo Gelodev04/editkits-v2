@@ -1,27 +1,43 @@
-import type { Metadata } from "next";
+'use client'
+import React from "react";
+
 import "./globals.css";
 import {Montserrat} from "next/font/google";
+import {useState} from "react";
+import Header from "../components/Header/index";
+import AuthModal from "../components/modals/Auth/index";
 
 const montserrat = Montserrat({
-    subsets: ['cyrillic'],
+  subsets: ['cyrillic'],
 })
 
-export const metadata: Metadata = {
-  title: "Edit Kits",
-};
-
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const [type, setType] = useState("");
+  const [showAuthModal, setAuthModal] = useState(false);
   return (
     <html lang="en">
-      <body
-        className={montserrat.className}
-      >
+    <head>
+      <title>My Page Title</title>
+      <meta property="og:title" content="Edit Kits"/>
+    </head>
+    <body
+      className={montserrat.className}
+    >
+    <div>
+
+      <div className="bg-neutral-50 min-h-screen">
+        <Header type={type} setType={setType} setAuthModal={setAuthModal}/>
         {children}
-      </body>
+      </div>
+
+      <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal}/>
+    </div>
+    </body>
     </html>
   );
 }

@@ -2,6 +2,7 @@ import Image, {StaticImageData} from "next/image";
 import Logo from "@/assets/img/logo.svg"
 import Button from "@/components/Button";
 import React from "react";
+import Link from "next/link";
 
 type HeaderProps = {
   type: string;
@@ -23,9 +24,13 @@ export default function Header(props: HeaderProps) {
 
   return (
     <div className="grid grid-cols-3 py-5 sm:px-10 xl:px-48 2xl:px-96 bg-white">
-      <Image src={Logo} className="w-[187px]" alt="Logo"/>
-      <div className="flex space-x-6 justify-center">
-        <Button label="Tools" variant="primary"/>
+      <Link href="/">
+        <Image src={Logo} className="w-[187px]" alt="Logo"/>
+      </Link>
+      <div className="flex space-x-6 justify-center items-center">
+        <Link href="/tools">
+          <Button label="Tools" variant="primary"/>
+        </Link>
         <Button label="Pricing" variant="primary"/>
       </div>
       <div className="flex space-x-6 justify-center">

@@ -38,13 +38,12 @@ export default function Home() {
         </div>
         <Typography label="Video Tools" center/>
         <div className="place-items-center">
-          <div className="grid sm:grid-cols-2 2xl:max-w-[95%] lg:grid-cols-5 gap-y-10 py-10 gap-x-10 ">
+          <div className="grid sm:grid-cols-2 2xl:max-w-[95%] lg:grid-cols-5 gap-y-10 py-10 gap-x-10">
             {videoTools.slice(0, 5).map((tool) => (
               <ToolCard
                 key={tool.name}
                 name={tool.name}
                 icon={tool?.icon}
-                home
               />
             ))}
           </div>
@@ -55,7 +54,6 @@ export default function Home() {
                 key={tool.name}
                 name={tool.name}
                 icon={tool?.icon}
-                home
               />
             ))}
           </div>

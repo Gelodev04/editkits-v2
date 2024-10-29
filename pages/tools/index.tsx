@@ -12,7 +12,7 @@ export default function Tools() {
         />
       </div>
 
-      <div style={{boxShadow: "0px 20px 12px #fafafa"}} className="border-solid border-2 border-zinc-100 py-6 rounded rounded-md justify-center mt-12 lg:px-[5%] 2xl:px-[12%]">
+      <div style={{boxShadow: "0px 20px 12px #fafafa"}} className="border-solid border-2 border-zinc-100 py-6 rounded rounded-md justify-center mt-12 2xl:px-[1%] sm:mx-10 xl:mx-10 2xl:mx-40">
         <Typography
           label="Video Tools"
           variant="h4"

@@ -1,10 +1,25 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import {AuthModalProps} from "./index";
 
 //@ts-ignore
 export default function Verification({props, code, setCode}: { props: AuthModalProps, code: string[], setCode: any }) {
+  const [timer, setTimer] = useState(60);
+
+  useEffect(() => {
+    let interval;
+
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(interval); // Clear interval on cleanup
+    };
+  }, [timer]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const newCode = [...code];
@@ -72,7 +87,8 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
         </div>
         <div className="flex pb-10 pt-5 justify-center items-center gap-1">
           <Typography label="Didn't get the code ?" variant="b3"/>
-          <Button label="Click to resend." variant="primary"/>
+          { timer === 0 && <Typography onClick={() => setTimer(60)} label="Click to resend" variant="b3" bold button/> }
+          { timer !== 0 && <Typography label={`Click to resend in ${timer}"`} variant="b3"/> }
         </div>
       </div>
       <div className="flex justify-center pb-8">

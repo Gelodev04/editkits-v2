@@ -4,9 +4,12 @@ type TypographyProps = {
   center?: boolean;
   className?: string;
   bold?: boolean;
+  onClick?: () => void;
+  button?: boolean;
 }
 
-function TypographyStyle(variant?: string, center?: boolean, bold?: boolean) {
+function TypographyStyle(variant?: string | undefined, center?: boolean | undefined, bold?: boolean | undefined, button?: boolean | undefined) {
+
   switch (variant) {
     case "h1":
       return `text-4xl font-extrabold text-[#2c2c2c] ${center && "text-center"}`;
@@ -25,7 +28,7 @@ function TypographyStyle(variant?: string, center?: boolean, bold?: boolean) {
     case "body":
       return `text-md text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold": "font-light"}`
     case "b3":
-      return `text-sm text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold": "font-normal"}`;
+      return `text-sm text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold": "font-normal"} ${button && "cursor-pointer"}`;
     case "b4":
       return `text-xs text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold": "font-normal"}`
     case "p":
@@ -36,5 +39,5 @@ function TypographyStyle(variant?: string, center?: boolean, bold?: boolean) {
 }
 
 export default function Typography(props: TypographyProps) {
-  return <p className={TypographyStyle(props.variant, props.center, props.bold)}>{props.label}</p>
+  return <p onClick={props.onClick} className={TypographyStyle(props.variant, props.center, props.bold, props.button)}>{props.label}</p>
 }

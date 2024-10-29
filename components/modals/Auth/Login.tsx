@@ -14,13 +14,14 @@ export default function Login(props: AuthModalProps) {
             <Typography
               label={props.type}
               center
-              variant="h2"
+              variant="h3"
             />
 
             <div className="mt-2">
               <Typography
                 label="Welcome back! Please enter your details"
                 center
+                variant="b3"
               />
             </div>
           </div>

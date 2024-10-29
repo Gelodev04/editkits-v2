@@ -20,18 +20,18 @@ export default function Toggle(props: ToggleProps) {
         <button
           type="button"
           onClick={handleToggleChange}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full ${
+          className={`relative inline-flex h-[18.5px] w-11 items-center rounded-full ${
             enabled ? 'bg-sky-500' : 'bg-gray-300'
           } transition-colors duration-300 focus:outline-none`}
         >
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
-            enabled ? 'translate-x-6' : 'translate-x-1'
+          className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-300 ${
+            enabled ? 'translate-x-7' : 'translate-x-0.5'
           }`}
         />
         </button>
       </div>
-      <Typography label={props.label} variant="p" />
+      <Typography label={props.label} variant="b3" />
     </label>
   )
 }

@@ -7,7 +7,7 @@ export default function Tools() {
       <div className="pt-16">
         <Typography
           label="Tools"
-          variant="h1"
+          variant="h2"
           center
         />
       </div>

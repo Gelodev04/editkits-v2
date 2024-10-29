@@ -12,9 +12,9 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
 
   switch (variant) {
     case "h1":
-      return `text-4xl font-extrabold text-[#2c2c2c] ${center && "text-center"}`;
+      return `text-5xl font-extrabold text-[#2c2c2c] ${center && "text-center"}`;
     case "h2":
-      return `text-4xl font-black text-[#2c2c2c] font-bold ${center && "text-center"}`;
+      return `text-4xl font-extrabold text-[#2c2c2c] font-bold ${center && "text-center"}`;
     case "h3":
       return `text-3xl text-[#2c2c2c] font-bold ${center && "text-center"}`;
     case "h4":

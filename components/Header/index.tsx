@@ -21,10 +21,8 @@ export default function Header() {
   }
 
   return (
-    <div className="grid grid-cols-3 py-5 sm:px-10 xl:px-48 2xl:px-96 bg-white">
-      <Link href="/">
+    <div className="flex justify-between py-5 sm:px-10 xl:px-48 2xl:px-96 bg-white ">
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
-      </Link>
       <div className="flex space-x-6 justify-center items-center">
         <Link href="/tools">
           <Button label="Tools" variant="primary"/>

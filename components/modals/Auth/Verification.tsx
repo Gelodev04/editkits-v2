@@ -6,15 +6,20 @@ import {AuthModalProps} from "./index";
 //@ts-ignore
 export default function Verification({props, code, setCode}: { props: AuthModalProps, code: string[], setCode: any }) {
 
-  console.log(code.join(''))
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const newCode = [...code];
-    newCode[index] = e.target.value.slice(-1);
-    setCode(newCode);
 
-    if (e.target.value && index < code.length - 1) {
-      document?.getElementById(`digit-${index + 1}`)?.focus();
+    if (e.target.value === '' && index > 0 && e.nativeEvent.inputType === 'deleteContentBackward') {
+      newCode[index] = '';
+      setCode(newCode);
+      document?.getElementById(`digit-${index - 1}`)?.focus();
+    } else {
+      newCode[index] = e.target.value.slice(-1);
+      setCode(newCode);
+
+      if (e.target.value && index < code.length - 1) {
+        document?.getElementById(`digit-${index + 1}`)?.focus();
+      }
     }
   };
 

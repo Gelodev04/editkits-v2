@@ -23,7 +23,7 @@ function TypographyStyle(variant?: string, center?: boolean, bold?: boolean) {
     case "sm":
       return `text-sm text-[#2c2c2c] ${center && "text-center"}`;
     case "p":
-      return `text-md text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-medium": "font-light"}`
+      return `text-sm  text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold": "font-normal"}`
     default:
       return `text-sm text-[#2c2c2c] font-normal ${center && "text-center"}`;
   }

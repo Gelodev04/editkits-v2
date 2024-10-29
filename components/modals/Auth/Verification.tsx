@@ -71,8 +71,8 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
           ))}
         </div>
         <div className="flex pb-10 pt-5 justify-center items-center gap-1">
-          <Typography label="Didn't get the code ?"/>
-          <Button label="Click to resend" variant="primary"/>
+          <Typography label="Didn't get the code ?" variant="b3"/>
+          <Button label="Click to resend." variant="primary"/>
         </div>
       </div>
       <div className="flex justify-center pb-8">

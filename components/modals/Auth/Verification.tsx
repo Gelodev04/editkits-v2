@@ -17,7 +17,7 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
     }
 
     return () => {
-      clearInterval(interval); // Clear interval on cleanup
+      clearInterval(interval);
     };
   }, [timer]);
 

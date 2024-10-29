@@ -12,7 +12,7 @@ export default function Tools() {
         />
       </div>
 
-      <div className="border-solid border-2 border-zinc-100 py-6 rounded rounded-md justify-center shadow-lg sm:mx-40 xl:mx-10 2xl:mx-40 mt-12">
+      <div style={{boxShadow: "0px 20px 12px #fafafa"}} className="border-solid border-2 border-zinc-100 py-6 rounded rounded-md justify-center mt-12 lg:px-[5%] 2xl:px-[12%]">
         <Typography
           label="Video Tools"
           variant="h4"
@@ -22,27 +22,6 @@ export default function Tools() {
           <ToolsList />
         </div>
       </div>
-      <div className="border-solid border-2 border-zinc-100 py-6 rounded rounded-md justify-center shadow-lg sm:mx-40 xl:mx-10 2xl:mx-40 mt-12">
-        <Typography
-          label="Image Tools"
-          variant="h4"
-          center
-        />
-        <div className="flex justify-center">
-          <ToolsList />
-        </div>
-      </div>
-      <div className="border-solid border-2 border-zinc-100 py-6 rounded rounded-md justify-center shadow-lg sm:mx-40 xl:mx-10 2xl:mx-40 mt-12">
-        <Typography
-          label="Audio Tools"
-          variant="h4"
-          center
-        />
-        <div className="flex justify-center">
-          <ToolsList />
-        </div>
-      </div>
-
     </div>
   )
 }

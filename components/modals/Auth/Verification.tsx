@@ -46,6 +46,7 @@ export default function Verification({props, code, setCode}: { props: AuthModalP
               <Typography
                 label="We've sent a code to example@gmail.com"
                 center
+                variant="b3"
               />
             </div>
           </div>

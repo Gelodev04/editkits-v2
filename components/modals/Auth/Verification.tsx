@@ -4,26 +4,12 @@ import Button from "@/components/Button";
 import {AuthModalProps} from "./index";
 
 //@ts-ignore
-export default function Verification({props, code, setCode}: { props: AuthModalProps, code: string[], setCode: any }) {
-  const [timer, setTimer] = useState(60);
-
-  useEffect(() => {
-    let interval;
-
-    if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
-      }, 1000);
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [timer]);
+export default function Verification({props, code, setCode, timer, setTimer}: { props: AuthModalProps, code: string[], setCode: any, timer: number, setTimer: any }) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const newCode = [...code];
 
+    //@ts-ignore
     if (e.target.value === '' && index > 0 && e.nativeEvent.inputType === 'deleteContentBackward') {
       newCode[index] = '';
       setCode(newCode);

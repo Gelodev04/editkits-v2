@@ -1,10 +1,10 @@
 import React from "react";
 import Typography from "../Typography";
-import Image from "next/image";
+import Image, {StaticImageData} from "next/image";
 
 type ToolCardProps = {
     name: string;
-    icon: React.ReactNode;
+    icon: StaticImageData;
     home?: boolean;
 }
 

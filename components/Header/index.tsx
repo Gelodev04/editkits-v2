@@ -1,25 +1,23 @@
 import Image, {StaticImageData} from "next/image";
 import Logo from "@/assets/img/logo.svg"
 import Button from "@/components/Button";
-import React from "react";
+import React, {useState} from "react";
 import Link from "next/link";
+import AuthModal from "../modals/Auth/index";
 
-type HeaderProps = {
-  type: string;
-  setAuthModal: (e: React.SetStateAction<boolean>) => void;
-  setType: (e: React.SetStateAction<string>) => void;
-}
+export default function Header() {
+  const [type, setType] = useState("");
+  const [showAuthModal, setAuthModal] = useState(false);
 
-export default function Header(props: HeaderProps) {
 
   function onSignup() {
-    props.setAuthModal(true);
-    props.setType("Sign Up");
+    setAuthModal(true);
+    setType("Sign Up");
   }
 
   function onLogin() {
-    props.setAuthModal(true);
-    props.setType("Log In");
+    setAuthModal(true);
+    setType("Log In");
   }
 
   return (
@@ -41,6 +39,7 @@ export default function Header(props: HeaderProps) {
           <Button onClick={onLogin} label="Login" variant="secondary" filled/>
         </div>
       </div>
+      <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal}/>
     </div>
   )
 }

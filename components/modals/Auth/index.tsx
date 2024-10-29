@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import Signup from "@/components/modals/Auth/Signup";
 import Login from "@/components/modals/Auth/Login";
@@ -28,6 +28,21 @@ const style = {
 export default function AuthModal(props: AuthModalProps) {
   const [password, setPassword] = useState("");
   const [code, setCode] = useState<string[]>(Array(5).fill(''));
+  const [timer, setTimer] = useState(60);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timer]);
 
   return (
     <Modal  open={props.showAuthModal} onClose={() => props.setAuthModal(false)}>
@@ -44,7 +59,7 @@ export default function AuthModal(props: AuthModalProps) {
                 </div>
                 {props.type === "Sign Up" && Signup(props, password, setPassword)}
                 {props.type === "Log In" && Login(props)}
-                {props.type === "Enter verification code" && Verification({props, code, setCode})}
+                {props.type === "Enter verification code" && Verification({props, code, setCode, timer, setTimer})}
               </div>
             </div>
           </div>

@@ -31,9 +31,9 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
     case "b3":
       return `text-sm text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"} ${button && "cursor-pointer"}`;
     case "bb3":
-      return `text-sm ${link && `text-[#0700CB]`} text-[#2c2c2c] ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
+      return `text-sm ${link && `text-[#0700CB]`} text-[#4f4f4f] ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
     case "bbl3":
-      return `text-sm text-[#0700CB] ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
+      return `text-sm text-sky-500 ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
     case "b4":
       return `text-xs text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`
     case "p":

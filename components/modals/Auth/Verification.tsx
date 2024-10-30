@@ -71,11 +71,12 @@ export default function Verification({props, code, setCode, timer, setTimer}: { 
             />
           ))}
         </div>
-        <div className="flex pb-10 pt-5 justify-center items-center gap-1">
-          { timer === 0 && <Typography onClick={() => setTimer(60)} label="Click here to resend" variant="bbl3" link button/> }
+        <div className="flex pb-10 pt-5 justify-center items-center gap-y-1 gap-x-2">
+          <Typography label="Didn't get the code ?" variant="b3"/>
+          { timer === 0 && <Typography onClick={() => setTimer(60)} label="Click here to resend" variant="bbl3" button/> }
           <div className="flex gap-x-1">
-            { timer !== 0 && <Typography label={`Click here to resend in`} variant="bb3"/> }
-            { timer !== 0 && <Typography label={`${timer} seconds`}/> }
+            { timer !== 0 && <Typography label={`Click here to resend `} variant="bb3"/> }
+            { timer !== 0 && <Typography label={`in ${timer} seconds`} variant="b3"/> }
           </div>
         </div>
       </div>

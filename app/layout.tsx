@@ -1,35 +1,22 @@
-'use client'
+'use client';
 import React from "react";
-
 import "./globals.css";
-import {Montserrat} from "next/font/google";
+import { Montserrat } from "next/font/google";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const montserrat = Montserrat({
   subsets: ['cyrillic'],
-})
+});
 
-export default function RootLayout({
-                                     children,
-                                   }: Readonly<{
-  children: React.ReactNode;
-}>) {
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-    <head>
-      <title>My Page Title</title>
-      <meta property="og:title" content="Edit Kits"/>
-    </head>
-    <body
-      className={montserrat.className}
-    >
-    <div>
-
-      <div className="bg-neutral-50 min-h-screen">
-        {children}
+    <div className={montserrat.className}>
+      <div className="border border-b-1">
+        <Header />
       </div>
+      {children}
+      <Footer />
     </div>
-    </body>
-    </html>
   );
 }

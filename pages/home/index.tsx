@@ -9,7 +9,7 @@ import {FaChevronRight} from "react-icons/fa";
 export default function Home() {
   return (
     <>
-      <div className="p-20">
+      <div className="p-20 bg-neutral-50">
         <h1 className="text-5xl font-extrabold text-[#2c2c2c] text-center">
           Your <span
           className="text-transparent bg-clip-text bg-gradient-to-r from-[#C938AE] via-[#8467C7] to-[#17ABDB]">All-in-One</span> Media

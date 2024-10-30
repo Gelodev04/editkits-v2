@@ -28,7 +28,7 @@ const style = {
 export default function AuthModal(props: AuthModalProps) {
   const [password, setPassword] = useState("");
   const [code, setCode] = useState<string[]>(Array(5).fill(''));
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(60);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;

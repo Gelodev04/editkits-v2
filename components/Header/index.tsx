@@ -1,4 +1,4 @@
-import Image, {StaticImageData} from "next/image";
+import Image from "next/image";
 import Logo from "@/assets/img/logo.svg"
 import Button from "@/components/Button";
 import React, {useState} from "react";
@@ -21,7 +21,7 @@ export default function Header() {
   }
 
   return (
-    <div className="flex justify-between py-5 sm:px-10 xl:px-48 2xl:px-96 bg-white ">
+    <div className="flex justify-between py-5 sm:px-10 xl:px-48 2xl:px-72 bg-white ">
       <Link href="/home">
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
       </Link>

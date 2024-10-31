@@ -27,7 +27,7 @@ export default function Home() {
           />
         </div>
         <div className="flex justify-center">
-          <div className="flex justify-center 2xl:w-[9%] xl:w-[16%] lg:w-[20%]">
+          <div className="flex justify-center w-[30%] md:max-w-[20%] 2xl:w-[9%] xl:w-[16%] lg:w-[16%] ">
             <Button label="Explore All Tools" variant="secondary" filled width={40}/>
           </div>
         </div>

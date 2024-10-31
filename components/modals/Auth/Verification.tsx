@@ -1,36 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import {AuthModalProps} from "./index";
+import VerificationCodeInput from "../../VerificationCodeInput/index";
 
 //@ts-ignore
-export default function Verification({props, code, setCode, timer, setTimer}: { props: AuthModalProps, code: string[], setCode: any, timer: number, setTimer: any }) {
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const newCode = [...code];
-
-    //@ts-ignore
-    if (e.target.value === '' && index > 0 && e.nativeEvent.inputType === 'deleteContentBackward') {
-      newCode[index] = '';
-      setCode(newCode);
-      document?.getElementById(`digit-${index - 1}`)?.focus();
-    } else {
-      newCode[index] = e.target.value.slice(-1);
-      setCode(newCode);
-
-      if (e.target.value && index < code.length - 1) {
-        document?.getElementById(`digit-${index + 1}`)?.focus();
-      }
-    }
-  };
-
-  const handlePaste = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    //@ts-ignore
-    const paste = e.clipboardData.getData('text').slice(0, 5);
-    const newCode = paste.split('');
-    setCode(newCode.concat(Array(5 - newCode.length).fill('')));
-  };
+export default function Verification({props, timer, setTimer}: { props: AuthModalProps, timer: number, setTimer: any }) {
 
   return (
     <>
@@ -54,23 +29,7 @@ export default function Verification({props, code, setCode, timer, setTimer}: { 
         </div>
       </div>
       <div className="flex flex-col items-center justify-center w-full">
-        <div className="flex space-x-8">
-          {code.map((digit: string, index: number) => (
-            <input
-              key={index}
-              id={`digit-${index}`}
-              type="text"
-              value={digit}
-              onChange={(e) => handleChange(e, index)}
-              //@ts-ignore
-              onPaste={handlePaste}
-              maxLength={1}
-              className="w-12 h-12 text-[#2c2c2c] text-center text-2xl border-b-2 border-neutral-300 outline-none"
-              accept="number"
-
-            />
-          ))}
-        </div>
+        <VerificationCodeInput />
         <div className="flex pb-10 pt-5 justify-center items-center gap-y-1 gap-x-2">
           <Typography label="Didn't get the code ?" variant="b3"/>
           { timer === 0 && <Typography onClick={() => setTimer(60)} label="Click here to resend" variant="bbl3" button/> }

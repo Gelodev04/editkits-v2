@@ -17,7 +17,7 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
     case "h2":
       return `text-4xl font-extrabold text-[#2c2c2c] font-bold ${center && "text-center"}`;
     case "h3":
-      return `text-3xl text-[#2c2c2c] font-bold ${center && "text-center"}`;
+      return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${center && "text-center"}`;
     case "h4":
       return `text-2xl font-bold text-[#4f4f4f] ${center && "text-center"}`;
     case "h5":
@@ -29,13 +29,13 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
     case "body":
       return `text-md text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-light"}`
     case "b3":
-      return `text-sm text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"} ${button && "cursor-pointer"}`;
+      return `text-sm text-[#2c2c2c] font-lato ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"} ${button && "cursor-pointer"}`;
     case "bb3":
-      return `text-sm ${link && `text-[#0700CB]`} text-[#4f4f4f] ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
+      return `text-sm ${link && `text-[#0700CB]`} font-lato text-[#4f4f4f] ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
     case "bbl3":
-      return `text-sm text-sky-500 ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
+      return `text-sm text-sky-500 ${center && "text-center"} font-lato font-bold  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "b4":
-      return `text-xs text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`
+      return `text-xs text-[#2c2c2c] font-lato ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`
     case "p":
       return `text-sm  text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`
     default:

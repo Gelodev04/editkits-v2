@@ -59,7 +59,7 @@ export default function AuthModal(props: AuthModalProps) {
                 </div>
                 {props.type === "Sign Up" && Signup(props, password, setPassword)}
                 {props.type === "Log In" && Login(props)}
-                {props.type === "Enter verification code" && Verification({props, code, setCode, timer, setTimer})}
+                {props.type === "Enter verification code" && Verification({props, timer, setTimer})}
               </div>
             </div>
           </div>

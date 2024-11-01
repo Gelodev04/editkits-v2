@@ -5,6 +5,7 @@ import Image, {StaticImageData} from "next/image";
 type ToolCardProps = {
     name: string;
     icon: StaticImageData;
+    tools?: boolean;
 }
 
 export default function ToolCard({name, icon, tools}: ToolCardProps) {

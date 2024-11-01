@@ -35,7 +35,7 @@ export default function Login(props: AuthModalProps) {
         <div className="py-3">
           <div className="flex justify-between items-center">
             <Toggle name="remember-me" label="Remember me"/>
-            <Typography label="Forget password" variant="p" bold />
+            <Typography onClick={() => props.setType("Forgot your password?")} label="Forget password" variant="bbl3" />
           </div>
         </div>
       </div>

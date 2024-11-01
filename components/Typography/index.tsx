@@ -1,5 +1,7 @@
+import React from "react";
+
 type TypographyProps = {
-  label?: string;
+  label?: string | React.ReactNode;
   variant?: string;
   center?: boolean;
   className?: string;

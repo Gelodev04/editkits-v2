@@ -6,6 +6,8 @@ import Signup from "@/components/modals/Auth/Signup";
 import Login from "@/components/modals/Auth/Login";
 import {TbXboxX} from "react-icons/tb";
 import Verification from "@/components/modals/Auth/Verification";
+import ForgetPassword from "./ForgetPassword";
+import ResetPassword from "./ResetPassword";
 
 export type AuthModalProps = {
   type: string;
@@ -27,7 +29,6 @@ const style = {
 
 export default function AuthModal(props: AuthModalProps) {
   const [password, setPassword] = useState("");
-  const [code, setCode] = useState<string[]>(Array(5).fill(''));
   const [timer, setTimer] = useState(60);
 
   useEffect(() => {
@@ -60,6 +61,8 @@ export default function AuthModal(props: AuthModalProps) {
                 {props.type === "Sign Up" && Signup(props, password, setPassword)}
                 {props.type === "Log In" && Login(props)}
                 {props.type === "Enter verification code" && Verification({props, timer, setTimer})}
+                {props.type === "Forgot your password?" && ForgetPassword(props)}
+                {props.type === "Reset Password" && ResetPassword(props, password, setPassword)}
               </div>
             </div>
           </div>

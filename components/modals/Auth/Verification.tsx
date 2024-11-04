@@ -5,8 +5,7 @@ import {AuthModalProps} from "./index";
 import VerificationCodeInput from "../../VerificationCodeInput/index";
 
 //@ts-ignore
-export default function Verification({props, timer, setTimer}: { props: AuthModalProps, timer: number, setTimer: any }) {
-  const [codes, setCodes] = useState("")
+export default function Verification({props, timer, setTimer, codes, setCodes}: { props: AuthModalProps, timer: number, setTimer: any }) {
 
   return (
     <>

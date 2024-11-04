@@ -33,6 +33,7 @@ export default function AuthModal(props: AuthModalProps) {
   const [code, setCode] = useState("")
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [codes, setCodes] = useState("")
   const [isPasswordValid, setPasswordValid] = useState(false)
   const [timer, setTimer] = useState(60);
 
@@ -65,7 +66,7 @@ export default function AuthModal(props: AuthModalProps) {
                 </div>
                 {props.type === "Sign Up" && Signup(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid)}
                 {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid)}
-                {props.type === "Enter verification code" && Verification({props, timer, setTimer})}
+                {props.type === "Enter verification code" && Verification({props, timer, setTimer, codes, setCodes})}
                 {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid)}
                 {props.type === "Reset Password" && ResetPassword(props, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid)}
               </div>

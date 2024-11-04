@@ -6,8 +6,19 @@ import Toggle from "@/components/Toggle";
 import Button from "@/components/Button";
 import {AuthModalProps} from "@/components/modals/Auth";
 import {FaCheckCircle} from "react-icons/fa";
+import {validatePassword} from "@/lib/validatePassword";
 
-export default function ResetPassword(props: AuthModalProps, password: string, setPassword: (e: React.SetStateAction<string>) => void) {
+export default function ResetPassword(
+  props: AuthModalProps,
+  code: string,
+  setCode: (e: React.SetStateAction<string>) => void,
+  password: string,
+  setPassword: (e: React.SetStateAction<string>) => void,
+  confirmPassword: string,
+  setConfirmPassword: (e: React.SetStateAction<string>) => void,
+  isPasswordValid: boolean,
+  setPasswordValid: (e: React.SetStateAction<boolean>) => void,
+) {
   return (
     <>
       <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
@@ -30,10 +41,25 @@ export default function ResetPassword(props: AuthModalProps, password: string, s
         </div>
       </div>
       <div className="px-10">
-        <TextField label="Code" placeholder="Reset Code" />
+        <TextField
+          label="Code"
+          placeholder="Reset Code"
+          onChange={(e) => {
+            const code = e.target.value;
+            setCode(code)
+          }}
+          code={code}
+          error={!(code.length >= 6)}
+        />
         <div className="py-4">
           <TextField
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const passwordValue = e.target.value;
+              setPassword(passwordValue);
+              setPasswordValid(validatePassword(passwordValue));
+            }}
+            error={!isPasswordValid}
+            password={password}
             label="New Password"
             placeholder="*********"
             type="password"
@@ -41,7 +67,9 @@ export default function ResetPassword(props: AuthModalProps, password: string, s
         </div>
         <div className="py-4">
           <TextField
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            password={password}
+            error={password !== confirmPassword}
             label="Confirm the password"
             placeholder="**********"
             type="password"
@@ -73,7 +101,13 @@ export default function ResetPassword(props: AuthModalProps, password: string, s
       </div>
       <div className="flex justify-center lg:pb-8 lg:pt-4">
         <div className="py-3 sm:flex flex justify-center w-[34%]">
-          <Button onClick={() => props.setAuthModal(false)} label="Reset Password" variant="secondary" filled/>
+          <Button
+            disabled={code?.length !== 6 || !isPasswordValid || password !== confirmPassword}
+            onClick={() => props.setAuthModal(false)}
+            label="Reset Password"
+            variant="secondary"
+            filled
+          />
         </div>
       </div>
     </>

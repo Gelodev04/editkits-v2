@@ -9,7 +9,6 @@ export default function Header() {
   const [type, setType] = useState("");
   const [showAuthModal, setAuthModal] = useState(false);
 
-
   function onSignup() {
     setAuthModal(true);
     setType("Sign Up");

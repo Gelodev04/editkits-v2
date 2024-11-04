@@ -28,7 +28,12 @@ const style = {
 };
 
 export default function AuthModal(props: AuthModalProps) {
+  const [email, setEmail] = useState("");
+  const [isEmailValid, setEmailValid] = useState(false);
+  const [code, setCode] = useState("")
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPasswordValid, setPasswordValid] = useState(false)
   const [timer, setTimer] = useState(60);
 
   useEffect(() => {
@@ -58,11 +63,11 @@ export default function AuthModal(props: AuthModalProps) {
                 <div className="absolute right-2 top-2 cursor-pointer">
                   <TbXboxX size={30} color="#000" onClick={() => props.setAuthModal(false)}/>
                 </div>
-                {props.type === "Sign Up" && Signup(props, password, setPassword)}
-                {props.type === "Log In" && Login(props)}
+                {props.type === "Sign Up" && Signup(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid)}
+                {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid)}
                 {props.type === "Enter verification code" && Verification({props, timer, setTimer})}
-                {props.type === "Forgot your password?" && ForgetPassword(props)}
-                {props.type === "Reset Password" && ResetPassword(props, password, setPassword)}
+                {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid)}
+                {props.type === "Reset Password" && ResetPassword(props, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid)}
               </div>
             </div>
           </div>

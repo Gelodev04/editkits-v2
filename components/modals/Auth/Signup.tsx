@@ -6,8 +6,23 @@ import Toggle from "@/components/Toggle";
 import Button from "@/components/Button";
 import {AuthModalProps} from "@/components/modals/Auth";
 import {FaCheckCircle} from "react-icons/fa";
+import {validateEmail} from "@/lib/validateEmail";
+import {validatePassword} from "@/lib/validatePassword";
 
-export default function Signup(props: AuthModalProps, password: string, setPassword: (e: React.SetStateAction<string>) => void) {
+export default function Signup(
+  props: AuthModalProps,
+  password: string,
+  setPassword: (e: React.SetStateAction<string>) => void,
+  email: string,
+  setEmail: (e: React.SetStateAction<string>) => void,
+  isEmailValid: boolean,
+  setEmailValid: (e: React.SetStateAction<boolean>) => void,
+  confirmPassword: string,
+  setConfirmPassword: (e: React.SetStateAction<string>) => void,
+  isPasswordValid: boolean,
+  setPasswordValid: (e: React.SetStateAction<boolean>) => void,
+) {
+
   return (
     <>
       <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
@@ -30,16 +45,36 @@ export default function Signup(props: AuthModalProps, password: string, setPassw
         </div>
       </div>
       <div className="px-10">
-        <TextField label="Email" placeholder="Your email" />
+        <TextField
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailValid(validateEmail(e.target.value));
+          }}
+          error={!isEmailValid}
+          email={email}
+          label="Email" placeholder="Your email"/>
         <div className="py-4">
           <TextField
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const passwordValue = e.target.value;
+              setPassword(passwordValue);
+              setPasswordValid(validatePassword(passwordValue));
+            }}
+            error={!isPasswordValid}
+            password={password}
             label="Password"
             placeholder="Your password"
             type="password"
           />
         </div>
-        <TextField type="password" label="Confirm Password" placeholder="Confirm password"/>
+        <TextField
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          password={password}
+          error={password !== confirmPassword}
+          type="password"
+          label="Confirm Password"
+          placeholder="Confirm password"
+        />
         <div className="py-4">
           <div className="pb-4">
             <Toggle name="remember-me" label="Remember me"/>
@@ -66,11 +101,17 @@ export default function Signup(props: AuthModalProps, password: string, setPassw
       </div>
       <div className="flex justify-center">
         <div className="py-3 sm:flex flex justify-center w-[34%]">
-          <Button onClick={() => props.setType("Enter verification code")} label="Create account" variant="secondary" filled/>
+          <Button
+            onClick={() => props.setType("Enter verification code")}
+            disabled={!isEmailValid || !isPasswordValid || password !== confirmPassword}
+            label="Create account"
+            variant="secondary"
+            filled
+          />
         </div>
       </div>
       <div className="flex justify-center pb-10 gap-4 items-center">
-        <Typography label="Already have an account?" />
+        <Typography label="Already have an account?"/>
         <Button onClick={() => props.setType("Log In")} label="Login" variant="primary" filled width={40}/>
       </div>
     </>

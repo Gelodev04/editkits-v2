@@ -4,8 +4,20 @@ import Toggle from "@/components/Toggle";
 import Button from "@/components/Button";
 import React from "react";
 import {AuthModalProps} from "@/components/modals/Auth/index";
+import {validateEmail} from "@/lib/validateEmail";
+import {validatePassword} from "@/lib/validatePassword";
 
-export default function Login(props: AuthModalProps) {
+export default function Login(
+  props: AuthModalProps,
+  password: string,
+  setPassword: (e: React.SetStateAction<string>) => void,
+  email: string,
+  setEmail: (e: React.SetStateAction<string>) => void,
+  isEmailValid: boolean,
+  setEmailValid: (e: React.SetStateAction<boolean>) => void,
+  isPasswordValid: boolean,
+  setPasswordValid:(e:  React.SetStateAction<boolean>) => void
+) {
   return (
     <>
       <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
@@ -28,9 +40,28 @@ export default function Login(props: AuthModalProps) {
         </div>
       </div>
       <div className="px-10">
-        <TextField label="Email" placeholder="Your email"/>
+        <TextField
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailValid(validateEmail(e.target.value));
+          }}
+          error={!isEmailValid}
+          email={email}
+          label="Email" placeholder="Your email"
+        />
         <div className="py-4">
-          <TextField type="password" label="Password" placeholder="Your password"/>
+          <TextField
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const passwordValue = e.target.value;
+              setPassword(passwordValue);
+              setPasswordValid(validatePassword(passwordValue));
+            }}
+            error={!isPasswordValid}
+            password={password}
+            type="password"
+            label="Password"
+            placeholder="Your password"
+          />
         </div>
         <div className="py-3">
           <div className="flex justify-between items-center">
@@ -41,7 +72,13 @@ export default function Login(props: AuthModalProps) {
       </div>
       <div className="flex justify-center sm:pt-32">
         <div className="py-3 sm:flex flex justify-center w-[34%]">
-          <Button onClick={() => props.setAuthModal(false)} label="Login" variant="secondary" filled/>
+          <Button
+            disabled={!isEmailValid || !isPasswordValid}
+            onClick={() => props.setAuthModal(false)}
+            label="Login"
+            variant="secondary"
+            filled
+          />
         </div>
       </div>
       <div className="flex justify-center pb-10 gap-4">

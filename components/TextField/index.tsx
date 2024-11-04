@@ -8,6 +8,10 @@ type TextFieldProps = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   type?: string;
+  error?: boolean;
+  email?: string;
+  password?: string;
+  code?: string;
 }
 
 export default function TextField(props: TextFieldProps) {
@@ -16,9 +20,9 @@ export default function TextField(props: TextFieldProps) {
       <Typography label={props.label} variant="b3" />
       <div className="pt-2">
         {props.type === "password" ? (
-          <PasswordInput onChange={props.onChange} placeholder={props.placeholder}/>
+          <PasswordInput password={props.password} error={props.error} onChange={props.onChange} placeholder={props.placeholder}/>
         ) : (
-          <Input type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
+          <Input code={props.code} email={props.email} error={props.error} type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
         )}
       </div>
     </>

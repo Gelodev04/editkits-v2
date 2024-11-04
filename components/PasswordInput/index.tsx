@@ -5,6 +5,8 @@ type InputProps = {
     placeholder?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     type?: string;
+    error?: boolean;
+    password?: string;
 }
 
 export default function PasswordInput(props: InputProps) {
@@ -16,7 +18,8 @@ export default function PasswordInput(props: InputProps) {
     return (
       <div className="relative w-full">
           <input
-            className="w-full border border-solid border-2 border-slate-200 p-3 rounded-md outline-none text-[#2c2c2c] pr-10"
+            //@ts-ignore
+            className={`w-full border border-solid border-2 ${props?.error && props?.password?.length > 0 ? "border-red-300" : "border-slate-200"} p-3 rounded-md outline-none text-[#2c2c2c] pr-10`}
             placeholder={props.placeholder}
             type={showPassword ? "text" : "password"}
             onChange={props.onChange}

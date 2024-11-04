@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import {AuthModalProps} from "./index";
@@ -6,6 +6,7 @@ import VerificationCodeInput from "../../VerificationCodeInput/index";
 
 //@ts-ignore
 export default function Verification({props, timer, setTimer}: { props: AuthModalProps, timer: number, setTimer: any }) {
+  const [codes, setCodes] = useState("")
 
   return (
     <>
@@ -29,7 +30,7 @@ export default function Verification({props, timer, setTimer}: { props: AuthModa
         </div>
       </div>
       <div className="flex flex-col items-center justify-center w-full">
-        <VerificationCodeInput />
+        <VerificationCodeInput onChange={(e: string) => setCodes(e)} />
         <div className="flex pb-10 pt-5 justify-center items-center gap-y-1 gap-x-2">
           <Typography label="Didn't get the code ?" variant="b3"/>
           { timer === 0 && <Typography onClick={() => setTimer(60)} label="Click here to resend" variant="bbl3" button/> }
@@ -41,7 +42,12 @@ export default function Verification({props, timer, setTimer}: { props: AuthModa
       </div>
       <div className="flex justify-center pb-8">
         <div className="py-3 sm:flex flex justify-center w-[34%]">
-          <Button onClick={() => props.setAuthModal(false)} label="Verify" variant="secondary" filled/>
+          <Button
+            onClick={() => props.setAuthModal(false)}
+            label="Verify" variant="secondary"
+            filled
+            disabled={codes.length !== 5}
+          />
         </div>
       </div>
     </>

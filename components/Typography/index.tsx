@@ -11,7 +11,7 @@ type TypographyProps = {
   link?: boolean;
 }
 
-function TypographyStyle(variant?: string | undefined, center?: boolean | undefined, bold?: boolean | undefined, button?: boolean | undefined, link?: boolean) {
+function TypographyStyle(variant?: string | undefined, center?: boolean | undefined, bold?: boolean | undefined, button?: boolean | undefined, link?: boolean, className?: any) {
 
   switch (variant) {
     case "h1":
@@ -21,7 +21,7 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
     case "h3":
       return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${center && "text-center"}`;
     case "h4":
-      return `text-2xl font-bold text-[#4f4f4f] ${center && "text-center"}`;
+      return `text-base font-normal text-[#4f4f4f] ${center && "text-center"}`;
     case "h5":
       return `text-xl font-black text-[#2c2c2c] ${center && "text-center"}`;
     case "h6":
@@ -31,7 +31,7 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
     case "body":
       return `text-md text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-light"}`
     case "b3":
-      return `text-sm text-[#2c2c2c] font-lato ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"} ${button && "cursor-pointer"}`;
+      return `text-sm text-[#2c2c2c] font-lato ${center && "text-center"} font-normal ${button && "cursor-pointer"}`;
     case "bb3":
       return `text-sm ${link && `text-[#0700CB]`} font-lato text-[#4f4f4f] ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
     case "bbl3":
@@ -39,13 +39,21 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
     case "b4":
       return `text-xs text-[#2c2c2c] font-lato ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`
     case "p":
-      return `text-sm  text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`
+      return `text-sm  text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`;
+    case "l1b":
+      return `text-base font-bold text-[#2c2c2c] ${center && "text-center"}`;
     default:
-      return `text-sm text-[#2c2c2c] font-normal ${center && "text-center"}`;
+      return `${className} text-sm text-[#2c2c2c] font-normal ${center && "text-center"}`;
   }
 }
 
 export default function Typography(props: TypographyProps) {
-  return <p onClick={props.onClick}
-            className={TypographyStyle(props.variant, props.center, props.bold, props.button, props.link)}>{props.label}</p>
+  return (
+    <p
+      onClick={props.onClick}
+      className={TypographyStyle(props.variant, props.center, props.bold, props.button, props.link, props.className)}
+    >
+      {props.label}
+    </p>
+  )
 }

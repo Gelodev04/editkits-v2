@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/router';
 import React from "react";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
@@ -10,13 +11,14 @@ const montserrat = Montserrat({
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   return (
     <div className={montserrat.className}>
       <div className="border border-b-1">
-        <Header />
+        { router.pathname !== '/pricing' && <Header /> }
       </div>
       {children}
-      <Footer />
+      { router.pathname !== '/pricing' && <Footer /> }
     </div>
   );
 }

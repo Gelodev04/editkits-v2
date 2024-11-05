@@ -21,14 +21,16 @@ export default function Header() {
 
   return (
     <div className="flex justify-between py-5 sm:px-10 xl:px-48 2xl:px-72 bg-white ">
-      <Link href="/home">
+      <Link href="/">
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
       </Link>
       <div className="flex space-x-6 justify-center items-center">
         <Link href="/tools">
           <Button label="Tools" variant="primary"/>
         </Link>
-        <Button label="Pricing" variant="primary"/>
+        <Link href="/pricing">
+          <Button label="Pricing" variant="primary"/>
+        </Link>
       </div>
       <div className="flex space-x-6 justify-center">
         <div className="w-32">

@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import {AuthModalProps} from "./index";
 import VerificationCodeInput from "../../VerificationCodeInput/index";
 
 //@ts-ignore
-export default function Verification({props, timer, setTimer, codes, setCodes}: { props: AuthModalProps, timer: number, setTimer: any }) {
+export default function Verification({props, timer, setTimer, codes, setCodes}: { props: AuthModalProps, timer: number, setTimer: any, codes: string, setCodes: (e: React.SetStateAction<string>) => void }) {
 
   return (
     <>

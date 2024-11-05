@@ -1,5 +1,5 @@
 import {videoTools} from "@/lib/constants";
-import ToolCard from "../ToolCard/index";
+import ToolCard from "../cards/ToolCard/index";
 import "./style.css"
 
 export default function ToolsList({tools}: {tools?: boolean}) {

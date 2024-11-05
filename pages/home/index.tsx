@@ -2,7 +2,7 @@
 
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
-import ToolCard from "@/components/ToolCard";
+import ToolCard from "@/components/cards/ToolCard";
 import {videoTools} from "@/lib/constants";
 import {FaChevronRight} from "react-icons/fa";
 

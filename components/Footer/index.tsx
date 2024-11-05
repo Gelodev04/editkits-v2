@@ -11,11 +11,15 @@ export default function Footer() {
   return (
     <div className="pt-10 bg-neutral-50 pb-5">
       <div className="flex space-x-6 justify-center pb-8">
-        <Button label="Home" variant="primary"/>
+        <Link href="/">
+          <Button label="Home" variant="primary"/>
+        </Link>
         <Link href="/tools">
           <Button label="Tools" variant="primary"/>
         </Link>
-        <Button label="Pricing" variant="primary"/>
+        <Link href="/pricing">
+          <Button label="Pricing" variant="primary"/>
+        </Link>
       </div>
       <div className="2xl:px-[32%] xl:px-[18%] lg:px-[12%]">
         <Typography

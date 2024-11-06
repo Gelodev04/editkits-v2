@@ -85,7 +85,7 @@ export default function ResetPassword(
               <Typography variant="b4" label="One lowercase character"/>
             </div>
             <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={/[!@#$%^&*(),.?":{}|<>]/.test(password) ? "#0ea5e9" : "#d9d9d9"}/>
+              <FaCheckCircle size={20} color={/[!@#$%^&*(),.?":{}|<>\\\/~\-_=+\[\];'`]/.test(password) ? "#0ea5e9" : "#d9d9d9"}/>
               <Typography variant="b4" label="One special character"/>
             </div>
             <div className="flex items-center gap-x-2">

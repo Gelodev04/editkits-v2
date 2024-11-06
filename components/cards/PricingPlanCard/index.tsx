@@ -16,7 +16,7 @@ type PricingPlanCardProps = {
 export default function PricingPlanCard(props: PricingPlanCardProps) {
   return (
     <div
-      className="py-4 px-8 border border-solid border-slate-50 hover:border-slate-400 max-w-[90%] rounded-2xl min-h-full hover:scale-105 transition-transform duration-300 shadow-lg">
+      className="bg-white py-4 px-8 border border-solid border-slate-50 hover:border-slate-400 max-w-[355px] rounded-2xl min-h-full hover:scale-105 transition-transform duration-300 shadow-lg">
       <div className="flex justify-between items-center pt-2 pb-4">
         <Typography label={props.title} variant="l1b"/>
         <Tag label={props.credits}/>
@@ -26,7 +26,7 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
         {props?.discountPrice && <Typography label={"$"+props?.discountPrice} className="line-through font-lato font-semibold text-base"/>}
         <div className="flex items-end">
           <Typography label={"$" + props.originalPrice} variant="h3"/>
-          <Typography label="/year" variant="b3"/>
+          <Typography label="/ month" bold className="italic"/>
         </div>
       </div>
       <div className="flex gap-2 pb-6">
@@ -34,7 +34,7 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
         <p className="text-[#838696] font-lato font-normal text-base">{props.type}</p>
       </div>
       <div className='border-dashed border-b-2 border-[#e2e4e9] pb-5 mb-5'>
-        <Button label="Select Plan" variant="outlined"/>
+        <Button label="Select Plan" variant="outlined" filled />
       </div>
       <Typography label="Monthly Benefits" variant="bb3"/>
       <div className="pt-3">

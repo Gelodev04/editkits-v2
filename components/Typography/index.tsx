@@ -43,7 +43,7 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
     case "l1b":
       return `text-base font-bold text-[#2c2c2c] ${center && "text-center"}`;
     default:
-      return `${className} text-sm text-[#2c2c2c] font-normal ${center && "text-center"}`;
+      return `${className} text-sm text-[#2c2c2c] ${bold ? "font-bold" : "font-normal"} ${center && "text-center"}`;
   }
 }
 

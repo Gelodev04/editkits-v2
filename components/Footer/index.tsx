@@ -9,8 +9,8 @@ import Link from "next/link";
 export default function Footer() {
 
   return (
-    <div className="pt-10 bg-neutral-50 pb-5 px-[40px] 2xl:px-0">
-      <div className="flex space-x-6 justify-center pb-8 max-w-[1536px] mx-auto">
+    <div className="pt-10 bg-neutral-50 pb-5 px-8">
+      <div className="flex space-x-6 justify-center pb-8 max-w-[1280px] mx-auto">
         <Link href="/">
           <Button label="Home" variant="primary"/>
         </Link>
@@ -27,7 +27,7 @@ export default function Footer() {
           center
         />
       </div>
-      <div className="grid grid-cols-3 sm:px-10 2xl:px-40 pt-20 max-w-[1536px] mx-auto">
+      <div className="grid grid-cols-3 place-items-center w-full pt-20 max-w-[1280px] mx-auto">
         <Typography label="© 2024 Edikits. All rights reserved"/>
         <div className="flex space-x-6 justify-center">
           <Button label="Terms of Use" variant="primary"/>

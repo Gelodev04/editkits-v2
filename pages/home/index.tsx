@@ -32,13 +32,13 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="bg-white py-4 lg:px-[5%] 2xl:px-[15%]">
+      <div className="bg-white py-4">
         <div className="pb-3">
           <Typography label="Quick Access" variant="h3" center/>
         </div>
         <Typography label="Video Tools" center/>
         <div className="place-items-center">
-          <div className="grid sm:grid-cols-2 2xl:max-w-[95%] lg:grid-cols-5 gap-y-10 py-10 gap-x-10 max-w-[1536px]">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 py-10 gap-x-10 lg:gap-x-4 max-w-[1280px]">
             {videoTools.slice(0, 5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -48,7 +48,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full 2xl:min-w-[20%] xl:min-w-[65%] sm:gap-8 lg:min-w-[70%] md:max-w-[80%] 2xl:gap-x-8 lg:gap-x-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full gap-y-10 pb-10 gap-x-10 lg:gap-x-4 max-w-[1280px]">
             {videoTools.slice(5).map((tool) => (
               <ToolCard
                 key={tool.name}

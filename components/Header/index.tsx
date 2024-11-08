@@ -20,7 +20,7 @@ export default function Header() {
   }
 
   return (
-    <div className="flex justify-between py-5 sm:px-10 xl:px-48 2xl:px-72 bg-white ">
+    <div className="flex justify-between py-5 sm:px-10 xl:px-48 2xl:px-56 bg-white max-w-[1536px] mx-auto ">
       <Link href="/">
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
       </Link>

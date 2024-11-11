@@ -4,10 +4,17 @@ import Button from "@/components/Button";
 import React, {useState} from "react";
 import Link from "next/link";
 import AuthModal from "../modals/Auth/index";
+import {useRouter} from "next/router";
+import {FaAngleDown} from "react-icons/fa";
+import User from '@/assets/img/icons/user.svg'
+import Subscription from '@/assets/img/icons/subscription.svg'
+import Logout from '@/assets/img/icons/logout.svg'
 
 export default function Header() {
   const [type, setType] = useState("");
   const [showAuthModal, setAuthModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter()
 
   function onSignup() {
     setAuthModal(true);
@@ -25,6 +32,11 @@ export default function Header() {
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
       </Link>
       <div className="flex space-x-6 justify-center items-center">
+        {router.pathname === "/dashboard" && (
+          <Link href="/dashboard">
+            <Button label="Dashboard" variant="primary"/>
+          </Link>
+        )}
         <Link href="/tools">
           <Button label="Tools" variant="primary"/>
         </Link>
@@ -32,13 +44,32 @@ export default function Header() {
           <Button label="Pricing" variant="primary"/>
         </Link>
       </div>
-      <div className="flex space-x-6 justify-center">
-        <div className="w-32">
-          <Button onClick={onSignup} label="Signup" variant="secondary"/>
-        </div>
-        <div className="w-32">
-          <Button onClick={onLogin} label="Login" variant="secondary" filled/>
-        </div>
+      <div className="flex space-x-6 justify-center items-center">
+        {router.pathname === "/dashboard" ? (
+          <div className="w-[160px] relative inline-block">
+            <Button onClick={() => setIsOpen(!isOpen)} width={1} variant="contained" label="Account" rightIcon={<FaAngleDown />} />
+            {isOpen && (
+              <div
+                className="absolute right-0 w-full mt-2 bg-white rounded-lg shadow-lg p-4 flex flex-col gap-y-4 items-start"
+                onMouseLeave={() => setIsOpen(false)}
+              >
+                <Button variant="primary" label="Profile" leftIcon={User} />
+                <Button variant="primary" label="Subscription" leftIcon={Subscription} />
+                <Button variant="primary" label="Log Out" leftIcon={Logout} />
+
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            <div className="w-32">
+              <Button onClick={onSignup} label="Signup" variant="secondary"/>
+            </div>
+            <div className="w-32">
+              <Button onClick={onLogin} label="Login" variant="secondary" filled/>
+            </div>
+          </>
+        )}
       </div>
       <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal}/>
     </div>

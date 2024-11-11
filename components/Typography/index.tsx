@@ -22,20 +22,26 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
       return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${center && "text-center"}`;
     case "h4":
       return `text-base font-normal text-[#4f4f4f] ${center && "text-center"}`;
+    case "hb4":
+      return `text-base font-bold text-[#333333] ${center && "text-center"}`;
     case "h5":
       return `text-xl font-black text-[#2c2c2c] ${center && "text-center"}`;
     case "h6":
-      return `text-lg font-black text-[#2c2c2c] ${center && "text-center"}`;
+      return `text-lg font-bold text-[#2c2c2c] ${center && "text-center"}`;
     case "sm":
       return `text-sm text-[#2c2c2c] ${center && "text-center"}`;
     case "body":
       return `text-md text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-light"}`
+    case "bb1":
+      return `text-lg font-lato font-semibold text-[#2c2c2c]`;
     case "b3":
       return `text-sm text-[#2c2c2c] font-lato ${center && "text-center"} font-normal ${button && "cursor-pointer"}`;
     case "bb3":
       return `text-sm ${link && `text-[#0700CB]`} font-lato text-[#4f4f4f] ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
     case "bbl3":
       return `text-sm text-sky-500 ${center && "text-center"} font-lato font-bold  hover:scale-105 transition-transform duration-300 cursor-pointer`;
+    case "bl3":
+      return `text-sm text-sky-500 ${center && "text-center"} font-lato font-normal underline  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "b4":
       return `text-xs text-[#2c2c2c] font-lato ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`
     case "p":
@@ -43,7 +49,7 @@ function TypographyStyle(variant?: string | undefined, center?: boolean | undefi
     case "l1b":
       return `text-base font-bold text-[#2c2c2c] ${center && "text-center"}`;
     default:
-      return `${className} text-sm text-[#2c2c2c] ${bold ? "font-bold" : "font-normal"} ${center && "text-center"}`;
+      return `${className} text-[#2c2c2c] ${bold ? "font-bold" : "font-normal"} ${center && "text-center"} text-sm `;
   }
 }
 

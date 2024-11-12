@@ -274,6 +274,696 @@ export const tableData = [
     status: "Success",
     output_id: "#44544",
     created_at: "Abcdef"
+  },
+  {
+    icon: CarEditVideo,
+    input_id: "#44544",
+    file_name: "Car Edit",
+    details: "View Details",
+    credits_used: 20,
+    status: "Failed",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEdit,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditSuccess,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: HouseEditVideo,
+    input_id: "#44544",
+    file_name: "House Edit",
+    details: "View Details",
+    credits_used: 30,
+    status: "Progress",
+    output_id: "#44544",
+    created_at: "Abcdef"
+  },
+  {
+    icon: FootballEditVideo,
+    input_id: "#44544",
+    file_name: "Football Edit",
+    details: "View Details",
+    credits_used: 25,
+    status: "Success",
+    output_id: "#44544",
+    created_at: "Abcdef"
   }
 ];
 export const uploadedFileTableData = [

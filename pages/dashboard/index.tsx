@@ -10,18 +10,17 @@ export default function Dashboard() {
 
   return (
     <div className="bg-[#fafbfc] p-6">
-      <div className="grid grid-cols-12 gap-4 max-w-[1536px] mx-auto">
-        <div className="col-span-2">
+      <div className="grid grid-cols-12 max-w-[1280px] mx-auto">
+        <div className="col-span-3">
           <TableType active={active} setActive={setActive}/>
         </div>
-        <div className="col-span-8">
+        <div className="col-span-9">
           <div className="flex gap-4">
             {stats.map(stat => <StatCard stat={stat}/>)}
           </div>
-          <div className="pt-4">
+          <div className="pt-4 w-full">
             <DashboardTable data={tableData} active={active} />
           </div>
-
         </div>
       </div>
     </div>
@@ -30,7 +29,7 @@ export default function Dashboard() {
 
 function TableType({active, setActive}) {
   return (
-    <div className="py-8 px-2 flex flex-col gap-2 bg-white max-w-[228px] rounded rounded-lg">
+    <div className="py-8 px-2 flex flex-col gap-2 bg-white w-[228px] rounded rounded-lg">
       <Button onClick={() => setActive("Job status")} label="Job status" filled={active === "Job status"} variant="outlined" leftIcon={JobSVG}/>
       <Button onClick={() => setActive("Uploaded files")} label="Uploaded files" filled={active === "Uploaded files"} variant="outlined"/>
     </div>

@@ -12,14 +12,14 @@ export default function Pagination({totalPages, page, setPage}) {
     const pageNumbers = [];
 
     if (totalPages <= 4) {
-      for (let i = 1; i <= totalPages; i++) {
+      for (let i = 1; i <= totalPages - 1; i++) {
         pageNumbers.push(
           <button
             key={i}
             onClick={() => goToPage(i)}
             className={`${
               page === i ? "bg-gray-700 text-white" : "text-xs text-gray-500 bg-gray-200"
-            } px-3 py-1 rounded-full`}
+            } px-2 py-1 rounded-full text-xs`}
           >
             {i}
           </button>
@@ -40,20 +40,8 @@ export default function Pagination({totalPages, page, setPage}) {
             </button>
           );
         }
-        // Show ellipsis and the last page if not already displayed
         if (totalPages > 4) {
-          pageNumbers.push(<span key="dots" className="px-2">...</span>);
-          pageNumbers.push(
-            <button
-              key={totalPages}
-              onClick={() => goToPage(totalPages)}
-              className={`${
-                page === totalPages ? "bg-gray-700 text-white" : "text-xs text-gray-500 bg-gray-200"
-              } px-2 py-1 rounded-full`}
-            >
-              {totalPages}
-            </button>
-          );
+          pageNumbers.push(<span key="dots" className="px-2 text-black">...</span>);
         }
       } else if (page >= totalPages - 2) {
         pageNumbers.push(
@@ -66,7 +54,7 @@ export default function Pagination({totalPages, page, setPage}) {
           </button>
         );
         pageNumbers.push(<span key="dots-left" className="px-2">...</span>);
-        for (let i = totalPages - 3; i <= totalPages; i++) {
+        for (let i = totalPages - 3; i < totalPages; i++) {  // Exclude the last page
           pageNumbers.push(
             <button
               key={i}
@@ -104,25 +92,16 @@ export default function Pagination({totalPages, page, setPage}) {
           );
         }
         pageNumbers.push(<span key="dots-right" className="px-2">...</span>);
-        pageNumbers.push(
-          <button
-            key={totalPages}
-            onClick={() => goToPage(totalPages)}
-            className={`${
-              page === totalPages ? "text-xs bg-gray-700 text-white" : "text-xs text-gray-500 hover:bg-gray-200"
-            } px-3 py-1 rounded-full`}
-          >
-            {totalPages}
-          </button>
-        );
+        // Omit the last page button here by not including totalPages
       }
     }
 
     return pageNumbers;
   };
 
+
   return (
-    <div className="flex items-center space-x-6">
+    <div className="flex items-center space-x-2 bg-[#fcfcfc]">
       <FaCircleChevronLeft
         onClick={() => goToPage(page - 1)}
         color={(page !== 1) && "#4f4f4f"}
@@ -132,12 +111,14 @@ export default function Pagination({totalPages, page, setPage}) {
 
       {renderPageNumbers()}
 
-      <FaCircleChevronRight
-        onClick={() => goToPage(page + 1)}
-        color={(page !== totalPages) && "#4f4f4f"}
-        className={`${(page !== totalPages) && "cursor-pointer"}`}
-        size={20}
-      />
+      <button disabled={(page === (totalPages - 1))}>
+        <FaCircleChevronRight
+          onClick={() => goToPage(page + 1)}
+          color={(page !== (totalPages - 1)) && "#4f4f4f"}
+          className={`${(page !== totalPages) && "cursor-pointer"}`}
+          size={20}
+        />
+      </button>
     </div>
   );
 };

@@ -9,9 +9,9 @@ export default function Dashboard() {
   const [active, setActive] = useState("Job status")
 
   return (
-    <div className="bg-[#fafbfc] p-6">
-      <div className="grid grid-cols-12 max-w-[1280px] mx-auto">
-        <div className="col-span-3">
+    <div className="bg-[#fcfcfc] p-6 ">
+      <div className="grid grid-cols-12 max-w-[1536px] mx-auto">
+        <div className="col-span-2">
           <TableType active={active} setActive={setActive}/>
         </div>
         <div className="col-span-9">

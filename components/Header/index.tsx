@@ -34,14 +34,14 @@ export default function Header() {
       <div className="flex space-x-6 justify-center items-center">
         {router.pathname === "/dashboard" && (
           <Link href="/dashboard">
-            <Button label="Dashboard" variant="primary"/>
+            <Button bold={router.pathname === "/dashboard"} label="Dashboard" variant="primary"/>
           </Link>
         )}
         <Link href="/tools">
-          <Button label="Tools" variant="primary"/>
+          <Button bold={router.pathname === "/tools"} label="Tools" variant="primary"/>
         </Link>
         <Link href="/pricing">
-          <Button label="Pricing" variant="primary"/>
+          <Button bold={router.pathname === "/pricing"} label="Pricing" variant="primary"/>
         </Link>
       </div>
       <div className="flex space-x-6 justify-center items-center">

@@ -18,7 +18,10 @@ export default function DashboardTable({active}) {
     return items.slice(startIndex, endIndex);
   };
 
-  const data = active === "Job status" ? tableData : uploadedFileTableData
+  const data = active === "Job status" ? tableData : uploadedFileTableData;
+  const totalPages = Math.ceil(data.length / 8)
+
+  console.log("=====", totalPages, data.length, page)
 
   return (
     <div className="bg-white pt-2">
@@ -26,8 +29,8 @@ export default function DashboardTable({active}) {
         <TableHeader setSearch={setSearch} setUploadModal={setUploadModal} />
       </div>
       {active === "Job status" && <JobStatusTable data={getItemsForPage(tableData, page)} search={search}/>}
-      {active === "Uploaded files" && <UploadedFilesTable data={getItemsForPage(uploadedFileTableData, page)} search={search}/>}
-      <div className="flex justify-end pb-10 pt-16 bg-neutral-50">
+      {active === "Uploaded files" && <UploadedFilesTable data={getItemsForPage(uploadedFileTableData, page, 9)} search={search}/>}
+      <div className="flex justify-end pb-10 pt-16 bg-[#fcfcfc]">
         <Pagination
           dataLength={data.length}
           itemsPerPage={8}

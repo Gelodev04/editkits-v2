@@ -55,7 +55,7 @@ export default function Header() {
               variant="contained"
               label="Account"
               rightIcon={<FaAngleDown size={16}/>}
-              className="bg-[#f0f0f0]"
+              className="bg-[#f0f0f0] py-3"
             />
             {isOpen && (
               <div

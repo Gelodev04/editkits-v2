@@ -41,7 +41,7 @@ export default function Pagination({totalPages, page, setPage}) {
           );
         }
         if (totalPages > 4) {
-          pageNumbers.push(<span key="dots" className="px-2 text-black">...</span>);
+          pageNumbers.push(<span key="dots" className="px-2 text-[#2c2c2c]">...</span>);
         }
       } else if (page >= totalPages - 2) {
         pageNumbers.push(
@@ -53,7 +53,7 @@ export default function Pagination({totalPages, page, setPage}) {
             1
           </button>
         );
-        pageNumbers.push(<span key="dots-left" className="px-2">...</span>);
+        pageNumbers.push(<span key="dots-left" className="px-2 text-[#2c2c2c]">...</span>);
         for (let i = totalPages - 3; i < totalPages; i++) {  // Exclude the last page
           pageNumbers.push(
             <button
@@ -77,7 +77,7 @@ export default function Pagination({totalPages, page, setPage}) {
             1
           </button>
         );
-        pageNumbers.push(<span key="dots-left" className="px-2">...</span>);
+        pageNumbers.push(<span key="dots-left" className="px-2 text-[#2c2c2c]">...</span>);
         for (let i = page - 1; i <= page + 1; i++) {
           pageNumbers.push(
             <button
@@ -91,7 +91,7 @@ export default function Pagination({totalPages, page, setPage}) {
             </button>
           );
         }
-        pageNumbers.push(<span key="dots-right" className="px-2">...</span>);
+        pageNumbers.push(<span key="dots-right" className="px-2 text-[#2c2c2c]">...</span>);
         // Omit the last page button here by not including totalPages
       }
     }

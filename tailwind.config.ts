@@ -11,6 +11,7 @@ const config: Config = {
       fontFamily: {
         lato: ['Lato', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
+        inter: ['Inter', 'sans-serif']
       },
       colors: {
         background: "var(--background)",

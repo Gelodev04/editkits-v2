@@ -1,55 +1,59 @@
 import React from "react";
 
 type TypographyProps = {
-  label?: string | React.ReactNode;
   variant?: string;
   center?: boolean;
-  className?: string;
   bold?: boolean;
-  onClick?: () => void;
   button?: boolean;
   link?: boolean;
+  className?: string;
+  status?: string;
+  label?: string | React.ReactNode;
+  onClick?: () => void;
 }
 
-function TypographyStyle(variant?: string | undefined, center?: boolean | undefined, bold?: boolean | undefined, button?: boolean | undefined, link?: boolean, className?: any) {
+function TypographyStyle(props: TypographyProps) {
 
-  switch (variant) {
+  switch (props.variant) {
     case "h1":
-      return `text-5xl font-extrabold text-[#2c2c2c] ${center && "text-center"}`;
+      return `text-5xl font-extrabold text-[#2c2c2c] ${props.center && "text-center"}`;
     case "h2":
-      return `text-4xl font-extrabold text-[#2c2c2c] font-bold ${center && "text-center"}`;
+      return `text-4xl font-extrabold text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
     case "h3":
-      return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${center && "text-center"}`;
+      return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
     case "h4":
-      return `text-base font-normal text-[#4f4f4f] ${center && "text-center"}`;
+      return `text-base font-normal text-[#4f4f4f] ${props.center && "text-center"}`;
     case "hb4":
-      return `text-base font-bold text-[#333333] ${center && "text-center"}`;
+      return `text-base font-bold text-[#333333] ${props.center && "text-center"}`;
     case "h5":
-      return `text-xl font-black text-[#2c2c2c] ${center && "text-center"}`;
+      return `text-xl font-black text-[#2c2c2c] ${props.center && "text-center"}`;
     case "h6":
-      return `text-lg font-bold text-[#2c2c2c] ${center && "text-center"}`;
+      return `text-lg font-bold text-[#2c2c2c] ${props.center && "text-center"}`;
     case "sm":
-      return `text-sm text-[#2c2c2c] ${center && "text-center"}`;
+      return `text-sm text-[#2c2c2c] ${props.center && "text-center"}`;
     case "body":
-      return `text-md text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-light"}`
+      return `text-md text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-light"}`
     case "bb1":
       return `text-lg font-lato font-semibold text-[#2c2c2c]`;
     case "b3":
-      return `text-sm text-[#2c2c2c] font-lato ${center && "text-center"} font-normal ${button && "cursor-pointer"}`;
+      return `text-sm text-[#2c2c2c] font-lato ${props.center && "text-center"} font-normal ${props.button && "cursor-pointer"}`;
     case "bb3":
-      return `text-sm ${link && `text-[#0700CB]`} font-lato text-[#4f4f4f] ${center && "text-center"} font-bold ${button && "cursor-pointer"}`;
+      return `text-sm ${props.link && `text-[#0700CB]`} font-lato text-[#4f4f4f] ${props.center && "text-center"} font-bold ${props.button && "cursor-pointer"}`;
     case "bbl3":
-      return `text-sm text-sky-500 ${center && "text-center"} font-lato font-bold  hover:scale-105 transition-transform duration-300 cursor-pointer`;
+      return `text-sm text-sky-500 ${props.center && "text-center"} font-lato font-bold  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "bl3":
-      return `text-sm text-sky-500 ${center && "text-center"} font-lato font-normal underline  hover:scale-105 transition-transform duration-300 cursor-pointer`;
+      return `text-sm text-sky-500 ${props.center && "text-center"} font-lato font-normal underline  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "b4":
-      return `text-xs text-[#2c2c2c] font-lato ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`
+      return `text-xs text-[#2c2c2c] font-lato ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-normal"}`
     case "p":
-      return `text-sm  text-[#2c2c2c] ${center && "text-center"} ${bold ? "font-semibold" : "font-normal"}`;
+      return `text-sm  text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-normal"}`;
     case "l1b":
-      return `text-base font-bold text-[#2c2c2c] ${center && "text-center"}`;
+      return `text-base font-bold text-[#2c2c2c] ${props.center && "text-center"}`;
+    case "tag":
+      return props.status === "Failed" ? "text-[#d80027]" : props.status === "Progress" ? "text-[#ff9407]" : "text-[#0f930f]";
     default:
-      return `${className} text-[#2c2c2c] ${bold ? "font-bold" : "font-normal"} ${center && "text-center"} text-sm `;
+      return `${props.className}  ${props.bold ? "font-bold" : "font-normal"} ${props.center && "text-center"} text-sm  text-[#2c2c2c]`;
+
   }
 }
 
@@ -57,7 +61,7 @@ export default function Typography(props: TypographyProps) {
   return (
     <p
       onClick={props.onClick}
-      className={TypographyStyle(props.variant, props.center, props.bold, props.button, props.link, props.className)}
+      className={TypographyStyle(props)}
     >
       {props.label}
     </p>

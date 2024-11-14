@@ -1,16 +1,15 @@
-import Button from "@/components/Button";
-import JobSVG from "@/assets/img/job.svg"
 import StatCard from "@/components/cards/StatCard";
 import { stats, tableData } from "@/lib/constants";
 import DashboardTable from "@/components/Table";
 import {useState} from "react";
+import TableType from "@/components/Table/TableType";
 
 export default function Dashboard() {
   const [active, setActive] = useState("Job status")
 
   return (
-    <div className="bg-[#fcfcfc] p-6">
-      <div className="grid grid-cols-12 max-w-[1536px]">
+    <div className="bg-[#fafbfc] p-6">
+      <div className="grid grid-cols-12 max-w-[1536px] mx-auto">
         <div className="col-span-2 xl:col-span-3 2xl:col-span-2">
           <TableType active={active} setActive={setActive}/>
         </div>
@@ -23,15 +22,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
-function TableType({active, setActive}) {
-  return (
-    <div className="py-8 px-2 flex flex-col gap-2 bg-white w-[228px] rounded rounded-lg">
-      <Button onClick={() => setActive("Job status")} label="Job status" filled={active === "Job status"} variant="outlined" leftIcon={JobSVG}/>
-      <Button onClick={() => setActive("Uploaded files")} label="Uploaded files" filled={active === "Uploaded files"} variant="outlined"/>
     </div>
   )
 }

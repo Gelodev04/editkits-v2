@@ -3,12 +3,12 @@ import Image from "next/image";
 
 import {IoAdd} from "react-icons/io5";
 import {FaSearch} from "react-icons/fa";
-import {MdOutlineCalendarMonth} from "react-icons/md";
 
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 
 import Filter from "@/assets/img/table/filter.svg";
+import Calendar from "@/assets/img/icons/calendar.svg"
 
 export default function TableHeader({setSearch, setUploadModal}) {
   return (
@@ -27,7 +27,7 @@ export default function TableHeader({setSearch, setUploadModal}) {
 
       <div className="flex gap-3 col-span-4">
         <div className="flex justify-center items-center gap-2 bg-white border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 w-30">
-          <MdOutlineCalendarMonth color="#4f4f4f" size={20}/>
+          <Image src={Calendar} alt="Calendar"/>
           <Typography label="All Time" variant="bb3"/>
         </div>
 

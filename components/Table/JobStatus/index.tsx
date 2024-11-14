@@ -8,20 +8,10 @@ import TableCell from "@mui/material/TableCell";
 import Typography from "@/components/Typography";
 import TableBody from "@mui/material/TableBody";
 import Image from "next/image";
-import {IoCopyOutline} from "react-icons/io5";
-import StatusTag from "@/components/table/StatusTag";
+import StatusTag from "@/components/Table/StatusTag";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import * as React from "react";
-import styled from "styled-components";
-
-const StyledTableRow = styled(TableRow)(() => ({
-  '&:nth-of-type(even)': {
-    backgroundColor: "#fcfcfc",
-  },
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
+import CopyIcon from "@/assets/img/icons/copy.svg";
 
 export default function JobStatusTable({data, search}) {
   return (
@@ -38,17 +28,24 @@ export default function JobStatusTable({data, search}) {
         </TableHead>
         <TableBody>
           {data.filter(row => row.file_name.toLowerCase().includes(search)).map((row) => (
-            <StyledTableRow
+            <TableRow
               key={row.input_id}
-              sx={{'&:last-child td, &:last-child th': {border: "none"}}}
+              sx={{
+                '&:last-child td, &:last-child th': {border: "none"},
+                '&:nth-of-type(even)': { backgroundColor: '#fcfcfc' },
+              }}
             >
               <TableCell sx={{border: "none"}} component="th" scope="row">
                 <Image src={row.icon} alt="icon"/>
               </TableCell>
               <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
                 <Typography label={row.input_id} variant="b3"/>
-                <IoCopyOutline className="cursor-pointer" onClick={() => navigator.clipboard.writeText(row.input_id)}
-                               color="#4f4f4f"/>
+                <Image
+                  src={CopyIcon}
+                  className="cursor-pointer"
+                  onClick={() => navigator.clipboard.writeText(row.input_id)}
+                  alt="input_id"
+                />
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <Typography label={row.file_name} variant="b3"/>
@@ -64,14 +61,18 @@ export default function JobStatusTable({data, search}) {
               </TableCell>
               <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
                 <Typography label={row.input_id} variant="b3"/>
-                <IoCopyOutline className="cursor-pointer" onClick={() => navigator.clipboard.writeText(row.output_id)}
-                               color="#4f4f4f"/>
+                <Image
+                  src={CopyIcon}
+                  className="cursor-pointer"
+                  onClick={() => navigator.clipboard.writeText(row.input_id)}
+                  alt="input_id"
+                />
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <Typography label={row.created_at} variant="b3"/>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="left"><BsThreeDotsVertical cursor="pointer"/></TableCell>
-            </StyledTableRow>
+              <TableCell sx={{border: "none"}} align="left"><BsThreeDotsVertical color="#4f4f4f" cursor="pointer"/></TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

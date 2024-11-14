@@ -1,11 +1,13 @@
+import React, {useState} from "react";
 import Image from "next/image";
+import Link from "next/link";
+import {useRouter} from "next/router";
+
+import {FaAngleDown} from "react-icons/fa";
+
 import Logo from "@/assets/img/logo.svg"
 import Button from "@/components/Button";
-import React, {useState} from "react";
-import Link from "next/link";
 import AuthModal from "../modals/Auth/index";
-import {useRouter} from "next/router";
-import {FaAngleDown} from "react-icons/fa";
 import User from '@/assets/img/icons/user.svg'
 import Subscription from '@/assets/img/icons/subscription.svg'
 import Logout from '@/assets/img/icons/logout.svg'
@@ -47,16 +49,22 @@ export default function Header() {
       <div className="flex space-x-6 justify-center items-center">
         {router.pathname === "/dashboard" ? (
           <div className="w-[160px] relative inline-block">
-            <Button onClick={() => setIsOpen(!isOpen)} width={1} variant="contained" label="Account" rightIcon={<FaAngleDown />} />
+            <Button
+              onClick={() => setIsOpen(!isOpen)}
+              width={1}
+              variant="contained"
+              label="Account"
+              rightIcon={<FaAngleDown size={16}/>}
+              className="bg-[#f0f0f0]"
+            />
             {isOpen && (
               <div
                 className="absolute right-0 w-full mt-2 bg-white rounded-lg shadow-lg p-4 flex flex-col gap-y-4 items-start"
                 onMouseLeave={() => setIsOpen(false)}
               >
-                <Button variant="primary" label="Profile" leftIcon={User} />
-                <Button variant="primary" label="Subscription" leftIcon={Subscription} />
-                <Button variant="primary" label="Log Out" leftIcon={Logout} />
-
+                <Button fontWeight="font-normal" font="font-inter" variant="primary" label="Profile" leftIcon={User}/>
+                <Button fontWeight="font-normal" font="font-inter" variant="primary" label="Subscription" leftIcon={Subscription}/>
+                <Button fontWeight="font-normal" font="font-inter" variant="primary" label="Log Out" leftIcon={Logout}/>
               </div>
             )}
           </div>

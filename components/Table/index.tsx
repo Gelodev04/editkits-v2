@@ -2,10 +2,10 @@ import * as React from 'react';
 import { uploadedFileTableData, tableData} from "@/lib/constants";
 import {useState} from "react";
 import UploadFileModal from "@/components/modals/UploadFileModal";
-import Pagination from "@/components/table/Pagination";
-import TableHeader from "@/components/table/TableHeader";
-import JobStatusTable from "@/components/table/JobStatus";
-import UploadedFilesTable from "@/components/table/UploadedFiles";
+import Pagination from "@/components/Table/Pagination";
+import TableHeader from "@/components/Table/TableHeader";
+import JobStatusTable from "@/components/Table/JobStatus";
+import UploadedFilesTable from "@/components/Table/UploadedFiles";
 
 export default function DashboardTable({active}) {
   const [search, setSearch] = useState("");
@@ -19,9 +19,6 @@ export default function DashboardTable({active}) {
   };
 
   const data = active === "Job status" ? tableData : uploadedFileTableData;
-  const totalPages = Math.ceil(data.length / 8)
-
-  console.log("=====", totalPages, data.length, page)
 
   return (
     <div className="bg-white pt-2">

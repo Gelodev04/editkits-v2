@@ -92,7 +92,6 @@ export default function Pagination({totalPages, page, setPage}) {
           );
         }
         pageNumbers.push(<span key="dots-right" className="px-2 text-[#2c2c2c]">...</span>);
-        // Omit the last page button here by not including totalPages
       }
     }
 

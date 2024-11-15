@@ -16,12 +16,12 @@ import Typography from "@/components/Typography";
 
 export default function UploadedFilesTable({data, search}) {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className="min-h-full">
       <Table sx={{minWidth: 650}} aria-label="simple table">
         <TableHead sx={{backgroundColor: "#f0f0f0"}}>
           <TableRow>
             {uploadedFilesColumns.map(col => (
-              <TableCell align="left">
+              <TableCell align="left" width={2}>
                 <Typography variant="b4" label={col.name} bold/>
               </TableCell>
             ))}

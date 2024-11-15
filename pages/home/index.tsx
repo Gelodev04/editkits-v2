@@ -37,8 +37,8 @@ export default function Home() {
           <Typography label="Quick Access" variant="h3" center/>
         </div>
         <Typography label="Video Tools" center/>
-        <div className="place-items-center">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 py-10 gap-x-10 lg:gap-x-4 max-w-[1280px]">
+        <div className="sm:hidden lg:block place-items-center max-w-[1280px] mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 py-10 gap-x-10 lg:gap-x-4">
             {videoTools.slice(0, 5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -48,7 +48,8 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full gap-y-10 pb-10 gap-x-10 lg:gap-x-4 max-w-[1280px]">
+          <div
+            className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full gap-y-10 pb-10 gap-x-10 lg:gap-x-4 max-w-[1280px]">
             {videoTools.slice(5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -58,8 +59,20 @@ export default function Home() {
             ))}
           </div>
         </div>
+        <div className="sm:block lg:hidden place-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10 py-10 gap-x-10 lg:gap-x-4 max-w-[1280px]">
+            {videoTools.map((tool) => (
+              <ToolCard
+                key={tool.name}
+                name={tool.name}
+                icon={tool?.icon}
+              />
+            ))}
+          </div>
+        </div>
         <div className="flex justify-center">
-          <div className="flex justify-center justify-between space-between py-10 w-[26%] xl:w-[20%] 2xl:w-72 lg:w-[21%]">
+          <div
+            className="flex justify-center justify-between space-between py-10 w-[26%] xl:w-[20%] 2xl:w-72 lg:w-[21%]">
             <Button
               label="Show All Video Tools"
               variant="secondary"

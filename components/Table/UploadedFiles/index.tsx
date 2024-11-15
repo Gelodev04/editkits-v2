@@ -21,7 +21,7 @@ export default function UploadedFilesTable({data, search}) {
         <TableHead sx={{backgroundColor: "#f0f0f0"}}>
           <TableRow>
             {uploadedFilesColumns.map(col => (
-              <TableCell align="left" width={2}>
+              <TableCell align="left">
                 <Typography variant="b4" label={col.name} bold/>
               </TableCell>
             ))}
@@ -36,7 +36,7 @@ export default function UploadedFilesTable({data, search}) {
                 '&:nth-of-type(even)': { backgroundColor: '#fcfcfc' },
               }}
             >
-              <TableCell sx={{border: "none"}} component="th" scope="row">
+              <TableCell width={172} height={92} sx={{border: "none"}} component="th" scope="row">
                 <Image src={row.icon} alt="icon"/>
               </TableCell>
               <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
@@ -57,7 +57,9 @@ export default function UploadedFilesTable({data, search}) {
               <TableCell sx={{border: "none"}} align="left">
                 <Typography label={row.created_at} variant="b3"/>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="left"><BsThreeDotsVertical color="#4f4f4f" cursor="pointer"/></TableCell>
+              <TableCell width={10} sx={{border: "none"}} align="end">
+                <BsThreeDotsVertical color="#4f4f4f" cursor="pointer"/>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -28,8 +28,8 @@ export default function Pricing() {
       <div className="flex  justify-center">
         <div
           className={`grid grid-cols-1 sm:grid-cols-2 gap-8 ${
-            monthly ? 'xl:grid-cols-4' : 'xl:grid-cols-3'
-          } place-items-center p-10 max-w-[1920px]`}
+            monthly ? 'xl:grid-cols-3 2xl:grid-cols-4' : 'xl:grid-cols-3'
+          } place-items-center p-10 max-w-[1536px]`}
         >
           {pricingPlanList
             .filter(plan => plan.type === (monthly ? 'monthly' : 'yearly'))

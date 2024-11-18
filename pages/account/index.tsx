@@ -6,9 +6,15 @@ import AccountType from "@/components/account/AccountType";
 import Typography from "@/components/Typography";
 import Tag from "@/components/Tag";
 import BenefitCard from "@/components/cards/BenefitCard";
+import {validateEmail} from "@/lib/validateEmail";
+import ChangePasswordModal from "@/components/account/ChnagePasswordModal";
 
 export default function Account() {
   const [active, setActive] = React.useState("email");
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const [isEmailValid, setEmailValid] = React.useState("");
+  const [changePasswordModalVisible, setChangePasswordModalVisible] = React.useState(false)
 
   const benefits = [
     "No Credit Card required",
@@ -23,14 +29,27 @@ export default function Account() {
       <div className="max-w-[1536px] mx-auto p-6">
         <div className="grid grid-cols-12 w-full gap-4 mx-auto">
           <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
-            <AccountType active={active} setActive={setActive}/>
+            <AccountType active={active} setActive={setActive} />
           </div>
           <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6">
             {active === "email" && (
               <div className="pt-4 max-w-[412px]">
-                <TextField label="Email" placeholder="Example1234@gmail.com"/>
+                <TextField
+                  label="Email"
+                  placeholder="Example1234@gmail.com"
+                  type="email"
+                  error={!isEmailValid}
+                  email={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    // @ts-ignore
+                    setEmailValid(validateEmail(e.target.value))
+                  }}
+                />
                 <div className="pt-10">
                   <Button
+                    onClick={() => setChangePasswordModalVisible(true)}
+                    disabled={!isEmailValid}
                     className="max-w-[191px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
                     label="Change Password"
                     variant="contained"
@@ -43,6 +62,15 @@ export default function Account() {
           </div>
         </div>
       </div>
+      <ChangePasswordModal
+        type="Change Password"
+        setAuthModal={setChangePasswordModalVisible}
+        showAuthModal={changePasswordModalVisible}
+        setType={undefined}
+        description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span>, please enter the code below to reset your password</>}
+        password={password}
+        setPassword={setPassword}
+      />
     </div>
   )
 }

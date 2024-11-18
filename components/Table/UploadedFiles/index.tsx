@@ -37,7 +37,7 @@ export default function UploadedFilesTable({data, search}) {
               }}
             >
               <TableCell width={172} height={92} sx={{border: "none"}} component="th" scope="row">
-                <Image src={row.icon} alt="icon"/>
+                <Image className="rounded-md" src={row.icon} alt="icon" objectFit="cover" />
               </TableCell>
               <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
                 <Typography label={row.input_id} variant="b3"/>

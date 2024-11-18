@@ -43,15 +43,15 @@ export default function JobStatusTable({data, search}) {
                 <div
                   style={{
                     position: "relative",
-                    width: "100px",
-                    height: "60px",
+                    width: "80px",
+                    height: "47px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <Image src={row.icon} alt="icon" layout="fill" objectFit="cover"/>
+                  <Image className="rounded-md" src={row.icon} alt="icon" layout="fill" objectFit="cover"/>
 
                   <div
                     style={{

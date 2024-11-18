@@ -1,0 +1,40 @@
+import UserActiveSVG from "@/assets/img/icons/user_white.svg";
+import UserInActiveSVG from "@/assets/img/icons/user_black.svg";
+import SubscriptionActiveSVG from "@/assets/img/icons/subscription_white.svg";
+import SubscriptionInActiveSVG from "@/assets/img/icons/subscription_black.svg";
+import Logout from "@/assets/img/icons/logout_white.svg";
+import Image from "next/image";
+import Link from "next/link";
+
+export default function AccountType({active, setActive}) {
+  return (
+    <div className="min-h-full bg-white flex flex-col justify-between pt-8 pb-4 px-4">
+      <div className="flex flex-col gap-2 w-[100%] rounded rounded-lg">
+        <button
+          onClick={() => setActive("email")}
+          className={`flex justify-start pl-4 items-center py-4 max-h-[48px] rounded rounded-lg gap-4 ${active === "email" ? 'bg-[#17abdb]' : ""}`}
+        >
+          <Image src={active === "email" ? UserActiveSVG : UserInActiveSVG} alt="job svg"/>
+          <p
+            className={`font-montserrat font-bold text-sm ${active === "email" ? "#fff" : "text-[#4f4f4f]"}`}>Profile</p>
+        </button>
+        <button
+          onClick={() => setActive("subscription")}
+          className={`flex justify-start pl-4 items-center py-4 max-h-[48px] rounded rounded-lg gap-4 ${active === "subscription" ? 'bg-[#17abdb]' : ""}`}
+        >
+          <Image src={active === "subscription" ? SubscriptionActiveSVG : SubscriptionInActiveSVG} alt="upload svg"/>
+          <p
+            className={`font-montserrat font-bold text-sm ${active === "subscription" ? "#fff" : "text-[#4f4f4f]"}`}>Subscription</p>
+        </button>
+      </div>
+      <Link
+        href="/home"
+        className={`flex justify-start pl-4 items-center py-4 max-h-[48px] rounded rounded-lg gap-4 bg-[#4f4f4f]`}
+      >
+        <Image src={Logout} alt="log out"/>
+        <p
+          className={`font-montserrat font-bold text-sm text-white`}>Log out</p>
+      </Link>
+    </div>
+  )
+}

@@ -2,11 +2,11 @@ import Typography from "@/components/Typography";
 import Check from "@/assets/img/check.svg"
 import Image from "next/image";
 
-export default function BenefitCard({label}) {
+export default function BenefitCard({label, variant}) {
   return (
-    <div className="flex items-center gap-2 py-1">
+    <div className={"flex items-center gap-2 py-1"}>
       <Image src={Check} alt="check"/>
-      <Typography variant="b4" label={label}/>
+      <Typography variant={variant === "md" ? "b2": "b4"} className="font-lato" label={label}/>
     </div>
   )
 }

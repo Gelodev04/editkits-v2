@@ -13,7 +13,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
     <div className={montserrat.className}>
       <div className="border border-b-1">
-        <Header/>
+        <Header />
       </div>
       <div className="min-h-[100vh]">
         {children}

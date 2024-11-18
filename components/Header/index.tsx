@@ -16,7 +16,7 @@ export default function Header() {
   const [type, setType] = useState("");
   const [showAuthModal, setAuthModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   function onSignup() {
     setAuthModal(true);
@@ -47,7 +47,7 @@ export default function Header() {
         </Link>
       </div>
       <div className="flex space-x-6 justify-center items-center">
-        {router.pathname === "/dashboard" ? (
+        {router.pathname === "/dashboard" || router.pathname === '/account' ? (
           <div className="w-[160px] relative inline-block">
             <Button
               onClick={() => setIsOpen(!isOpen)}
@@ -62,9 +62,9 @@ export default function Header() {
                 className="absolute right-0 w-full mt-2 bg-white rounded-lg shadow-lg p-4 flex flex-col gap-y-4 items-start"
                 onMouseLeave={() => setIsOpen(false)}
               >
-                <Button fontWeight="font-normal" font="font-inter" variant="primary" label="Profile" leftIcon={User}/>
-                <Button fontWeight="font-normal" font="font-inter" variant="primary" label="Subscription" leftIcon={Subscription}/>
-                <Button fontWeight="font-normal" font="font-inter" variant="primary" label="Log Out" leftIcon={Logout}/>
+                <Button onClick={() => router.push('account')} fontWeight="font-normal" font="font-inter" variant="primary" label="Profile" leftIcon={User}/>
+                <Button onClick={() => router.push('account')} fontWeight="font-normal" font="font-inter" variant="primary" label="Subscription" leftIcon={Subscription}/>
+                <Button onClick={() => router.push('home')} fontWeight="font-normal" font="font-inter" variant="primary" label="Log Out" leftIcon={Logout}/>
               </div>
             )}
           </div>

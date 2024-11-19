@@ -25,12 +25,37 @@ const style = {
 };
 
 export default function UploadFileModal(props: UploadModalProps) {
+  const fileInputRef = React.useRef(null);
+
+  const handleDivClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.type.startsWith("video/")) {
+        props.setFile(file);
+        props.setUploadModal(false)
+      } else {
+        alert("Please upload a valid video file.");
+      }
+    }
+  };
 
   return (
     <Modal open={props.uploadModal} onClose={() => props.setUploadModal(false)}>
+
       <Fade in={props.uploadModal}>
         {/*@ts-ignore*/}
         <div style={style}>
+          <input
+            type="file"
+            style={{display: "none"}}
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="video/"
+          />
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -41,7 +66,10 @@ export default function UploadFileModal(props: UploadModalProps) {
                 </div>
                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <Typography label="Choose file" center variant="h3"/>
-                  <div className="border border-dashed border-1 border-[#17abdb] rounded rounded-md p-6 mt-4">
+                  <div
+                    onClick={handleDivClick}
+                    className="border border-dashed border-1 border-[#17abdb] rounded rounded-md p-6 mt-4 cursor-pointer"
+                  >
                     <div className="flex justify-center">
                       <Image src={Upload}/>
                     </div>
@@ -62,8 +90,8 @@ export default function UploadFileModal(props: UploadModalProps) {
                     <TextField label="File ID" placeholder="Add file ID"/>
                   </div>
                   <div className="flex gap-4 pt-10 pb-2">
-                    <Button onClick={() => props.setUploadModal(false)} label="Cancel" variant="contained" border />
-                    <Button onClick={() => props.setUploadModal(false)} label="Proceed" variant="secondary" filled  />
+                    <Button onClick={() => props.setUploadModal(false)} label="Cancel" variant="contained" border/>
+                    <Button onClick={() => props.setUploadModal(false)} label="Proceed" variant="secondary" filled/>
                   </div>
                 </div>
               </div>

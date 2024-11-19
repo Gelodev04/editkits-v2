@@ -34,7 +34,7 @@ function TypographyStyle(props: TypographyProps) {
     case "body":
       return `text-md text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-light"}`
     case "bb1":
-      return `text-xl font-lato font-bold text-[#0b0d0e]`;
+      return `${props.className} text-xl font-lato font-bold text-[#0b0d0e]`;
     case "bb1s":
       return `text-lg font-lato font-semibold text-[#2c2c2c]`;
     case "b3":
@@ -47,6 +47,8 @@ function TypographyStyle(props: TypographyProps) {
       return `text-sm text-sky-500 ${props.center && "text-center"} font-lato font-normal underline  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "b4":
       return `text-xs text-[#2c2c2c] font-lato ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-normal"}`
+    case "bb4":
+      return `text-xs text-[#2c2c2c] font-lato ${props.center && "text-center"} font-bold`
     case "p":
       return `text-sm  text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-normal"}`;
     case "l1b":

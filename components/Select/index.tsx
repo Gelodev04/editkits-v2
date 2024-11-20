@@ -1,6 +1,6 @@
 import React from "react";
 
-import {FormControl, InputLabel, MenuItem, Select as Dropdown} from "@mui/material";
+import {FormControl, MenuItem, Select as Dropdown} from "@mui/material";
 
 import Typography from "@/components/Typography";
 
@@ -23,13 +23,13 @@ export default function Select(props: SelectProps) {
       <Typography label={props.label} variant={props.variant === "t2" ? "bb4" : "b3"} />
       <div className="pt-2">
         <FormControl className={`w-full ${props.disabled && "bg-[#E0E0E0A6]"} rounded-lg`}>
-          <InputLabel className="font-bold text-xs text-[#a0aec0] font-lato">{props.placeholder}</InputLabel>
           <Dropdown
             placeholder={props.placeholder}
             disabled={props.disabled}
             value={props.value}
             onChange={props.setValue}
             displayEmpty
+            renderValue={value => value?.length ? Array.isArray(value) ? value.join(', ') : value : props.placeholder}
             className={`max-h-10 border ${!props.disabled && "border-1 border-[#e0e0e0]"}`}
             sx={{
               boxShadow: "none",

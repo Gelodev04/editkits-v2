@@ -34,7 +34,7 @@ export default function Header() {
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
       </Link>
       <div className="flex space-x-6 justify-center items-center">
-        {(router.pathname === "/dashboard" || router.pathname === "/account") && (
+        {(router.pathname === "/dashboard" || router.pathname === "/account" || router.pathname === "/resize" || router.pathname === "/account" || router.pathname === "/trim") && (
           <Link href="/dashboard">
             <Button bold={router.pathname === "/dashboard"} label="Dashboard" variant="primary"/>
           </Link>

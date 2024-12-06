@@ -98,8 +98,8 @@ export default function UploadFileModal(props: UploadModalProps) {
                   </div>
                   <TextField label="File ID" placeholder="Add file ID" height={42} borderRadius={8}/>
                   <div className="flex gap-4 pt-10 pb-2">
-                    <Button onClick={() => props.setUploadModal(false)} label="Cancel" variant="contained" border/>
-                    <Button onClick={() => props.setUploadModal(false)} label="Proceed" variant="secondary" filled/>
+                    <Button onClick={() => props.setUploadModal(false)} label="Cancel" variant="contained" border className="h-[48px]"/>
+                    <Button onClick={() => props.setUploadModal(false)} label="Proceed" variant="secondary" filled className="h-[48px]"/>
                   </div>
                 </div>
               </div>

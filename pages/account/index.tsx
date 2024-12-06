@@ -51,7 +51,6 @@ export default function Account() {
                 <div className="pt-10">
                   <Button
                     onClick={() => setChangePasswordModalVisible(true)}
-                    disabled={!isEmailValid}
                     className="max-w-[191px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
                     label="Change Password"
                     variant="contained"

@@ -45,6 +45,8 @@ export default function Account() {
                     // @ts-ignore
                     setEmailValid(validateEmail(e.target.value))
                   }}
+                  disabled
+                  bgColor="#fff"
                 />
                 <div className="pt-10">
                   <Button

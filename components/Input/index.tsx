@@ -11,6 +11,7 @@ type InputProps = {
   variant?: string;
   height?: number;
   borderRadius?: number;
+  bgColor?: string;
 }
 
 export default function Input(props: InputProps) {
@@ -22,7 +23,7 @@ export default function Input(props: InputProps) {
       placeholder={props.placeholder}
       type={props.type || "text"}
       onChange={props.onChange}
-      style={{height: props.height, borderRadius: props.borderRadius}}
+      style={{height: props.height, borderRadius: props.borderRadius, backgroundColor: props.bgColor}}
     />
   )
 }

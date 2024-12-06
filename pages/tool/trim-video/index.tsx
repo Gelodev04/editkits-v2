@@ -11,7 +11,7 @@ import Select from "@/components/Select";
 
 import RetryIcon from '@/assets/img/icons/retry.svg'
 
-export default function Trim() {
+export default function TrimVideo() {
   const [uploadFileModal, setUploadFileModal] = React.useState(false);
   const [file, setFile] = React.useState(null);
 

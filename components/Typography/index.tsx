@@ -10,6 +10,8 @@ type TypographyProps = {
   status?: string;
   label?: string | React.ReactNode;
   onClick?: () => void;
+  color?: string;
+  underline?: boolean;
 }
 
 function TypographyStyle(props: TypographyProps) {
@@ -24,7 +26,7 @@ function TypographyStyle(props: TypographyProps) {
     case "h4":
       return `text-base font-normal text-[#4f4f4f] ${props.center && "text-center"}`;
     case "hb4":
-      return `text-base font-bold text-[#333333] ${props.center && "text-center"}`;
+      return `text-base font-bold font-lato text-[#333333] ${props.center && "text-center"}`;
     case "h5":
       return `text-xl font-black text-[#2c2c2c] ${props.center && "text-center"}`;
     case "h6":
@@ -64,6 +66,7 @@ function TypographyStyle(props: TypographyProps) {
 export default function Typography(props: TypographyProps) {
   return (
     <p
+      style={{color: props.color, textDecoration: props.underline && "underline"}}
       onClick={props.onClick}
       className={TypographyStyle(props)}
     >

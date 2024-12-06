@@ -12,7 +12,7 @@ import Select from "@/components/Select";
 import RetryIcon from '@/assets/img/icons/retry.svg'
 import ColorPicker from "@/components/ColorPicker";
 
-export default function Resize() {
+export default function ResizeVideo() {
   const [uploadFileModal, setUploadFileModal] = React.useState(false);
   const [file, setFile] = React.useState(null);
 

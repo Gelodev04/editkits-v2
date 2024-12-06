@@ -14,17 +14,19 @@ type TextFieldProps = {
   code?: string;
   disabled?: boolean;
   variant?: string;
+  height?: string;
+  borderRadius?: string;
 }
 
 export default function TextField(props: TextFieldProps) {
   return (
     <>
-      <Typography label={props.label} variant={props.variant === "t2" ? "bb4" : "b3"} />
+      <Typography label={props.label} variant={props.variant === "t2" ? "bb4" : "b4"} />
       <div className="pt-2">
         {props.type === "password" ? (
           <PasswordInput password={props.password} error={props.error} onChange={props.onChange} placeholder={props.placeholder}/>
         ) : (
-          <Input disabled={props.disabled} variant={props.variant} code={props.code} email={props.email} error={props.error} type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
+          <Input height={props.height} disabled={props.disabled} variant={props.variant} code={props.code} email={props.email} error={props.error} type={props.type} onChange={props.onChange} placeholder={props.placeholder} borderRadius={props.borderRadius}/>
         )}
       </div>
     </>

@@ -83,11 +83,11 @@ export default function ResizeVideo() {
         />
       </div>
       <div className="flex justify-between gap-6 pt-8">
-        <div className="w-[324px]">
+        <div className="w-[360px]">
           <Select
             placeholder="Instagram, 9:16, 1080x1920"
             variant="t2"
-            label="Preset Properties"
+            label="Preset Options"
             options={[
               {label: "Instagram, 9:16, 1080x1920", value: "Instagram, 9:16, 1080x1920"},
               {label: "Tiktok, 9:16, 1080x1920", value: "Instagram, 9:16, 1080x1920"},
@@ -104,7 +104,7 @@ export default function ResizeVideo() {
         </div>
       </div>
       <div className="flex justify-between gap-6 py-4">
-        <div className="w-[324px]">
+        <div className="w-[360px]">
           <Select
             placeholder="16:9"
             variant="t2"

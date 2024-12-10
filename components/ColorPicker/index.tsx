@@ -5,44 +5,32 @@ import Typography from "@/components/Typography";
 import ColorSVG from "@/assets/img/icons/color.svg";
 
 const ColorPicker = (props) => {
-  const [color, setColor] = useState("#000000");
-
-  const handleColorChange = (e) => {
-    setColor(e.target.value);
-  };
-
   return (
-    <div className=" gap-4">
+    <div className="gap-4">
       <Typography label="Background" variant="bb4" />
       <div className="pt-2 flex justify-between gap-1">
         <input
-          value={color}
+          value={props.color}
           disabled={props.disabled}
-          //@ts-ignore
-          className={`w-[280px] max-h-10 border border-solid border-2 ${
-            (props?.error && props?.email?.length > 0) ||
-            (props.error && props?.code?.length > 0)
-              ? "border-red-300"
-              : "border-slate-200"
-          } p-3 rounded-md outline-none text-[#2c2c2c] ${
-            props.disabled && "bg-[#E0E0E0A6] "
-          } ${props.variant === "t2" && "max-h-10 font-lato font-bold text-xs "}`}
+          className={`w-[280px] font-bold text-xs font-lato max-h-10 border-2 p-3 rounded-md outline-none ${
+            props.isColorValid ? "border-slate-200" : "border-red-300"
+          } ${props.disabled ? "bg-[#E0E0E0A6] text-[#A0AEC0]" : "text-[#4f4f4f]"}`}
           placeholder={props.placeholder}
           type="text"
-          onChange={handleColorChange}
+          onChange={props.handleColorChange}
         />
 
         <div className="flex gap-1 items-center">
           <div
             className="w-[40px] h-[40px] rounded-full border"
-            style={{ backgroundColor: color }}
+            style={{ backgroundColor: props.color }}
           />
 
           <label className="relative cursor-pointer">
             <input
               type="color"
-              value={color}
-              onChange={handleColorChange}
+              value={props.color}
+              onChange={props.handleColorChange}
               className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
               disabled={props.disabled}
             />

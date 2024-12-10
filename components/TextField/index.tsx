@@ -17,6 +17,7 @@ type TextFieldProps = {
   height?: string;
   borderRadius?: string;
   bgColor?: string;
+  value?: string | number;
 }
 
 export default function TextField(props: TextFieldProps) {
@@ -39,6 +40,7 @@ export default function TextField(props: TextFieldProps) {
             onChange={props.onChange}
             placeholder={props.placeholder}
             borderRadius={props.borderRadius}
+            value={props.value}
           />
         )}
       </div>

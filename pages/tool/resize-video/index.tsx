@@ -11,10 +11,36 @@ import Select from "@/components/Select";
 
 import RetryIcon from '@/assets/img/icons/retry.svg'
 import ColorPicker from "@/components/ColorPicker";
+import {useEffect} from "react";
+import {aspectRatio, outputQuality, presets, videoType} from "@/lib/constants";
 
 export default function ResizeVideo() {
   const [uploadFileModal, setUploadFileModal] = React.useState(false);
   const [file, setFile] = React.useState(null);
+  const [color, setColor] = React.useState("#000000");
+  const [isColorValid, setIsColorValid] = React.useState(true);
+  const [width, setWidth] = React.useState(undefined);
+  const [height, setHeight] = React.useState(undefined);
+  const [aspectX, setAspectX] = React.useState(1);
+  const [aspectY, setAspectY] = React.useState(1);
+  const [activeInput, setActiveInput] = React.useState("");
+  const [isCustom, setIsCustom] = React.useState(true)
+
+  useEffect(() => {
+    if (!isCustom) {
+      if (activeInput === "width" && width > 0) {
+        setHeight(Math.floor(width * (aspectY / aspectX)));
+      } else if (activeInput === "height" && height > 0) {
+        setWidth(Math.floor(height * (aspectX / aspectY)));
+      }
+    }
+  }, [width, height, aspectX, aspectY, activeInput, isCustom]);
+
+  const handleColorChange = (e) => {
+    const newColor = e.target.value;
+    setColor(newColor);
+    setIsColorValid(/^#[0-9A-Fa-f]{6}$/.test(newColor));
+  };
 
   const props = [
     {name: "Duration", value: "122 Seconds"},
@@ -45,7 +71,7 @@ export default function ResizeVideo() {
       <div className="pt-4">
         {file && (
           <div className="mt-4 grid grid-cols-12">
-            <video controls width="80" className="col-span-1 min-w-[80px]">
+            <video className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
               <source src={URL.createObjectURL(file)} type="video/mp4"/>
               Your browser does not support the video tag.
             </video>
@@ -85,14 +111,15 @@ export default function ResizeVideo() {
       <div className="flex justify-between gap-6 pt-8">
         <div className="w-[360px]">
           <Select
-            placeholder="Instagram, 9:16, 1080x1920"
+            onChange={(e) => {
+              const w = Number(e.target.value?.split(",")[2]?.split("x")[0]);
+              const h = Number(e.target.value?.split(",")[2]?.split("x")[1]);
+              setWidth(w);
+              setHeight(h)
+            }}
             variant="t2"
             label="Preset Options"
-            options={[
-              {label: "Instagram, 9:16, 1080x1920", value: "Instagram, 9:16, 1080x1920"},
-              {label: "Tiktok, 9:16, 1080x1920", value: "Instagram, 9:16, 1080x1920"},
-              {label: "Facebook, 9:16, 1080x1920", value: "Instagram, 9:16, 1080x1920"}
-            ]}
+            options={presets}
             disabled={!file}
           />
         </div>
@@ -106,20 +133,22 @@ export default function ResizeVideo() {
       <div className="flex justify-between gap-6 py-4">
         <div className="w-[360px]">
           <Select
-            placeholder="16:9"
             variant="t2"
             label="Aspect Ratio"
-            options={[
-              {label: "16:9 (Widescreen)", value: "16:9"},
-              {label: "4:3 (Standard)", value: "4:3"},
-              {label: "21:9 (Ultrawide)", value: "21:9"},
-              {label: "1:1 (Square)", value: "1:1"},
-              {label: "3:2", value: "3:2"},
-              {label: "5:4", value: "5:4"},
-              {label: "16:10", value: "16:10"},
-              {label: "32:9 (Super Ultrawide)", value: "32:9"},
-              {label: "9:16 (Portrait)", value: "9:16"},
-            ]}
+            onChange={(e) => {
+              const field = e.target.value;
+              if (field !== "Custom") {
+                setIsCustom(false)
+                const aspect = field.split(":")
+                const x = aspect[0];
+                const y = aspect[1];
+                setAspectX(Number(x))
+                setAspectY(Number(y));
+              } else {
+                setIsCustom(true)
+              }
+            }}
+            options={aspectRatio}
             disabled={!file}
           />
         </div>
@@ -128,35 +157,50 @@ export default function ResizeVideo() {
       <div className="flex justify-between gap-6">
         <div className="w-full">
           <TextField
+            type="number"
             disabled={!file}
             placeholder="1920"
             variant="t2"
             label="Width"
+            value={width}
+            onChange={(e) => {
+              setActiveInput("width")
+              setWidth(e.target.value)
+            }}
           />
         </div>
         <div className="w-full">
           <TextField
+            type="number"
             disabled={!file}
             placeholder="1080"
             variant="t2"
             label="Height"
-          />
+            value={height}
+            onChange={(e) => {
+              setActiveInput("height")
+              setHeight(e.target.value)
+            }}/>
         </div>
       </div>
       <div className="flex justify-between gap-6 py-8">
         <div className="w-full">
-        <ColorPicker disabled={!file} />
+          <ColorPicker
+            disabled={!file}
+            isColorValid={isColorValid}
+            setIsColorValid={setIsColorValid}
+            color={color}
+            handleColorChange={handleColorChange}
+            placeholder="#000000"
+          />
         </div>
         <div className="w-full">
           <Select
-            placeholder="Fit"
             variant="t2"
             label="Stretch Strategy"
             options={[
-              {label: "Fit", value: "fit"},
-              {label: "Fill", value: "fill"},
-              {label: "Original", value: "original"},
-              {label: "Stretch", value: "stretch"},
+              {label: "Fit", value: "Fit"},
+              {label: "Fill", value: "Fill"}
             ]}
             disabled={!file}
           />
@@ -173,27 +217,17 @@ export default function ResizeVideo() {
       <div className="flex justify-between gap-6 py-8">
         <div className="w-full">
           <Select
-            placeholder="Medium"
             variant="t2"
             label="Output Quality"
-            options={[
-              {label: "Low", value: "low"},
-              {label: "Medium", value: "medium"},
-              {label: "High", value: "high"}
-            ]}
+            options={outputQuality}
             disabled={!file}
           />
         </div>
         <div className="w-full">
           <Select
-            placeholder="Mp4"
             variant="t2"
             label="Video Container"
-            options={[
-              {label: "Mp4", value: "mp4"},
-              {label: "Mov", value: "mov"},
-              {label: "AVI", value: "avi"}
-            ]}
+            options={videoType}
             disabled={!file}
           />
         </div>
@@ -201,14 +235,16 @@ export default function ResizeVideo() {
       <div className="flex justify-between gap-6">
         <div className="w-full">
           <TextField
+            type="number"
             disabled={!file}
             placeholder="30"
             variant="t2"
-            label="Frame rate"
+            label="Framerate"
           />
         </div>
         <div className="w-full">
           <TextField
+            type="number"
             disabled={!file}
             placeholder="480000"
             variant="t2"
@@ -217,7 +253,7 @@ export default function ResizeVideo() {
         </div>
       </div>
       <div className="max-w-[171px] mx-auto py-16">
-        <Button label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>}/>
+        <Button disabled={!isColorValid} label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>}/>
       </div>
       <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file} setFile={setFile}/>
     </div>

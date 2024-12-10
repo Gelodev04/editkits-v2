@@ -15,6 +15,7 @@ type SelectProps = {
   options: any;
   disabled?: boolean;
   variant?: string;
+  default?: string;
 }
 
 export default function Select(props: SelectProps) {
@@ -24,13 +25,13 @@ export default function Select(props: SelectProps) {
       <div className="pt-2">
         <FormControl className={`w-full ${props.disabled && "bg-[#E0E0E0A6]"} rounded-lg`}>
           <Dropdown
-            placeholder={props.placeholder}
+            defaultValue={props.options[0].value}
             disabled={props.disabled}
             value={props.value}
-            onChange={props.setValue}
+            onChange={props.onChange}
             displayEmpty
             renderValue={value => value?.length ? Array.isArray(value) ? value.join(', ') : value : props.placeholder}
-            className={`max-h-10 border ${!props.disabled && "border-1 border-[#e0e0e0]"}`}
+            className={`max-h-10 text-[#4f4f4f] border font-lato font-bold ${!props.disabled && "border-1 border-[#e0e0e0]"}`}
             sx={{
               boxShadow: "none",
               ".MuiOutlinedInput-notchedOutline": { border: 0 },
@@ -42,11 +43,14 @@ export default function Select(props: SelectProps) {
                 {
                   border: 0,
                 },
+              fontSize: 12
             }}
           >
             {
               props.options.map((opt) => (
-                <MenuItem value={opt.value}>{opt.label}</MenuItem>
+                <MenuItem className="font-xl font-bold text-[#4f4f4f] text-xs font-lato" value={opt.value}>
+                  {opt.label}
+                </MenuItem>
               ))
             }
           </Dropdown>

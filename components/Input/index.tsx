@@ -12,6 +12,7 @@ type InputProps = {
   height?: number;
   borderRadius?: number;
   bgColor?: string;
+  value: number | string;
 }
 
 export default function Input(props: InputProps) {
@@ -24,6 +25,7 @@ export default function Input(props: InputProps) {
       type={props.type || "text"}
       onChange={props.onChange}
       style={{height: props.height, borderRadius: props.borderRadius, backgroundColor: props.bgColor}}
+      value={props.value ?? ""}
     />
   )
 }

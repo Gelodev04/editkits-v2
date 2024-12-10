@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, {useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
@@ -26,6 +26,7 @@ const style = {
 
 export default function UploadFileModal(props: UploadModalProps) {
   const fileInputRef = React.useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleDivClick = () => {
     fileInputRef.current.click();
@@ -41,6 +42,28 @@ export default function UploadFileModal(props: UploadModalProps) {
         alert("Please upload a valid video file.");
       }
     }
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+
+    const file = event.dataTransfer.files[0];
+    if (file && file.type.startsWith("video/")) {
+      props.setFile(file);
+      props.setUploadModal(false);
+    } else {
+      alert("Please upload a valid video file.");
+    }
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
   };
 
   return (
@@ -66,7 +89,10 @@ export default function UploadFileModal(props: UploadModalProps) {
                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <Typography label="Choose file" center variant="h3"/>
                   <div
-                    className="h-[202px] border border-dashed border-1 border-[#17abdb] rounded rounded-md p-6 mt-4"
+                    className={`h-[202px] border border-dashed border-1 border-[#17abdb] rounded rounded-md p-6 mt-4 ${isDragging ? "bg-blue-100 border-blue-500" : "border-[#17abdb]"}`}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    onDragLeave={handleDragLeave}
                   >
                     <div className="flex justify-center">
                       <Image src={Upload}/>

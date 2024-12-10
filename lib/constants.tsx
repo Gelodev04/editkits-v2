@@ -1091,3 +1091,37 @@ export const uploadedFilesColumns = [
     name: ""
   }]
 
+
+export const aspectRatio = [
+  {label: "Custom", value: "Custom"},
+  {label: "16:9 (Widescreen)", value: "16:9"},
+  {label: "4:3 (Standard)", value: "4:3"},
+  {label: "21:9 (Ultrawide)", value: "21:9"},
+  {label: "1:1 (Square)", value: "1:1"},
+  {label: "3:2", value: "3:2"},
+  {label: "5:4", value: "5:4"},
+  {label: "16:10", value: "16:10"},
+  {label: "32:9 (Super Ultrawide)", value: "32:9"},
+  {label: "9:16 (Portrait)", value: "9:16"},
+]
+
+export const outputQuality = [
+  {label: "Low", value: "Low"},
+  {label: "Medium", value: "Medium"},
+  {label: "High", value: "High"}
+]
+
+export const videoType = [
+  {label: "Mp4", value: "Mp4"},
+  {label: "Mov", value: "Mov"},
+  {label: "Avi", value: "Avi"}
+]
+
+export const presets = [
+  { label: "None", value: "None" },
+  { label: "Facebook, 9:16, 1080x1920", value: "Facebook, 9:16, 1080x1920" },
+  { label: "Instagram, 9:16, 1080x1920", value: "Instagram, 9:16, 1080x1920" },
+  { label: "Instagram Feed, 4:5, 1080x1350", value: "Instagram Feed, 4:5, 1080x1350" },
+  { label: "Instagram Feed, 1:1, 1080x1080", value: "Instagram Feed, 1:1, 1080x1080" },
+  { label: "Tiktok, 9:16, 1080x1920", value: "Tiktok, 9:16, 1080x1920" },
+]

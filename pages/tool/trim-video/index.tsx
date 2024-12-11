@@ -10,10 +10,16 @@ import TextField from "@/components/TextField";
 import Select from "@/components/Select";
 
 import RetryIcon from '@/assets/img/icons/retry.svg'
+import {outputQuality, videoType} from "@/lib/constants";
 
 export default function TrimVideo() {
   const [uploadFileModal, setUploadFileModal] = React.useState(false);
   const [file, setFile] = React.useState(null);
+  const [startTime, setStartTime] = React.useState(null);
+  const [endTime, setEndTime] = React.useState(null);
+  const [frameRate, setFramerate] = React.useState(null);
+  const [audioSampleRate, setAudioSampleRate] = React.useState(null);
+
 
   const props = [
     {name: "Duration", value: "122 Seconds"},
@@ -86,6 +92,9 @@ export default function TrimVideo() {
       <div className="flex justify-between gap-6 py-8">
         <div className="w-full">
           <TextField
+            type="number"
+            value={startTime}
+            onChange={(e) => setStartTime((e.target.value))}
             disabled={!file}
             placeholder="0 second"
             variant="t2"
@@ -95,9 +104,12 @@ export default function TrimVideo() {
         <div className="w-full">
           <TextField
             disabled={!file}
+            type="number"
             placeholder="1000 seconds"
             variant="t2"
             label="End time"
+            value={endTime}
+            onChange={(e) => setEndTime((e.target.value))}
           />
         </div>
       </div>
@@ -115,11 +127,7 @@ export default function TrimVideo() {
             placeholder="Medium"
             variant="t2"
             label="Output Quality"
-            options={[
-              {label: "Low", value: "low"},
-              {label: "Medium", value: "medium"},
-              {label: "High", value: "high"}
-            ]}
+            options={outputQuality}
             disabled={!file}
           />
         </div>
@@ -128,11 +136,7 @@ export default function TrimVideo() {
             placeholder="Mp4"
             variant="t2"
             label="Video Container"
-            options={[
-              {label: "Mp4", value: "mp4"},
-              {label: "Mov", value: "mov"},
-              {label: "AVI", value: "avi"}
-            ]}
+            options={videoType}
             disabled={!file}
           />
         </div>
@@ -143,7 +147,10 @@ export default function TrimVideo() {
             disabled={!file}
             placeholder="30"
             variant="t2"
-            label="Output Quality"
+            label="Framerate"
+            type="number"
+            value={frameRate}
+            onChange={(e) => setFramerate((e.target.value))}
           />
         </div>
         <div className="w-full">
@@ -151,12 +158,15 @@ export default function TrimVideo() {
             disabled={!file}
             placeholder="480000"
             variant="t2"
-            label="Video Container"
+            label="Audio Sample Rate"
+            type="number"
+            value={audioSampleRate}
+            onChange={(e) => setAudioSampleRate((e.target.value))}
           />
         </div>
       </div>
       <div className="max-w-[171px] mx-auto py-16">
-        <Button label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>}/>
+        <Button disabled={!file} label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>}/>
       </div>
       <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file} setFile={setFile}/>
     </div>

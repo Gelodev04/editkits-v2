@@ -24,7 +24,8 @@ export default function ResizeVideo() {
   const [aspectX, setAspectX] = React.useState(1);
   const [aspectY, setAspectY] = React.useState(1);
   const [activeInput, setActiveInput] = React.useState("");
-  const [isCustom, setIsCustom] = React.useState(true)
+  const [isCustom, setIsCustom] = React.useState(true);
+  const videoRef = React.useRef(null);
 
   useEffect(() => {
     if (!isCustom) {
@@ -71,7 +72,7 @@ export default function ResizeVideo() {
       <div className="pt-4">
         {file && (
           <div className="mt-4 grid grid-cols-12">
-            <video className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
+            <video ref={videoRef} className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
               <source src={URL.createObjectURL(file)} type="video/mp4"/>
               Your browser does not support the video tag.
             </video>
@@ -112,10 +113,13 @@ export default function ResizeVideo() {
         <div className="w-[360px]">
           <Select
             onChange={(e) => {
-              const w = Number(e.target.value?.split(",")[2]?.split("x")[0]);
-              const h = Number(e.target.value?.split(",")[2]?.split("x")[1]);
-              setWidth(w);
-              setHeight(h)
+              const [presetName, , resolution] = e.target.value?.split(",") || [];
+              const [presetWidth, presetHeight] = resolution.split("x").map(Number);
+
+              setWidth(presetWidth);
+              setHeight(presetHeight);
+              setIsCustom(false);
+              setActiveInput("");
             }}
             variant="t2"
             label="Preset Options"
@@ -162,7 +166,7 @@ export default function ResizeVideo() {
             placeholder="1920"
             variant="t2"
             label="Width"
-            value={width}
+            value={isCustom ? width : width * aspectX}
             onChange={(e) => {
               setActiveInput("width")
               setWidth(e.target.value)
@@ -176,7 +180,7 @@ export default function ResizeVideo() {
             placeholder="1080"
             variant="t2"
             label="Height"
-            value={height}
+            value={isCustom ? height : height * aspectY}
             onChange={(e) => {
               setActiveInput("height")
               setHeight(e.target.value)
@@ -255,7 +259,7 @@ export default function ResizeVideo() {
       <div className="max-w-[171px] mx-auto py-16">
         <Button disabled={!isColorValid || !file} label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>}/>
       </div>
-      <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file} setFile={setFile}/>
+      <UploadFileModal videoRef={videoRef} uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file} setFile={setFile}/>
     </div>
   )
 }

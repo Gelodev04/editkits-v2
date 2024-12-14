@@ -11,6 +11,7 @@ import Select from "@/components/Select";
 
 import RetryIcon from '@/assets/img/icons/retry.svg'
 import {outputQuality, videoType} from "@/lib/constants";
+import PlayIcon from "@/assets/img/icons/play.png";
 
 export default function TrimVideo() {
   const [uploadFileModal, setUploadFileModal] = React.useState(false);
@@ -19,6 +20,7 @@ export default function TrimVideo() {
   const [endTime, setEndTime] = React.useState(null);
   const [frameRate, setFramerate] = React.useState(null);
   const [audioSampleRate, setAudioSampleRate] = React.useState(null);
+  const videoRef = React.useRef(null)
 
 
   const props = [
@@ -50,10 +52,13 @@ export default function TrimVideo() {
       <div className="pt-4">
         {file && (
           <div className="mt-4 grid grid-cols-12">
-            <video controls width="80" className="col-span-1 min-w-[80px]">
-              <source src={URL.createObjectURL(file)} type="video/mp4"/>
-              Your browser does not support the video tag.
-            </video>
+            <div className="relative">
+              <video ref={videoRef} className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px] rounded-md">
+                <source src={URL.createObjectURL(file)} type="video/mp4"/>
+                Your browser does not support the video tag.
+              </video>
+              <Image className="absolute inset-0 left-3 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play Icon"/>
+            </div>
             <div className="pl-8 col-span-10">
               <p className="text-base font-lato font-bold text-[#2c2c2c]">{file.name}</p>
               <div className="flex gap-3">
@@ -168,7 +173,7 @@ export default function TrimVideo() {
       <div className="max-w-[171px] mx-auto py-16">
         <Button disabled={!file} label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>} />
       </div>
-      <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file} setFile={setFile}/>
+      <UploadFileModal videoRef={videoRef} uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file} setFile={setFile}/>
     </div>
   )
 }

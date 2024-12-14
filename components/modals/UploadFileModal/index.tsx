@@ -28,6 +28,7 @@ export default function UploadFileModal(props: UploadModalProps) {
   const fileInputRef = React.useRef(null);
   const [isDragging, setIsDragging] = useState(false);
 
+
   const handleDivClick = () => {
     fileInputRef.current.click();
   };
@@ -37,7 +38,10 @@ export default function UploadFileModal(props: UploadModalProps) {
     if (file) {
       if (file.type.startsWith("video/")) {
         props.setFile(file);
-        props.setUploadModal(false)
+        props.setUploadModal(false);
+        if (props.videoRef.current) {
+          props.videoRef.current.load();
+        }
       } else {
         alert("Please upload a valid video file.");
       }
@@ -101,12 +105,21 @@ export default function UploadFileModal(props: UploadModalProps) {
                       <div className="flex justify-center gap-2">
                         <Typography label="Drag & drop files or" variant="hb4" center/>
                         <div className="cursor-pointer">
-                          <Typography label="Browse" variant="hb4" center underline color="#17ABDB"
-                                      onClick={handleDivClick}/>
+                          <Typography
+                            label="Browse"
+                            variant="hb4"
+                            center
+                            underline
+                            color="#17ABDB"
+                            onClick={handleDivClick}
+                          />
                         </div>
                       </div>
-                      <Typography label="Supported formats: JPEG, PNG, GIF, MP4,  AVI, MOV, MKV, WEBM, FLV" variant="b4"
-                                  center color="#676767"/>
+                      <Typography
+                        label="Supported formats: JPEG, PNG, GIF, MP4,  AVI, MOV, MKV, WEBM, FLV"
+                        variant="b4"
+                        center color="#676767"
+                      />
                     </div>
                   </div>
                   <div className="inline-flex items-center justify-center w-full">

@@ -166,7 +166,7 @@ export default function TrimVideo() {
         </div>
       </div>
       <div className="max-w-[171px] mx-auto py-16">
-        <Button disabled={!file} label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>}/>
+        <Button disabled={!file} label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>} />
       </div>
       <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file} setFile={setFile}/>
     </div>

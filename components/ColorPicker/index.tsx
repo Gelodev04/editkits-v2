@@ -7,7 +7,7 @@ import ColorSVG from "@/assets/img/icons/color.svg";
 const ColorPicker = (props) => {
   return (
     <div className="gap-4">
-      <Typography label="Background" variant="bb4" />
+      <Typography label="Background" variant="bb3" />
       <div className="pt-2 flex justify-between gap-1">
         <input
           value={props.color}

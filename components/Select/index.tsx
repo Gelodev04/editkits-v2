@@ -21,7 +21,7 @@ type SelectProps = {
 export default function Select(props: SelectProps) {
   return (
     <>
-      <Typography label={props.label} variant={props.variant === "t2" ? "bb4" : "b3"} />
+      <Typography label={props.label} variant={props.variant === "t2" ? "bb3" : "b3"} />
       <div className="pt-2">
         <FormControl className={`w-full ${props.disabled && "bg-[#E0E0E0A6]"} rounded-lg`}>
           <Dropdown

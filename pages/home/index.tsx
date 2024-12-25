@@ -10,33 +10,40 @@ export default function Home() {
   return (
     <>
       <div className="p-20 bg-neutral-50">
-        <h1 className="text-5xl font-extrabold text-[#2c2c2c] text-center">
+        <h1 className="text-[58px] font-montserrat font-extrabold text-[#2c2c2c] text-center">
           Your <span
           className="text-transparent bg-clip-text bg-gradient-to-r from-[#C938AE] via-[#8467C7] to-[#17ABDB]">All-in-One</span> Media
         </h1>
-        <Typography
-          variant="h1"
-          label="Processing Kit"
-          center
-        />
-        <div className="2xl:px-[37%] xl:px-[26%] lg:px-[20%] py-10">
+        <h1 className="text-[58px] font-montserrat font-extrabold text-[#2c2c2c] text-center">
+          Processing Kit
+        </h1>
+        <div className="2xl:px-[37%] xl:px-[26%] lg:px-[20%]">
           <Typography
             label="Empower your creativity with a suit of powerful but easy to use toolkits for video, image and audio editing"
             center
-            variant="body"
+            variant="b2"
           />
         </div>
         <div className="flex justify-center">
           <div className="flex justify-center w-[30%] md:max-w-[20%] 2xl:w-[9%] xl:w-[16%] lg:w-[16%] ">
-            <Button label="Explore All Tools" variant="secondary" filled width={40}/>
+            <Button
+              label="Explore All Tools"
+              variant="secondary"
+              filled
+              width={178}
+            />
           </div>
         </div>
       </div>
       <div className="bg-white py-4">
         <div className="pb-3">
-          <Typography label="Quick Access" variant="h3" center/>
+          <Typography
+            label="Quick Access"
+            variant="h4"
+            center
+          />
         </div>
-        <Typography label="Video Tools" center/>
+        <Typography variant="b2" label="Video Tools" center/>
         <div className="sm:hidden lg:block place-items-center max-w-[1280px] mx-auto">
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 py-10 gap-x-10 lg:gap-x-4">
             {videoTools.slice(0, 5).map((tool) => (
@@ -60,7 +67,8 @@ export default function Home() {
           </div>
         </div>
         <div className="sm:block lg:hidden place-items-center">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10 py-10 gap-x-10 lg:gap-x-4 max-w-[1280px]">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10 py-10 gap-x-10 lg:gap-x-4 max-w-[1280px]">
             {videoTools.map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -76,8 +84,10 @@ export default function Home() {
             <Button
               label="Show All Video Tools"
               variant="secondary"
-              width={60}
-              rightIcon={<FaChevronRight size={15}/>}
+              width={191}
+              rightIcon={<FaChevronRight size={15}
+              />
+              }
             />
           </div>
         </div>

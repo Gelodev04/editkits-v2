@@ -31,7 +31,7 @@ export default function Account() {
           <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
             <AccountType active={active} setActive={setActive} />
           </div>
-          <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6">
+          <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
             {active === "email" && (
               <div className="pt-4 max-w-[412px]">
                 <TextField
@@ -51,7 +51,7 @@ export default function Account() {
                 <div className="pt-10">
                   <Button
                     onClick={() => setChangePasswordModalVisible(true)}
-                    className="max-w-[191px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
+                    className="max-w-[191px] max-h-[48px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
                     label="Change Password"
                     variant="contained"
                     border
@@ -80,7 +80,7 @@ function Subscription(props) {
   return (
     <div
       className="rounded rounded-2xl border border-solid border-slate-50 grid grid-cols-12 p-8 shadow-lg min-h-[306px]">
-      <div className="col-span-3">
+      <div className="col-span-4">
         <div className="flex justify-between pb-8">
           <Typography label="Free Plan" variant="bb1"/>
           <Tag label="500 credits / month" variant="md"/>
@@ -97,7 +97,7 @@ function Subscription(props) {
         <p className="text-lg text-[#2c2c2c] font-bold font-lato">24th December 2024</p>
       </div>
       <div className="h-full border-r-2 border-dashed border-[#e2e4e9] w-12"/>
-      <div className="col-span-6">
+      <div className="col-span-5">
         <div className="pt-3">
           {props.benefits.map(benefit => <BenefitCard label={benefit} variant="md" />)}
         </div>

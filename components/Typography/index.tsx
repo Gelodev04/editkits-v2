@@ -24,7 +24,7 @@ function TypographyStyle(props: TypographyProps) {
     case "h3":
       return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
     case "h4":
-      return `text-base font-normal text-[#4f4f4f] ${props.center && "text-center"}`;
+      return `font-montserrat font-bold text-2xl text-[#2c2c2c] ${props.center && "text-center"}`;
     case "hb4":
       return `text-base font-bold font-lato text-[#333333] ${props.center && "text-center"}`;
     case "h5":
@@ -37,28 +37,28 @@ function TypographyStyle(props: TypographyProps) {
       return `text-md text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-light"}`
     case "bb1":
       return `${props.className} text-xl font-lato font-bold text-[#0b0d0e]`;
-    case "bb1s":
-      return `text-lg font-lato font-semibold text-[#2c2c2c]`;
+    case "b2":
+      return `font-lato text-base text-[#4f4f4f] font-normal ${props.center && "text-center"}`
     case "b3":
       return `text-sm text-[#2c2c2c] font-lato ${props.center && "text-center"} font-normal ${props.button && "cursor-pointer"}`;
     case "bb3":
-      return `text-sm ${props.link && `text-[#0700CB]`} font-lato text-[#4f4f4f] ${props.center && "text-center"} font-bold ${props.button && "cursor-pointer"}`;
+      return `font-lato font-bold text-sm leading-[21px] text-sm text-[#2c2c2c] ${props.center && "text-center"}`;
     case "bbl3":
       return `text-sm text-sky-500 ${props.center && "text-center"} font-lato font-bold  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "bl3":
       return `text-sm text-sky-500 ${props.center && "text-center"} font-lato font-normal underline  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "b4":
-      return `text-xs text-[#2c2c2c] font-lato ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-normal"}`
+      return `font-lato font-normal text-sm leading-[18px] text-[#4f4f4f]`
     case "bb4":
       return `text-xs text-[#2c2c2c] font-lato ${props.center && "text-center"} font-bold`
     case "p":
       return `text-sm  text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-normal"}`;
-    case "l1b":
-      return `text-base font-bold text-[#2c2c2c] ${props.center && "text-center"}`;
     case "tag":
       return props.status === "Failed" ? "text-[#d80027]" : props.status === "Progress" ? "text-[#ff9407]" : "text-[#0f930f]";
+    case "card-label":
+      return `font-lato font-normal text-sm text-[#262628] ${props.center && "text-center"}`;
     default:
-      return `${props.className}  ${props.bold ? "font-bold" : "font-normal"} ${props.center && "text-center"} text-sm  text-[#2c2c2c]`;
+      return `${props.className} text-sm ${props.center && "text-center"} text-[#2c2c2c]`;
 
   }
 }

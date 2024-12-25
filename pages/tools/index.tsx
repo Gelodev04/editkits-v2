@@ -8,7 +8,7 @@ export default function Tools() {
         <div className="pt-16">
           <Typography
             label="Tools"
-            variant="h2"
+            className="font-montserrat font-extrabold text-[36px] leading-[45px]"
             center
           />
         </div>
@@ -17,7 +17,7 @@ export default function Tools() {
              className="border-solid border-2 border-zinc-100 py-6 rounded rounded-md justify-center mt-12 flex flex-col items-center max-w-[1280px] mx-auto">
           <Typography
             label="Video Tools"
-            variant="h4"
+            className="text-[2em] font-lato font-bold  leading-[48px] text-[#4f4f4f]"
             center
           />
           <ToolsList tools/>

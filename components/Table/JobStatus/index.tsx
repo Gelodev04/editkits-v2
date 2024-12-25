@@ -66,7 +66,7 @@ export default function JobStatusTable({data, search}) {
                 </div>
               </TableCell>
               <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
-              <Typography label={row.input_id} variant="b3"/>
+              <Typography label={row.input_id} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
               <Image
                 src={CopyIcon}
                 className="cursor-pointer"
@@ -75,19 +75,19 @@ export default function JobStatusTable({data, search}) {
               />
             </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.file_name} variant="b3"/>
+                <Typography label={row.file_name} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]" />
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <Typography label="View Details" variant="bl3" underline/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.credits_used} variant="b3"/>
+                <Typography label={row.credits_used} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <StatusTag status={row.status}/>
               </TableCell>
               <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
-                <Typography label={row.input_id} variant="b3"/>
+                <Typography label={row.input_id} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
                 <Image
                   src={CopyIcon}
                   className="cursor-pointer"
@@ -96,10 +96,16 @@ export default function JobStatusTable({data, search}) {
                 />
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.created_at} variant="b3"/>
+                <Typography label={row.created_at} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="left"><BsThreeDotsVertical color="#4f4f4f"
-                                                                                 cursor="pointer"/></TableCell>
+              <TableCell
+                sx={{border: "none"}}
+                align="left">
+                <BsThreeDotsVertical
+                  color="#4f4f4f"
+                 cursor="pointer"
+                />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

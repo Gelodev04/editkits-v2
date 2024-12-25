@@ -19,7 +19,7 @@ export default function DashboardTable({active, jobStatusPage, uploadedFilesPage
   return (
     <div className="bg-white pt-2">
       <div className="px-2">
-        <TableHeader setSearch={setSearch} setUploadModal={setUploadModal} />
+        <TableHeader setSearch={setSearch} setUploadModal={setUploadModal} active={active} />
       </div>
       {active === "Job status" && <JobStatusTable data={getItemsForPage(tableData, jobStatusPage)} search={search}/>}
       {active === "Uploaded files" && <UploadedFilesTable data={getItemsForPage(uploadedFileTableData, uploadedFilesPage)} search={search}/>}

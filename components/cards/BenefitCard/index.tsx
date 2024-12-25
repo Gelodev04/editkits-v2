@@ -6,7 +6,7 @@ export default function BenefitCard({label, variant}) {
   return (
     <div className={"flex items-center gap-2 py-1"}>
       <Image src={Check} alt="check"/>
-      <Typography variant={variant === "md" ? "b2": "b4"} className="font-lato" label={label}/>
+      <Typography variant="b2" className="font-lato" label={label}/>
     </div>
   )
 }

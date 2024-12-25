@@ -8,11 +8,11 @@ import Link from "next/link";
 
 export default function AccountType({active, setActive}) {
   return (
-    <div className="min-h-full bg-white flex flex-col justify-between pt-8 pb-4 px-4">
-      <div className="flex flex-col gap-2 w-[100%] rounded rounded-lg">
+    <div className="min-h-full bg-white flex flex-col justify-between pt-8 pb-4 px-1">
+      <div className="flex flex-col gap-2 w-[228px] rounded rounded-lg">
         <button
           onClick={() => setActive("email")}
-          className={`flex justify-start pl-4 items-center py-4 max-h-[48px] rounded rounded-lg gap-4 ${active === "email" ? 'bg-[#17abdb]' : ""}`}
+          className={`flex justify-start pl-4 items-center py-4 w-[192px] mx-auto max-h-[48px] rounded rounded-lg gap-4 ${active === "email" ? 'bg-[#17abdb]' : ""}`}
         >
           <Image src={active === "email" ? UserActiveSVG : UserInActiveSVG} alt="job svg"/>
           <p
@@ -20,7 +20,7 @@ export default function AccountType({active, setActive}) {
         </button>
         <button
           onClick={() => setActive("subscription")}
-          className={`flex justify-start pl-4 items-center py-4 max-h-[48px] rounded rounded-lg gap-4 ${active === "subscription" ? 'bg-[#17abdb]' : ""}`}
+          className={`flex justify-start pl-4 items-center py-4 w-[192px] mx-auto max-h-[48px] rounded rounded-lg gap-4 ${active === "subscription" ? 'bg-[#17abdb]' : ""}`}
         >
           <Image src={active === "subscription" ? SubscriptionActiveSVG : SubscriptionInActiveSVG} alt="upload svg"/>
           <p
@@ -29,7 +29,7 @@ export default function AccountType({active, setActive}) {
       </div>
       <Link
         href="/home"
-        className={`flex justify-start pl-4 items-center py-4 max-h-[48px] rounded rounded-lg gap-4 bg-[#4f4f4f]`}
+        className={`flex justify-start pl-4 mx-4 items-center py-4 max-h-[48px] rounded rounded-lg gap-4 bg-[#4f4f4f]`}
       >
         <Image src={Logout} alt="log out"/>
         <p

@@ -10,7 +10,7 @@ import Button from "@/components/Button";
 import Filter from "@/assets/img/table/filter.svg";
 import Calendar from "@/assets/img/icons/calendar.svg"
 
-export default function TableHeader({setSearch, setUploadModal}) {
+export default function TableHeader({setSearch, setUploadModal, active}) {
   return (
     <div className="grid grid-cols-12 items-center gap-3 py-4">
       <div
@@ -41,7 +41,7 @@ export default function TableHeader({setSearch, setUploadModal}) {
         <div className="w-[134px]">
           <Button
             onClick={() => setUploadModal(true)}
-            label="New Job"
+            label={active === "Job status" ? "New Job" : "Upload Files"}
             rightIcon={<IoAdd size={20}/>}
             variant="secondary"
             filled

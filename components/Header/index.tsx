@@ -13,6 +13,7 @@ import AuthModal from "../modals/Auth/index";
 import User from '@/assets/img/icons/user.svg'
 import Subscription from '@/assets/img/icons/subscription.svg'
 import Logout from '@/assets/img/icons/logout.svg'
+import {Divider} from "@mui/material";
 
 export default function Header() {
   const [type, setType] = useState("");
@@ -48,38 +49,70 @@ export default function Header() {
           <Button bold={router.pathname === "/pricing"} label="Pricing" variant="primary"/>
         </Link>
       </div>
-      <div className="flex space-x-6 justify-center items-center">
+      <div className="flex gap-[11px] justify-center items-center">
         {router.pathname === "/dashboard" || router.pathname === '/account' || router.pathname === '/trim' || router.pathname === '/resize' ? (
           <div className="w-[160px] relative inline-block">
             <Button
               onClick={() => setIsOpen(!isOpen)}
-              width={1}
               variant="contained"
               label="Account"
               rightIcon={<FaAngleDown size={16}/>}
-              className="bg-[#f0f0f0] py-3"
+              className="bg-[#f0f0f0] py-3 w-[160px] font-montserrat"
             />
             {isOpen && (
               <div
-                className="absolute right-0 w-full mt-2 bg-white rounded-lg shadow-lg p-4 flex flex-col gap-y-4 items-start"
+                className="absolute w-[235px] mx-auto right-[-40px] mt-4 bg-white rounded-lg shadow-xl py-4 flex flex-col gap-y-4 items-start"
                 onMouseLeave={() => setIsOpen(false)}
               >
-                <Button onClick={() => router.push('account')} fontWeight="font-normal" font="font-inter"
-                        variant="primary" label="Profile" leftIcon={User}/>
-                <Button onClick={() => router.push('account')} fontWeight="font-normal" font="font-inter"
-                        variant="primary" label="Subscription" leftIcon={Subscription}/>
-                <Button onClick={() => router.push('home')} fontWeight="font-normal" font="font-inter" variant="primary"
-                        label="Log Out" leftIcon={Logout}/>
+                <Button
+                  onClick={() => router.push('account')}
+                  fontWeight="font-normal"
+                  font="font-inter"
+                  variant="primary"
+                  label="Profile"
+                  leftIcon={User}
+                  className="font-inter font-normal gap-4 px-4"
+                />
+                <Button
+                  onClick={() => router.push('account')}
+                  fontWeight="font-normal"
+                  font="font-inter"
+                  variant="primary" label="Subscription"
+                  leftIcon={Subscription}
+                  className="font-inter font-normal gap-4 px-4"
+                />
+                <Divider orientation="horizontal" flexItem />
+                <Button
+                  onClick={() => router.push('home')}
+                  fontWeight="font-normal"
+                  font="font-inter"
+                  variant="primary"
+                  label="Log Out" leftIcon={Logout}
+                  className="font-inter font-normal gap-4 px-4"
+                />
               </div>
             )}
           </div>
         ) : (
           <>
             <div className="w-32">
-              <Button onClick={onSignup} label="Signup" variant="secondary"/>
+              <Button
+                onClick={onSignup}
+                label="Signup"
+                variant="secondary"
+                width={112}
+                height={48}
+              />
             </div>
             <div className="w-32">
-              <Button onClick={onLogin} label="Login" variant="secondary" filled/>
+              <Button
+                onClick={onLogin}
+                label="Login"
+                variant="secondary"
+                filled
+                width={112}
+                height={48}
+              />
             </div>
           </>
         )}

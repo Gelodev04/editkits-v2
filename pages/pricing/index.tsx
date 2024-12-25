@@ -18,9 +18,9 @@ export default function Pricing() {
         zIndex: -1000
       }}
       className="md:pt-10">
-      <Typography label="Pricing Plan" variant="h1" center/>
+      <Typography className="font-montserrat text-[48px] font-extrabold leading-[64px]" label="Pricing Plan" center/>
       <div className="pt-4">
-        <Typography label="Access a set of powerful features with simple and transparent pricing" variant="h4" center/>
+        <Typography className="font-lato font-normal text-base leading-6" label="Access a set of powerful features with simple and transparent pricing" center/>
       </div>
       <div className="flex justify-center pt-12">
         <ToggleSwitch monthly={monthly} setMonthly={setMonthly}/>

@@ -2,9 +2,9 @@ import Typography from "@/components/Typography";
 
 export default function StatCard({stat}) {
   return (
-    <div className="w-[280px] grid grid-cols-10 shadow-md items-center bg-white px-6 py-5 gap-7">
+    <div className="w-[254px] h-[116px] grid grid-cols-10 shadow-md items-center bg-white px-4 py-5 gap-7">
       <div className="col-span-4">
-        <Typography variant="bb1s" label={stat.label} />
+        <Typography className="font-lato font-bold text-[18px] leading-[21.6px]" label={stat.label} />
       </div>
       <div className="col-span-4">
         {stat.data.map((s => <Stat title={s.title} value={s.value} />))}
@@ -18,10 +18,10 @@ function Stat({title, value}) {
   return (
     <div className="grid grid-cols-12 items-center gap-3.5">
       <div className="col-span-6">
-        <Typography variant="b4" label={title} />
+        <Typography className="font-lato font-normal text-[#747474] text-xs" label={title} />
       </div>
       <div className="col-span-6">
-        <Typography variant="bb1s" label={value} />
+        <Typography className="font-lato font-medium text-[18px] leading-[21.6px]" label={value} />
       </div>
     </div>
   )

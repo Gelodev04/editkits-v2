@@ -40,7 +40,7 @@ export default function UploadedFilesTable({data, search}) {
                 <Image className="rounded-md" src={row.icon} alt="icon" objectFit="cover" />
               </TableCell>
               <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
-                <Typography label={row.input_id} variant="b3"/>
+                <Typography label={row.input_id} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
                 <Image
                   src={CopyIcon}
                   className="cursor-pointer"
@@ -49,13 +49,13 @@ export default function UploadedFilesTable({data, search}) {
                 />
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.file_name} variant="b3"/>
+                <Typography label={row.file_name} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.size} variant="b3"/>
+                <Typography label={row.size} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.created_at} variant="b3"/>
+                <Typography label={row.created_at} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
               </TableCell>
               <TableCell width={10} sx={{border: "none"}} align="end">
                 <BsThreeDotsVertical color="#4f4f4f" cursor="pointer"/>

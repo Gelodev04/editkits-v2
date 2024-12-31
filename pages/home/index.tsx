@@ -17,7 +17,7 @@ export default function Home() {
         <h1 className="text-[58px] font-montserrat font-extrabold text-[#2c2c2c] text-center">
           Processing Kit
         </h1>
-        <div className="2xl:px-[37%] xl:px-[26%] lg:px-[20%] pt-5 pb-10">
+        <div className="2xl:px-[37%] xl:px-[26%] lg:px-[20%]">
           <Typography
             label="Empower your creativity with a suit of powerful but easy to use toolkits for video, image and audio editing"
             center

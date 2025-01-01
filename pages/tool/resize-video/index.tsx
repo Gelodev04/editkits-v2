@@ -16,6 +16,8 @@ import {aspectRatio, outputQuality, presets, videoType} from "@/lib/constants";
 import PlayIcon from '@/assets/img/icons/play.png'
 
 export default function ResizeVideo() {
+  const [presetWidth, setPresetWidth] = React.useState(undefined);
+  const [presetHeight, setPresetHeight] = React.useState(undefined)
   const [uploadFileModal, setUploadFileModal] = React.useState(false);
   const [file, setFile] = React.useState(null);
   const [color, setColor] = React.useState("#000000");
@@ -37,6 +39,14 @@ export default function ResizeVideo() {
       }
     }
   }, [width, height, aspectX, aspectY, activeInput, isCustom]);
+
+  useEffect(() => {
+    setHeight(presetHeight * aspectY);
+  }, [aspectY])
+
+  useEffect(() => {
+    setWidth(presetWidth * aspectX);
+  }, [(presetWidth && aspectX)])
 
   const handleColorChange = (e) => {
     const newColor = e.target.value;
@@ -73,12 +83,12 @@ export default function ResizeVideo() {
       <div className="pt-4">
         {file && (
           <div className="mt-4 grid grid-cols-12">
-            <div className="relative">
-              <video ref={videoRef} className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px] rounded-md">
+            <div className="relative bg-[#000000] w-[138%] rounded-md p-1">
+              <video ref={videoRef} className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
                 <source src={URL.createObjectURL(file)} type="video/mp4"/>
                 Your browser does not support the video tag.
               </video>
-              <Image className="absolute inset-0 left-3 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play Icon"/>
+              <Image className="absolute inset-0 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play Icon"/>
             </div>
 
             <div className="pl-8 col-span-10">
@@ -118,13 +128,18 @@ export default function ResizeVideo() {
         <div className="w-[360px]">
           <Select
             onChange={(e) => {
+              setIsCustom(false);
+              if(e.target.value === "None") {
+                return;
+              }
               const [presetName, , resolution] = e.target.value?.split(",") || [];
               const [presetWidth, presetHeight] = resolution.split("x").map(Number);
 
               setWidth(presetWidth);
+              setPresetWidth(presetWidth)
               setHeight(presetHeight);
-              setIsCustom(false);
-              setActiveInput("");
+              setPresetHeight(presetHeight)
+              setActiveInput("preset");
             }}
             variant="t2"
             label="Preset Options"
@@ -171,7 +186,7 @@ export default function ResizeVideo() {
             placeholder="1920"
             variant="t2"
             label="Width"
-            value={isCustom ? width : width * aspectX}
+            value={width}
             onChange={(e) => {
               setActiveInput("width")
               setWidth(e.target.value)
@@ -185,7 +200,7 @@ export default function ResizeVideo() {
             placeholder="1080"
             variant="t2"
             label="Height"
-            value={isCustom ? height : height * aspectY}
+            value={height}
             onChange={(e) => {
               setActiveInput("height")
               setHeight(e.target.value)
@@ -262,7 +277,9 @@ export default function ResizeVideo() {
         </div>
       </div>
       <div className="max-w-[171px] mx-auto py-16">
-        <Button disabled={!isColorValid || !file} label="Proceed" variant="contained" filled
+        <Button
+          disabled={!isColorValid || !file}
+          label="Proceed" variant="contained" filled
                 rightIcon={<FaAngleRight/>}/>
       </div>
       <UploadFileModal videoRef={videoRef} uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file}

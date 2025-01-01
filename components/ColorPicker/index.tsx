@@ -12,7 +12,7 @@ const ColorPicker = (props) => {
         <input
           value={props.color}
           disabled={props.disabled}
-          className={`w-[280px] font-bold text-xs font-lato max-h-10 border-2 p-3 rounded-md outline-none ${
+          className={`w-[280px] font-bold text-sm font-lato max-h-10 border-2 p-3 rounded-md outline-none ${
             props.isColorValid ? "border-slate-200" : "border-red-300"
           } ${props.disabled ? "bg-[#E0E0E0A6] text-[#A0AEC0]" : "text-[#4f4f4f]"}`}
           placeholder={props.placeholder}

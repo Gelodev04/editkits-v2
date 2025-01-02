@@ -12,7 +12,7 @@ type InputProps = {
   height?: number;
   borderRadius?: number;
   bgColor?: string;
-  value: number | string;
+  value?: number | string;
 }
 
 export default function Input(props: InputProps) {

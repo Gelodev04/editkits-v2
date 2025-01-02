@@ -23,17 +23,14 @@ export default function Dashboard() {
           <div className="col-span-10 xl:col-span-10 2xl:col-span-10">
             {active === "Job status" && (
               <div className="flex gap-4 ">
-              {stats.map(stat => <StatCard stat={stat}/>)}
-            </div>
+                {stats.map(stat => <StatCard stat={stat}/>)}
+              </div>
             )}
             <div className="pt-4">
               <DashboardTable
                 active={active}
                 jobStatusPage={jobStatusPage}
                 uploadedFilesPage={uploadedFilesPage}
-                setJobStatusPage={setJobStatusPage}
-                setUploadedFilesPage={setUploadedFilesPage}
-                data={data}
               />
             </div>
           </div>
@@ -41,8 +38,6 @@ export default function Dashboard() {
         <div className="pt-10 pb-10 2xl:pr-2">
           <div className="flex justify-end">
             <Pagination
-              dataLength={data.length}
-              itemsPerPage={8}
               totalPages={Math.ceil(data.length / 8)}
               page={active === "Job status" ? jobStatusPage : uploadedFilesPage}
               setPage={active === "Job status" ? setJobStatusPage : setUploadedFilesPage}

@@ -7,7 +7,7 @@ type PricingPlanCardProps = {
   title: string;
   credits: string;
   description: string;
-  originalPrice: string;
+  originalPrice: string | number;
   discountPrice?: number;
   type: string;
   benefits: string[];
@@ -19,7 +19,7 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
       className="bg-white py-4 px-4 border border-solid border-slate-50 hover:border-slate-400 max-w-[296px] rounded-2xl min-h-full hover:scale-105 transition-transform duration-300 shadow-lg">
       <div className="flex justify-between items-center pt-2 pb-4">
         <Typography className="font-montserrat font-bold text-[16px] leading-5 w-[153px]" label={props.title} />
-        <Tag label={props.credits}/>
+        <Tag label={props.credits} />
       </div>
       <Typography label={props.description} className="font-lato text-[10px] font-normal leading-[15px] text-[#4f4f4f]"/>
       <div className="pt-4 pb-1 px-2">

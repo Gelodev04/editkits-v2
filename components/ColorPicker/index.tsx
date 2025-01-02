@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 
 import Typography from "@/components/Typography";
 import ColorSVG from "@/assets/img/icons/color.svg";
 
-const ColorPicker = (props) => {
+const ColorPicker = (props: any) => {
   return (
     <div className="gap-4">
       <Typography label="Background" variant="bb3" />

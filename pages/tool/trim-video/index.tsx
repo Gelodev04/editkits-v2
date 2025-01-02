@@ -14,12 +14,12 @@ import {outputQuality, videoType} from "@/lib/constants";
 import PlayIcon from "@/assets/img/icons/play.png";
 
 export default function TrimVideo() {
-  const [uploadFileModal, setUploadFileModal] = React.useState(false);
-  const [file, setFile] = React.useState(null);
-  const [startTime, setStartTime] = React.useState(null);
-  const [endTime, setEndTime] = React.useState(null);
-  const [frameRate, setFramerate] = React.useState(null);
-  const [audioSampleRate, setAudioSampleRate] = React.useState(null);
+  const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
+  const [file, setFile] = React.useState<any>(null);
+  const [startTime, setStartTime] = React.useState<any>(null);
+  const [endTime, setEndTime] = React.useState<any>(null);
+  const [frameRate, setFramerate] = React.useState<any>(null);
+  const [audioSampleRate, setAudioSampleRate] = React.useState<any>(null);
   const videoRef = React.useRef(null)
 
 
@@ -92,7 +92,7 @@ export default function TrimVideo() {
           className="text-[#2c2c2c]"
         />
       </div>
-      <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal}/>
+      <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} />
       <div className="w-full border-b-2 pt-4 border-[#D9D9D9]"/>
       <div className="flex justify-between gap-6 py-8">
         <div className="w-full">
@@ -143,6 +143,7 @@ export default function TrimVideo() {
             label="Video Container"
             options={videoType}
             disabled={!file}
+
           />
         </div>
       </div>
@@ -166,14 +167,20 @@ export default function TrimVideo() {
             label="Audio Sample Rate"
             type="number"
             value={audioSampleRate}
-            onChange={(e) => setAudioSampleRate((e.target.value))}
+            onChange={(e) => setAudioSampleRate(e.target.value)}
           />
         </div>
       </div>
       <div className="max-w-[171px] mx-auto py-16">
         <Button disabled={!file} label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>} />
       </div>
-      <UploadFileModal videoRef={videoRef} uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file} setFile={setFile}/>
+      <UploadFileModal
+        videoRef={videoRef}
+        uploadModal={uploadFileModal}
+        setUploadModal={setUploadFileModal}
+        file={file}
+        setFile={setFile}
+      />
     </div>
   )
 }

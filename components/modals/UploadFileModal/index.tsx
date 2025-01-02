@@ -12,6 +12,9 @@ import Button from "@/components/Button";
 export type UploadModalProps = {
   uploadModal: boolean;
   setUploadModal: (e: React.SetStateAction<boolean>) => void;
+  videoRef?: React.Ref<string>;
+  file?: any;
+  setFile?: (e: React.SetStateAction<any>) => void;
 }
 
 const style = {
@@ -30,16 +33,20 @@ export default function UploadFileModal(props: UploadModalProps) {
 
 
   const handleDivClick = () => {
+    //@ts-ignore
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
       if (file.type.startsWith("video/")) {
+        // @ts-ignore
         props.setFile(file);
         props.setUploadModal(false);
+        // @ts-ignore
         if (props.videoRef.current) {
+          // @ts-ignore
           props.videoRef.current.load();
         }
       } else {
@@ -59,6 +66,7 @@ export default function UploadFileModal(props: UploadModalProps) {
 
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith("video/")) {
+      // @ts-ignore
       props.setFile(file);
       props.setUploadModal(false);
     } else {
@@ -99,7 +107,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                     onDragLeave={handleDragLeave}
                   >
                     <div className="flex justify-center">
-                      <Image src={Upload}/>
+                      <Image src={Upload} alt="Upload"/>
                     </div>
                     <div className="flex flex-col gap-4">
                       <div className="flex justify-center gap-2">

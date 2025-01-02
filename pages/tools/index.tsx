@@ -20,7 +20,7 @@ export default function Tools() {
             className="text-[2em] font-lato font-bold  leading-[48px] text-[#4f4f4f]"
             center
           />
-          <ToolsList tools/>
+          <ToolsList />
         </div>
       </div>
     </div>

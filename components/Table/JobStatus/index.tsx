@@ -15,7 +15,7 @@ import Success from "@/assets/img/icons/success.svg";
 import Failed from "@/assets/img/icons/failed.svg";
 import Progress from "@/assets/img/icons/pending.svg";
 
-export default function JobStatusTable({data, search}) {
+export default function JobStatusTable({data, search}: {data: any; search: string}) {
   return (
     <TableContainer className="p-2">
       <Table
@@ -31,7 +31,7 @@ export default function JobStatusTable({data, search}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.filter(row => row.file_name.toLowerCase().includes(search)).map((row) => (
+          {data.filter((row: any) => row.file_name.toLowerCase().includes(search)).map((row: any) => (
             <TableRow
               key={row.input_id}
               sx={{

@@ -66,6 +66,7 @@ function TypographyStyle(props: TypographyProps) {
 export default function Typography(props: TypographyProps) {
   return (
     <p
+      //@ts-ignore
       style={{color: props.color, textDecoration: props.underline && "underline"}}
       onClick={props.onClick}
       className={TypographyStyle(props)}

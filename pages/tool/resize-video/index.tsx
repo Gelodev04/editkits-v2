@@ -16,18 +16,18 @@ import {aspectRatio, outputQuality, presets, videoType} from "@/lib/constants";
 import PlayIcon from '@/assets/img/icons/play.png'
 
 export default function ResizeVideo() {
-  const [presetWidth, setPresetWidth] = React.useState(undefined);
-  const [presetHeight, setPresetHeight] = React.useState(undefined)
-  const [uploadFileModal, setUploadFileModal] = React.useState(false);
-  const [file, setFile] = React.useState(null);
-  const [color, setColor] = React.useState("#000000");
-  const [isColorValid, setIsColorValid] = React.useState(true);
-  const [width, setWidth] = React.useState(undefined);
-  const [height, setHeight] = React.useState(undefined);
-  const [aspectX, setAspectX] = React.useState(1);
-  const [aspectY, setAspectY] = React.useState(1);
-  const [activeInput, setActiveInput] = React.useState("");
-  const [isCustom, setIsCustom] = React.useState(true);
+  const [presetWidth, setPresetWidth] = React.useState<any>(undefined);
+  const [presetHeight, setPresetHeight] = React.useState<any>(undefined)
+  const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
+  const [file, setFile] = React.useState<any>(null);
+  const [color, setColor] = React.useState<any>("#000000");
+  const [isColorValid, setIsColorValid] = React.useState<any>(true);
+  const [width, setWidth] = React.useState<any>(undefined);
+  const [height, setHeight] = React.useState<any>(undefined);
+  const [aspectX, setAspectX] = React.useState<any>(1);
+  const [aspectY, setAspectY] = React.useState<any>(1);
+  const [activeInput, setActiveInput] = React.useState<any>("");
+  const [isCustom, setIsCustom] = React.useState<any>(true);
   const videoRef = React.useRef(null);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function ResizeVideo() {
     setWidth(presetWidth * aspectX);
   }, [(presetWidth && aspectX)])
 
-  const handleColorChange = (e) => {
+  const handleColorChange = (e: any) => {
     const newColor = e.target.value;
     setColor(newColor);
     setIsColorValid(/^#[0-9A-Fa-f]{6}$/.test(newColor));
@@ -132,7 +132,7 @@ export default function ResizeVideo() {
               if(e.target.value === "None") {
                 return;
               }
-              const [presetName, , resolution] = e.target.value?.split(",") || [];
+              const [, , resolution] = e.target.value?.split(",") || [];
               const [presetWidth, presetHeight] = resolution.split("x").map(Number);
 
               setWidth(presetWidth);

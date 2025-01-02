@@ -2,7 +2,7 @@ import Typography from "@/components/Typography";
 import Check from "@/assets/img/check.svg"
 import Image from "next/image";
 
-export default function BenefitCard({label, variant}) {
+export default function BenefitCard({label}: {label: string}) {
   return (
     <div className={"flex items-center gap-2 py-1"}>
       <Image src={Check} alt="check"/>

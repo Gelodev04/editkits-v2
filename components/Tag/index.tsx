@@ -2,7 +2,7 @@ import Typography from "@/components/Typography";
 
 type TagProps = {
   label: string;
-  variant: string
+  variant?: string
 }
 
 export default function Tag(props: TagProps) {

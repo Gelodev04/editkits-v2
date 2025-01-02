@@ -36,10 +36,12 @@ export default function Button(props: ButtonProps) {
   return (
     <button
       onClick={props.onClick}
+      // @ts-ignore
       className={ButtonStyle(props.variant, props.filled, props.disabled, props.width, props.border, props.bold, props.className, props.font, props.fontWeight, props.height)}
       disabled={props.disabled}
       style={{width: props.width, height: props.height, alignItems: "center"}}
     >
+      {/*@ts-ignore*/}
       {props.leftIcon && <Image src={props.leftIcon} alt="left_icon" />}
       {props.label}
       {props?.rightIcon}

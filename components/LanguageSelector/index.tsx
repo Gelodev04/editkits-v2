@@ -6,7 +6,7 @@ import {FaChevronUp} from "react-icons/fa";
 export default function LanguageSelector() {
   const [language, setLanguage] = useState('English');
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setLanguage(event.target.value);
   };
 

@@ -14,7 +14,12 @@ import CopyIcon from '@/assets/img/icons/copy.svg';
 import {uploadedFilesColumns} from "@/lib/constants";
 import Typography from "@/components/Typography";
 
-export default function UploadedFilesTable({data, search}) {
+type UploadedFilesTableProps = {
+  search: string;
+  data: any
+}
+
+export default function UploadedFilesTable(props: UploadedFilesTableProps) {
   return (
     <TableContainer component={Paper} className="min-h-full">
       <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -28,7 +33,7 @@ export default function UploadedFilesTable({data, search}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.filter(row => row.file_name.toLowerCase().includes(search)).map((row) => (
+          {props.data.filter((row: any) => row.file_name.toLowerCase().includes(props.search)).map((row: any) => (
             <TableRow
               key={row.input_id}
               sx={{
@@ -57,7 +62,7 @@ export default function UploadedFilesTable({data, search}) {
               <TableCell sx={{border: "none"}} align="left">
                 <Typography label={row.created_at} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
               </TableCell>
-              <TableCell width={10} sx={{border: "none"}} align="end">
+              <TableCell width={10} sx={{border: "none"}}>
                 <BsThreeDotsVertical color="#4f4f4f" cursor="pointer"/>
               </TableCell>
             </TableRow>

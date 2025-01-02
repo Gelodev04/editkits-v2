@@ -10,7 +10,13 @@ import Button from "@/components/Button";
 import Filter from "@/assets/img/table/filter.svg";
 import Calendar from "@/assets/img/icons/calendar.svg"
 
-export default function TableHeader({setSearch, setUploadModal, active}) {
+type TableHeaderProps = {
+  setSearch: any;
+  setUploadModal: any;
+  active: any
+}
+
+export default function TableHeader(props: TableHeaderProps) {
   return (
     <div className="grid grid-cols-12 items-center gap-3 py-4">
       <div
@@ -21,7 +27,7 @@ export default function TableHeader({setSearch, setUploadModal, active}) {
           type="text"
           placeholder="Search here..."
           className="bg-gray-100 outline-none ml-2 text-sm text-[#737791] w-full"
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => props.setSearch(e.target.value)}
         />
       </div>
 
@@ -40,8 +46,8 @@ export default function TableHeader({setSearch, setUploadModal, active}) {
       <div className="col-span-4 place-items-end w-full">
         <div className="w-[134px]">
           <Button
-            onClick={() => setUploadModal(true)}
-            label={active === "Job status" ? "New Job" : "Upload Files"}
+            onClick={() => props.setUploadModal(true)}
+            label={props.active === "Job status" ? "New Job" : "Upload Files"}
             rightIcon={<IoAdd size={20}/>}
             variant="secondary"
             filled

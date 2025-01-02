@@ -5,8 +5,9 @@ import SubscriptionInActiveSVG from "@/assets/img/icons/subscription_black.svg";
 import Logout from "@/assets/img/icons/logout_white.svg";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 
-export default function AccountType({active, setActive}) {
+export default function AccountType({active, setActive}: {active: any; setActive: any}) {
   return (
     <div className="min-h-full bg-white flex flex-col justify-between pt-8 pb-4 px-1">
       <div className="flex flex-col gap-2 w-[228px] rounded rounded-lg">

@@ -7,11 +7,11 @@ import Typography from "@/components/Typography";
 type SelectProps = {
   label: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
+  placeholder?: string;
   type?: string;
   error?: boolean;
-  value: string;
-  setValue: (e: React.SetStateAction<string>) => void;
+  value?: string;
+  setValue?: (e: React.SetStateAction<string>) => void;
   options: any;
   disabled?: boolean;
   variant?: string;
@@ -28,6 +28,7 @@ export default function Select(props: SelectProps) {
             defaultValue={props.options[0].value}
             disabled={props.disabled}
             value={props.value}
+            //@ts-ignore
             onChange={props.onChange}
             displayEmpty
             renderValue={value => value?.length ? Array.isArray(value) ? value.join(', ') : value : props.placeholder}
@@ -47,7 +48,7 @@ export default function Select(props: SelectProps) {
             }}
           >
             {
-              props.options.map((opt) => (
+              props.options.map((opt: any) => (
                 <MenuItem className="font-bold text-[#4f4f4f] text-sm font-lato" value={opt.value}>
                   {opt.label}
                 </MenuItem>

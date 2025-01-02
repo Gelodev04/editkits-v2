@@ -14,13 +14,14 @@ type TextFieldProps = {
   code?: string;
   disabled?: boolean;
   variant?: string;
-  height?: string;
-  borderRadius?: string;
+  height?: number;
+  borderRadius?: number;
   bgColor?: string;
   value?: string | number;
 }
 
 export default function TextField(props: TextFieldProps) {
+  console.log(props.email)
   return (
     <>
       <Typography label={props.label} variant={props.variant === "t2" ? "bb3" : "b4"} />
@@ -40,7 +41,7 @@ export default function TextField(props: TextFieldProps) {
             onChange={props.onChange}
             placeholder={props.placeholder}
             borderRadius={props.borderRadius}
-            value={props.value}
+            value={props.email}
           />
         )}
       </div>

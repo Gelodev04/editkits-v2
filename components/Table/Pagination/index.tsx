@@ -1,9 +1,15 @@
 import * as React from "react";
 import {FaCircleChevronLeft, FaCircleChevronRight} from "react-icons/fa6";
 
-export default function Pagination({totalPages, page, setPage}) {
+type PaginationProps = {
+  totalPages: number;
+  page: number;
+  setPage: (e: React.SetStateAction<number>) => void;
+}
 
-  const goToPage = (pageNumber) => {
+export default function Pagination({totalPages, page, setPage}: PaginationProps) {
+
+  const goToPage = (pageNumber: number) => {
     if (pageNumber < 1 || pageNumber > totalPages) return;
     setPage(pageNumber);
   };
@@ -14,6 +20,7 @@ export default function Pagination({totalPages, page, setPage}) {
     if (totalPages <= 4) {
       for (let i = 1; i <= totalPages - 1; i++) {
         pageNumbers.push(
+          //@ts-ignore
           <button
             key={i}
             onClick={() => goToPage(i)}
@@ -29,6 +36,7 @@ export default function Pagination({totalPages, page, setPage}) {
       if (page <= 3) {
         for (let i = 1; i <= 4; i++) {
           pageNumbers.push(
+            // @ts-ignore
             <button
               key={i}
               onClick={() => goToPage(i)}
@@ -41,10 +49,12 @@ export default function Pagination({totalPages, page, setPage}) {
           );
         }
         if (totalPages > 4) {
+          // @ts-ignore
           pageNumbers.push(<span key="dots" className="px-2 text-[#2c2c2c]">...</span>);
         }
       } else if (page >= totalPages - 2) {
         pageNumbers.push(
+          // @ts-ignore
           <button
             key={1}
             onClick={() => goToPage(1)}
@@ -53,9 +63,11 @@ export default function Pagination({totalPages, page, setPage}) {
             1
           </button>
         );
+        // @ts-ignore
         pageNumbers.push(<span key="dots-left" className="px-2 text-[#2c2c2c]">...</span>);
         for (let i = totalPages - 3; i < totalPages; i++) {  // Exclude the last page
           pageNumbers.push(
+            // @ts-ignore
             <button
               key={i}
               onClick={() => goToPage(i)}
@@ -69,6 +81,7 @@ export default function Pagination({totalPages, page, setPage}) {
         }
       } else {
         pageNumbers.push(
+          // @ts-ignore
           <button
             key={1}
             onClick={() => goToPage(1)}
@@ -77,9 +90,11 @@ export default function Pagination({totalPages, page, setPage}) {
             1
           </button>
         );
+        // @ts-ignore
         pageNumbers.push(<span key="dots-left" className="px-2 text-[#2c2c2c]">...</span>);
         for (let i = page - 1; i <= page + 1; i++) {
           pageNumbers.push(
+            // @ts-ignore
             <button
               key={i}
               onClick={() => goToPage(i)}
@@ -91,6 +106,7 @@ export default function Pagination({totalPages, page, setPage}) {
             </button>
           );
         }
+        // @ts-ignore
         pageNumbers.push(<span key="dots-right" className="px-2 text-[#2c2c2c]">...</span>);
       }
     }
@@ -103,6 +119,7 @@ export default function Pagination({totalPages, page, setPage}) {
     <div className="flex items-center space-x-2 bg-[#fcfcfc]">
       <FaCircleChevronLeft
         onClick={() => goToPage(page - 1)}
+        //@ts-ignore
         color={(page !== 1) && "#4f4f4f"}
         className={`${(page !== 1) && "cursor-pointer"}`}
         size={20}
@@ -113,6 +130,7 @@ export default function Pagination({totalPages, page, setPage}) {
       <button disabled={(page === (totalPages - 1))}>
         <FaCircleChevronRight
           onClick={() => goToPage(page + 1)}
+          //@ts-ignore
           color={(page !== (totalPages - 1)) && "#4f4f4f"}
           className={`${(page !== totalPages) && "cursor-pointer"}`}
           size={20}

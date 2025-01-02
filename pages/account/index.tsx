@@ -67,7 +67,9 @@ export default function Account() {
         type="Change Password"
         setAuthModal={setChangePasswordModalVisible}
         showAuthModal={changePasswordModalVisible}
+        // @ts-ignore
         setType={undefined}
+        // @ts-ignore
         description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span>, please enter the code below to reset your password</>}
         password={password}
         setPassword={setPassword}
@@ -76,7 +78,7 @@ export default function Account() {
   )
 }
 
-function Subscription(props) {
+function Subscription(props: any) {
   return (
     <div
       className="rounded rounded-2xl border border-solid border-slate-50 grid grid-cols-12 p-8 shadow-lg min-h-[306px]">
@@ -99,7 +101,7 @@ function Subscription(props) {
       <div className="h-full border-r-2 border-dashed border-[#e2e4e9] w-12"/>
       <div className="col-span-5">
         <div className="pt-3">
-          {props.benefits.map(benefit => <BenefitCard label={benefit} variant="md" />)}
+          {props.benefits.map((benefit: any) => <BenefitCard label={benefit} />)}
         </div>
       </div>
       <div className="col-span-2 pt-3 flex items-end justify-end">

@@ -39,7 +39,7 @@ export default function Login(
           </div>
         </div>
       </div>
-      <div className="px-10">
+      <div className="px-[50.5px]">
         <TextField
           onChange={(e) => {
             setEmail(e.target.value);
@@ -47,7 +47,8 @@ export default function Login(
           }}
           error={!isEmailValid}
           email={email}
-          label="Email" placeholder="Your email"
+          label="Email"
+          placeholder="Your email"
         />
         <div className="py-4">
           <TextField

@@ -20,7 +20,7 @@ export default function Input(props: InputProps) {
     <input
       disabled={props.disabled}
       //@ts-ignore
-      className={`w-full border border-solid border-2 ${(props?.error && props?.email?.length > 0) || props.error && props?.code?.length > 0 ? "border-red-300" : "border-slate-200"} p-3 rounded-md outline-none text-[#2c2c2c] ${props.disabled && "bg-[#E0E0E0A6] "} ${props.variant === "t2" ? "max-h-10 font-lato font-bold text-sm" : "max-h-10 font-lato font-bold text-xs"}`}
+      className={`w-full border border-solid border-2 ${(props?.error && props?.email?.length > 0) || props.error && props?.code?.length > 0 ? "border-red-300" : "border-slate-200"} px-3 py-4 rounded-md outline-none text-[#2c2c2c] ${props.disabled && "bg-[#E0E0E0A6] "} ${props.variant === "t2" ? "max-h-10 font-lato font-bold text-sm" : "font-normal font-bold text-sm"}`}
       placeholder={props.placeholder}
       type={props.type || "text"}
       onChange={props.onChange}

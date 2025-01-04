@@ -14,6 +14,7 @@ import User from '@/assets/img/icons/user.svg'
 import Subscription from '@/assets/img/icons/subscription.svg'
 import Logout from '@/assets/img/icons/logout.svg'
 import {Divider} from "@mui/material";
+import Typography from "@/components/Typography";
 
 export default function Header() {
   const [type, setType] = useState("");
@@ -39,14 +40,14 @@ export default function Header() {
       <div className="flex space-x-6 justify-center items-center">
         {(router.pathname === "/dashboard" || router.pathname === "/account" || router.pathname === "/resize" || router.pathname === "/account" || router.pathname === "/trim") && (
           <Link href="/dashboard">
-            <Button bold={router.pathname === "/dashboard"} label="Dashboard" variant="primary"/>
+            <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"} />
           </Link>
         )}
         <Link href="/tools">
-          <Button bold={router.pathname === "/tools"} label="Tools" variant="primary"/>
+          <Typography label="Tools" variant="link" bold={router.pathname === "/tools"} />
         </Link>
         <Link href="/pricing">
-          <Button bold={router.pathname === "/pricing"} label="Pricing" variant="primary"/>
+          <Typography label="Pricing" variant="link" bold={router.pathname === "/pricing"} />
         </Link>
       </div>
       <div className="flex gap-[11px] justify-center items-center">

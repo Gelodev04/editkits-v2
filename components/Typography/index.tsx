@@ -57,6 +57,8 @@ function TypographyStyle(props: TypographyProps) {
       return props.status === "Failed" ? "text-[#d80027]" : props.status === "Progress" ? "text-[#ff9407]" : "text-[#0f930f]";
     case "card-label":
       return `font-lato font-normal text-sm text-[#262628] ${props.center && "text-center"}`;
+    case "link":
+      return `font-montserrat text-sm leading-[24px] text-[#737373] ${props.bold ? "font-bold" : "font-semibold"} ${props.center && 'text-center'}`
     default:
       return `${props.className} text-sm ${props.center && "text-center"} text-[#2c2c2c]`;
 

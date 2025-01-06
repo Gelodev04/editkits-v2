@@ -60,7 +60,7 @@ function TypographyStyle(props: TypographyProps) {
     case "link":
       return `font-montserrat text-sm leading-[24px] text-[#737373] ${props.bold ? "font-bold" : "font-semibold"} ${props.center && 'text-center'}`
     default:
-      return `${props.className} text-sm ${props.center && "text-center"} text-[#2c2c2c]`;
+      return `${props.className} text-sm ${props.center && "text-center"} text-[#2c2c2c] font-sans`;
 
   }
 }

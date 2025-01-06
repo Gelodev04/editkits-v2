@@ -14,11 +14,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true); // Mark as mounted after first render
+    setIsMounted(true);
   }, []);
 
-  if (!isMounted) return null; // Return nothing during SSR
-
+  if (!isMounted) return null;
   return (
     <div className={montserrat.className}>
       <div className="border border-b-1">

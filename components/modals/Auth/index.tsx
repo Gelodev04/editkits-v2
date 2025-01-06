@@ -8,6 +8,25 @@ import {TbXboxX} from "react-icons/tb";
 import Verification from "@/components/modals/Auth/Verification";
 import ForgetPassword from "./ForgetPassword";
 import ResetPassword from "./ResetPassword";
+import {Lato, Montserrat, Open_Sans} from "next/font/google";
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-montserrat',
+});
+
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '700', '900'],
+  variable: '--font-lato',
+});
+
+const opensans = Open_Sans({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-montserrat',
+})
 
 export type AuthModalProps = {
   type: string;
@@ -52,7 +71,7 @@ export default function AuthModal(props: AuthModalProps) {
   }, [timer]);
 
   return (
-    <Modal  open={props.showAuthModal} onClose={() => props.setAuthModal(false)}>
+    <Modal open={props.showAuthModal} onClose={() => props.setAuthModal(false)}>
       <Fade in={props.showAuthModal}>
         {/*@ts-ignore*/}
         <div style={style}>
@@ -60,7 +79,7 @@ export default function AuthModal(props: AuthModalProps) {
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <div
-                className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg ">
+                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg `}>
                 <div className="absolute right-2 top-2 cursor-pointer">
                   <TbXboxX size={30} color="#000" onClick={() => props.setAuthModal(false)}/>
                 </div>

@@ -52,8 +52,8 @@ export default function TrimVideo() {
       <div className="pt-4">
         {file && (
           <div className="mt-4 grid grid-cols-12">
-            <div className="relative">
-              <video ref={videoRef} className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px] rounded-md">
+            <div className="relative bg-[#000000] w-[138%] rounded-md p-1">
+              <video ref={videoRef} className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
                 <source src={URL.createObjectURL(file)} type="video/mp4"/>
                 Your browser does not support the video tag.
               </video>

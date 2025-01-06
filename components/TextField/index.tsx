@@ -21,7 +21,6 @@ type TextFieldProps = {
 }
 
 export default function TextField(props: TextFieldProps) {
-  console.log(props.email)
   return (
     <>
       <Typography label={props.label} variant={props.variant === "t2" ? "bb3" : "b4"} />

@@ -42,7 +42,7 @@ export default function UploadedFilesTable(props: UploadedFilesTableProps) {
               }}
             >
               <TableCell width={172} height={92} sx={{border: "none"}} component="th" scope="row">
-                <Image className="rounded-md" src={row.icon} alt="icon" objectFit="cover" />
+                <Image className="rounded-md bg-[#000000] p-[2px]" src={row.icon} alt="icon" objectFit="cover" />
               </TableCell>
               <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
                 <Typography label={row.input_id} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>

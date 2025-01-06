@@ -15,6 +15,7 @@ type DashboardTableProps = {
 export default function DashboardTable(props: DashboardTableProps) {
   const [search, setSearch] = useState("");
   const [uploadModal, setUploadModal] = useState(false);
+  const videoRef = React.useRef(null)
 
   const getItemsForPage = (items: any, pageNumber: any, itemsPerPage = 9) => {
     const startIndex = (pageNumber - 1) * itemsPerPage;
@@ -29,7 +30,7 @@ export default function DashboardTable(props: DashboardTableProps) {
       </div>
       {props.active === "Job status" && <JobStatusTable data={getItemsForPage(tableData, props.jobStatusPage)} search={search}/>}
       {props.active === "Uploaded files" && <UploadedFilesTable data={getItemsForPage(uploadedFileTableData, props.uploadedFilesPage)} search={search}/>}
-      <UploadFileModal uploadModal={uploadModal} setUploadModal={setUploadModal}/>
+      <UploadFileModal uploadModal={uploadModal} setUploadModal={setUploadModal} setFile={() => {return 1}} videoRef={videoRef} />
     </div>
   );
 }

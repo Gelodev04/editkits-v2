@@ -51,7 +51,7 @@ export default function JobStatusTable({data, search}: {data: any; search: strin
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <Image className="rounded-md" src={row.icon} alt="icon" layout="fill" objectFit="cover"/>
+                  <Image className="rounded-md bg-[#000000] w-[138%] p-[2px]" src={row.icon} alt="icon" layout="fill" objectFit="cover"/>
 
                   <div
                     style={{

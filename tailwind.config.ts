@@ -12,11 +12,12 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        lato: ['Lato', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
+        sans: ['var(--font-montserrat)', 'var(--font-lato)', 'sans-serif'],
+        lato: ['var(--font-lato)', 'sans-serif'],
+        montserrat: ['var(--font-montserrat)', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
         roboto: ['Roboto', 'sans-serif'],
-        openSans: ['Open Sans', 'sans-serif']
+        openSans: ['Open Sans', 'sans-serif'],
       },
       colors: {
         background: "var(--background)",

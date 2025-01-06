@@ -111,8 +111,8 @@ export default function Signup(
         </div>
       </div>
       <div className="flex justify-center pb-10 gap-4 items-center">
-        <Typography label="Already have an account?"/>
-        <Button onClick={() => props.setType("Log In")} label="Login" variant="primary" filled width={40}/>
+        <Typography label="Already have an account?" className="text-xs font-semibold"/>
+        <Button className="font-sans text-xs text-[#0700CB] font-semibold" onClick={() => props.setType("Log In")} label="Login" variant="primary" filled width={40}/>
       </div>
     </>
   )

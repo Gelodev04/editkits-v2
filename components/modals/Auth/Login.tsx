@@ -83,8 +83,8 @@ export default function Login(
         </div>
       </div>
       <div className="flex justify-center pb-10 gap-4">
-        <Typography label="Don't have an account?" />
-        <Button onClick={() => props.setType("Sign Up")} label="Signup" variant="primary" filled width={40}/>
+        <Typography label="Don't have an account?" className="text-xs font-semibold" />
+        <Button className="font-sans text-xs text-[#0700CB] font-semibold" onClick={() => props.setType("Sign Up")} label="Signup" variant="primary" filled width={40}/>
       </div>
     </>
   )

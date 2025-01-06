@@ -8,6 +8,7 @@ import Upload from "@/assets/img/icons/upload.svg"
 import Image from "next/image";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
+import {Lato, Montserrat, Open_Sans} from "next/font/google";
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -26,6 +27,24 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-montserrat',
+});
+
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '700', '900'],
+  variable: '--font-lato',
+});
+
+const opensans = Open_Sans({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-montserrat',
+})
 
 export default function UploadFileModal(props: UploadModalProps) {
   const fileInputRef = React.useRef(null);
@@ -82,7 +101,7 @@ export default function UploadFileModal(props: UploadModalProps) {
     <Modal open={props.uploadModal} onClose={() => props.setUploadModal(false)}>
       <Fade in={props.uploadModal}>
         {/*@ts-ignore*/}
-        <div style={style}>
+        <div className={`${montserrat.variable} ${lato.variable} ${opensans.variable}`} style={style}>
           <input
             type="file"
             style={{display: "none"}}

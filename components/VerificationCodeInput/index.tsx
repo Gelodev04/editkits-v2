@@ -1,6 +1,5 @@
 import React from "react";
 import ReactCodeInput from "react-code-input";
-import './style.css'
 
 const codeInputProps = {
   autoFocus: false,

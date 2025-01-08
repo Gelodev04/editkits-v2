@@ -32,7 +32,7 @@ export default function Select(props: SelectProps) {
             onChange={props.onChange}
             displayEmpty
             renderValue={value => value?.length ? Array.isArray(value) ? value.join(', ') : value : props.placeholder}
-            className={`max-h-10 text-sm text-[#4f4f4f] border font-lato font-bold ${!props.disabled && "border-1 border-[#e0e0e0]"}`}
+            className={`max-h-10 border ${!props.disabled && "border-1 border-[#e0e0e0]"}`}
             sx={{
               boxShadow: "none",
               ".MuiOutlinedInput-notchedOutline": { border: 0 },
@@ -44,13 +44,20 @@ export default function Select(props: SelectProps) {
                 {
                   border: 0,
                 },
-              fontSize: 12
+              fontSize: 14,
+              fontFamily: 'Lato',
+              color: "#4f4f4f",
+              fontWeight: "bold"
             }}
           >
             {
               props.options.map((opt: any) => (
-                <MenuItem className="font-bold text-[#4f4f4f] text-sm font-lato" value={opt.value}>
-                  {opt.label}
+                <MenuItem
+                  key={opt.value}
+                  sx={{fontSize: 14, fontFamily: "Lato", color: "#4f4f4f", fontWeight: "bold"}}
+                  value={opt.value}
+                >
+                  <Typography label={opt.label} variant="bb4" />
                 </MenuItem>
               ))
             }

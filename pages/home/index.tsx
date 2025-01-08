@@ -1,5 +1,3 @@
-'use client'
-
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import ToolCard from "@/components/cards/ToolCard";
@@ -10,14 +8,14 @@ export default function Home() {
   return (
     <>
       <div className="p-20 bg-neutral-50">
-        <h1 className="text-[58px] font-montserrat font-extrabold text-[#2c2c2c] text-center">
+        <h1 className="text-[58px] font-montserrat font-extrabold text-[#2c2c2c] text-center leading-[80px]">
           Your <span
           className="text-transparent bg-clip-text bg-gradient-to-r from-[#C938AE] via-[#8467C7] to-[#17ABDB]">All-in-One</span> Media
         </h1>
-        <h1 className="text-[58px] font-montserrat font-extrabold text-[#2c2c2c] text-center">
+        <h1 className="text-[58px] font-montserrat font-extrabold text-[#2c2c2c] text-center leading-[80px]">
           Processing Kit
         </h1>
-        <div className="2xl:px-[37%] xl:px-[26%] lg:px-[20%]">
+        <div className="2xl:px-[37%] xl:px-[26%] lg:px-[20%] pt-4 pb-8">
           <Typography
             label="Empower your creativity with a suit of powerful but easy to use toolkits for video, image and audio editing"
             center
@@ -36,14 +34,14 @@ export default function Home() {
         </div>
       </div>
       <div className="bg-white py-4">
-        <div className="pb-3">
+        <div className="pb-2">
           <Typography
             label="Quick Access"
             variant="h4"
             center
           />
         </div>
-        <Typography variant="b2" label="Video Tools" center/>
+        <Typography variant="b2" label="Video Tools" center />
         <div className="sm:hidden lg:block place-items-center max-w-[1280px] mx-auto">
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 py-10 gap-x-10 lg:gap-x-4">
             {videoTools.slice(0, 5).map((tool) => (

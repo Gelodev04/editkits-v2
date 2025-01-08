@@ -1,5 +1,3 @@
-"use client"
-
 import React, {useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import {TbXboxX} from "react-icons/tb";
@@ -8,7 +6,7 @@ import Upload from "@/assets/img/icons/upload.svg"
 import Image from "next/image";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
-import {Lato, Montserrat, Open_Sans} from "next/font/google";
+import {lato, montserrat, opensans} from "@/lib/fonts";
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -27,24 +25,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-montserrat',
-});
-
-const lato = Lato({
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '700', '900'],
-  variable: '--font-lato',
-});
-
-const opensans = Open_Sans({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  variable: '--font-montserrat',
-})
 
 export default function UploadFileModal(props: UploadModalProps) {
   const fileInputRef = React.useRef(null);

@@ -26,7 +26,7 @@ export default function TextField(props: TextFieldProps) {
       <Typography label={props.label} variant={props.variant === "t2" ? "bb3" : "b4"} />
       <div className="pt-2">
         {props.type === "password" ? (
-          <PasswordInput password={props.password} error={props.error} onChange={props.onChange} placeholder={props.placeholder}/>
+          <PasswordInput password={props.password} error={props.error} onChange={props.onChange} placeholder={props.placeholder} />
         ) : (
           <Input
             bgColor={props.bgColor}
@@ -40,7 +40,7 @@ export default function TextField(props: TextFieldProps) {
             onChange={props.onChange}
             placeholder={props.placeholder}
             borderRadius={props.borderRadius}
-            value={props.email}
+            value={props.value}
           />
         )}
       </div>

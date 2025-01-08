@@ -1,5 +1,3 @@
-"use client"
-
 import React, {useEffect, useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import {TbXboxX} from "react-icons/tb";
@@ -9,6 +7,8 @@ import {validatePassword} from "@/lib/validatePassword";
 import Toggle from "@/components/Toggle";
 import {FaCheckCircle} from "react-icons/fa";
 import Button from "@/components/Button";
+import {useCountdownTimer} from "@/hooks/useCountdownTimer";
+import {lato, montserrat, opensans} from "@/lib/fonts";
 
 export type AuthModalProps = {
   type: string;
@@ -34,8 +34,8 @@ export default function ChangePasswordModal(props: AuthModalProps) {
   const [currentPassword, setCurrentPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPasswordValid, setPasswordValid] = useState(false)
-  const [isCurrentPasswordValid, setCurrentPasswordValid] = useState(false)
-  const [timer, setTimer] = useState(60);
+  const [isCurrentPasswordValid, setCurrentPasswordValid] = useState(false);
+  const { timer, setTimer} = useCountdownTimer(60);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -55,7 +55,7 @@ export default function ChangePasswordModal(props: AuthModalProps) {
     <Modal open={props.showAuthModal} onClose={() => props.setAuthModal(false)}>
       <Fade in={props.showAuthModal}>
         {/*@ts-ignore*/}
-        <div style={style}>
+        <div style={style} className={`${montserrat.variable} ${lato.variable} ${opensans.variable}`}>
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -71,18 +71,18 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                         <Typography
                           label={props.type}
                           center
-                          variant="h3"
+                          variant="h5"
                         />
 
                         <div className="mt-2">
                           <Typography
                             label={
-                              <>
+                              <p className="font-lato font-normal text-base leading-[14px] text-[#4f4f4f]">
                                 We will send the reset code to <span
                                 className="font-bold">
                                 abc@editkits.com
                                 </span>
-                              </>}
+                              </p>}
                             center
                             variant="b3"
                           />

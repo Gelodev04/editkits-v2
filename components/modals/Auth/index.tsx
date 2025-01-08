@@ -1,5 +1,3 @@
-"use client"
-
 import React, {useEffect, useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import Signup from "@/components/modals/Auth/Signup";
@@ -8,25 +6,8 @@ import {TbXboxX} from "react-icons/tb";
 import Verification from "@/components/modals/Auth/Verification";
 import ForgetPassword from "./ForgetPassword";
 import ResetPassword from "./ResetPassword";
-import {Lato, Montserrat, Open_Sans} from "next/font/google";
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-montserrat',
-});
-
-const lato = Lato({
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '700', '900'],
-  variable: '--font-lato',
-});
-
-const opensans = Open_Sans({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  variable: '--font-montserrat',
-})
+import {lato, montserrat, opensans} from "@/lib/fonts";
+import {useCountdownTimer} from "@/hooks/useCountdownTimer";
 
 export type AuthModalProps = {
   type: string;
@@ -54,21 +35,7 @@ export default function AuthModal(props: AuthModalProps) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [codes, setCodes] = useState("")
   const [isPasswordValid, setPasswordValid] = useState(false)
-  const [timer, setTimer] = useState(60);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-
-    if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
-      }, 1000);
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [timer]);
+  const {timer, setTimer} = useCountdownTimer(60);
 
   return (
     <Modal open={props.showAuthModal} onClose={() => props.setAuthModal(false)}>

@@ -1,10 +1,13 @@
-import '../app/globals.css';
+import './globals.css';
 import Head from 'next/head';
 import { AppProps } from "next/app";
 import { Montserrat, Lato } from "next/font/google";
 import dynamic from "next/dynamic";
 
-const RootLayout = dynamic(() => import('../app/layout'), { ssr: false });
+import "./globals.css";
+import './style.css'
+
+const RootLayout = dynamic(() => import('./layout'), { ssr: false });
 
 const montserrat = Montserrat({
   subsets: ['latin'],

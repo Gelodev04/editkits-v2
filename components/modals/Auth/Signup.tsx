@@ -52,7 +52,10 @@ export default function Signup(
           }}
           error={!isEmailValid}
           email={email}
-          label="Email" placeholder="Your email"/>
+          label="Email"
+          placeholder="Your email"
+          value={email}
+        />
         <div className="py-4">
           <TextField
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

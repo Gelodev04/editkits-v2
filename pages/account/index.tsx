@@ -7,7 +7,7 @@ import Typography from "@/components/Typography";
 import Tag from "@/components/Tag";
 import BenefitCard from "@/components/cards/BenefitCard";
 import {validateEmail} from "@/lib/validateEmail";
-import ChangePasswordModal from "@/components/account/ChnagePasswordModal";
+import ChangePasswordModal from "@/components/modals/ChnagePasswordModal";
 
 export default function Account() {
   const [active, setActive] = React.useState("email");

@@ -1,5 +1,4 @@
 import * as React from "react";
-import Image from "next/image";
 
 import {FaAngleRight} from "react-icons/fa6";
 
@@ -9,11 +8,10 @@ import UploadFileModal from "@/components/modals/UploadFileModal";
 import TextField from "@/components/TextField";
 import Select from "@/components/Select";
 
-import RetryIcon from '@/assets/img/icons/retry.svg'
 import ColorPicker from "@/components/ColorPicker";
 import {useEffect} from "react";
 import {aspectRatio, outputQuality, presets, videoType} from "@/lib/constants";
-import PlayIcon from '@/assets/img/icons/play.png'
+import {VideoUpload} from "@/components/VideoUpload";
 
 export default function ResizeVideo() {
   const [presetWidth, setPresetWidth] = React.useState<any>(undefined);
@@ -28,6 +26,8 @@ export default function ResizeVideo() {
   const [aspectY, setAspectY] = React.useState<any>(1);
   const [activeInput, setActiveInput] = React.useState<any>("");
   const [isCustom, setIsCustom] = React.useState<any>(true);
+  const [audioSampleRate, setAudioSampleRate] = React.useState<any>(undefined);
+  const [framerate, setFramerate] = React.useState<any>(undefined);
   const videoRef = React.useRef(null);
 
   useEffect(() => {
@@ -54,22 +54,16 @@ export default function ResizeVideo() {
     setIsColorValid(/^#[0-9A-Fa-f]{6}$/.test(newColor));
   };
 
-  const props = [
-    {name: "Duration", value: "122 Seconds"},
-    {name: "Resolution", value: "1020x1080"},
-    {name: "Size", value: "10 MB"},
-  ]
-
   return (
     <div className="max-w-[768px] px-12 lg:px-0 mx-auto">
-      <div className="pt-16">
+      <div className="pt-16 flex flex-col gap-4">
         <Typography
           label="Resize Video"
           variant="h2"
           center
         />
         <Typography
-          className="font-lato text-[#000] pt-3"
+          variant="b3"
           label="Easily change the dimensions of your video to fit any platform"
           center
         />
@@ -80,43 +74,7 @@ export default function ResizeVideo() {
         />
       </div>
       <div className="w-full border-b-2 pt-4 border-[#D9D9D9]"/>
-      <div className="pt-4">
-        {file && (
-          <div className="mt-4 grid grid-cols-12">
-            <div className="relative bg-[#000000] w-[138%] rounded-md p-1">
-              <video ref={videoRef} className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
-                <source src={URL.createObjectURL(file)} type="video/mp4"/>
-                Your browser does not support the video tag.
-              </video>
-              <Image className="absolute inset-0 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play Icon"/>
-            </div>
-
-            <div className="pl-8 col-span-10">
-              <p className="text-base font-lato font-bold text-[#2c2c2c]">{file.name}</p>
-              <div className="flex gap-3">
-                {props.map(prop => (
-                  <div className="flex items-end gap-1">
-                    <p className="text-base font-lato font-bold text-[#a0aec9]">{prop.name}: </p>
-                    <p className="text-sm font-lato font-normal text-[#a0aec9]">{prop.value}: </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="col-span-1 place-items-end">
-              <Image onClick={() => setUploadFileModal(true)} src={RetryIcon} alt="retry" className="cursor-pointer"/>
-            </div>
-          </div>
-        )}
-        {!file && (
-          <Button
-            onClick={() => setUploadFileModal(true)}
-            className="max-w-[113px] py-[6.5px] font-bold border border-2 border-neutral-300 text-[#4f4f4f]"
-            label="Add File"
-            variant="contained"
-            border
-          />
-        )}
-      </div>
+      <VideoUpload videoRef={videoRef} setUploadFileModal={setUploadFileModal} file={file} />
       <div className="pt-14">
         <Typography
           label="Tools Properties"
@@ -129,7 +87,7 @@ export default function ResizeVideo() {
           <Select
             onChange={(e) => {
               setIsCustom(false);
-              if(e.target.value === "None") {
+              if (e.target.value === "None") {
                 return;
               }
               const [, , resolution] = e.target.value?.split(",") || [];
@@ -264,6 +222,8 @@ export default function ResizeVideo() {
             placeholder="30"
             variant="t2"
             label="Framerate"
+            value={framerate}
+            onChange={e => setFramerate(e.target.value)}
           />
         </div>
         <div className="w-full">
@@ -273,6 +233,8 @@ export default function ResizeVideo() {
             placeholder="480000"
             variant="t2"
             label="Audio Sample Rate"
+            value={audioSampleRate}
+            onChange={(e) => setAudioSampleRate(e.target.value)}
           />
         </div>
       </div>
@@ -280,7 +242,7 @@ export default function ResizeVideo() {
         <Button
           disabled={!isColorValid || !file}
           label="Proceed" variant="contained" filled
-                rightIcon={<FaAngleRight/>}/>
+          rightIcon={<FaAngleRight/>}/>
       </div>
       <UploadFileModal videoRef={videoRef} uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file}
                        setFile={setFile}/>

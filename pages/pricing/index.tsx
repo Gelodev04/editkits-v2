@@ -1,4 +1,3 @@
-import Typography from "@/components/Typography";
 import {useState} from "react";
 import ToggleSwitch from "@/components/ToggleSwitch";
 import {pricingPlanList} from "@/lib/constants";
@@ -18,9 +17,9 @@ export default function Pricing() {
         zIndex: -1000
       }}
       className="md:pt-10">
-      <Typography className="font-montserrat text-[48px] font-extrabold leading-[64px]" label="Pricing Plan" center/>
+      <p className="font-montserrat font-extrabold text-[36px] text-[#2c2c2c] leading-[48px] text-center">Pricing Plan</p>
       <div className="pt-4">
-        <Typography className="font-lato font-normal text-base leading-6" label="Access a set of powerful features with simple and transparent pricing" center/>
+        <p className="font-lato font-normal text-base text-[#4f4f4f] text-center">Access a set of powerful features with simple and transparent pricing</p>
       </div>
       <div className="flex justify-center pt-12">
         <ToggleSwitch monthly={monthly} setMonthly={setMonthly}/>
@@ -35,7 +34,7 @@ export default function Pricing() {
             .filter(plan => plan.type === (monthly ? 'monthly' : 'yearly'))
             .map(plan => (
               <PricingPlanCard
-                key={plan.title} // Add a key if plan.title is unique
+                key={plan.title}
                 title={plan.title}
                 description={plan.description}
                 credits={plan.credits}

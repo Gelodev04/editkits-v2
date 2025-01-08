@@ -49,6 +49,7 @@ export default function Login(
           email={email}
           label="Email"
           placeholder="Your email"
+          value={email}
         />
         <div className="py-4">
           <TextField

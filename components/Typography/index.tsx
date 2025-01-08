@@ -24,11 +24,11 @@ function TypographyStyle(props: TypographyProps) {
     case "h3":
       return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
     case "h4":
-      return `font-montserrat font-bold text-2xl text-[#2c2c2c] ${props.center && "text-center"}`;
+      return `font-montserrat font-bold text-2xl text-[#2c2c2c] ${props.center && "text-center"} leading-[40px]`;
     case "hb4":
       return `text-base font-bold font-lato text-[#333333] ${props.center && "text-center"}`;
     case "h5":
-      return `text-xl font-black text-[#2c2c2c] ${props.center && "text-center"}`;
+      return `font-montserrat font-bold text-2xl text-[#2c2c2c] ${props.center && "text-center"}`;
     case "h6":
       return `text-lg font-bold text-[#2c2c2c] ${props.center && "text-center"}`;
     case "sm":
@@ -38,11 +38,11 @@ function TypographyStyle(props: TypographyProps) {
     case "bb1":
       return `${props.className} text-xl font-lato font-bold text-[#0b0d0e]`;
     case "b2":
-      return `font-lato text-base text-[#4f4f4f] font-normal ${props.center && "text-center"}`
+      return `font-lato text-base text-[#4f4f4f] font-normal ${props.center && "text-center"} leading-[24px]`
     case "b3":
-      return `text-sm text-[#2c2c2c] font-lato ${props.center && "text-center"} font-normal ${props.button && "cursor-pointer"}`;
+      return `text-base text-black font-lato ${props.center && "text-center"} font-normal leading-[21px] ${props.button && "cursor-pointer"}`;
     case "bb3":
-      return `font-lato font-bold text-sm leading-[21px] text-sm text-[#2c2c2c] ${props.center && "text-center"}`;
+      return `font-lato font-bold text-sm leading-[21px] text-sm text-[#2c2c2c] ${props.center && "text-center"} leading-[21px]`;
     case "bbl3":
       return `text-sm text-sky-500 ${props.center && "text-center"} font-lato font-bold  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "bl3":
@@ -50,7 +50,7 @@ function TypographyStyle(props: TypographyProps) {
     case "b4":
       return `font-lato font-normal text-sm leading-[18px] text-[#4f4f4f]`
     case "bb4":
-      return `text-xs text-[#2c2c2c] font-lato ${props.center && "text-center"} font-bold`
+      return `text-sm text-[#4f4f4f] font-lato ${props.center && "text-center"} font-bold leading-[18px]`
     case "p":
       return `text-sm  text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-normal"}`;
     case "tag":

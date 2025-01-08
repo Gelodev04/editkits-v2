@@ -1,14 +1,8 @@
-'use client';
-
 import React, { useState, useEffect } from "react";
-import "./globals.css";
-import { Montserrat } from "next/font/google";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
-const montserrat = Montserrat({
-  subsets: ['cyrillic'],
-});
+import Header from "../components/Header/index";
+import Footer from "../components/Footer/index";
+import {montserrat, roboto, opensans} from "@/lib/fonts";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -18,8 +12,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, []);
 
   if (!isMounted) return null;
+
   return (
-    <div className={montserrat.className}>
+    <div className={`${montserrat.variable} ${roboto.variable} ${opensans.variable}`}>
       <div className="border border-b-1">
         <Header />
       </div>

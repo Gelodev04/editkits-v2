@@ -21,10 +21,10 @@ export default function LanguageSelector() {
           inputProps={{'aria-label': 'Language selector'}}
           variant="standard"
           disableUnderline
-          className="text-[13px]"
           IconComponent={() => <FaChevronUp width={11} height={6}/>}
+          sx={{fontSize: "13px", fontFamily: "Open Sans"}}
         >
-          <MenuItem className="text-[13px]" value="English">English</MenuItem>
+          <MenuItem className="text-[130px]" value="English">English</MenuItem>
           <MenuItem className="text-[13px]" value="Spanish">Spanish</MenuItem>
           <MenuItem className="text-[13px]" value="French">French</MenuItem>
         </Select>

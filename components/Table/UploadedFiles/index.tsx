@@ -12,7 +12,6 @@ import {BsThreeDotsVertical} from "react-icons/bs";
 
 import CopyIcon from '@/assets/img/icons/copy.svg';
 import {uploadedFilesColumns} from "@/lib/constants";
-import Typography from "@/components/Typography";
 
 type UploadedFilesTableProps = {
   search: string;
@@ -27,7 +26,7 @@ export default function UploadedFilesTable(props: UploadedFilesTableProps) {
           <TableRow>
             {uploadedFilesColumns.map(col => (
               <TableCell align="left">
-                <Typography variant="b4" label={col.name} bold/>
+                <p className="font-lato font-bold text-xs leading-[16.8px]  text-[#201D23]">{col.name}</p>
               </TableCell>
             ))}
           </TableRow>
@@ -44,23 +43,25 @@ export default function UploadedFilesTable(props: UploadedFilesTableProps) {
               <TableCell width={172} height={92} sx={{border: "none"}} component="th" scope="row">
                 <Image className="rounded-md bg-[#000000] p-[2px]" src={row.icon} alt="icon" objectFit="cover" />
               </TableCell>
-              <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
-                <Typography label={row.input_id} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
-                <Image
-                  src={CopyIcon}
-                  className="cursor-pointer"
-                  onClick={() => navigator.clipboard.writeText(row.input_id)}
-                  alt="input_id"
-                />
+              <TableCell align="left">
+                <div className="flex items-center gap-8">
+                  <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_id}</p>
+                  <Image
+                    src={CopyIcon}
+                    className="cursor-pointer"
+                    onClick={() => navigator.clipboard.writeText(row.input_id)}
+                    alt="input_id"
+                  />
+                </div>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.file_name} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.file_name}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.size} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.size}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.created_at} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.created_at}</p>
               </TableCell>
               <TableCell width={10} sx={{border: "none"}}>
                 <BsThreeDotsVertical color="#4f4f4f" cursor="pointer"/>

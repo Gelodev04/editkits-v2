@@ -15,7 +15,7 @@ import Success from "@/assets/img/icons/success.svg";
 import Failed from "@/assets/img/icons/failed.svg";
 import Progress from "@/assets/img/icons/pending.svg";
 
-export default function JobStatusTable({data, search}: {data: any; search: string}) {
+export default function JobStatusTable({data, search}: { data: any; search: string }) {
   return (
     <TableContainer className="p-2">
       <Table
@@ -25,7 +25,7 @@ export default function JobStatusTable({data, search}: {data: any; search: strin
           <TableRow>
             {tableColumns.map(col => (
               <TableCell align="left">
-                <Typography variant="b4" label={col.name} bold/>
+                <p className="font-lato font-bold text-xs leading-[16.8px]  text-[#201D23]">{col.name}</p>
               </TableCell>
             ))}
           </TableRow>
@@ -51,7 +51,8 @@ export default function JobStatusTable({data, search}: {data: any; search: strin
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <Image className="rounded-md bg-[#000000] w-[138%] p-[2px]" src={row.icon} alt="icon" layout="fill" objectFit="cover"/>
+                  <Image className="rounded-md bg-[#000000] w-[138%] p-[2px]" src={row.icon} alt="icon" layout="fill"
+                         objectFit="cover"/>
 
                   <div
                     style={{
@@ -65,45 +66,50 @@ export default function JobStatusTable({data, search}: {data: any; search: strin
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
-              <Typography label={row.input_id} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
-              <Image
-                src={CopyIcon}
-                className="cursor-pointer"
-                onClick={() => navigator.clipboard.writeText(row.input_id)}
-                alt="input_id"
-              />
-            </TableCell>
+              <TableCell align="left">
+                <div className="flex items-center gap-8">
+                  <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_id}</p>
+                  <Image
+                    src={CopyIcon}
+                    className="cursor-pointer"
+                    onClick={() => navigator.clipboard.writeText(row.input_id)}
+                    alt="input_id"
+                  />
+                </div>
+              </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.file_name} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]" />
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.file_name}</p>
+
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <Typography label="View Details" variant="bl3" underline/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.credits_used} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.credits_used}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <StatusTag status={row.status}/>
+                <StatusTag status={row.status} />
               </TableCell>
-              <TableCell className="flex items-center gap-2 center border-none mt-3.5" align="left">
-                <Typography label={row.input_id} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
-                <Image
-                  src={CopyIcon}
-                  className="cursor-pointer"
-                  onClick={() => navigator.clipboard.writeText(row.input_id)}
-                  alt="input_id"
-                />
+              <TableCell align="left">
+                <div className="flex items-center gap-8">
+                  <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_id}</p>
+                  <Image
+                    src={CopyIcon}
+                    className="cursor-pointer"
+                    onClick={() => navigator.clipboard.writeText(row.input_id)}
+                    alt="input_id"
+                  />
+                </div>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <Typography label={row.created_at} className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]"/>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.created_at}</p>
               </TableCell>
               <TableCell
                 sx={{border: "none"}}
                 align="left">
                 <BsThreeDotsVertical
                   color="#4f4f4f"
-                 cursor="pointer"
+                  cursor="pointer"
                 />
               </TableCell>
             </TableRow>

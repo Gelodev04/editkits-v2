@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import {Fade, Modal} from "@mui/material";
 import Signup from "@/components/modals/Auth/Signup";
 import Login from "@/components/modals/Auth/Login";

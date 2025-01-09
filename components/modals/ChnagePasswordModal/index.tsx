@@ -31,7 +31,8 @@ const style = {
 };
 
 export default function ChangePasswordModal(props: AuthModalProps) {
-  const [currentPassword, setCurrentPassword] = useState("")
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPasswordValid, setPasswordValid] = useState(false)
   const [isCurrentPasswordValid, setCurrentPasswordValid] = useState(false);
@@ -50,6 +51,14 @@ export default function ChangePasswordModal(props: AuthModalProps) {
       clearInterval(interval);
     };
   }, [timer]);
+
+  React.useEffect(() => {
+    if (!props.showAuthModal) {
+      setCurrentPassword('');
+      setConfirmPassword('');
+      setConfirmPassword('');
+    }
+  }, [props.showAuthModal]);
 
   return (
     <Modal open={props.showAuthModal} onClose={() => props.setAuthModal(false)}>
@@ -102,12 +111,13 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                       error={!isCurrentPasswordValid}
                       password={currentPassword}
                       type="password"
+                      value={currentPassword}
                     />
                     <div className="py-4">
                       <TextField
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const passwordValue = e.target.value;
-                          props.setPassword(passwordValue);
+                          setNewPassword(passwordValue);
                           setPasswordValid(validatePassword(passwordValue));
                         }}
                         error={!isPasswordValid}
@@ -115,6 +125,7 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                         label="New Password"
                         placeholder="*********"
                         type="password"
+                        value={newPassword}
                       />
                     </div>
                     <div className="py-4">
@@ -125,6 +136,7 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                         label="Confirm the password"
                         placeholder="**********"
                         type="password"
+                        value={confirmPassword}
                       />
                     </div>
                     <div className="py-4">
@@ -156,7 +168,7 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                   <div className="flex justify-center lg:pb-8 lg:pt-4">
                     <div className="py-3 sm:flex flex justify-center w-[34%]">
                       <Button
-                        disabled={!isCurrentPasswordValid || !isPasswordValid || props.password !== confirmPassword}
+                        disabled={!isCurrentPasswordValid || !isPasswordValid || newPassword !== confirmPassword}
                         onClick={() => props.setAuthModal(false)}
                         label="Reset Password"
                         variant="secondary"

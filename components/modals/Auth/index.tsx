@@ -37,8 +37,21 @@ export default function AuthModal(props: AuthModalProps) {
   const [isPasswordValid, setPasswordValid] = useState(false)
   const {timer, setTimer} = useCountdownTimer(60);
 
+  React.useEffect(() => {
+    if (!props.showAuthModal) {
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+    }
+  }, [props.showAuthModal]);
+
   return (
-    <Modal open={props.showAuthModal} onClose={() => props.setAuthModal(false)}>
+    <Modal open={props.showAuthModal} onClose={() => {
+      setEmail("")
+      setPassword("")
+      setConfirmPassword("")
+      props.setAuthModal(false)
+    }}>
       <Fade in={props.showAuthModal}>
         {/*@ts-ignore*/}
         <div style={style}>

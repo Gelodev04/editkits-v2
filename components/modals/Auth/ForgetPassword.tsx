@@ -43,6 +43,7 @@ export default function ForgetPassword(
           email={email}
           label="Email"
           placeholder="abc@editkits.com"
+          value={email}
         />
       </div>
       <div className="flex justify-center sm:pt-28">

@@ -8,7 +8,14 @@ const nextConfig = {
         permanent: true
       }
     ]
-  }
+  },
+  experimental: {
+    appDir: false
+  },
+  images: {
+    unoptimized: true
+  },
+  output: 'export'
 };
 
 export default nextConfig;

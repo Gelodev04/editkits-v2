@@ -5,7 +5,7 @@ import { Montserrat, Lato } from "next/font/google";
 import dynamic from "next/dynamic";
 
 import "./globals.css";
-import './style.css'
+import './style.css';
 
 const RootLayout = dynamic(() => import('./layout'), { ssr: false });
 
@@ -20,7 +20,6 @@ const lato = Lato({
   weight: ['100', '300', '400', '700', '900'],
   variable: '--font-lato',
 });
-
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -37,4 +36,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default dynamic(() => Promise.resolve(MyApp), {ssr: false})
+export default MyApp;

@@ -2,7 +2,6 @@
   "name": "edit-kits-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://ec2-3-110-220-105.ap-south-1.compute.amazonaws.com:8081",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -16,7 +16,9 @@ export default function Login(
   isEmailValid: boolean,
   setEmailValid: (e: React.SetStateAction<boolean>) => void,
   isPasswordValid: boolean,
-  setPasswordValid:(e:  React.SetStateAction<boolean>) => void
+  setPasswordValid:(e:  React.SetStateAction<boolean>) => void,
+  handleLogin: any,
+  isLoginLoading: boolean
 ) {
   return (
     <>
@@ -75,8 +77,8 @@ export default function Login(
       <div className="flex justify-center sm:pt-32">
         <div className="py-3 sm:flex flex justify-center w-[34%]">
           <Button
-            disabled={!isEmailValid || !isPasswordValid}
-            onClick={() => props.setAuthModal(false)}
+            disabled={!isEmailValid || !isPasswordValid || isLoginLoading}
+            onClick={handleLogin}
             label="Login"
             variant="secondary"
             filled

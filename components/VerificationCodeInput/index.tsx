@@ -19,5 +19,5 @@ const codeInputProps = {
 
 export default function VerificationCodeInput({onChange}: {onChange: (e: string) => void}) {
   //@ts-ignore
-  return <ReactCodeInput onChange={onChange} type='number' fields={5} {...codeInputProps} />
+  return <ReactCodeInput onChange={onChange} type='number' fields={6} {...codeInputProps} />
 }

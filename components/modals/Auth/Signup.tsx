@@ -21,6 +21,8 @@ export default function Signup(
   setConfirmPassword: (e: React.SetStateAction<string>) => void,
   isPasswordValid: boolean,
   setPasswordValid: (e: React.SetStateAction<boolean>) => void,
+  handleRegister: any,
+  isLoading?: any
 ) {
 
   return (
@@ -105,8 +107,8 @@ export default function Signup(
       <div className="flex justify-center">
         <div className="py-3 sm:flex flex justify-center w-[34%]">
           <Button
-            onClick={() => props.setType("Enter verification code")}
-            disabled={!isEmailValid || !isPasswordValid || password !== confirmPassword}
+            onClick={handleRegister}
+            disabled={!isEmailValid || !isPasswordValid || password !== confirmPassword || isLoading}
             label="Create account"
             variant="secondary"
             filled

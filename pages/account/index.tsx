@@ -8,8 +8,11 @@ import Tag from "@/components/Tag";
 import BenefitCard from "@/components/cards/BenefitCard";
 import {validateEmail} from "@/lib/validateEmail";
 import ChangePasswordModal from "@/components/modals/ChnagePasswordModal";
+import {useUserInfo} from "@/hooks/useUserInfo";
 
 export default function Account() {
+  const { userInfo } = useUserInfo();
+
   const [active, setActive] = React.useState("email");
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
@@ -36,7 +39,7 @@ export default function Account() {
               <div className="pt-4 max-w-[412px]">
                 <TextField
                   label="Email"
-                  placeholder="Example1234@gmail.com"
+                  placeholder={userInfo?.email}
                   type="email"
                   error={!isEmailValid}
                   email={email}

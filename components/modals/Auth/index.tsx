@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import Signup from "@/components/modals/Auth/Signup";
 import Login from "@/components/modals/Auth/Login";
@@ -8,6 +8,15 @@ import ForgetPassword from "./ForgetPassword";
 import ResetPassword from "./ResetPassword";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 import {useCountdownTimer} from "@/hooks/useCountdownTimer";
+import {
+  setAccessToken,
+  useConfirmRegisterMutation,
+  useLoginMutation, useRefreshTokenMutation,
+  useRegisterMutation
+} from "@/services/api";
+import toast from "react-hot-toast";
+import {jwtDecode} from "jwt-decode";
+import {setUserInfo} from "@/lib/cookies";
 
 export type AuthModalProps = {
   type: string;
@@ -28,6 +37,11 @@ const style = {
 };
 
 export default function AuthModal(props: AuthModalProps) {
+  const [register, {isLoading}] = useRegisterMutation();
+  const [confirmRegister, {isLoading: isConfirmRegisterLoading}] = useConfirmRegisterMutation();
+  const [login, {isLoading: isLoginLoading}] = useLoginMutation();
+  const [refreshToken] = useRefreshTokenMutation();
+
   const [email, setEmail] = useState("");
   const [isEmailValid, setEmailValid] = useState(false);
   const [code, setCode] = useState("")
@@ -45,6 +59,68 @@ export default function AuthModal(props: AuthModalProps) {
     }
   }, [props.showAuthModal]);
 
+  async function handleRegister() {
+    const response = await register({name: email, email, password});
+    if (response.error) {
+      //@ts-ignore
+      toast.error(response.error.data.errorMsg);
+      return
+    }
+    toast.success(response.data.message)
+    props.setType('Enter verification code')
+  }
+
+  async function handleConfirmRegister() {
+    const response = await confirmRegister({email, code: codes});
+    if (response.error) {
+      //@ts-ignore
+      toast.error(response.error.data.errorMsg);
+      return
+    }
+    toast.success(response.data.message);
+    props.setType("");
+    props.setAuthModal(false);
+  }
+
+  async function handleLogin() {
+    const response = await login({email, password});
+    if (response.error) {
+      //@ts-ignore
+      toast.error(response.error.data.errorMsg);
+      return;
+    }
+
+    //@ts-ignore
+    const { id_token, expires_in } = response.data;
+    const user_info = jwtDecode(id_token);
+    setUserInfo(user_info);
+
+    toast.success("Login successful");
+    props.setType("");
+    props.setAuthModal(false);
+
+    const refreshTime = expires_in * 1000 - 60000;
+
+    setTimeout(() => {
+      refreshAccessToken();
+      //@ts-ignore
+    }, refreshTime)
+  }
+
+
+  async function refreshAccessToken() {
+    try {
+      //@ts-ignore
+      const response = await refreshToken();
+      const {access_token, expires_in} = response.data as any;
+      setAccessToken(access_token);
+
+      const refreshTime = expires_in * 1000 - 60000;
+      setTimeout(() => {
+        refreshAccessToken();
+      }, refreshTime)
+    } catch (e) {return e}
+  }
   return (
     <Modal open={props.showAuthModal} onClose={() => {
       setEmail("")
@@ -63,9 +139,17 @@ export default function AuthModal(props: AuthModalProps) {
                 <div className="absolute right-2 top-2 cursor-pointer">
                   <TbXboxX size={30} color="#000" onClick={() => props.setAuthModal(false)}/>
                 </div>
-                {props.type === "Sign Up" && Signup(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid)}
-                {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid)}
-                {props.type === "Enter verification code" && Verification({props, timer, setTimer, codes, setCodes})}
+                {props.type === "Sign Up" && Signup(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleRegister, isLoading)}
+                {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid, handleLogin, isLoginLoading)}
+                {props.type === "Enter verification code" && Verification({
+                  props,
+                  timer,
+                  setTimer,
+                  codes,
+                  setCodes,
+                  handleConfirmRegister,
+                  isConfirmRegisterLoading
+                })}
                 {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid)}
                 {props.type === "Reset Password" && ResetPassword(props, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid)}
               </div>

@@ -1,8 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from 'js-cookie';
+
+
+export const setAccessToken = (token) => Cookies.set("accessToken",  token);
+const getAccessToken = () => Cookies.get("accessToken");
+
+const setRefreshToken = (token) => Cookies.set("refreshToken", token);
+export const getRefreshToken = () => Cookies.get("refreshToken");
+
+export const getUserInfo = () => {
+  const data = Cookies.get("userInfo");
+  return data ? JSON.parse(data) : null
+}
 
 export const api = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.NEXT_PUBLIC_API_URL as string,
+  }),
   endpoints: (builder) => ({
     register: builder.mutation({
       query: ({ name, email, password }) => ({
@@ -24,13 +39,28 @@ export const api = createApi({
         method: 'POST',
         body: { email, password },
       }),
+      transformResponse(response) {
+        //@ts-ignore
+        setAccessToken(response.access_token);
+        //@ts-ignore
+        setRefreshToken(response.refresh_token)
+        return response;
+      }
     }),
     refreshToken: builder.mutation({
-      query: ({ refresh_token, id }) => ({
-        url: '/auth/refresh_token',
-        method: 'POST',
-        body: { refresh_token, id },
-      }),
+      query: () => {
+        const refresh_token = getRefreshToken();
+        const userId = getUserInfo().sub;
+
+        return {
+          url: '/auth/refresh_token',
+          method: 'POST',
+          body: { refresh_token, id: userId },
+        }
+      },
+      transformResponse(response) {
+        return response;
+      }
     }),
     resendConfirmationCode: builder.mutation({
       query: ({ email }) => ({
@@ -54,11 +84,36 @@ export const api = createApi({
       }),
     }),
     logout: builder.mutation({
-      query: ({ refresh_token, email }) => ({
-        url: '/auth',
-        method: 'POST',
-        body: { refresh_token, email },
-      }),
+      query: () => {
+        const refresh_token = getRefreshToken();
+        const access_token = getAccessToken();
+        const email = getUserInfo().email;
+
+        return {
+          url: '/auth/logout',
+          method: 'POST',
+          body: { refresh_token, email },
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          Cookies.remove("accessToken");
+          Cookies.remove("refreshToken");
+          Cookies.remove("userInfo");
+
+        } catch (error) {
+          console.error("Failed to log out:", error);
+        }
+      },
+
+      transformResponse(baseQueryReturnValue) {
+        return baseQueryReturnValue;
+      }
     }),
     upload: builder.mutation({
       query: ({ file_name, mime_type, ext, content_length }) => ({

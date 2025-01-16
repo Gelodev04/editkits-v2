@@ -1,13 +1,16 @@
 import './globals.css';
 import Head from 'next/head';
-import { AppProps } from "next/app";
-import { Montserrat, Lato } from "next/font/google";
+import {AppProps} from "next/app";
+import {Montserrat, Lato} from "next/font/google";
 import dynamic from "next/dynamic";
 
 import "./globals.css";
 import './style.css';
+import {Provider} from "react-redux";
+import {store} from "@/store";
+import { Toaster } from "react-hot-toast";
 
-const RootLayout = dynamic(() => import('./layout'), { ssr: false });
+const RootLayout = dynamic(() => import('./layout'), {ssr: false});
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -21,16 +24,19 @@ const lato = Lato({
   variable: '--font-lato',
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({Component, pageProps}: AppProps) {
   return (
     <>
       <Head>
         <title>Edit Kits</title>
       </Head>
       <div className={`${montserrat.variable} ${lato.variable} font-sans`}>
-        <RootLayout>
-          <Component {...pageProps} />
-        </RootLayout>
+        <Provider store={store}>
+          <RootLayout>
+            <Toaster containerClassName="font-lato font-normal" position="top-right" />
+            <Component {...pageProps} />
+          </RootLayout>
+        </Provider>
       </div>
     </>
   );

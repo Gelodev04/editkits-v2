@@ -13,12 +13,19 @@ import Subscription from '@/assets/img/icons/subscription.svg'
 import Logout from '@/assets/img/icons/logout.svg'
 import {Divider} from "@mui/material";
 import Typography from "@/components/Typography";
+import {useUserInfo} from "@/hooks/useUserInfo";
+import {useLogoutMutation} from "@/services/api";
+import toast from "react-hot-toast";
+import {removeUserInfo} from "@/lib/cookies";
 
 export default function Header() {
+  const router = useRouter();
+  const { userInfo } = useUserInfo();
+  const [logout] = useLogoutMutation();
+
   const [type, setType] = useState("");
   const [showAuthModal, setAuthModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
 
   function onSignup() {
     setAuthModal(true);
@@ -30,26 +37,39 @@ export default function Header() {
     setType("Log In");
   }
 
+  async function handleLogout() {
+    //@ts-ignore
+    const response = await logout();
+    if(response.error) {
+      //@ts-ignore
+      toast.error(response.error.data.errorMsg);
+      return;
+    }
+    toast.success(response.data.message);
+    removeUserInfo()
+    await router.push('home')
+  }
+
   return (
     <div className="flex justify-between py-5 bg-white w-full max-w-[1280px] mx-auto px-8">
       <Link href="/">
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
       </Link>
       <div className="flex space-x-6 justify-center items-center">
-        {(router.pathname === "/dashboard" || router.pathname === "/account" || router.pathname === "/resize" || router.pathname === "/account" || router.pathname === "/trim") && (
+        {userInfo && (
           <Link href="/dashboard">
-            <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"} />
+            <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"}/>
           </Link>
         )}
         <Link href="/tools">
-          <Typography label="Tools" variant="link" bold={router.pathname === "/tools"} />
+          <Typography label="Tools" variant="link" bold={router.pathname === "/tools"}/>
         </Link>
         <Link href="/pricing">
-          <Typography label="Pricing" variant="link" bold={router.pathname === "/pricing"} />
+          <Typography label="Pricing" variant="link" bold={router.pathname === "/pricing"}/>
         </Link>
       </div>
       <div className="flex gap-[11px] justify-center items-center">
-        {router.pathname === "/dashboard" || router.pathname === '/account' || router.pathname === '/trim' || router.pathname === '/resize' ? (
+        {userInfo && (
           <div className="w-[160px] relative inline-block">
             <Button
               onClick={() => setIsOpen(!isOpen)}
@@ -80,9 +100,9 @@ export default function Header() {
                   leftIcon={Subscription}
                   className="font-inter font-normal gap-4 px-4"
                 />
-                <Divider orientation="horizontal" flexItem />
+                <Divider orientation="horizontal" flexItem/>
                 <Button
-                  onClick={() => router.push('home')}
+                  onClick={handleLogout}
                   fontWeight="font-normal"
                   font="font-inter"
                   variant="primary"
@@ -92,7 +112,9 @@ export default function Header() {
               </div>
             )}
           </div>
-        ) : (
+        )}
+
+        {!userInfo && (
           <>
             <div className="w-32">
               <Button

@@ -8,12 +8,13 @@ import VerificationCodeInput from "../../VerificationCodeInput/index";
 export default function Verification({
                                        props,
                                        timer,
-                                       setTimer,
+                                       email,
                                        codes,
                                        setCodes,
-                                        handleConfirmRegister,
-  isConfirmRegisterLoading
-                                     }: { props: AuthModalProps, timer: number, setTimer: any, codes: string, setCodes: (e: React.SetStateAction<string>) => void, handleConfirmRegister: any, isConfirmRegisterLoading?: boolean }) {
+                                       handleResendConfirmationCode,
+                                       handleConfirmRegister,
+                                       isConfirmRegisterLoading
+                                     }: { props: AuthModalProps, timer: number, email: string, codes: string, setCodes: (e: React.SetStateAction<string>) => void,  handleResendConfirmationCode: any, handleConfirmRegister: any, isConfirmRegisterLoading?: boolean }) {
 
   return (
     <>
@@ -28,7 +29,7 @@ export default function Verification({
 
             <div className="mt-2">
               <Typography
-                label="We've sent a code to example@gmail.com"
+                label={`We've sent a code to ${email}`}
                 center
                 variant="b3"
               />
@@ -40,7 +41,7 @@ export default function Verification({
         <VerificationCodeInput onChange={(e: string) => setCodes(e)}/>
         <div className="flex pb-10 pt-5 justify-center items-center gap-y-1 gap-x-2">
           <Typography label="Didn't get the code ?" variant="b3"/>
-          {timer === 0 && <Typography onClick={() => setTimer(60)} label="Click here to resend" variant="bbl3" button/>}
+          {timer === 0 && <Typography onClick={handleResendConfirmationCode} label="Click here to resend" variant="bbl3" button/>}
           <div className="flex gap-x-1">
             {timer !== 0 && <Typography label={`Click here to resend `} variant="bb3"/>}
             {timer !== 0 && <Typography label={`in ${timer} seconds`} variant="b3"/>}

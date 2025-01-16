@@ -12,7 +12,7 @@ import {
   setAccessToken,
   useConfirmRegisterMutation,
   useLoginMutation, useRefreshTokenMutation,
-  useRegisterMutation
+  useRegisterMutation, useResendConfirmationCodeMutation
 } from "@/services/api";
 import toast from "react-hot-toast";
 import {jwtDecode} from "jwt-decode";
@@ -41,6 +41,7 @@ export default function AuthModal(props: AuthModalProps) {
   const [confirmRegister, {isLoading: isConfirmRegisterLoading}] = useConfirmRegisterMutation();
   const [login, {isLoading: isLoginLoading}] = useLoginMutation();
   const [refreshToken] = useRefreshTokenMutation();
+  const [resendConfirmationCode] = useResendConfirmationCodeMutation();
 
   const [email, setEmail] = useState("");
   const [isEmailValid, setEmailValid] = useState(false);
@@ -58,6 +59,18 @@ export default function AuthModal(props: AuthModalProps) {
       setConfirmPassword('');
     }
   }, [props.showAuthModal]);
+
+  async function handleResendConfirmationCode() {
+    const response = await resendConfirmationCode({email});
+    if (response.error) {
+      //@ts-ignore
+      toast.error(response.error.data.errorMsg);
+      return;
+    }
+    toast.success(response.data.message);
+    setTimer(60)
+  }
+
 
   async function handleRegister() {
     const response = await register({name: email, email, password});
@@ -91,7 +104,7 @@ export default function AuthModal(props: AuthModalProps) {
     }
 
     //@ts-ignore
-    const { id_token, expires_in } = response.data;
+    const {id_token, expires_in} = response.data;
     const user_info = jwtDecode(id_token);
     setUserInfo(user_info);
 
@@ -119,8 +132,11 @@ export default function AuthModal(props: AuthModalProps) {
       setTimeout(() => {
         refreshAccessToken();
       }, refreshTime)
-    } catch (e) {return e}
+    } catch (e) {
+      return e
+    }
   }
+
   return (
     <Modal open={props.showAuthModal} onClose={() => {
       setEmail("")
@@ -144,9 +160,10 @@ export default function AuthModal(props: AuthModalProps) {
                 {props.type === "Enter verification code" && Verification({
                   props,
                   timer,
-                  setTimer,
+                  email,
                   codes,
                   setCodes,
+                  handleResendConfirmationCode,
                   handleConfirmRegister,
                   isConfirmRegisterLoading
                 })}

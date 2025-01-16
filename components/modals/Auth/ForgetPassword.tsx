@@ -11,6 +11,7 @@ export default function ForgetPassword(
   setEmail: (e: React.SetStateAction<string>) => void,
   isEmailValid: boolean,
   setEmailValid: (e: React.SetStateAction<boolean>) => void,
+  handleSendResetCode: any
 ) {
   return (
     <>
@@ -50,7 +51,7 @@ export default function ForgetPassword(
         <div className="py-3 sm:flex flex justify-center w-[34%] sm:pb-10">
           <Button
             disabled={!isEmailValid}
-            onClick={() => props.setType("Reset Password")}
+            onClick={handleSendResetCode}
             label="Send reset code" variant="secondary"
             filled
           />

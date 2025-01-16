@@ -9,10 +9,10 @@ import ResetPassword from "./ResetPassword";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 import {useCountdownTimer} from "@/hooks/useCountdownTimer";
 import {
-  setAccessToken,
+  setAccessToken, useConfirmPasswordResetMutation,
   useConfirmRegisterMutation,
   useLoginMutation, useRefreshTokenMutation,
-  useRegisterMutation, useResendConfirmationCodeMutation
+  useRegisterMutation, useRequestPasswordResetMutation, useResendConfirmationCodeMutation
 } from "@/services/api";
 import toast from "react-hot-toast";
 import {jwtDecode} from "jwt-decode";
@@ -42,6 +42,8 @@ export default function AuthModal(props: AuthModalProps) {
   const [login, {isLoading: isLoginLoading}] = useLoginMutation();
   const [refreshToken] = useRefreshTokenMutation();
   const [resendConfirmationCode] = useResendConfirmationCodeMutation();
+  const [requestPasswordReset] = useRequestPasswordResetMutation();
+  const [confirmPasswordReset] = useConfirmPasswordResetMutation();
 
   const [email, setEmail] = useState("");
   const [isEmailValid, setEmailValid] = useState(false);
@@ -91,8 +93,7 @@ export default function AuthModal(props: AuthModalProps) {
       return
     }
     toast.success(response.data.message);
-    props.setType("");
-    props.setAuthModal(false);
+    props.setType("Log In");
   }
 
   async function handleLogin() {
@@ -137,6 +138,31 @@ export default function AuthModal(props: AuthModalProps) {
     }
   }
 
+  async function handleSendResetCode() {
+    const response = await requestPasswordReset({email});
+    if (response.error) {
+      //@ts-ignore
+      toast.error(response.error.data.errorMsg)
+      return
+    }
+
+    toast.success(response.data.message);
+    props.setType("Reset Password")
+  }
+
+  async function handleResetPassword() {
+    const response = await confirmPasswordReset({email, resetCode: code, newPassword: password});
+    if (response.error) {
+      //@ts-ignore
+      toast.error(response.error.data.errorMsg);
+      return
+    }
+
+    //@ts-ignore
+    toast.success(response.data.message);
+    props.setType("Log In")
+  }
+
   return (
     <Modal open={props.showAuthModal} onClose={() => {
       setEmail("")
@@ -167,8 +193,8 @@ export default function AuthModal(props: AuthModalProps) {
                   handleConfirmRegister,
                   isConfirmRegisterLoading
                 })}
-                {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid)}
-                {props.type === "Reset Password" && ResetPassword(props, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid)}
+                {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode)}
+                {props.type === "Reset Password" && ResetPassword(props, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword)}
               </div>
             </div>
           </div>

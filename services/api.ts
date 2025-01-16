@@ -77,11 +77,14 @@ export const api = createApi({
       }),
     }),
     confirmPasswordReset: builder.mutation({
-      query: ({ email }) => ({
+      query: ({ email, resetCode, newPassword }) => ({
         url: '/auth/confirm_password_reset',
         method: 'POST',
-        body: { email },
+        body: { email, resetCode, newPassword },
       }),
+      transformResponse(baseQueryReturnValue) {
+        return baseQueryReturnValue;
+      }
     }),
     logout: builder.mutation({
       query: () => {

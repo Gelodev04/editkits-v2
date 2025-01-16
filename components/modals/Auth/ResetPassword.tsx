@@ -18,6 +18,7 @@ export default function ResetPassword(
   setConfirmPassword: (e: React.SetStateAction<string>) => void,
   isPasswordValid: boolean,
   setPasswordValid: (e: React.SetStateAction<boolean>) => void,
+  handleResetPassword: any
 ) {
   return (
     <>
@@ -48,6 +49,7 @@ export default function ResetPassword(
             const code = e.target.value;
             setCode(code)
           }}
+          value={code}
           code={code}
           error={!(code.length >= 6)}
         />
@@ -103,7 +105,7 @@ export default function ResetPassword(
         <div className="py-3 sm:flex flex justify-center w-[34%]">
           <Button
             disabled={code?.length !== 6 || !isPasswordValid || password !== confirmPassword}
-            onClick={() => props.setAuthModal(false)}
+            onClick={handleResetPassword}
             label="Reset Password"
             variant="secondary"
             filled

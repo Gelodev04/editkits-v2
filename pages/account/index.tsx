@@ -9,15 +9,35 @@ import BenefitCard from "@/components/cards/BenefitCard";
 import {validateEmail} from "@/lib/validateEmail";
 import ChangePasswordModal from "@/components/modals/ChnagePasswordModal";
 import {useUserInfo} from "@/hooks/useUserInfo";
+import {useUpdatePasswordMutation} from "@/services/api";
+import toast from "react-hot-toast";
 
 export default function Account() {
   const { userInfo } = useUserInfo();
+  const [updatePassword] = useUpdatePasswordMutation();
 
   const [active, setActive] = React.useState("email");
   const [email, setEmail] = React.useState("")
-  const [password, setPassword] = React.useState("")
+  const [currentPassword, setCurrentPassword] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
   const [isEmailValid, setEmailValid] = React.useState("");
-  const [changePasswordModalVisible, setChangePasswordModalVisible] = React.useState(false)
+  const [updatePasswordModal, setUpdatePasswordModal] = React.useState(false)
+
+  async function handleUpdatePassword() {
+    const response = await updatePassword({current_password: currentPassword, new_password: newPassword});
+
+    if (response.error) {
+      //@ts-ignore
+      toast.error(response.error.data.errorMsg);
+      return;
+    }
+
+    //@ts-ignore
+    toast.success(response.data.message);
+    setUpdatePasswordModal(false);
+
+  }
 
   const benefits = [
     "No Credit Card required",
@@ -53,7 +73,7 @@ export default function Account() {
                 />
                 <div className="pt-10">
                   <Button
-                    onClick={() => setChangePasswordModalVisible(true)}
+                    onClick={() => setUpdatePasswordModal(true)}
                     className="max-w-[191px] max-h-[48px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
                     label="Change Password"
                     variant="contained"
@@ -68,14 +88,19 @@ export default function Account() {
       </div>
       <ChangePasswordModal
         type="Change Password"
-        setAuthModal={setChangePasswordModalVisible}
-        showAuthModal={changePasswordModalVisible}
+        handleUpdatePassword={handleUpdatePassword}
+        updatePasswordModal={updatePasswordModal}
+        setUpdatePasswordModal={setUpdatePasswordModal}
         // @ts-ignore
         setType={undefined}
         // @ts-ignore
         description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span>, please enter the code below to reset your password</>}
-        password={password}
-        setPassword={setPassword}
+        currentPassword={currentPassword}
+        setCurrentPassword={setCurrentPassword}
+        newPassword={newPassword}
+        setNewPassword={setNewPassword}
+        confirmPassword={confirmPassword}
+        setConfirmPassword={setConfirmPassword}
       />
     </div>
   )

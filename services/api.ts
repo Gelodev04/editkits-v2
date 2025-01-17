@@ -118,6 +118,23 @@ export const api = createApi({
         return baseQueryReturnValue;
       }
     }),
+    updatePassword: builder.mutation({
+      query: ({current_password, new_password}) => {
+        const access_token = getAccessToken();
+
+        return {
+          url: '/auth/update_password',
+          method: 'POST',
+          body: {current_password, new_password},
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }
+      },
+      transformResponse(baseQueryReturnValue){
+        return baseQueryReturnValue
+      }
+    }),
     upload: builder.mutation({
       query: ({ file_name, mime_type, ext, content_length }) => ({
         url: '/file/upload',
@@ -144,6 +161,7 @@ export const {
   useRequestPasswordResetMutation,
   useConfirmPasswordResetMutation,
   useLogoutMutation,
+  useUpdatePasswordMutation,
   useUploadMutation,
   useStatusQuery,
 } = api;

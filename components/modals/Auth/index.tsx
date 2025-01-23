@@ -59,6 +59,8 @@ export default function AuthModal(props: AuthModalProps) {
       setEmail('');
       setPassword('');
       setConfirmPassword('');
+      setCode("")
+      setCodes("")
     }
   }, [props.showAuthModal]);
 
@@ -194,7 +196,7 @@ export default function AuthModal(props: AuthModalProps) {
                   isConfirmRegisterLoading
                 })}
                 {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode)}
-                {props.type === "Reset Password" && ResetPassword(props, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword)}
+                {props.type === "Reset Password" && ResetPassword(props, email, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword)}
               </div>
             </div>
           </div>

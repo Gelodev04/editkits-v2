@@ -10,6 +10,7 @@ import {validatePassword} from "@/lib/validatePassword";
 
 export default function ResetPassword(
   props: AuthModalProps,
+  email: string,
   code: string,
   setCode: (e: React.SetStateAction<string>) => void,
   password: string,
@@ -33,7 +34,7 @@ export default function ResetPassword(
 
             <div className="mt-2">
               <Typography
-                label={ <>We have sent the reset code to <span className="font-bold">abc@editkits.com</span>, please enter the code below to reset your password</>}
+                label={ <>We have sent the reset code to <span className="font-bold">{email || ""}</span>, please enter the code below to reset your password</>}
                 center
                 variant="b3"
               />

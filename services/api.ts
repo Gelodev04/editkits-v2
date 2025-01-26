@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import Cookies from 'js-cookie';
 
 
-export const setAccessToken = (token) => Cookies.set("accessToken",  token);
+export const setAccessToken = (token) => Cookies.set("accessToken", token);
 const getAccessToken = () => Cookies.get("accessToken");
 
 const setRefreshToken = (token) => Cookies.set("refreshToken", token);
@@ -20,24 +20,24 @@ export const api = createApi({
   }),
   endpoints: (builder) => ({
     register: builder.mutation({
-      query: ({ name, email, password }) => ({
+      query: ({name, email, password}) => ({
         url: '/auth/register',
         method: 'POST',
-        body: { name, email, password },
+        body: {name, email, password},
       }),
     }),
     confirmRegister: builder.mutation({
-      query: ({ email, code }) => ({
+      query: ({email, code}) => ({
         url: '/auth/confirm_register',
         method: 'POST',
-        body: { email, code },
+        body: {email, code},
       }),
     }),
     login: builder.mutation({
-      query: ({ email, password }) => ({
+      query: ({email, password}) => ({
         url: '/auth/login',
         method: 'POST',
-        body: { email, password },
+        body: {email, password},
       }),
       transformResponse(response) {
         //@ts-ignore
@@ -55,7 +55,7 @@ export const api = createApi({
         return {
           url: '/auth/refresh_token',
           method: 'POST',
-          body: { refresh_token, id: userId },
+          body: {refresh_token, id: userId},
         }
       },
       transformResponse(response) {
@@ -63,24 +63,24 @@ export const api = createApi({
       }
     }),
     resendConfirmationCode: builder.mutation({
-      query: ({ email }) => ({
+      query: ({email}) => ({
         url: '/auth/resend_confirmation_code',
         method: 'POST',
-        body: { email },
+        body: {email},
       }),
     }),
     requestPasswordReset: builder.mutation({
-      query: ({ email }) => ({
+      query: ({email}) => ({
         url: '/auth/request_password_reset',
         method: 'POST',
-        body: { email },
+        body: {email},
       }),
     }),
     confirmPasswordReset: builder.mutation({
-      query: ({ email, resetCode, newPassword }) => ({
+      query: ({email, resetCode, newPassword}) => ({
         url: '/auth/confirm_password_reset',
         method: 'POST',
-        body: { email, resetCode, newPassword },
+        body: {email, resetCode, newPassword},
       }),
       transformResponse(baseQueryReturnValue) {
         return baseQueryReturnValue;
@@ -95,13 +95,13 @@ export const api = createApi({
         return {
           url: '/auth/logout',
           method: 'POST',
-          body: { refresh_token, email },
+          body: {refresh_token, email},
           headers: {
             Authorization: `Bearer ${access_token}`
           }
         }
       },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_, {dispatch, queryFulfilled}) {
         try {
           await queryFulfilled;
 
@@ -131,22 +131,36 @@ export const api = createApi({
           }
         }
       },
-      transformResponse(baseQueryReturnValue){
+      transformResponse(baseQueryReturnValue) {
         return baseQueryReturnValue
       }
     }),
     upload: builder.mutation({
-      query: ({ file_name, mime_type, ext, content_length }) => ({
-        url: '/file/upload',
-        method: 'POST',
-        body: { file_name, mime_type, ext, content_length },
-      }),
+      query: ({file_name, mime_type, ext, content_length}) => {
+        const access_token = getAccessToken();
+
+        return {
+          url: '/file/upload',
+          method: 'POST',
+          body: {file_name, mime_type, ext, content_length},
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }
+      },
     }),
     status: builder.query({
-      query: ({ field }) => ({
-        url: `/file/status?field=${field}`,
-        method: 'GET',
-      }),
+      query: ({fileId}) => {
+        const access_token = getAccessToken();
+
+        return {
+          url: `/file/status?fileId=${fileId}`,
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }
+      },
       transformResponse: (response) => response,
     }),
   }),

@@ -10,6 +10,9 @@ import Select from "@/components/Select";
 
 import {outputQuality, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
+import {useStatusQuery, useUploadMutation} from "@/services/api";
+import {useEffect} from "react";
+import {calculatePercentage} from "@/lib/calculatePercentage";
 
 export default function TrimVideo() {
   const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
@@ -18,7 +21,26 @@ export default function TrimVideo() {
   const [endTime, setEndTime] = React.useState<any>(null);
   const [frameRate, setFramerate] = React.useState<any>(null);
   const [audioSampleRate, setAudioSampleRate] = React.useState<any>(null);
-  const videoRef = React.useRef(null)
+  const videoRef = React.useRef(null);
+
+  const [fileId, setFileId] = React.useState(null);
+  const [upload] = useUploadMutation();
+  const { data , refetch } = useStatusQuery({ fileId });
+  const [fetchedData, setFetchedData] = React.useState(null);
+  const [progress, setProgress] = React.useState(0);
+  const [isUploading, setIsUploading] = React.useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+      // @ts-ignore
+      setFetchedData(data)
+      // @ts-ignore
+      setProgress(calculatePercentage(fetchedData?.metadata?.size ?? 0, file?.size ?? 10))
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [data]);
 
   return (
     <div className="max-w-[768px] px-12 lg:px-0 mx-auto">
@@ -40,7 +62,7 @@ export default function TrimVideo() {
         />
       </div>
       <div className="w-full border-b-2 pt-4 border-[#D9D9D9]"/>
-      <VideoUpload videoRef={videoRef} file={file} setUploadFileModal={setUploadFileModal} />
+      <VideoUpload videoRef={videoRef} file={file} setUploadFileModal={setUploadFileModal} uploadedData={data} progress={progress} fetchedData={fetchedData} isUploading={isUploading} />
       <div className="pt-14">
         <Typography
           label="Tools Properties"
@@ -136,6 +158,10 @@ export default function TrimVideo() {
         setUploadModal={setUploadFileModal}
         file={file}
         setFile={setFile}
+        upload={upload}
+        setFileId={setFileId}
+        isUploading={isUploading}
+        setIsUploading={setIsUploading}
       />
     </div>
   )

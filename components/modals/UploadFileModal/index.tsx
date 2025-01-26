@@ -7,6 +7,8 @@ import Image from "next/image";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 import {lato, montserrat, opensans} from "@/lib/fonts";
+import toast from "react-hot-toast";
+import {fileUploader} from "@/lib/uploadFile";
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -14,6 +16,10 @@ export type UploadModalProps = {
   videoRef?: React.Ref<string>;
   file?: any;
   setFile?: (e: React.SetStateAction<any>) => void;
+  setFileId?: (e: React.SetStateAction<any>) => void;
+  upload?: any;
+  isUploading?: boolean;
+  setIsUploading?: any
 }
 
 const style = {
@@ -29,20 +35,38 @@ const style = {
 export default function UploadFileModal(props: UploadModalProps) {
   const fileInputRef = React.useRef(null);
   const [isDragging, setIsDragging] = useState(false);
-
-
   const handleDivClick = () => {
     //@ts-ignore
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (event: any) => {
+  async function handleFileUpload(file) {
+
+    props.setIsUploading(true)
+    const response = await props.upload({file_name: file.name, mime_type: file.type, ext: file.name.split('.').pop(), content_length: file.size});
+
+    if(response.error) {
+      toast.error(response.error.data.errorMsg);
+      return;
+    }
+
+
+    await fileUploader(response.data.presigned_url, file, props.setUploadModal, props.setIsUploading)
+    if (props.setFileId) {
+      props.setFileId(response.data.file_id);
+    }
+    toast.success("File uploaded");
+    props.setUploadModal(false);
+  }
+
+  const handleFileChange = async (event: any) => {
     const file = event.target.files[0];
     if (file) {
       if (file.type.startsWith("video/")) {
         // @ts-ignore
         props.setFile(file);
-        props.setUploadModal(false);
+        await handleFileUpload(file)
+        // props.setUploadModal(false);
         // @ts-ignore
         if (props.videoRef.current) {
           // @ts-ignore

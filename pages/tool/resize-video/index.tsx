@@ -9,49 +9,89 @@ import TextField from "@/components/TextField";
 import Select from "@/components/Select";
 
 import ColorPicker from "@/components/ColorPicker";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {aspectRatio, outputQuality, presets, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
+import {useStatusQuery, useUploadMutation} from "@/services/api";
+import {calculatePercentage} from "@/lib/calculatePercentage";
 
 export default function ResizeVideo() {
+  const  [fileId, setFileId] = useState(null);
+  const [upload] = useUploadMutation();
+  const { data, refetch } = useStatusQuery({ fileId });
+
+  const [settings, setSettings] = useState({
+    width: undefined,
+    height: undefined,
+    aspectX: 1,
+    aspectY: 1,
+    color: "#000000",
+    isColorValid: true,
+    framerate: undefined,
+    audioSampleRate: undefined
+  })
+
+  const [fetchedData, setFetchedData] = React.useState(null)
   const [presetWidth, setPresetWidth] = React.useState<any>(undefined);
   const [presetHeight, setPresetHeight] = React.useState<any>(undefined)
   const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
   const [file, setFile] = React.useState<any>(null);
-  const [color, setColor] = React.useState<any>("#000000");
-  const [isColorValid, setIsColorValid] = React.useState<any>(true);
-  const [width, setWidth] = React.useState<any>(undefined);
-  const [height, setHeight] = React.useState<any>(undefined);
-  const [aspectX, setAspectX] = React.useState<any>(1);
-  const [aspectY, setAspectY] = React.useState<any>(1);
   const [activeInput, setActiveInput] = React.useState<any>("");
   const [isCustom, setIsCustom] = React.useState<any>(true);
-  const [audioSampleRate, setAudioSampleRate] = React.useState<any>(undefined);
-  const [framerate, setFramerate] = React.useState<any>(undefined);
+  const [progress, setProgress] = React.useState(0);
+  const [isUploading, setIsUploading] = useState(false);
   const videoRef = React.useRef(null);
+
+  const calculateHeight = (width, aspectX, aspectY) => Math.floor(width * (aspectY / aspectX));
+  const calculateWidth = (height, aspectX, aspectY) => Math.floor(height * (aspectX / aspectY));
+
+  const updateSettings = (key, value) => {
+    setSettings((prev) => ({ ...prev, [key]: value }));
+  };
+
+  useEffect(() => {
+    //@ts-ignore
+    updateSettings("width", fetchedData?.metadata?.width)
+    //@ts-ignore
+    updateSettings("height", fetchedData?.metadata?.height)
+  }, [data])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+      //@ts-ignore
+      setFetchedData(data)
+      //@ts-ignore
+      setProgress(calculatePercentage(fetchedData?.metadata?.size ?? 0, file?.size ?? 10))
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [data]);
 
   useEffect(() => {
     if (!isCustom) {
-      if (activeInput === "width" && width > 0) {
-        setHeight(Math.floor(width * (aspectY / aspectX)));
-      } else if (activeInput === "height" && height > 0) {
-        setWidth(Math.floor(height * (aspectX / aspectY)));
+      //@ts-ignore
+      if (activeInput === "width" && settings?.width > 0) {
+        updateSettings("height", calculateHeight(settings.width,  settings.aspectX, settings.aspectY))
+      //  @ts-ignore
+      } else if (activeInput === "height" && settings?.height > 0) {
+        updateSettings("width", calculateWidth(settings.width,  settings.aspectX, settings.aspectY))
       }
     }
-  }, [width, height, aspectX, aspectY, activeInput, isCustom]);
+  }, [settings.width, settings.height, settings.aspectX, settings.aspectY, activeInput, isCustom]);
 
   useEffect(() => {
-    setHeight(presetHeight * aspectY);
-  }, [aspectY])
+    updateSettings("height", presetHeight * settings.aspectY)
+  }, [settings.aspectY])
 
   useEffect(() => {
-    setWidth(presetWidth * aspectX);
-  }, [(presetWidth && aspectX)])
+    updateSettings("width", presetWidth * settings.aspectX)
+  }, [(presetWidth && settings.aspectX)])
 
   const handleColorChange = (e: any) => {
     const newColor = e.target.value;
-    setColor(newColor);
-    setIsColorValid(/^#[0-9A-Fa-f]{6}$/.test(newColor));
+    updateSettings("color", newColor)
+    updateSettings("isColorValid", /^#[0-9A-Fa-f]{6}$/.test(newColor))
   };
 
   return (
@@ -74,7 +114,7 @@ export default function ResizeVideo() {
         />
       </div>
       <div className="w-full border-b-2 pt-4 border-[#D9D9D9]"/>
-      <VideoUpload videoRef={videoRef} setUploadFileModal={setUploadFileModal} file={file} />
+      <VideoUpload videoRef={videoRef} setUploadFileModal={setUploadFileModal} file={file} uploadedData={data} progress={progress} fetchedData={fetchedData} isUploading={isUploading} />
       <div className="pt-14">
         <Typography
           label="Tools Properties"
@@ -93,9 +133,9 @@ export default function ResizeVideo() {
               const [, , resolution] = e.target.value?.split(",") || [];
               const [presetWidth, presetHeight] = resolution.split("x").map(Number);
 
-              setWidth(presetWidth);
+              updateSettings("width", presetWidth)
               setPresetWidth(presetWidth)
-              setHeight(presetHeight);
+              updateSettings("height", presetHeight)
               setPresetHeight(presetHeight)
               setActiveInput("preset");
             }}
@@ -124,8 +164,8 @@ export default function ResizeVideo() {
                 const aspect = field.split(":")
                 const x = aspect[0];
                 const y = aspect[1];
-                setAspectX(Number(x))
-                setAspectY(Number(y));
+                updateSettings("aspectX", Number(x))
+                updateSettings("aspectY", Number(y))
               } else {
                 setIsCustom(true)
               }
@@ -135,7 +175,7 @@ export default function ResizeVideo() {
           />
         </div>
       </div>
-      <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal}/>
+      <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} />
       <div className="flex justify-between gap-6">
         <div className="w-full">
           <TextField
@@ -144,10 +184,10 @@ export default function ResizeVideo() {
             placeholder="1920"
             variant="t2"
             label="Width"
-            value={width}
+            value={settings.width}
             onChange={(e) => {
               setActiveInput("width")
-              setWidth(e.target.value)
+              updateSettings("width", e.target.value)
             }}
           />
         </div>
@@ -158,10 +198,10 @@ export default function ResizeVideo() {
             placeholder="1080"
             variant="t2"
             label="Height"
-            value={height}
+            value={settings.height}
             onChange={(e) => {
               setActiveInput("height")
-              setHeight(e.target.value)
+              updateSettings("height", e.target.value)
             }}/>
         </div>
       </div>
@@ -169,9 +209,8 @@ export default function ResizeVideo() {
         <div className="w-full">
           <ColorPicker
             disabled={!file}
-            isColorValid={isColorValid}
-            setIsColorValid={setIsColorValid}
-            color={color}
+            isColorValid={settings.isColorValid}
+            color={settings.color}
             handleColorChange={handleColorChange}
             placeholder="#000000"
           />
@@ -222,8 +261,8 @@ export default function ResizeVideo() {
             placeholder="30"
             variant="t2"
             label="Framerate"
-            value={framerate}
-            onChange={e => setFramerate(e.target.value)}
+            value={settings.framerate}
+            onChange={e => updateSettings("framerate", e.target.value)}
           />
         </div>
         <div className="w-full">
@@ -233,19 +272,28 @@ export default function ResizeVideo() {
             placeholder="480000"
             variant="t2"
             label="Audio Sample Rate"
-            value={audioSampleRate}
-            onChange={(e) => setAudioSampleRate(e.target.value)}
+            value={settings.audioSampleRate}
+            onChange={(e) => updateSettings("audioSampleRate", e.target.value)}
           />
         </div>
       </div>
       <div className="max-w-[171px] mx-auto py-16">
         <Button
-          disabled={!isColorValid || !file}
+          disabled={!settings.isColorValid || !file}
           label="Proceed" variant="contained" filled
           rightIcon={<FaAngleRight/>}/>
       </div>
-      <UploadFileModal videoRef={videoRef} uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} file={file}
-                       setFile={setFile}/>
+      <UploadFileModal
+        videoRef={videoRef}
+        uploadModal={uploadFileModal}
+        setUploadModal={setUploadFileModal}
+        file={file}
+        setFile={setFile}
+        upload={upload}
+        setFileId={setFileId}
+        isUploading={isUploading}
+        setIsUploading={setIsUploading}
+      />
     </div>
   )
 }

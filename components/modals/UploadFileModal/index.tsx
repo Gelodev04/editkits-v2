@@ -20,6 +20,7 @@ export type UploadModalProps = {
   upload?: any;
   isUploading?: boolean;
   setIsUploading?: any
+  setProgress?: (e: React.SetStateAction<number>) => void;
 }
 
 const style = {
@@ -51,7 +52,7 @@ export default function UploadFileModal(props: UploadModalProps) {
     }
 
 
-    await fileUploader(response.data.presigned_url, file, props.setUploadModal, props.setIsUploading)
+    await fileUploader(response.data.presigned_url, file, props.setUploadModal, props.setIsUploading, props.setProgress)
     if (props.setFileId) {
       props.setFileId(response.data.file_id);
     }

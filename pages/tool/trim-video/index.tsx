@@ -12,7 +12,6 @@ import {outputQuality, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
 import {useStatusQuery, useUploadMutation} from "@/services/api";
 import {useEffect} from "react";
-import {calculatePercentage} from "@/lib/calculatePercentage";
 
 export default function TrimVideo() {
   const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
@@ -32,11 +31,12 @@ export default function TrimVideo() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      refetch();
+      //@ts-ignore
+      if(data?.status !== "COMMITTED" && data?.status !== "ERROR") {
+        refetch();
+      }
       // @ts-ignore
       setFetchedData(data)
-      // @ts-ignore
-      setProgress(calculatePercentage(fetchedData?.metadata?.size ?? 0, file?.size ?? 10))
     }, 2000);
 
     return () => clearInterval(interval);
@@ -162,6 +162,7 @@ export default function TrimVideo() {
         setFileId={setFileId}
         isUploading={isUploading}
         setIsUploading={setIsUploading}
+        setProgress={setProgress}
       />
     </div>
   )

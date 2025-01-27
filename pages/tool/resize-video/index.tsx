@@ -13,7 +13,6 @@ import {useEffect, useState} from "react";
 import {aspectRatio, outputQuality, presets, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
 import {useStatusQuery, useUploadMutation} from "@/services/api";
-import {calculatePercentage} from "@/lib/calculatePercentage";
 
 export default function ResizeVideo() {
   const  [fileId, setFileId] = useState(null);
@@ -58,11 +57,12 @@ export default function ResizeVideo() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      refetch();
+      //@ts-ignore
+      if(data?.status !== "COMMITTED" && data?.status !== "ERROR") {
+        refetch();
+      }
       //@ts-ignore
       setFetchedData(data)
-      //@ts-ignore
-      setProgress(calculatePercentage(fetchedData?.metadata?.size ?? 0, file?.size ?? 10))
     }, 2000);
 
     return () => clearInterval(interval);
@@ -293,6 +293,7 @@ export default function ResizeVideo() {
         setFileId={setFileId}
         isUploading={isUploading}
         setIsUploading={setIsUploading}
+        setProgress={setProgress}
       />
     </div>
   )

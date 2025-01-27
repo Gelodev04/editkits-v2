@@ -17,6 +17,14 @@ import {
 import toast from "react-hot-toast";
 import {jwtDecode} from "jwt-decode";
 import {setUserInfo} from "@/lib/cookies";
+import {
+  IConfirmPasswordResetPayload, IConfirmPasswordResetResponse,
+  IConfirmRegistrationPayload,
+  IErrorResponse, ILoginPayload, ILoginResponse, IRefreshAccessTokenResponse,
+  IRegisterPayload, IRequestPasswordResetPayload,
+  IResendConfirmationCodePayload
+} from "@/interfaces/api/auth";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 
 export type AuthModalProps = {
   type: string;
@@ -65,10 +73,15 @@ export default function AuthModal(props: AuthModalProps) {
   }, [props.showAuthModal]);
 
   async function handleResendConfirmationCode() {
-    const response = await resendConfirmationCode({email});
+    const resendConfirmationCodePayload : IResendConfirmationCodePayload = {
+      email
+    }
+    const response = await resendConfirmationCode(resendConfirmationCodePayload);
+
     if (response.error) {
-      //@ts-ignore
-      toast.error(response.error.data.errorMsg);
+      const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
+      const { errorMsg } = errorResponse;
+      toast.error(errorMsg);
       return;
     }
     toast.success(response.data.message);
@@ -77,10 +90,17 @@ export default function AuthModal(props: AuthModalProps) {
 
 
   async function handleRegister() {
-    const response = await register({name: email, email, password});
+    const registerPayload : IRegisterPayload = {
+      name: email,
+      email,
+      password
+    }
+    const response = await register(registerPayload);
+
     if (response.error) {
-      //@ts-ignore
-      toast.error(response.error.data.errorMsg);
+      const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
+      const { errorMsg } = errorResponse;
+      toast.error(errorMsg);
       return
     }
     toast.success(response.data.message)
@@ -88,10 +108,17 @@ export default function AuthModal(props: AuthModalProps) {
   }
 
   async function handleConfirmRegister() {
-    const response = await confirmRegister({email, code: codes});
+    const confirmRegisterPayload : IConfirmRegistrationPayload = {
+      email,
+      code: codes
+    }
+
+    const response = await confirmRegister(confirmRegisterPayload);
+
     if (response.error) {
-      //@ts-ignore
-      toast.error(response.error.data.errorMsg);
+      const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
+      const { errorMsg } = errorResponse;
+      toast.error(errorMsg);
       return
     }
     toast.success(response.data.message);
@@ -99,15 +126,20 @@ export default function AuthModal(props: AuthModalProps) {
   }
 
   async function handleLogin() {
-    const response = await login({email, password});
+    const loginPayload : ILoginPayload = {
+      email,
+      password
+    }
+    const response = await login(loginPayload);
+
     if (response.error) {
-      //@ts-ignore
-      toast.error(response.error.data.errorMsg);
+      const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
+      const { errorMsg } = errorResponse;
+      toast.error(errorMsg);
       return;
     }
 
-    //@ts-ignore
-    const {id_token, expires_in} = response.data;
+    const {id_token, expires_in} = response.data as ILoginResponse;
     const user_info = jwtDecode(id_token);
     setUserInfo(user_info);
 
@@ -119,7 +151,6 @@ export default function AuthModal(props: AuthModalProps) {
 
     setTimeout(() => {
       refreshAccessToken();
-      //@ts-ignore
     }, refreshTime)
   }
 
@@ -128,7 +159,7 @@ export default function AuthModal(props: AuthModalProps) {
     try {
       //@ts-ignore
       const response = await refreshToken();
-      const {access_token, expires_in} = response.data as any;
+      const {access_token, expires_in} = response.data as IRefreshAccessTokenResponse;
       setAccessToken(access_token);
 
       const refreshTime = expires_in * 1000 - 60000;
@@ -141,27 +172,40 @@ export default function AuthModal(props: AuthModalProps) {
   }
 
   async function handleSendResetCode() {
-    const response = await requestPasswordReset({email});
+    const sendResetCodePayload : IRequestPasswordResetPayload = {
+       email
+    }
+    const response = await requestPasswordReset(sendResetCodePayload);
+
     if (response.error) {
-      //@ts-ignore
-      toast.error(response.error.data.errorMsg)
+      const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
+      const { errorMsg } = errorResponse;
+      toast.error(errorMsg);
       return
     }
 
     toast.success(response.data.message);
-    props.setType("Reset Password")
+    props.setType("Reset Password");
   }
 
   async function handleResetPassword() {
-    const response = await confirmPasswordReset({email, resetCode: code, newPassword: password});
+    const resetPasswordPayload : IConfirmPasswordResetPayload = {
+      email,
+      resetCode: code,
+      newPassword: password
+    }
+    const response  = await confirmPasswordReset(resetPasswordPayload);
+
     if (response.error) {
-      //@ts-ignore
-      toast.error(response.error.data.errorMsg);
+      const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
+      const { errorMsg } = errorResponse;
+      toast.error(errorMsg);
       return
     }
 
-    //@ts-ignore
-    toast.success(response.data.message);
+    const res = response.data as IConfirmPasswordResetResponse
+
+    toast.success(res.message);
     props.setType("Log In")
   }
 

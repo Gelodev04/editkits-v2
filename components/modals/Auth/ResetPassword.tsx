@@ -2,11 +2,10 @@ import React from 'react';
 
 import Typography from "@/components/Typography";
 import TextField from "@/components/TextField";
-import Toggle from "@/components/Toggle";
 import Button from "@/components/Button";
 import {AuthModalProps} from "@/components/modals/Auth";
-import {FaCheckCircle} from "react-icons/fa";
 import {validatePassword} from "@/lib/validatePassword";
+import {PasswordValidation} from "@/components/PasswordValidtion";
 
 export default function ResetPassword(
   props: AuthModalProps,
@@ -78,29 +77,7 @@ export default function ResetPassword(
             type="password"
           />
         </div>
-        <div className="py-4">
-          <div className="pb-4">
-            <Toggle name="remember-me" label="Remember me"/>
-          </div>
-          <div className="grid grid-cols-2 gap-y-1">
-            <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={/[a-z]/.test(password) ? "#0ea5e9" : "#d9d9d9"}/>
-              <Typography variant="b4" label="One lowercase character"/>
-            </div>
-            <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={/[!@#$%^&*(),.?":{}|<>\\\/~\-_=+\[\];'`]/.test(password) ? "#0ea5e9" : "#d9d9d9"}/>
-              <Typography variant="b4" label="One special character"/>
-            </div>
-            <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={/[A-Z]/.test(password) ? "#0ea5e9" : "#d9d9d9"}/>
-              <Typography variant="b4" label="One uppercase character"/>
-            </div>
-            <div className="flex items-center gap-x-2">
-              <FaCheckCircle size={20} color={password.length >= 8 ? "#0ea5e9" : "#d9d9d9"}/>
-              <Typography variant="b4" label="8 character minimum"/>
-            </div>
-          </div>
-        </div>
+        <PasswordValidation password={password} />
       </div>
       <div className="flex justify-center lg:pb-8 lg:pt-4">
         <div className="py-3 sm:flex flex justify-center w-[34%]">

@@ -25,6 +25,8 @@ import {
   IResendConfirmationCodePayload
 } from "@/interfaces/api/auth";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import EmailNotConfirmedSignup from "@/components/modals/Auth/EmailNotConfirmedSignup";
+import EmailNotConfirmedLogin from "@/components/modals/Auth/EmailNotConfirmedLogin";
 
 export type AuthModalProps = {
   type: string;
@@ -99,7 +101,12 @@ export default function AuthModal(props: AuthModalProps) {
 
     if (response.error) {
       const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
-      const { errorMsg } = errorResponse;
+      const { errorMsg, errorCode } = errorResponse;
+
+      if(errorCode === "11018") {
+        props.setType("Email already registered")
+      }
+
       toast.error(errorMsg);
       return
     }
@@ -134,7 +141,12 @@ export default function AuthModal(props: AuthModalProps) {
 
     if (response.error) {
       const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
-      const { errorMsg } = errorResponse;
+      const { errorMsg, errorCode } = errorResponse;
+
+      if(errorCode === "11017") {
+        props.setType("Email not verified")
+      }
+
       toast.error(errorMsg);
       return;
     }
@@ -185,7 +197,11 @@ export default function AuthModal(props: AuthModalProps) {
     }
 
     toast.success(response.data.message);
-    props.setType("Reset Password");
+    if(props.type === "Email already registered" || props.type === "Email not verified") {
+      props.setType("Enter verification code")
+    } else {
+      props.setType("Reset Password");
+    }
   }
 
   async function handleResetPassword() {
@@ -241,6 +257,8 @@ export default function AuthModal(props: AuthModalProps) {
                 })}
                 {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode)}
                 {props.type === "Reset Password" && ResetPassword(props, email, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword)}
+                {props.type === "Email already registered" && EmailNotConfirmedSignup(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode)}
+                {props.type === "Email not verified" && EmailNotConfirmedLogin(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode)}
               </div>
             </div>
           </div>

@@ -21,14 +21,14 @@ export function VideoUpload(props: VideoUploadProps) {
     <div className="pt-4">
       {props.file && (
         <div className="mt-4 grid grid-cols-12">
-          {props.uploadedData?.status === "COMMITTED" && (<div className="relative bg-[#000000] w-[138%] rounded-md p-1">
-            <video ref={props.videoRef} className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
-              <source src={URL.createObjectURL(props.file)} type="video/mp4"/>
-              Your browser does not support the video tag.
-            </video>
+          {props.uploadedData?.status === "COMMITTED" && !props.isUploading && (<div className="relative bg-[#000000] w-[138%] rounded-md p-1">
+            <div className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
+              <Image src={props.fetchedData?.metadata?.thumbnail_url} width={100} height={100} alt="thubmbnail" />
+            </div>
             <Image className="absolute inset-0 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play Icon"/>
           </div>)}
-          {props.isUploading && (<div className="relative w-[138%] rounded-md p-1">
+          {props.isUploading && (
+            <div className="relative w-[138%] rounded-md p-1">
             <Image className=" inset-0 bottom-1 m-auto object-contain" src={UploadingIcon} alt="Play Icon"/>
             <p className="font-lato font-bold text-[10px] leading-[15px] text-[#7D3CDE]">Uploading... {props.progress}%</p>
           </div>)}
@@ -38,20 +38,22 @@ export function VideoUpload(props: VideoUploadProps) {
             <div className="flex gap-3">
               <div className="flex items-end gap-1">
                 <p className="text-sm font-lato font-bold text-[#A0AEC0] leading-[21px]">Duration: </p>
-                <p className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{Math.floor(props.fetchedData?.metadata?.duration) } seconds, </p>
+                <p className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{Math.floor(props.fetchedData?.metadata?.duration ?? 0) } seconds, </p>
               </div>
               <div className="flex items-end gap-1">
                 <p className="text-sm font-lato font-bold text-[#A0AEC0] leading-[21px]">Resolution: </p>
-                <p className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{props.fetchedData?.metadata?.width} x {props.fetchedData?.metadata?.height} </p>
+                <p className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{props.fetchedData?.metadata?.width ?? 0} x {props.fetchedData?.metadata?.height ?? 0} </p>
               </div>
               <div className="flex items-end gap-1">
                 <p className="text-sm font-lato font-bold text-[#A0AEC0] leading-[21px]">Size: </p>
-                <p className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{(props.fetchedData?.metadata?.size / (1024 * 1024)).toFixed(1)} MB </p>
+                <p className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{Math.floor((props.fetchedData?.metadata?.size ?? 0) / (1024 * 1024)).toFixed(1)} MB </p>
               </div>
             </div>
           </div>
           <div className="col-span-1 place-items-end">
-            <Image onClick={() => props.setUploadFileModal(true)} src={RetryIcon} alt="retry"
+            <Image onClick={() => {
+              props.setUploadFileModal(true)
+            }} src={RetryIcon} alt="retry"
                    className="cursor-pointer"/>
           </div>
         </div>

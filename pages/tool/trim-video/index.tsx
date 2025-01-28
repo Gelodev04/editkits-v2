@@ -24,7 +24,7 @@ export default function TrimVideo() {
 
   const [fileId, setFileId] = React.useState(null);
   const [upload] = useUploadMutation();
-  const { data , refetch } = useStatusQuery({ fileId });
+  const { data , refetch } = useStatusQuery({ fileId }, { skip: !fileId });
   const [fetchedData, setFetchedData] = React.useState(null);
   const [progress, setProgress] = React.useState(0);
   const [isUploading, setIsUploading] = React.useState(false);
@@ -32,7 +32,7 @@ export default function TrimVideo() {
   useEffect(() => {
     const interval = setInterval(() => {
       //@ts-ignore
-      if(data?.status !== "COMMITTED" && data?.status !== "ERROR") {
+      if(data?.status !== "COMMITTED" && data?.status !== "ERROR" && fileId) {
         refetch();
       }
       // @ts-ignore

@@ -17,7 +17,7 @@ import {useStatusQuery, useUploadMutation} from "@/services/api";
 export default function ResizeVideo() {
   const  [fileId, setFileId] = useState(null);
   const [upload] = useUploadMutation();
-  const { data, refetch } = useStatusQuery({ fileId });
+  const { data, refetch } = useStatusQuery({ fileId }, {skip: !fileId});
 
   const [settings, setSettings] = useState({
     width: undefined,
@@ -58,7 +58,7 @@ export default function ResizeVideo() {
   useEffect(() => {
     const interval = setInterval(() => {
       //@ts-ignore
-      if(data?.status !== "COMMITTED" && data?.status !== "ERROR") {
+      if(data?.status !== "COMMITTED" && data?.status !== "ERROR" && fileId) {
         refetch();
       }
       //@ts-ignore

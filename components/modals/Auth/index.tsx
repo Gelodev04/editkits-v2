@@ -75,24 +75,27 @@ export default function AuthModal(props: AuthModalProps) {
   }, [props.showAuthModal]);
 
   async function handleResendConfirmationCode() {
-    const resendConfirmationCodePayload : IResendConfirmationCodePayload = {
+    const resendConfirmationCodePayload: IResendConfirmationCodePayload = {
       email
     }
     const response = await resendConfirmationCode(resendConfirmationCodePayload);
 
     if (response.error) {
       const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
-      const { errorMsg } = errorResponse;
+      const {errorMsg} = errorResponse;
       toast.error(errorMsg);
       return;
     }
     toast.success(response.data.message);
+    if (props.type === "Email already registered" || props.type === "Email not verified") {
+      props.setType("Enter verification code")
+    }
     setTimer(60)
   }
 
 
   async function handleRegister() {
-    const registerPayload : IRegisterPayload = {
+    const registerPayload: IRegisterPayload = {
       name: email,
       email,
       password
@@ -101,9 +104,9 @@ export default function AuthModal(props: AuthModalProps) {
 
     if (response.error) {
       const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
-      const { errorMsg, errorCode } = errorResponse;
+      const {errorMsg, errorCode} = errorResponse;
 
-      if(errorCode === "11018") {
+      if (errorCode === "11018") {
         props.setType("Email already registered")
       }
 
@@ -115,7 +118,7 @@ export default function AuthModal(props: AuthModalProps) {
   }
 
   async function handleConfirmRegister() {
-    const confirmRegisterPayload : IConfirmRegistrationPayload = {
+    const confirmRegisterPayload: IConfirmRegistrationPayload = {
       email,
       code: codes
     }
@@ -124,7 +127,7 @@ export default function AuthModal(props: AuthModalProps) {
 
     if (response.error) {
       const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
-      const { errorMsg } = errorResponse;
+      const {errorMsg} = errorResponse;
       toast.error(errorMsg);
       return
     }
@@ -133,7 +136,7 @@ export default function AuthModal(props: AuthModalProps) {
   }
 
   async function handleLogin() {
-    const loginPayload : ILoginPayload = {
+    const loginPayload: ILoginPayload = {
       email,
       password
     }
@@ -141,9 +144,9 @@ export default function AuthModal(props: AuthModalProps) {
 
     if (response.error) {
       const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
-      const { errorMsg, errorCode } = errorResponse;
+      const {errorMsg, errorCode} = errorResponse;
 
-      if(errorCode === "11017") {
+      if (errorCode === "11017") {
         props.setType("Email not verified")
       }
 
@@ -184,37 +187,33 @@ export default function AuthModal(props: AuthModalProps) {
   }
 
   async function handleSendResetCode() {
-    const sendResetCodePayload : IRequestPasswordResetPayload = {
-       email
+    const sendResetCodePayload: IRequestPasswordResetPayload = {
+      email
     }
     const response = await requestPasswordReset(sendResetCodePayload);
 
     if (response.error) {
       const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
-      const { errorMsg } = errorResponse;
+      const {errorMsg} = errorResponse;
       toast.error(errorMsg);
       return
     }
 
     toast.success(response.data.message);
-    if(props.type === "Email already registered" || props.type === "Email not verified") {
-      props.setType("Enter verification code")
-    } else {
-      props.setType("Reset Password");
-    }
+    props.setType("Reset Password");
   }
 
   async function handleResetPassword() {
-    const resetPasswordPayload : IConfirmPasswordResetPayload = {
+    const resetPasswordPayload: IConfirmPasswordResetPayload = {
       email,
       resetCode: code,
       newPassword: password
     }
-    const response  = await confirmPasswordReset(resetPasswordPayload);
+    const response = await confirmPasswordReset(resetPasswordPayload);
 
     if (response.error) {
       const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
-      const { errorMsg } = errorResponse;
+      const {errorMsg} = errorResponse;
       toast.error(errorMsg);
       return
     }
@@ -257,8 +256,8 @@ export default function AuthModal(props: AuthModalProps) {
                 })}
                 {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode)}
                 {props.type === "Reset Password" && ResetPassword(props, email, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword)}
-                {props.type === "Email already registered" && EmailNotConfirmedSignup(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode)}
-                {props.type === "Email not verified" && EmailNotConfirmedLogin(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode)}
+                {props.type === "Email already registered" && EmailNotConfirmedSignup(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode)}
+                {props.type === "Email not verified" && EmailNotConfirmedLogin(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode)}
               </div>
             </div>
           </div>

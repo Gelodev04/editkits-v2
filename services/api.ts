@@ -50,7 +50,7 @@ export const api = createApi({
     refreshToken: builder.mutation({
       query: () => {
         const refresh_token = getRefreshToken();
-        const userId = getUserInfo().sub;
+        const userId = getUserInfo()?.sub;
 
         return {
           url: '/auth/refresh_token',
@@ -90,7 +90,7 @@ export const api = createApi({
       query: () => {
         const refresh_token = getRefreshToken();
         const access_token = getAccessToken();
-        const email = getUserInfo().email;
+        const email = getUserInfo()?.email;
 
         return {
           url: '/auth/logout',
@@ -104,13 +104,10 @@ export const api = createApi({
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
         try {
           await queryFulfilled;
-
+        } finally {
           Cookies.remove("accessToken");
           Cookies.remove("refreshToken");
           Cookies.remove("userInfo");
-
-        } catch (error) {
-          console.error("Failed to log out:", error);
         }
       },
 

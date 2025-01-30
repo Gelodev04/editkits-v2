@@ -9,9 +9,10 @@ import ResetPassword from "./ResetPassword";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 import {useCountdownTimer} from "@/hooks/useCountdownTimer";
 import {
+  getUserInfo,
   setAccessToken, useConfirmPasswordResetMutation,
   useConfirmRegisterMutation,
-  useLoginMutation, useRefreshTokenMutation,
+  useLoginMutation, useLogoutMutation, useRefreshTokenMutation,
   useRegisterMutation, useRequestPasswordResetMutation, useResendConfirmationCodeMutation
 } from "@/services/api";
 import toast from "react-hot-toast";
@@ -27,6 +28,8 @@ import {
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import EmailNotConfirmedSignup from "@/components/modals/Auth/EmailNotConfirmedSignup";
 import EmailNotConfirmedLogin from "@/components/modals/Auth/EmailNotConfirmedLogin";
+import useLogout from "@/hooks/useLogout";
+import {useRouter} from "next/router";
 
 export type AuthModalProps = {
   type: string;
@@ -47,6 +50,9 @@ const style = {
 };
 
 export default function AuthModal(props: AuthModalProps) {
+  const router = useRouter();
+  const [logout] = useLogoutMutation();
+
   const [register, {isLoading}] = useRegisterMutation();
   const [confirmRegister, {isLoading: isConfirmRegisterLoading}] = useConfirmRegisterMutation();
   const [login, {isLoading: isLoginLoading}] = useLoginMutation();
@@ -61,8 +67,10 @@ export default function AuthModal(props: AuthModalProps) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [codes, setCodes] = useState("")
-  const [isPasswordValid, setPasswordValid] = useState(false)
+  const [isPasswordValid, setPasswordValid] = useState(false);
   const {timer, setTimer} = useCountdownTimer(60);
+
+  const handleLogout = useLogout(router, logout)
 
   React.useEffect(() => {
     if (!props.showAuthModal) {
@@ -154,37 +162,41 @@ export default function AuthModal(props: AuthModalProps) {
       return;
     }
 
-    const {id_token, expires_in} = response.data as ILoginResponse;
+    const { id_token } = response.data as ILoginResponse;
     const user_info = jwtDecode(id_token);
     setUserInfo(user_info);
 
     toast.success("Login successful");
     props.setType("");
     props.setAuthModal(false);
-
-    const refreshTime = expires_in * 1000 - 60000;
-
-    setTimeout(() => {
-      refreshAccessToken();
-    }, refreshTime)
   }
 
 
   async function refreshAccessToken() {
-    try {
-      //@ts-ignore
-      const response = await refreshToken();
-      const {access_token, expires_in} = response.data as IRefreshAccessTokenResponse;
-      setAccessToken(access_token);
-
-      const refreshTime = expires_in * 1000 - 60000;
-      setTimeout(() => {
-        refreshAccessToken();
-      }, refreshTime)
-    } catch (e) {
-      return e
+    const userInfo = getUserInfo();
+    if (!userInfo) {
+      return;
     }
+    //@ts-ignore
+    const response = await refreshToken();
+    if (response.error) {
+      await handleLogout();
+      toast.success("You are logged out!");
+      return
+    }
+
+    const { access_token } = response.data as IRefreshAccessTokenResponse;
+    setAccessToken(access_token);
   }
+
+  React.useEffect(() => {
+    refreshAccessToken();
+    const interval = setInterval(async () => {
+      await refreshAccessToken();
+    }, 50 * 60 * 1000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   async function handleSendResetCode() {
     const sendResetCodePayload: IRequestPasswordResetPayload = {
@@ -221,7 +233,7 @@ export default function AuthModal(props: AuthModalProps) {
     const res = response.data as IConfirmPasswordResetResponse
 
     toast.success(res.message);
-    props.setType("Log In")
+    props.setType("Log In");
   }
 
   return (

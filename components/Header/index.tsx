@@ -1,27 +1,27 @@
 import React, {useState} from "react";
+import {useRouter} from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import {useRouter} from "next/router";
 
 import {FaAngleDown} from "react-icons/fa";
-
 import Logo from "@/assets/img/logo.svg"
+
 import Button from "@/components/Button";
-import AuthModal from "../modals/Auth/index";
+import AuthModal from "@/components/modals/Auth";
 import User from '@/assets/img/icons/user.svg'
 import Subscription from '@/assets/img/icons/subscription.svg'
 import Logout from '@/assets/img/icons/logout.svg'
-import {Divider} from "@mui/material";
+import { Divider } from "@mui/material";
 import Typography from "@/components/Typography";
 import {useUserInfo} from "@/hooks/useUserInfo";
 import {useLogoutMutation} from "@/services/api";
-import toast from "react-hot-toast";
-import {removeUserInfo} from "@/lib/cookies";
+import useLogout from "@/hooks/useLogout";
 
 export default function Header() {
   const router = useRouter();
   const { userInfo } = useUserInfo();
   const [logout] = useLogoutMutation();
+  const handleLogout = useLogout(router, logout);
 
   const [type, setType] = useState("");
   const [showAuthModal, setAuthModal] = useState(false);
@@ -35,19 +35,6 @@ export default function Header() {
   function onLogin() {
     setAuthModal(true);
     setType("Log In");
-  }
-
-  async function handleLogout() {
-    //@ts-ignore
-    const response = await logout();
-    if(response.error) {
-      //@ts-ignore
-      toast.error(response.error.data.errorMsg);
-      return;
-    }
-    toast.success(response.data.message);
-    removeUserInfo()
-    await router.push('home')
   }
 
   return (
@@ -84,7 +71,7 @@ export default function Header() {
                 onMouseLeave={() => setIsOpen(false)}
               >
                 <Button
-                  onClick={() => router.push('account')}
+                  onClick={() => router.push('/account')}
                   fontWeight="font-normal"
                   font="font-inter"
                   variant="primary"

@@ -23,7 +23,7 @@ export function VideoUpload(props: VideoUploadProps) {
         <div className="mt-4 grid grid-cols-12">
           {props.uploadedData?.status === "COMMITTED" && !props.isUploading && (<div className="relative bg-[#000000] w-[138%] rounded-md p-1">
             <div className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
-              <Image src={props.fetchedData?.metadata?.thumbnail_url} width={100} height={100} alt="thubmbnail" />
+              {props.fetchedData?.metadata?.thumbnail_url && <Image src={props.fetchedData?.metadata?.thumbnail_url} className="min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]" width={100} height={100} alt=""/>}
             </div>
             <Image className="absolute inset-0 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play Icon"/>
           </div>)}

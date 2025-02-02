@@ -30,6 +30,7 @@ export function VideoUpload(props: VideoUploadProps) {
                   width={80}
                   height={45}
                   alt=""
+                  unoptimized={true}
                 />
               )}
             </div>

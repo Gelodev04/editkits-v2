@@ -26,7 +26,7 @@ export function VideoUpload(props: VideoUploadProps) {
               {props.fetchedData?.metadata?.thumbnail_url && (
                 <Image
                   src={props.fetchedData?.metadata?.thumbnail_url}
-                  className="w-full h-full object-contain h-[45px]"
+                  className="object-contain h-[45px] w-[80px]"
                   width={80}
                   height={45}
                   alt=""

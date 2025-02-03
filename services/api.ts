@@ -1,9 +1,10 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import Cookies from 'js-cookie';
 
+let accessToken = null;
 
-export const setAccessToken = (token) => Cookies.set("accessToken", token);
-const getAccessToken = () => Cookies.get("accessToken");
+export const setAccessToken = (token) => accessToken = token;
+const getAccessToken = () => accessToken;
 
 const setRefreshToken = (token) => Cookies.set("refreshToken", token);
 export const getRefreshToken = () => Cookies.get("refreshToken");

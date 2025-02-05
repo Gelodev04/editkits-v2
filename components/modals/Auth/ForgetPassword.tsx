@@ -2,16 +2,17 @@ import Typography from "@/components/Typography";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 import React from "react";
-import {AuthModalProps} from "@/components/modals/Auth/index";
 import {validateEmail} from "@/lib/validateEmail";
 
 export default function ForgetPassword(
-  props: AuthModalProps,
+  type,
+  setType: (e: React.SetStateAction<string>) => void,
   email: string,
   setEmail: (e: React.SetStateAction<string>) => void,
   isEmailValid: boolean,
   setEmailValid: (e: React.SetStateAction<boolean>) => void,
-  handleSendResetCode: any
+  handleSendResetCode: any,
+  requestPasswordReset: any,
 ) {
   return (
     <>
@@ -19,7 +20,7 @@ export default function ForgetPassword(
         <div className="sm:flex justify-center">
           <div className="text-center sm:ml-4 sm:mt-4">
             <Typography
-              label={props.type}
+              label={type}
               center
               variant="h3"
             />
@@ -51,7 +52,7 @@ export default function ForgetPassword(
         <div className="py-3 sm:flex flex justify-center w-[34%] sm:pb-10">
           <Button
             disabled={!isEmailValid}
-            onClick={handleSendResetCode}
+            onClick={() => handleSendResetCode(email, requestPasswordReset, setType)}
             label="Send reset code" variant="secondary"
             filled
           />

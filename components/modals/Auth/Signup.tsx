@@ -3,13 +3,13 @@ import React from 'react';
 import Typography from "@/components/Typography";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
-import {AuthModalProps} from "@/components/modals/Auth";
 import {validateEmail} from "@/lib/validateEmail";
 import {validatePassword} from "@/lib/validatePassword";
 import {PasswordValidation} from "@/components/PasswordValidtion";
 
 export default function Signup(
-  props: AuthModalProps,
+  type: string,
+  setType: (e: React.SetStateAction<string>) => void,
   password: string,
   setPassword: (e: React.SetStateAction<string>) => void,
   email: string,
@@ -21,7 +21,8 @@ export default function Signup(
   isPasswordValid: boolean,
   setPasswordValid: (e: React.SetStateAction<boolean>) => void,
   handleRegister: any,
-  isLoading?: any
+  register: any,
+  isLoading?: any,
 ) {
 
   return (
@@ -30,7 +31,7 @@ export default function Signup(
         <div className="sm:flex justify-center">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
             <Typography
-              label={props.type}
+              label={type}
               center
               variant="h3"
             />
@@ -84,7 +85,7 @@ export default function Signup(
       <div className="flex justify-center">
         <div className="py-3 sm:flex flex justify-center w-[34%]">
           <Button
-            onClick={handleRegister}
+            onClick={() => handleRegister(email, password, setType, register)}
             disabled={!isEmailValid || !isPasswordValid || password !== confirmPassword || isLoading}
             label="Create account"
             variant="secondary"
@@ -94,7 +95,7 @@ export default function Signup(
       </div>
       <div className="flex justify-center pb-10 gap-4 items-center">
         <Typography label="Already have an account?" className="text-xs font-semibold"/>
-        <Button className="font-sans text-xs text-[#0700CB] font-semibold" onClick={() => props.setType("Log In")} label="Login" variant="primary" filled width={40}/>
+        <Button className="font-sans text-xs text-[#0700CB] font-semibold" onClick={() => setType("Log In")} label="Login" variant="primary" filled width={40}/>
       </div>
     </>
   )

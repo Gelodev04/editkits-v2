@@ -3,12 +3,11 @@ import React from 'react';
 import Typography from "@/components/Typography";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
-import {AuthModalProps} from "@/components/modals/Auth";
 import {validatePassword} from "@/lib/validatePassword";
 import {PasswordValidation} from "@/components/PasswordValidtion";
 
 export default function ResetPassword(
-  props: AuthModalProps,
+  type: string,
   email: string,
   code: string,
   setCode: (e: React.SetStateAction<string>) => void,
@@ -18,7 +17,9 @@ export default function ResetPassword(
   setConfirmPassword: (e: React.SetStateAction<string>) => void,
   isPasswordValid: boolean,
   setPasswordValid: (e: React.SetStateAction<boolean>) => void,
-  handleResetPassword: any
+  handleResetPassword: any,
+  confirmPasswordReset: any,
+  setType: (e: React.SetStateAction<string>) => void
 ) {
   return (
     <>
@@ -26,7 +27,7 @@ export default function ResetPassword(
         <div className="sm:flex justify-center">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
             <Typography
-              label={props.type}
+              label={type}
               center
               variant="h3"
             />
@@ -75,7 +76,7 @@ export default function ResetPassword(
             label="Confirm the password"
             placeholder="**********"
             type="password"
-          />
+          />Password
         </div>
         <PasswordValidation password={password} />
       </div>
@@ -83,7 +84,7 @@ export default function ResetPassword(
         <div className="py-3 sm:flex flex justify-center w-[34%]">
           <Button
             disabled={code?.length !== 6 || !isPasswordValid || password !== confirmPassword}
-            onClick={handleResetPassword}
+            onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType)}
             label="Reset Password"
             variant="secondary"
             filled

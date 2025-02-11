@@ -1,7 +1,7 @@
 import './globals.css';
 import Head from 'next/head';
 import {AppProps} from "next/app";
-import {Montserrat, Lato} from "next/font/google";
+import {Montserrat, Lato, Work_Sans} from "next/font/google";
 import dynamic from "next/dynamic";
 
 import "./globals.css";
@@ -24,13 +24,19 @@ const lato = Lato({
   variable: '--font-lato',
 });
 
+const workSans = Work_Sans({
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '700', '900'],
+  variable: '--font-work-sans',
+});
+
 function MyApp({Component, pageProps}: AppProps) {
   return (
     <>
       <Head>
         <title>Edit Kits</title>
       </Head>
-      <div className={`${montserrat.variable} ${lato.variable} font-sans`}>
+      <div className={`${montserrat.variable} ${lato.variable} ${workSans.variable} font-sans`}>
         <Provider store={store}>
           <RootLayout>
             <Toaster containerClassName="font-lato font-normal" position="top-right" />

@@ -10,10 +10,10 @@ import Image from "next/image";
 import StatusTag from "@/components/Table/StatusTag";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import * as React from "react";
-import CopyIcon from "@/assets/img/icons/copy.svg";
-import Success from "@/assets/img/icons/success.svg";
-import Failed from "@/assets/img/icons/failed.svg";
-import Progress from "@/assets/img/icons/pending.svg";
+import CopyIcon from "@/assets/icons/copy.svg";
+import Success from "@/assets/icons/success.svg";
+import Failed from "@/assets/icons/failed.svg";
+import Progress from "@/assets/icons/pending.svg";
 
 export default function JobStatusTable({data, search}: { data: any; search: string }) {
   return (

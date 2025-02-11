@@ -8,9 +8,9 @@ import Logo from "@/assets/img/logo.svg"
 
 import Button from "@/components/Button";
 import AuthModal from "@/components/modals/Auth";
-import User from '@/assets/img/icons/user.svg'
-import Subscription from '@/assets/img/icons/subscription.svg'
-import Logout from '@/assets/img/icons/logout.svg'
+import User from '@/assets/icons/user.svg'
+import Subscription from '@/assets/icons/subscription.svg'
+import Logout from '@/assets/icons/logout.svg'
 import { Divider } from "@mui/material";
 import Typography from "@/components/Typography";
 import {useUserInfo} from "@/hooks/useUserInfo";
@@ -38,7 +38,7 @@ export default function Header() {
   }
 
   return (
-    <div className="flex justify-between py-5 bg-white w-full max-w-[1280px] mx-auto px-8">
+    <div className="flex justify-between py-5 bg-white w-full max-w-[1920px] mx-auto px-8">
       <Link href="/">
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
       </Link>

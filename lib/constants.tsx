@@ -8,6 +8,28 @@ import Crop from "../assets/img/tools/crop.svg"
 import Loop from "../assets/img/tools/loop.svg"
 import Join from "../assets/img/tools/join.svg"
 
+import Budget from "../assets/img/features/budget.png"
+import Edit from "../assets/img/features/edit.png"
+import Fast from "../assets/img/features/fast.png"
+import Gift from "../assets/img/features/gift.png"
+import Interface from "../assets/img/features/interface.png"
+import Key from "../assets/img/features/key.png"
+import Powerful from "../assets/img/features/powerful.png"
+import Reward from "../assets/img/features/reward.png"
+import Store from "../assets/img/features/store.png"
+import Time from "../assets/img/features/time.png"
+import Work from "../assets/img/features/work.png"
+
+import OverlayVideoHover from "../assets/img/tools/overlay_hover.svg"
+import RotateHover from "../assets/img/tools/rotate_hover.svg"
+import TrimHover from "../assets/img/tools/trim_hover.svg"
+import SpeedHover from "../assets/img/tools/speed_up_down_hover.svg"
+import ResizeHover from "../assets/img/tools/resize_hover.svg"
+import OverlayImageHover from "../assets/img/tools/overlay_image_hover.svg"
+import CropHover from "../assets/img/tools/crop_hover.svg"
+import LoopHover from "../assets/img/tools/loop_hover.svg"
+import JoinHover from "../assets/img/tools/join_hover.svg"
+
 import HouseEdit from "@/assets/img/table/house_edit.svg"
 import HouseEditUploaded from "@/assets/img/table/house_edit_uploaded.svg"
 import HouseEditVideo from "@/assets/img/table/house_edit_video.svg"
@@ -16,16 +38,31 @@ import FootballEditVideo from "@/assets/img/table/football_edit.svg"
 import FootballEditSuccess from "@/assets/img/table/football_edit_success.svg"
 
 export const videoTools = [
-  {name: "Overlay Video", icon: OverlayVideo},
-  {name: "Rotate Video", icon: Rotate},
-  {name: "Trim Video", icon: Trim},
-  {name: "Speed Up/Down Video", icon: Speed},
-  {name: "Resize Video", icon: Resize},
-  {name: "Overlay Image on Video", icon: OverlayImage},
-  {name: "Crop Video", icon: Crop},
-  {name: "Loop Video", icon: Loop},
-  {name: "Join Video/Image", icon: Join},
+  {name: "Overlay Video", icon: OverlayVideo, icon_hover: OverlayVideoHover},
+  {name: "Rotate Video", icon: Rotate, icon_hover: RotateHover},
+  {name: "Trim Video", icon: Trim, icon_hover: TrimHover},
+  {name: "Speed Up/Down Video", icon: Speed, icon_hover: SpeedHover},
+  {name: "Resize Video", icon: Resize, icon_hover: ResizeHover},
+  {name: "Overlay Image on Video", icon: OverlayImage, icon_hover: OverlayImageHover},
+  {name: "Crop Video", icon: Crop, icon_hover: CropHover},
+  {name: "Loop Video", icon: Loop, icon_hover: LoopHover},
+  {name: "Join Video/Image", icon: Join, icon_hover: JoinHover},
 ]
+
+export const featureCards = [
+  { name: "A Clean Interface For Everyone", image: Interface },
+  { name: "Edit Videos, Photos, And Audio Easily", image: Edit },
+  { name: "Free Plan For Beginners", image: Gift },
+  { name: "Fastest Video And Audio Processing", image: Fast },
+  { name: "Plans For Everyone's Needs", image: Budget },
+  { name: "A Powerful Dashboard For Easy Control", image: Powerful },
+  { name: "APIs For Developers To Use All Features", image: Key},
+  { name: "Store Your Videos, Photos, And Audio", image: Store },
+  { name: "Work On Many Files At The Same Time", image: Time },
+  { name: "Work On Many Files At The Same Time", image: Work },
+  { name: "Supports Various File Formats You Use", image: Reward },
+  { name: "Plans For Everyone's Needs", image: Budget }
+];
 
 export const stats = [
   {

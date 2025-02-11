@@ -8,7 +8,7 @@ import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 
 import Filter from "@/assets/img/table/filter.svg";
-import Calendar from "@/assets/img/icons/calendar.svg"
+import Calendar from "@/assets/icons/calendar.svg"
 
 type TableHeaderProps = {
   setSearch: any;

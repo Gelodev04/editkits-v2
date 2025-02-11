@@ -28,7 +28,7 @@ export default function Pricing() {
         <div
           className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${
             monthly ? 'xl:grid-cols-2 2xl:grid-cols-4' : 'xl:grid-cols-3'
-          } place-items-center p-10 max-w-[1536px]`}
+          } place-items-center p-10 max-w-[1920px]`}
         >
           {pricingPlanList
             .filter(plan => plan.type === (monthly ? 'monthly' : 'yearly'))

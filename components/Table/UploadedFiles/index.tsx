@@ -10,7 +10,7 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {BsThreeDotsVertical} from "react-icons/bs";
 
-import CopyIcon from '@/assets/img/icons/copy.svg';
+import CopyIcon from '@/assets/icons/copy.svg';
 import {uploadedFilesColumns} from "@/lib/constants";
 
 type UploadedFilesTableProps = {

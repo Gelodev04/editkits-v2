@@ -11,6 +11,7 @@ export default function ToolsList() {
               key={tool.name}
               name={tool.name}
               icon={tool?.icon}
+              icon_hover={tool?.icon}
             />
           ))}
         </div>
@@ -22,6 +23,7 @@ export default function ToolsList() {
               key={tool.name}
               name={tool.name}
               icon={tool?.icon}
+              icon_hover={tool?.icon_hover}
             />
           ))}
         </div>
@@ -31,6 +33,7 @@ export default function ToolsList() {
               key={tool.name}
               name={tool.name}
               icon={tool?.icon}
+              icon_hover={tool?.icon_hover}
             />
           ))}
         </div>

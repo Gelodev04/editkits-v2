@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 import Typography from "@/components/Typography";
-import ColorSVG from "@/assets/img/icons/color.svg";
+import ColorSVG from "@/assets/icons/color.svg";
 
 const ColorPicker = (props: any) => {
   return (

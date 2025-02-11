@@ -8,7 +8,7 @@ export default function Footer() {
 
   return (
     <div className="pt-10 bg-zinc-50 pb-5 px-8">
-      <div className="flex space-x-6 justify-center pb-8 max-w-[1280px] mx-auto">
+      <div className="flex space-x-6 justify-center pb-8 max-w-[1920px] mx-auto">
         <Link href="/" className="font-roboto">
           <Button label="Home" variant="primary"/>
         </Link>
@@ -28,9 +28,8 @@ export default function Footer() {
           center
         />
       </div>
-      <div className="grid grid-cols-3 place-items-center w-full pt-20 max-w-[1280px] mx-auto">
+      <div className="grid grid-cols-3 place-items-center w-full pt-10 max-w-[1920px] mx-auto">
         <p className="font-openSans font-normal text-[13px] text-[#2c2c28] leading-[17px]">© 2024 Edikits. All rights reserved</p>
-        {/*<Typography label="" className="font-openSans text-[13px]"/>*/}
         <div className="flex space-x-6 justify-center">
           <Button label="Terms of Use" variant="primary" className="font-openSans text-[#262628] text-[13px]"/>
           <Button label="Privacy Policy" variant="primary" className="font-openSans text-[#262628] text-[13px]"/>

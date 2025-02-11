@@ -15,7 +15,7 @@ export default function Dashboard() {
 
   return (
     <div className="bg-[#fafbfc] min-h-[100vh]">
-      <div className="max-w-[1536px] mx-auto p-6">
+      <div className="max-w-[1920px] mx-auto p-6">
         <div className="grid grid-cols-12 w-full gap-4 mx-auto">
           <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
             <TableType active={active} setActive={setActive}/>

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
-import Upload from "@/assets/img/icons/upload.svg"
+import Upload from "@/assets/icons/upload.svg"
 import Image from "next/image";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";

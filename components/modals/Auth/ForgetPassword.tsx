@@ -1,7 +1,7 @@
-import Typography from "@/components/Typography";
+import React from "react";
+
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
-import React from "react";
 import {validateEmail} from "@/lib/validateEmail";
 
 export default function ForgetPassword(
@@ -16,25 +16,6 @@ export default function ForgetPassword(
 ) {
   return (
     <>
-      <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-        <div className="sm:flex justify-center">
-          <div className="text-center sm:ml-4 sm:mt-4">
-            <Typography
-              label={type}
-              center
-              variant="h3"
-            />
-
-            <div className="mt-2">
-              <Typography
-                label="Enter your email below to send a reset code"
-                center
-                variant="b3"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="px-10">
         <TextField
           onChange={(e) => {
@@ -46,17 +27,16 @@ export default function ForgetPassword(
           label="Email"
           placeholder="abc@editkits.com"
           value={email}
+          type="text"
         />
       </div>
-      <div className="flex justify-center sm:pt-28">
-        <div className="py-3 sm:flex flex justify-center w-[34%] sm:pb-10">
-          <Button
-            disabled={!isEmailValid}
-            onClick={() => handleSendResetCode(email, requestPasswordReset, setType)}
-            label="Send reset code" variant="secondary"
-            filled
-          />
-        </div>
+      <div className="pb-3 pt-[56px] pb-[52px] p max-w-[411px] mx-auto">
+        <Button
+          disabled={!isEmailValid}
+          onClick={() => handleSendResetCode(email, requestPasswordReset, setType)}
+          label="Send reset code" variant="secondary"
+          filled
+        />
       </div>
     </>
   )

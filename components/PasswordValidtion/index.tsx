@@ -11,20 +11,20 @@ export function PasswordValidation(props) {
       </div>
       <div className="grid grid-cols-2 gap-y-1">
         <div className="flex items-center gap-x-2">
-          <FaCheckCircle size={20} color={/[a-z]/.test(props.password) ? "#0ea5e9" : "#d9d9d9"}/>
+          <FaCheckCircle size={20} color={/[a-z]/.test(props.password) ? "#273266" : "#d9d9d9"}/>
           <Typography variant="b4" label="One lowercase character"/>
         </div>
         <div className="flex items-center gap-x-2">
           <FaCheckCircle size={20}
-                         color={/[!@#$%^&*(),.?":{}|<>\\\/~\-_=+\[\];'`]/.test(props.password) ? "#0ea5e9" : "#d9d9d9"}/>
+                         color={/[!@#$%^&*(),.?":{}|<>\\\/~\-_=+\[\];'`]/.test(props.password) ? "#273266" : "#d9d9d9"}/>
           <Typography variant="b4" label="One special character"/>
         </div>
         <div className="flex items-center gap-x-2">
-          <FaCheckCircle size={20} color={/[A-Z]/.test(props.password) ? "#0ea5e9" : "#d9d9d9"}/>
+          <FaCheckCircle size={20} color={/[A-Z]/.test(props.password) ? "#273266" : "#d9d9d9"}/>
           <Typography variant="b4" label="One uppercase character"/>
         </div>
         <div className="flex items-center gap-x-2">
-          <FaCheckCircle size={20} color={props.password.length >= 8 ? "#0ea5e9" : "#d9d9d9"}/>
+          <FaCheckCircle size={20} color={props.password.length >= 8 ? "#273266" : "#d9d9d9"}/>
           <Typography variant="b4" label="8 character minimum"/>
         </div>
       </div>

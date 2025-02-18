@@ -27,6 +27,8 @@ import {
   handleResendConfirmationCode,
   handleResetPassword, handleSendResetCode
 } from "@/lib/auth";
+import Typography from "@/components/Typography";
+import {getModalDescription} from "@/lib/getModalDescription";
 
 
 export type AuthModalProps = {
@@ -103,9 +105,28 @@ export default function AuthModal(props: AuthModalProps) {
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <div
-                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg `}>
+                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg`}>
                 <div className="absolute right-2 top-2 cursor-pointer">
                   <TbXboxX size={30} color="#000" onClick={() => props.setAuthModal(false)}/>
+                </div>
+                <div className="bg-white px-4 pb-[23px] pt-5 sm:p-6 sm:pb-4">
+                  <div className="sm:flex justify-center">
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0">
+                      <Typography
+                        label={props.type}
+                        center
+                        variant="h4"
+                      />
+
+                      <div className="pt-[8px]">
+                        <Typography
+                          label={getModalDescription(props.type, email)}
+                          center
+                          variant="b3"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 {props.type === "Sign Up" && Signup(props.type,props.setType, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleRegister, register, isLoading )}
                 {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid, handleLogin, isLoginLoading, login, props.setType, props.setAuthModal)}

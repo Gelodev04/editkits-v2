@@ -1,4 +1,3 @@
-import Typography from "@/components/Typography";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 import React from "react";
@@ -15,25 +14,6 @@ export default function EmailNotConfirmedSignup(
 ) {
   return (
     <>
-      <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-        <div className="sm:flex justify-center">
-          <div className="text-center sm:ml-4 sm:mt-4">
-            <Typography
-              label={props.type}
-              center
-              variant="h3"
-            />
-
-            <div className="mt-2">
-              <Typography
-                label="Your email is already registered, but it's not verified yet. Please verify email to continue using your existing account. If you've forgotten your password, you can reset it and proceed to login"
-                center
-                variant="b3"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="px-10">
         <TextField
           onChange={(e) => {
@@ -45,6 +25,7 @@ export default function EmailNotConfirmedSignup(
           label="Email"
           placeholder="abc@editkits.com"
           value={email}
+          type="text"
         />
       </div>
       <div className="flex justify-center sm:pt-28">

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Typography from "@/components/Typography";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 import {validatePassword} from "@/lib/validatePassword";
@@ -23,26 +22,7 @@ export default function ResetPassword(
 ) {
   return (
     <>
-      <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-        <div className="sm:flex justify-center">
-          <div className="mt-3 text-center sm:ml-4 sm:mt-0">
-            <Typography
-              label={type}
-              center
-              variant="h3"
-            />
-
-            <div className="mt-2">
-              <Typography
-                label={ <>We have sent the reset code to <span className="font-bold">{email || ""}</span>, please enter the code below to reset your password</>}
-                center
-                variant="b3"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="px-10">
+      <div className="px-10 pt-[23px]">
         <TextField
           label="Code"
           placeholder="Reset Code"
@@ -53,8 +33,9 @@ export default function ResetPassword(
           value={code}
           code={code}
           error={!(code.length >= 6)}
+          type="text"
         />
-        <div className="py-4">
+        <div className="pt-[32px]">
           <TextField
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const passwordValue = e.target.value;
@@ -68,7 +49,7 @@ export default function ResetPassword(
             type="password"
           />
         </div>
-        <div className="py-4">
+        <div className="pt-[32px] pb-[23px]">
           <TextField
             onChange={(e) => setConfirmPassword(e.target.value)}
             password={password}
@@ -76,20 +57,18 @@ export default function ResetPassword(
             label="Confirm the password"
             placeholder="**********"
             type="password"
-          />Password
-        </div>
-        <PasswordValidation password={password} />
-      </div>
-      <div className="flex justify-center lg:pb-8 lg:pt-4">
-        <div className="py-3 sm:flex flex justify-center w-[34%]">
-          <Button
-            disabled={code?.length !== 6 || !isPasswordValid || password !== confirmPassword}
-            onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType)}
-            label="Reset Password"
-            variant="secondary"
-            filled
           />
         </div>
+        <PasswordValidation password={password}/>
+      </div>
+      <div className="pt-6 pb-10 max-w-[411px] mx-auto">
+        <Button
+          disabled={code?.length !== 6 || !isPasswordValid || password !== confirmPassword}
+          onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType)}
+          label="Reset Password"
+          variant="secondary"
+          filled
+        />
       </div>
     </>
   )

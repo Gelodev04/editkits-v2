@@ -16,7 +16,7 @@ type InputProps = {
 }
 
 export default function Input(props: InputProps) {
-  const baseClasses = "w-full border border-solid border-2 px-3 py-4 rounded-md outline-none text-[#2c2c2c] leading-[18px]";
+  const baseClasses = "w-full border border-solid border-2 px-[19px] py-[21px] rounded-md outline-none text-[#6f6c90] font-lato  leading-[20px] shadow-sm";
   const errorClasses = props?.error && (props?.email?.length || props?.code?.length) ? "border-red-300" : "border-slate-200";
   const disabledClasses = props.disabled && "bg-[#E0E0E0A6]";
   const variantClasses = `font-lato font-bold text-sm ${props.variant === "t2" ? "max-h-10" : "font-normal"}`;

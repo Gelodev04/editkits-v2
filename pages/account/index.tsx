@@ -94,7 +94,7 @@ export default function Account() {
         // @ts-ignore
         setType={undefined}
         // @ts-ignore
-        description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span>, please enter the code below to reset your password</>}
+        description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span></>}
         currentPassword={currentPassword}
         setCurrentPassword={setCurrentPassword}
         newPassword={newPassword}

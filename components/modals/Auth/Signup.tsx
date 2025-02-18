@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Typography from "@/components/Typography";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 import {validateEmail} from "@/lib/validateEmail";
@@ -27,25 +26,6 @@ export default function Signup(
 
   return (
     <>
-      <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-        <div className="sm:flex justify-center">
-          <div className="mt-3 text-center sm:ml-4 sm:mt-0">
-            <Typography
-              label={type}
-              center
-              variant="h3"
-            />
-
-            <div className="mt-2">
-              <Typography
-                label="Enter the field below to get started"
-                center
-                variant="b3"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="px-10">
         <TextField
           onChange={(e) => {
@@ -57,6 +37,7 @@ export default function Signup(
           label="Email"
           placeholder="Your email"
           value={email}
+          type="text"
         />
         <div className="py-4">
           <TextField
@@ -80,22 +61,27 @@ export default function Signup(
           label="Confirm Password"
           placeholder="Confirm password"
         />
-        <PasswordValidation password={password} />
+        <PasswordValidation password={password}/>
       </div>
-      <div className="flex justify-center">
-        <div className="py-3 sm:flex flex justify-center w-[34%]">
-          <Button
-            onClick={() => handleRegister(email, password, setType, register)}
-            disabled={!isEmailValid || !isPasswordValid || password !== confirmPassword || isLoading}
-            label="Create account"
-            variant="secondary"
-            filled
-          />
-        </div>
+      <div className="pb-3 pt-20 max-w-[411px] mx-auto">
+        <Button
+          onClick={() => handleRegister(email, password, setType, register)}
+          disabled={!isEmailValid || !isPasswordValid || password !== confirmPassword || isLoading}
+          label="Create account"
+          variant="outlined"
+          filled
+        />
       </div>
       <div className="flex justify-center pb-10 gap-4 items-center">
-        <Typography label="Already have an account?" className="text-xs font-semibold"/>
-        <Button className="font-sans text-xs text-[#0700CB] font-semibold" onClick={() => setType("Log In")} label="Login" variant="primary" filled width={40}/>
+        <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Already have an account?</p>
+        <Button
+          className="font-openSans font-bold text-xs text-[#148CFC]"
+          onClick={() => setType("Log In")}
+          label="Login"
+          variant="primary"
+          filled
+          width={40}
+        />
       </div>
     </>
   )

@@ -160,14 +160,14 @@ export default function UploadFileModal(props: UploadModalProps) {
                       <Typography label="OR" variant="b4" color="#6D6D6D"/>
                     </div>
                   </div>
-                  <TextField label="Upload from URL" placeholder="Add file URL" height={42} borderRadius={8}/>
+                  <TextField label="Upload from URL" placeholder="Add file URL" height={42} borderRadius={8} type="text"/>
                   <div className="inline-flex items-center justify-center w-full pt-1">
                     <hr className="w-full h-[1px] my-8 bg-gray-200 border-0 rounded bg-[#e7e7e7]"/>
                     <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 ">
                       <Typography label="OR" variant="b4" color="#6D6D6D"/>
                     </div>
                   </div>
-                  <TextField label="File ID" placeholder="Add file ID" height={42} borderRadius={8}/>
+                  <TextField label="File ID" placeholder="Add file ID" height={42} borderRadius={8} type="text"/>
                   <div className="flex gap-4 pt-10 pb-2">
                     <Button onClick={() => props.setUploadModal(false)} label="Cancel" variant="contained" border className="h-[48px]"/>
                     <Button onClick={() => props.setUploadModal(false)} label="Proceed" variant="secondary" filled className="h-[48px]"/>

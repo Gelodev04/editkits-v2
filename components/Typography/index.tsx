@@ -24,7 +24,7 @@ function TypographyStyle(props: TypographyProps) {
     case "h3":
       return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
     case "h4":
-      return `font-montserrat font-bold text-2xl text-[#2c2c2c] ${props.center && "text-center"} leading-[40px]`;
+      return `font-montserrat font-bold text-[32px] text-[#2c2c2c] ${props.center && "text-center"} leading-[40px]`;
     case "hb4":
       return `text-base font-bold font-lato text-[#333333] ${props.center && "text-center"}`;
     case "h5":
@@ -40,7 +40,7 @@ function TypographyStyle(props: TypographyProps) {
     case "b2":
       return `font-lato text-base text-[#4f4f4f] font-normal ${props.center && "text-center"} leading-[24px]`
     case "b3":
-      return `text-base text-black font-lato ${props.center && "text-center"} font-normal leading-[21px] ${props.button && "cursor-pointer"}`;
+      return `text-sm text-[#4f4f4f] font-lato ${props.center && "text-center"} font-normal leading-[21px] ${props.button && "cursor-pointer"}`;
     case "bb3":
       return `font-lato font-bold text-sm leading-[21px] text-sm text-[#2c2c2c] ${props.center && "text-center"} leading-[21px]`;
     case "bbl3":

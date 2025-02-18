@@ -7,6 +7,7 @@ type InputProps = {
     type?: string;
     error?: boolean;
     password?: string;
+    height?: number
 }
 
 export default function PasswordInput(props: InputProps) {
@@ -19,10 +20,11 @@ export default function PasswordInput(props: InputProps) {
       <div className="relative w-full">
           <input
             //@ts-ignore
-            className={`font-lato text-sm w-full border border-solid border-2 ${props?.error && props?.password?.length > 0 ? "border-red-300" : "border-slate-200"} px-3 py-4 rounded-md outline-none text-[#2c2c2c] pr-10`}
+            className={`font-lato text-sm w-full border border-solid border-2 ${props?.error && props?.password?.length > 0 ? "border-red-300" : "border-slate-200"} rounded-md px-[19px] py-[21px] outline-none text-[#6f6c90] font-lato  leading-[20px] shadow-sm `}
             placeholder={props.placeholder}
             type={showPassword ? "text" : "password"}
             onChange={props.onChange}
+            style={{height: props.height}}
           />
           <button
             type="button"

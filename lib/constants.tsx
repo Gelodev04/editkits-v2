@@ -52,7 +52,7 @@ export const videoTools = [
 export const featureCards = [
   { name: "A Clean Interface For Everyone", image: Interface },
   { name: "Edit Videos, Photos, And Audio Easily", image: Edit },
-  { name: "Free Plan For Beginners", image: Gift },
+  { name: "Free For Beginners", image: Gift },
   { name: "Fastest Video And Audio Processing", image: Fast },
   { name: "Plans For Everyone's Needs", image: Budget },
   { name: "A Powerful Dashboard For Easy Control", image: Powerful },
@@ -103,8 +103,8 @@ export const stats = [
 
 export const pricingPlanList = [
   {
-    title: "Free Plan",
-    credits: "500 Credits/ month",
+    title: "Free",
+    credits: "12000 Credits / month",
     description: "Perfect for beginners eager to explore media editing and repurposing without any cost.",
     type: "monthly",
     typeDescription: "Billed monthly",
@@ -118,8 +118,8 @@ export const pricingPlanList = [
     ]
   },
   {
-    title: "Personal Plan",
-    credits: "2000 Credits/ month",
+    title: "Personal",
+    credits: "12000 Credits / month",
     description: "Ideal for individuals seeking enhanced features for personal content creation and editing.",
     type: "monthly",
     typeDescription: "Billed monthly",
@@ -133,8 +133,8 @@ export const pricingPlanList = [
     ]
   },
   {
-    title: "Personal Plan",
-    credits: "2000 Credits/ month",
+    title: "Personal",
+    credits: "12000 Credits / month",
     description: "Ideal for individuals seeking enhanced features for personal content creation and editing.",
     type: "yearly",
     typeDescription: "Billed yearly",
@@ -150,8 +150,8 @@ export const pricingPlanList = [
     ]
   },
   {
-    title: "Professional Plan",
-    credits: "12000 Credits/ month",
+    title: "Professional",
+    credits: "12000 Credits / month",
     description: "Tailored for professionals and teams aiming to elevate their media projects with advanced tools.",
     type: "monthly",
     typeDescription: "Billed monthly",
@@ -166,8 +166,8 @@ export const pricingPlanList = [
     ]
   },
   {
-    title: "Professional Plan",
-    credits: "12000 Credits/ month",
+    title: "Professional",
+    credits: "12000 Credits / month",
     description: "Tailored for professionals and teams aiming to elevate their media projects with advanced tools.",
     type: "yearly",
     typeDescription: "Billed yearly",
@@ -184,8 +184,8 @@ export const pricingPlanList = [
     ]
   },
   {
-    title: "Business Plan",
-    credits: "25000 Credits/ month",
+    title: "Business",
+    credits: "25000 Credits / month",
     description: "Comprehensive solution for businesses requiring robust media capabilities and premium support.",
     type: "monthly",
     typeDescription: "Billed monthly",
@@ -201,8 +201,8 @@ export const pricingPlanList = [
     ]
   },
   {
-    title: "Business Plan",
-    credits: "25000 Credits/ month",
+    title: "Business",
+    credits: "25000 Credits / month",
     description: "Comprehensive solution for businesses requiring robust media capabilities and premium support.",
     type: "yearly",
     typeDescription: "Billed yearly",

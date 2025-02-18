@@ -17,12 +17,12 @@ export default function Pricing() {
         zIndex: -1000
       }}
       className="md:pt-10">
-      <p className="font-montserrat font-extrabold text-[36px] text-[#2c2c2c] leading-[48px] text-center">Pricing Plan</p>
-      <div className="pt-4">
-        <p className="font-lato font-normal text-base text-[#4f4f4f] text-center">Access a set of powerful features with simple and transparent pricing</p>
+      <p className="font-montserrat font-extrabold text-[48px] text-[#2c2c2c] leading-[64px] text-center">Pricing Plan</p>
+      <div className="pt-[12px]">
+        <p className="font-lato font-normal text-base text-[#4f4f4f] text-center leading-[24px]">Access a set of powerful features with simple and transparent pricing</p>
       </div>
       <div className="flex justify-center pt-12">
-        <ToggleSwitch monthly={monthly} setMonthly={setMonthly}/>
+        <ToggleSwitch monthly={monthly} setMonthly={setMonthly} />
       </div>
       <div className="flex  justify-center">
         <div

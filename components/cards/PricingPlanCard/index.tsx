@@ -1,5 +1,4 @@
 import Typography from "@/components/Typography";
-import Button from "@/components/Button";
 import Tag from "@/components/Tag";
 import BenefitCard from "@/components/cards/BenefitCard";
 
@@ -8,40 +7,32 @@ type PricingPlanCardProps = {
   credits: string;
   description: string;
   originalPrice: string | number;
-  discountPrice?: number;
   type: string;
   benefits: string[];
+  discountPrice?: number;
 }
 
 export default function PricingPlanCard(props: PricingPlanCardProps) {
   return (
     <div
-      className="bg-white py-4 px-4 border border-solid border-slate-50 hover:border-slate-400 max-w-[296px] rounded-2xl min-h-full hover:scale-105 transition-transform duration-300 shadow-lg">
-      <div className="flex justify-between items-center pt-2 pb-4">
-        <Typography className="font-montserrat font-bold text-[16px] leading-5 w-[153px]" label={props.title} />
-        <Tag label={props.credits} />
-      </div>
-      <Typography label={props.description} className="font-lato text-[10px] font-normal leading-[15px] text-[#4f4f4f]"/>
-      <div className="pt-4 pb-1 px-2">
-        {props?.discountPrice && <Typography label={"$"+props?.discountPrice} className="line-through font-lato font-semibold text-base leading-[18px]"/>}
-        <div className="flex items-end">
-          <Typography label={"$" + props.originalPrice} className="font-lato font-bold text-[40px] leading-[56px]" />
-          <Typography label="/ month" className="italic font-lato font-bold text-base leading-8"/>
+      className="flex flex-col justify-between bg-white pt-4 pb-[25px] px-[32px] border border-solid border-slate-50 group hover:text-white hover:bg-[#5243C2] w-[354px] rounded-2xl min-h-full min-h-[552px] transition-all duration-300 shadow-lg">
+      <div className="flex-grow">
+        <div className="flex justify-between items-center pt-2">
+          <div className="flex items-center">
+            <p
+              className="font-montserrat font-semibold text-[36px] leading-[46px] text-[#2c2c2c] group-hover:text-white">{"$" + props.originalPrice}</p>
+            <p className="italic font-lato font-medium text-[17px] leading-[20.4px] text-[#2c2c2c] pl-[6px] group-hover:text-white">/month</p>
+          </div>
+          <Tag label={props.credits}/>
         </div>
-      </div>
-      <div className="flex gap-2 pb-6 px-2">
-        <p className="font-lato text-base text-[#838696] font-normal leading-[18px]">Billed</p>
-        <p className="font-lato text-base text-[#838696] font-normal leading-[18px]">{props.type}</p>
-      </div>
-      <div className='border-dashed border-b-2 border-[#e2e4e9] pb-5 mb-5 mx-auto px-3'>
-        <Button label="Select Plan" variant="outlined" filled className="h-[42px]" />
-      </div>
-      <div className="px-2">
-        <Typography label="Monthly Benefits" variant="bb3"/>
-        <div className="pt-3">
+        <p
+          className="font-montserrat font-semibold text-[28px] leading-[34.13px] text-[#2c2c2c] pt-[20px] pb-[10px] group-hover:text-white">{props.title}</p>
+          <Typography label={props.description} variant="b2"/>
+        <div className="pt-[16px]">
           {props.benefits.map(benefit => <BenefitCard label={benefit}/>)}
         </div>
       </div>
+      <button className="font-semibold py-4 font-lato text-[15px] w-full bg-[#e8f4ff] group-hover:text-white group-hover:bg-[#273266] text-[#148cfc] rounded-full">Select Plan</button>
     </div>
   )
 }

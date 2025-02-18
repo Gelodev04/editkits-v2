@@ -1,12 +1,11 @@
-import Typography from "@/components/Typography";
-import Check from "@/assets/img/check.svg"
+import Check from "@/assets/icons/check-circle.svg"
 import Image from "next/image";
 
 export default function BenefitCard({label}: {label: string}) {
   return (
-    <div className={"flex items-center gap-2 py-1"}>
+    <div className={"flex items-center gap-[10px] py-1"}>
       <Image src={Check} alt="check"/>
-      <Typography variant="b2" className="font-lato" label={label}/>
+      <p className="group-hover:text-white font-lato font-normal text-sm leading-[21px] text-[#4f4f4f]">{label}</p>
     </div>
   )
 }

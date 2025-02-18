@@ -3,22 +3,22 @@ import React from "react";
 export default function ToggleSwitch({monthly, setMonthly}: {monthly: boolean, setMonthly: (e: React.SetStateAction<boolean>) => void}) {
 
   return (
-    <div className="flex bg-blue-50 p-1 rounded-full w-max px-4 py-2">
+    <div className="flex rounded-full w-max border border-solid border-[1px] border-[#979797]">
       <button
-        className={`px-8 py-2 rounded-full transition-all duration-300 font-lato text-lg font-bold w-[172px] h-[48px] ${
-          monthly ? 'bg-sky-500 text-white scale-105' : 'text-[#17ABDB]'
+        className={`py-2 rounded-full transition-all duration-300 font-montserrat text-[10px] font-semibold w-[111px] h-[44px] ${
+          monthly ? 'bg-[#273266] text-white' : 'text-[#17abdb]'
         }`}
         onClick={() => setMonthly(true)}
       >
-        Monthly
+        MONTHLY
       </button>
       <button
-        className={`px-8 py-2 rounded-full font-bold transition-all duration-300 font-lato text-lg w-[172px] ${
-          !monthly ? 'bg-sky-500 text-white scale-105' : 'text-[#17ABDB]'
+        className={`py-2 rounded-full font-bold transition-all duration-300 font-montserrat text-[10px] font-semibold w-[111px] h-[44px] ${
+          !monthly ? 'bg-[#273266] text-white' : 'text-[#17abdb]'
         }`}
         onClick={() => setMonthly(false)}
       >
-        Yearly
+        YEARLY
       </button>
     </div>
   );

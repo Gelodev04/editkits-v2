@@ -15,7 +15,7 @@ type PricingPlanCardProps = {
 export default function PricingPlanCard(props: PricingPlanCardProps) {
   return (
     <div
-      className="flex flex-col justify-between bg-white pt-4 pb-[25px] px-[32px] border border-solid border-slate-50 group hover:text-white hover:bg-[#5243C2] w-[354px] rounded-2xl min-h-full min-h-[552px] transition-all duration-300 shadow-lg">
+      className="flex flex-col justify-between bg-white pt-4 pb-[25px] px-[32px] border border-solid border-[#5243C2] group hover:text-white hover:bg-[#5243C2] w-[354px] rounded-2xl min-h-full min-h-[552px] transition-all duration-300 shadow-lg">
       <div className="flex-grow">
         <div className="flex justify-between items-center pt-2">
           <div className="flex items-center">

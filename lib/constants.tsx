@@ -109,6 +109,7 @@ export const pricingPlanList = [
     type: "monthly",
     typeDescription: "Billed monthly",
     originalPrice: 0,
+    mostPopular: false,
     benefits: [
       "No Credit Card required",
       "Max 1 concurrent job",
@@ -124,6 +125,7 @@ export const pricingPlanList = [
     type: "monthly",
     typeDescription: "Billed monthly",
     originalPrice: 10,
+    mostPopular: false,
     benefits: [
       "Max 3 concurrent jobs",
       "6 hours of file storage",
@@ -141,6 +143,7 @@ export const pricingPlanList = [
     isDiscount: true,
     originalPrice: 9,
     discountPrice: 10,
+    mostPopular: false,
     benefits: [
       "Max 3 concurrent jobs",
       "6 hours of file storage",
@@ -156,6 +159,7 @@ export const pricingPlanList = [
     type: "monthly",
     typeDescription: "Billed monthly",
     originalPrice: 50,
+    mostPopular: true,
     benefits: [
       "Max 10 concurrent jobs",
       "24 hours of file storage",
@@ -174,6 +178,7 @@ export const pricingPlanList = [
     isDiscount: true,
     originalPrice: 45,
     discountPrice: 50,
+    mostPopular: true,
     benefits: [
       "Max 10 concurrent jobs",
       "24 hours of file storage",
@@ -190,6 +195,7 @@ export const pricingPlanList = [
     type: "monthly",
     typeDescription: "Billed monthly",
     originalPrice: 100,
+    mostPopular: false,
     benefits: [
       "Max 20 concurrent jobs",
       "24 hours of file storage",
@@ -209,6 +215,7 @@ export const pricingPlanList = [
     isDiscount: true,
     originalPrice: 90,
     discountPrice: 100,
+    mostPopular: false,
     benefits: [
       "Max 20 concurrent jobs",
       "24 hours of file storage",

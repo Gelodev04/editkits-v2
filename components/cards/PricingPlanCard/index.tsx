@@ -10,14 +10,20 @@ type PricingPlanCardProps = {
   type: string;
   benefits: string[];
   discountPrice?: number;
+  mostPopular: boolean;
 }
 
 export default function PricingPlanCard(props: PricingPlanCardProps) {
   return (
     <div
-      className="flex flex-col justify-between bg-white pt-4 pb-[25px] px-[32px] border border-solid border-[#5243C2] group hover:text-white hover:bg-[#5243C2] w-[354px] rounded-2xl min-h-full min-h-[552px] transition-all duration-300 shadow-lg">
+      className="flex relative flex-col justify-between bg-white pt-[44px] pb-[25px] pl-[32px] pr-[40.7px] border border-solid border-[#5243C2] group hover:text-white hover:bg-[#7D3DDE] w-[354px] rounded-2xl min-h-[552px] transition-all duration-300 shadow-lg">
+      {props.mostPopular &&props.mostPopular && (
+        <div className="absolute top-[-12px] left-1/2 transform -translate-x-1/2 bg-[#273266] text-white text-[10px] font-montserrat font-semibold  leading-[12.19px] pt-[7px] pb-[8px] pl-[15.76px] pr-[16.97px] w-[146.3px] tracking-[0.8px] text-center rounded-full">
+          MOST POPULAR
+        </div>
+      )}
       <div className="flex-grow">
-        <div className="flex justify-between items-center pt-2">
+        <div className="flex justify-between items-center">
           <div className="flex items-center">
             <p
               className="font-montserrat font-semibold text-[36px] leading-[46px] text-[#2c2c2c] group-hover:text-white">{"$" + props.originalPrice}</p>
@@ -32,7 +38,7 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
           {props.benefits.map(benefit => <BenefitCard label={benefit}/>)}
         </div>
       </div>
-      <button className="font-semibold py-4 font-lato text-[15px] w-full bg-[#e8f4ff] group-hover:text-white group-hover:bg-[#273266] text-[#148cfc] rounded-full">Select Plan</button>
+      <button className="font-semibold py-4 font-lato text-[15px] w-full bg-[#e8f4ff] group-hover:text-white group-hover:bg-[#273266] text-[#148cfc] rounded-full">Choose Plan</button>
     </div>
   )
 }

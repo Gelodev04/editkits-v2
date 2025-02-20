@@ -21,18 +21,20 @@ export default function Pricing() {
       }}
       className="md:pt-10 min-h-[100vh]"
     >
-      <p className="font-montserrat font-extrabold text-[48px] text-[#2c2c2c] leading-[64px] text-center">Pricing Plan</p>
+      <p className="font-montserrat font-extrabold text-[48px] text-[#2c2c2c] leading-[64px] text-center">Pricing
+        Plan</p>
       <div className="pt-[12px]">
-        <p className="font-lato font-normal text-base text-[#4f4f4f] text-center leading-[24px]">Access a set of powerful features with simple and transparent pricing</p>
+        <p className="font-lato font-normal text-base text-[#4f4f4f] text-center leading-[24px]">Access a set of
+          powerful features with simple and transparent pricing</p>
       </div>
-      <div className="flex justify-center pt-12">
-        <ToggleSwitch monthly={monthly} setMonthly={setMonthly} />
+      <div className="flex justify-center pt-12 pb-[22px]">
+        <ToggleSwitch monthly={monthly} setMonthly={setMonthly}/>
       </div>
-      <div className="flex  justify-center">
+      <div className="flex justify-center">
         <div
           className={`grid grid-cols-1 md:grid-cols-2 gap-8 bg-white ${
             monthly ? 'xl:grid-cols-2 2xl:grid-cols-4' : 'xl:grid-cols-3'
-          } place-items-center p-8 rounded rounded-2xl max-w-[1920px]`}
+          } place-items-center px-[22px] py-[14px] rounded rounded-2xl max-w-[1920px]`}
         >
           {pricingPlanList
             .filter(plan => plan.type === (monthly ? 'monthly' : 'yearly'))
@@ -46,6 +48,7 @@ export default function Pricing() {
                 benefits={plan.benefits}
                 originalPrice={plan.originalPrice}
                 discountPrice={plan?.discountPrice}
+                mostPopular={plan?.mostPopular}
               />
             ))}
         </div>

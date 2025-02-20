@@ -8,11 +8,11 @@ const codeInputProps = {
     fontFamily: 'montserrat',
     fontWeight: 500,
     fontSize: '30px',
-    margin: "16px",
+    margin: "0 12px",
     textAlign: "center",
     color: '#4f4f4f',
     borderBottom: '2px solid #d4d4d4',
-    width: "48px",
+    width: "50px",
     outline: "none",
   },
 }

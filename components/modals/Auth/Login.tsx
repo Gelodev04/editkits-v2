@@ -21,12 +21,16 @@ export default function Login(
   login: any,
   setType: (e: React.SetStateAction<string>) => void,
   setAuthModal: (e: React.SetStateAction<boolean>) => void,
+  hasTyped: boolean,
+  setHasTyped: (e: React.SetStateAction<boolean>) => void,
 ) {
+
   return (
     <>
-      <div className="px-[50.5px]">
+      <div className="px-[50.5px] min-h-[353px]">
         <TextField
           onChange={(e) => {
+            if (!hasTyped) setHasTyped(true);
             setEmail(e.target.value);
             setEmailValid(validateEmail(e.target.value));
           }}
@@ -38,9 +42,10 @@ export default function Login(
           type="text"
           height={66}
         />
-        <div className="pb-4 pt-[31px]">
+        <div className="pt-[31px]">
           <TextField
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (!hasTyped) setHasTyped(true);
               const passwordValue = e.target.value;
               setPassword(passwordValue);
               setPasswordValid(validatePassword(passwordValue));
@@ -53,18 +58,16 @@ export default function Login(
             height={66}
           />
         </div>
-        <div className="py-3">
-          <div className="flex justify-between items-center">
-            <Toggle name="remember-me" label="Remember me"/>
-            <p onClick={() => props.setType("Forgot your password?")}
-               className="font-lato font-normal text-xs leading-[18px] text-[#6F6C90] cursor-pointer">Forgot your
-              password?</p>
-          </div>
+        <div className="flex justify-between items-center pt-[53px]">
+          <Toggle label="Remember me"/>
+          <p onClick={() => props.setType("Forgot your password?")}
+             className="font-lato font-normal text-xs leading-[18px] text-[#6F6C90] cursor-pointer">Forgot your
+            password?</p>
         </div>
       </div>
-      <div className="pb-3 pt-20 max-w-[411px] mx-auto">
+      <div className="pt-20 max-w-[446px] mx-auto">
         <Button
-          disabled={!isEmailValid || !isPasswordValid || isLoginLoading}
+          disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
           onClick={() => handleLogin(email, password, login, setType, setAuthModal)}
           label="Login"
           variant="outlined"
@@ -72,7 +75,7 @@ export default function Login(
           height={67}
         />
       </div>
-      <div className="flex justify-center pb-10 gap-4">
+      <div className="flex justify-center pb-[32px] pt-[12px] gap-4">
         <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Don&apos;t have an account?</p>
         <Button
           className="font-openSans font-bold text-xs text-[#148CFC]"

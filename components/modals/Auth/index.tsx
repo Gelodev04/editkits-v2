@@ -15,8 +15,7 @@ import {
   useRegisterMutation, useRequestPasswordResetMutation, useResendConfirmationCodeMutation
 } from "@/services/api";
 
-import EmailNotConfirmedSignup from "@/components/modals/Auth/EmailNotConfirmedSignup";
-import EmailNotConfirmedLogin from "@/components/modals/Auth/EmailNotConfirmedLogin";
+import EmailNotVerified from "@/components/modals/Auth/EmailNotVerified";
 import useLogout from "@/hooks/useLogout";
 import {useRouter} from "next/router";
 import {refreshAccessToken} from "@/lib/utils";
@@ -60,6 +59,8 @@ export default function AuthModal(props: AuthModalProps) {
   const [isPasswordValid, setPasswordValid] = useState(false);
   const {timer, setTimer} = useCountdownTimer(60);
 
+  const [hasTyped, setHasTyped] = React.useState(false);
+
   const handleLogout = useLogout(router, logout)
 
   React.useEffect(() => {
@@ -68,9 +69,13 @@ export default function AuthModal(props: AuthModalProps) {
       setPassword('');
       setConfirmPassword('');
       setCode("")
-      setCodes("")
+      setCodes("");
     }
   }, [props.showAuthModal]);
+
+  React.useEffect(() => {
+    setHasTyped(false)
+  },[props.type])
 
   React.useEffect(() => {
     refreshAccessToken(refreshToken, handleLogout);
@@ -87,49 +92,28 @@ export default function AuthModal(props: AuthModalProps) {
       setPassword("")
       setConfirmPassword("")
       props.setAuthModal(false)
+      setHasTyped(false)
     }}>
       <Fade in={props.showAuthModal}>
-        {/*@ts-ignore*/}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: 400,
-          bgcolor: 'background.paper',
-          //@ts-ignore
-          boxShadow: 24,
-          p: 4
-        }}
-        >
+        <div>
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
               <div
-                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg`}>
-                <div className="absolute right-2 top-2 cursor-pointer">
+                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:w-[532px]`}>
+                <div className="absolute right-[14px] top-[14px] cursor-pointer">
                   <TbXboxX size={30} color="#000" onClick={() => props.setAuthModal(false)}/>
                 </div>
-                <div className="bg-white px-4 pb-[23px] pt-5 sm:p-6 sm:pb-4">
-                  <div className="sm:flex justify-center">
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0">
-                      <Typography
-                        label={props.type}
-                        center
-                        variant="h4"
-                      />
-
-                      <div className="pt-[8px]">
-                        <Typography
-                          label={getModalDescription(props.type, email)}
-                          center
-                          variant="b3"
-                        />
-                      </div>
-                    </div>
+                <div className="bg-white text-center pt-[32px]">
+                  <div className="pb-[8px]">
+                    <Typography label={props.type} center variant="h4" />
+                  </div>
+                  <div className="w-[432px] mx-auto">
+                    <Typography label={getModalDescription(props.type, email)} center variant="b3" />
                   </div>
                 </div>
-                {props.type === "Sign Up" && Signup(props.type,props.setType, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleRegister, register, isLoading )}
-                {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid, handleLogin, isLoginLoading, login, props.setType, props.setAuthModal)}
+                {props.type === "Sign Up" && Signup(props.type,props.setType, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleRegister, register, isLoading, hasTyped, setHasTyped )}
+                {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid, handleLogin, isLoginLoading, login, props.setType, props.setAuthModal, hasTyped, setHasTyped)}
                 {props.type === "Enter verification code" && Verification(
                   props.type,
                   props.setType,
@@ -142,12 +126,14 @@ export default function AuthModal(props: AuthModalProps) {
                   isConfirmRegisterLoading,
                   setTimer,
                   resendConfirmationCode,
-                  confirmRegister
+                  confirmRegister,
+                  hasTyped,
+                  setHasTyped
                 )}
-                {props.type === "Forgot your password?" && ForgetPassword(props.type, props.setType, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode, requestPasswordReset)}
-                {props.type === "Reset Password" && ResetPassword(props.type, email, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword, confirmPasswordReset, props.setType)}
-                {props.type === "Email already registered" && EmailNotConfirmedSignup(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode)}
-                {props.type === "Email not verified" && EmailNotConfirmedLogin(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode)}
+                {props.type === "Forgot your password?" && ForgetPassword(props.type, props.setType, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode, requestPasswordReset, hasTyped, setHasTyped)}
+                {props.type === "Reset Password" && ResetPassword(props.type, email, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword, confirmPasswordReset, props.setType, hasTyped, setHasTyped)}
+                {props.type === "Email already registered" && EmailNotVerified(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode, hasTyped, setHasTyped)}
+                {props.type === "Email not verified" && EmailNotVerified(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode, hasTyped, setHasTyped)}
               </div>
             </div>
           </div>

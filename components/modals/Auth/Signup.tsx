@@ -21,14 +21,17 @@ export default function Signup(
   setPasswordValid: (e: React.SetStateAction<boolean>) => void,
   handleRegister: any,
   register: any,
-  isLoading?: any,
+  isLoading: any,
+  hasTyped: boolean,
+  setHasTyped: (e: React.SetStateAction<boolean>) => void,
 ) {
 
   return (
     <>
-      <div className="px-10">
+      <div className="px-10 pt-[32px]">
         <TextField
           onChange={(e) => {
+            if (!hasTyped) setHasTyped(true);
             setEmail(e.target.value);
             setEmailValid(validateEmail(e.target.value));
           }}
@@ -39,10 +42,11 @@ export default function Signup(
           value={email}
           type="text"
         />
-        <div className="py-4">
+        <div className="py-[32px]">
           <TextField
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const passwordValue = e.target.value;
+              if (!hasTyped) setHasTyped(true);
               setPassword(passwordValue);
               setPasswordValid(validatePassword(passwordValue));
             }}
@@ -54,25 +58,31 @@ export default function Signup(
           />
         </div>
         <TextField
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(e) => {
+            if (!hasTyped) setHasTyped(true);
+            setConfirmPassword(e.target.value)
+          }}
           password={password}
           error={password !== confirmPassword}
           type="password"
           label="Confirm Password"
           placeholder="Confirm password"
         />
-        <PasswordValidation password={password}/>
+        <div className="pt-[23px]">
+          <PasswordValidation password={password}/>
+        </div>
       </div>
-      <div className="pb-3 pt-20 max-w-[411px] mx-auto">
+      <div className="pt-[47.5px] pb-[12px] max-w-[446px] mx-auto">
         <Button
           onClick={() => handleRegister(email, password, setType, register)}
-          disabled={!isEmailValid || !isPasswordValid || password !== confirmPassword || isLoading}
+          disabled={hasTyped && (!isEmailValid || !isPasswordValid || password !== confirmPassword || isLoading)}
           label="Create account"
           variant="outlined"
           filled
+          height={67}
         />
       </div>
-      <div className="flex justify-center pb-10 gap-4 items-center">
+      <div className="flex justify-center pb-[32px] gap-4 items-center">
         <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Already have an account?</p>
         <Button
           className="font-openSans font-bold text-xs text-[#148CFC]"

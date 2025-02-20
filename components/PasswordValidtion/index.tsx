@@ -5,9 +5,9 @@ import React from "react";
 
 export function PasswordValidation(props) {
   return (
-    <div className="py-4">
-      <div className="pb-4">
-        <Toggle name="remember-me" label="Remember me"/>
+    <div>
+      <div className="pb-[23px]">
+        <Toggle label="Remember me"/>
       </div>
       <div className="grid grid-cols-2 gap-y-1">
         <div className="flex items-center gap-x-2">

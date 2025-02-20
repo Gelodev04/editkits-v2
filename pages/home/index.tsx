@@ -47,7 +47,7 @@ export default function Home() {
           <Image className="min-w-[500px] 2xl:min-w-[727px] min-h-[569px]" src={HeroImg} width={727} height={561} alt="hero image"/>
         </div>
       </div>
-      <div className="bg-white py-4 border-[1px] border-solid border-[#9F9F9F] rounded-[40px] max-w-[1517px] mx-auto">
+      <div className="bg-white py-4 border-[1px] border-solid border-[#9f9f9f] rounded-[40px] max-w-[1517px] mx-auto">
         <div className="pb-2">
           <Typography
             label="Quick Access"

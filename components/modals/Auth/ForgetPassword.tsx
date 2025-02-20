@@ -13,29 +13,34 @@ export default function ForgetPassword(
   setEmailValid: (e: React.SetStateAction<boolean>) => void,
   handleSendResetCode: any,
   requestPasswordReset: any,
+  hasTyped: boolean,
+  setHasTyped: (e: React.SetStateAction<boolean>) => void,
 ) {
   return (
     <>
-      <div className="px-10">
+      <div className="px-[43px] pt-[33px]">
         <TextField
           onChange={(e) => {
+            if (!hasTyped) setHasTyped(true);
             setEmail(e.target.value);
             setEmailValid(validateEmail(e.target.value));
           }}
           error={!isEmailValid}
           email={email}
           label="Email"
-          placeholder="abc@editkits.com"
+          placeholder="abcd1234@gmail.com"
           value={email}
           type="text"
         />
       </div>
-      <div className="pb-3 pt-[56px] pb-[52px] p max-w-[411px] mx-auto">
+      <div className="pt-[70px] pb-[38px] max-w-[446px] mx-auto">
         <Button
-          disabled={!isEmailValid}
+          disabled={hasTyped && !isEmailValid}
           onClick={() => handleSendResetCode(email, requestPasswordReset, setType)}
-          label="Send reset code" variant="secondary"
+          label="Send reset code"
+          variant="outlined"
           filled
+          height={67}
         />
       </div>
     </>

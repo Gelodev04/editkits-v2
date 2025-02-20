@@ -4,19 +4,22 @@ import React from "react";
 import {AuthModalProps} from "@/components/modals/Auth/index";
 import {validateEmail} from "@/lib/validateEmail";
 
-export default function EmailNotConfirmedSignup(
+export default function EmailNotConfirmedLogin(
   props: AuthModalProps,
   email: string,
   setEmail: (e: React.SetStateAction<string>) => void,
   isEmailValid: boolean,
   setEmailValid: (e: React.SetStateAction<boolean>) => void,
-  handleSendResetCode: any
+  handleSendResetCode: any,
+  hasTyped: boolean,
+  setHasTyped: (e: React.SetStateAction<boolean>) => void,
 ) {
   return (
     <>
-      <div className="px-10">
+      <div className="px-[43px] pt-[51px]">
         <TextField
           onChange={(e) => {
+            if (!hasTyped) setHasTyped(true);
             setEmail(e.target.value);
             setEmailValid(validateEmail(e.target.value));
           }}
@@ -28,15 +31,15 @@ export default function EmailNotConfirmedSignup(
           type="text"
         />
       </div>
-      <div className="flex justify-center sm:pt-28">
-        <div className="py-3 sm:flex flex justify-center w-[34%] sm:pb-10">
-          <Button
-            disabled={!isEmailValid}
-            onClick={handleSendResetCode}
-            label="Send Verification Code" variant="secondary"
-            filled
-          />
-        </div>
+      <div className="pb-[38px] pt-[112px] max-w-[446px] mx-auto">
+        <Button
+          disabled={hasTyped && (!isEmailValid)}
+          onClick={handleSendResetCode}
+          label="Send Verification Code"
+          variant="outlined"
+          filled
+          height={67}
+        />
       </div>
     </>
   )

@@ -23,7 +23,7 @@ export default function TextField(props: TextFieldProps) {
   return (
     <>
       {props.variant === "t2" && <p className="font-lato font-bold text-sm leading-[21px] text-sm text-[#2c2c2c] leading-[21px] pb-[17px]">{props.label}</p>}
-      {!props.variant && <p className="font-lato font-medium text-base leading-[20px] text-[#2c2c2c] pb-[17px]">{props.label}</p>}
+      {!props.variant && <p className="font-lato font-medium text-base leading-[20px] text-[#2c2c2c] pb-[18px]">{props.label}</p>}
       <div>
         {props.type === "password" && (
           <PasswordInput

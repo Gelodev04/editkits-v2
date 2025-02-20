@@ -44,7 +44,7 @@ export default function Account() {
     "Max 1 concurrent job",
     "2 hours of file storage",
     "50 credits/GB for content delivery",
-    "Up to Full HD (1920 x 1080) or equivalent export"
+    "Up to FHD (1920 x 1080) or equivalent export"
   ]
 
   return (

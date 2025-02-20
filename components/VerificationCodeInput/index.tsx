@@ -3,16 +3,16 @@ import ReactCodeInput from "react-code-input";
 
 const codeInputProps = {
   autoFocus: false,
-  className: "bg-white flex gap-x-96 input text-center",
+  className: "bg-white flex input text-center",
   inputStyle: {
     fontFamily: 'montserrat',
     fontWeight: 500,
     fontSize: '30px',
-    margin: "0 12px",
+    marginRight: "12px",
     textAlign: "center",
     color: '#4f4f4f',
     borderBottom: '2px solid #d4d4d4',
-    width: "50px",
+    width: "55px",
     outline: "none",
   },
 }

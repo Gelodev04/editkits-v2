@@ -1,5 +1,4 @@
 import {useState} from "react";
-import Typography from "@/components/Typography";
 
 type ToggleProps = {
   label: string;
@@ -29,7 +28,7 @@ export default function Toggle(props: ToggleProps) {
         />
         </button>
       </div>
-      <Typography label={props.label} variant="b3" />
+      <p className="font-lato font-normal text-xs leading-[18px] text-[#2d3748]">{props.label}</p>
     </div>
   )
 }

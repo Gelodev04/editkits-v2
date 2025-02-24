@@ -8,28 +8,31 @@ import UploadFileModal from "@/components/modals/UploadFileModal";
 import TextField from "@/components/TextField";
 import Select from "@/components/Select";
 
-import {outputQuality, videoType} from "@/lib/constants";
+import {outputQualityList, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
-import {useStatusQuery, useUploadMutation} from "@/services/api";
-import {useEffect} from "react";
+import {useCommitJobMutation, useInitJobMutation, useStatusQuery, useUploadMutation} from "@/services/api";
+import toast from "react-hot-toast";
 
 export default function TrimVideo() {
+  const [fileId, setFileId] = React.useState(null);
+  const [upload] = useUploadMutation();
+  const { data , refetch } = useStatusQuery({ fileId }, { skip: !fileId });
+  const [initJob, {isLoading: isInitLoading}] = useInitJobMutation();
+  const [commitJob, {isLoading: isCommitLoading}] = useCommitJobMutation();
+
   const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
   const [file, setFile] = React.useState<any>(null);
   const [startTime, setStartTime] = React.useState<any>(null);
   const [endTime, setEndTime] = React.useState<any>(null);
-  const [frameRate, setFramerate] = React.useState<any>(null);
-  const [audioSampleRate, setAudioSampleRate] = React.useState<any>(null);
   const videoRef = React.useRef(null);
 
-  const [fileId, setFileId] = React.useState(null);
-  const [upload] = useUploadMutation();
-  const { data , refetch } = useStatusQuery({ fileId }, { skip: !fileId });
   const [fetchedData, setFetchedData] = React.useState(null);
   const [progress, setProgress] = React.useState(0);
   const [isUploading, setIsUploading] = React.useState(false);
+  const [outputQuality, setOutputQuality] = React.useState("LOW");
+  const [videoContainer, setVideoContainer] = React.useState("mp4");
 
-  useEffect(() => {
+  React.useEffect(() => {
     const interval = setInterval(() => {
       //@ts-ignore
       if(data?.status !== "COMMITTED" && data?.status !== "ERROR" && fileId) {
@@ -42,14 +45,70 @@ export default function TrimVideo() {
     return () => clearInterval(interval);
   }, [data]);
 
+  async function handleTrimVideo() {
+    try {
+      const response = await initJob({
+        pipeline: [
+          {
+            tool_id: "VIDEO_TRIM",
+            properties: {
+              input: fileId,
+              start_time: startTime,
+              end_time: endTime,
+            },
+          },
+        ],
+        output_properties: {
+          output_quality: outputQuality,
+          video_output_format: videoContainer,
+        },
+      });
+
+      if (response.error) {
+        console.error("Error initializing job:", response.error);
+        toast.error("Failed to initialize job");
+        return;
+      }
+
+      toast.success("Job initialized successfully");
+
+      const { job_id } = response.data;
+
+      await handleCommitJob(job_id);
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      toast.error("An unexpected error occurred");
+    }
+  }
+
+  async function handleCommitJob(jobId) {
+    if (!jobId) {
+      toast.error("Invalid job ID");
+      return;
+    }
+
+    try {
+      const response = await commitJob({ job_id: jobId });
+
+      if (response.error) {
+        console.error("Error committing job:", response.error);
+        toast.error(response.error.errMsg || "Failed to commit job");
+        return;
+      }
+
+      toast.success("Job committed successfully");
+    } catch (error) {
+      console.error("Unexpected error in commit:", error);
+      toast.error("An unexpected error occurred while committing");
+    }
+  }
+
+
+
   return (
     <div className="max-w-[768px] px-12 lg:px-0 mx-auto">
       <div className="pt-16">
-        <Typography
-          label="Trim Video"
-          variant="h2"
-          center
-        />
+        <p className="font-montserrat font-extrabold text-[32px] leading-[45px] text-[#262628] text-center">Trim Video</p>
         <Typography
           className="font-lato text-[#000] pt-3"
           label="Quickly cut unwanted sections from your video to enhance its flow"
@@ -110,8 +169,9 @@ export default function TrimVideo() {
             placeholder="Medium"
             variant="t2"
             label="Output Quality"
-            options={outputQuality}
+            options={outputQualityList}
             disabled={!file}
+            onChange={(e) => setOutputQuality(e.target.value)}
           />
         </div>
         <div className="w-full">
@@ -121,36 +181,18 @@ export default function TrimVideo() {
             label="Video Container"
             options={videoType}
             disabled={!file}
-
-          />
-        </div>
-      </div>
-      <div className="flex justify-between gap-6">
-        <div className="w-full">
-          <TextField
-            disabled={!file}
-            placeholder="30"
-            variant="t2"
-            label="Framerate"
-            type="number"
-            value={frameRate}
-            onChange={(e) => setFramerate((e.target.value))}
-          />
-        </div>
-        <div className="w-full">
-          <TextField
-            disabled={!file}
-            placeholder="480000"
-            variant="t2"
-            label="Audio Sample Rate"
-            type="number"
-            value={audioSampleRate}
-            onChange={(e) => setAudioSampleRate(e.target.value)}
+            onChange={(e) => setVideoContainer(e.target.value)}
           />
         </div>
       </div>
       <div className="max-w-[171px] mx-auto py-16">
-        <Button disabled={!file} label="Proceed" variant="contained" filled rightIcon={<FaAngleRight/>} />
+        <Button
+          onClick={handleTrimVideo}
+          disabled={!file || isInitLoading || isCommitLoading}
+          label="Proceed"
+          variant="contained"
+          filled
+          rightIcon={<FaAngleRight/>} />
       </div>
       <UploadFileModal
         videoRef={videoRef}

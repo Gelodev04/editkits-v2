@@ -1149,16 +1149,17 @@ export const aspectRatio = [
   {label: "9:16 (Portrait)", value: "9:16"},
 ]
 
-export const outputQuality = [
-  {label: "Low", value: "Low"},
-  {label: "Medium", value: "Medium"},
-  {label: "High", value: "High"}
+export const outputQualityList = [
+  {label: "LOW", value: "LOW"},
+  {label: "MEDIUM", value: "MEDIUM"},
+  {label: "HIGH", value: "HIGH"},
+  {label: "BEST", value: "BEST"}
 ]
 
 export const videoType = [
-  {label: "Mp4", value: "Mp4"},
-  {label: "Mov", value: "Mov"},
-  {label: "Avi", value: "Avi"}
+  {label: "mp4", value: "mp4"},
+  {label: "mov", value: "mov"},
+  {label: "avi", value: "avi"}
 ]
 
 export const presets = [

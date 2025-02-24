@@ -34,7 +34,7 @@ export default function TextField(props: TextFieldProps) {
             height={props.height}
           />
         )}
-        {props.type === "text" && (
+        {props.type !== "password" && (
           <Input
             bgColor={props.bgColor}
             height={props.height}

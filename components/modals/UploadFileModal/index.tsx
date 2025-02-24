@@ -42,9 +42,10 @@ export default function UploadFileModal(props: UploadModalProps) {
   };
 
   async function handleFileUpload(file) {
+    const file_name = file.name.split(".")[0]
 
     props.setIsUploading(true)
-    const response = await props.upload({file_name: file.name, mime_type: file.type, ext: file.name.split('.').pop(), content_length: file.size});
+    const response = await props.upload({file_name, mime_type: file.type, ext: file.name.split('.').pop(), content_length: file.size});
 
     if(response.error) {
       toast.error(response.error.data.errorMsg);

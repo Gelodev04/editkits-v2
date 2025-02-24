@@ -10,7 +10,7 @@ import Select from "@/components/Select";
 
 import ColorPicker from "@/components/ColorPicker";
 import {useEffect, useState} from "react";
-import {aspectRatio, outputQuality, presets, videoType} from "@/lib/constants";
+import {aspectRatio, outputQualityList, presets, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
 import {useStatusQuery, useUploadMutation} from "@/services/api";
 
@@ -240,7 +240,7 @@ export default function ResizeVideo() {
           <Select
             variant="t2"
             label="Output Quality"
-            options={outputQuality}
+            options={outputQualityList}
             disabled={!file}
           />
         </div>

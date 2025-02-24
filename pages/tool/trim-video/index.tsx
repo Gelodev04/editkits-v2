@@ -72,7 +72,7 @@ export default function TrimVideo() {
 
       toast.success("Job initialized successfully");
 
-      const { job_id } = response.data;
+      const { job_id } : any = response.data;
 
       await handleCommitJob(job_id);
     } catch (error) {
@@ -92,6 +92,7 @@ export default function TrimVideo() {
 
       if (response.error) {
         console.error("Error committing job:", response.error);
+        // @ts-ignore
         toast.error(response.error.errMsg || "Failed to commit job");
         return;
       }

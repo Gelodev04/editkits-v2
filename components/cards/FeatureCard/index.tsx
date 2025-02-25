@@ -1,23 +1,26 @@
 import React from "react";
 import Image, {StaticImageData} from "next/image";
+import Typography from "@/components/Typography";
 
 type ToolCardProps = {
   name: string;
   icon: StaticImageData;
   tools?: boolean;
+  description?: string;
 }
 
-export default function FeatureCard({name, icon}: ToolCardProps) {
+export default function FeatureCard({name, icon, description}: ToolCardProps) {
   return (
     <div
-      className="px-2 w-[240px] h-[277px] flex flex-col justify-between pt-2 pb-10 px-4 items-center border-solid border-[1px] border-[#273266] rounded-[20px] justify-center cursor-pointer hover:scale-105 transition-transform transition-colors duration-500 relative"
+      className="w-[328px] h-[174px] flex flex-col relative"
     >
       <Image
         src={icon}
         alt={name}
-        width={150}
+        width={36}
       />
-      <p className="font-workSans font-semibold text-[22px] text-center pt-4 leading-[30.8px] text-[#2c2c2c]">{name}</p>
+      <p className="font-workSans font-semibold text-[16px]  py-[12px] leading-[22.4px] text-[#2c2c2c]">{name}</p>
+      <Typography label={description} />
     </div>
   )
 }

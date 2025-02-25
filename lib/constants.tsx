@@ -8,18 +8,6 @@ import Crop from "../assets/img/tools/crop.svg"
 import Loop from "../assets/img/tools/loop.svg"
 import Join from "../assets/img/tools/join.svg"
 
-import Budget from "../assets/img/features/budget.png"
-import Edit from "../assets/img/features/edit.png"
-import Fast from "../assets/img/features/fast.png"
-import Gift from "../assets/img/features/gift.png"
-import Interface from "../assets/img/features/interface.png"
-import Key from "../assets/img/features/key.png"
-import Powerful from "../assets/img/features/powerful.png"
-import Reward from "../assets/img/features/reward.png"
-import Store from "../assets/img/features/store.png"
-import Time from "../assets/img/features/time.png"
-import Work from "../assets/img/features/work.png"
-
 import OverlayVideoHover from "../assets/img/tools/overlay_hover.svg"
 import RotateHover from "../assets/img/tools/rotate_hover.svg"
 import TrimHover from "../assets/img/tools/trim_hover.svg"
@@ -37,6 +25,18 @@ import CarEditVideo from "@/assets/img/table/car_edit.svg"
 import FootballEditVideo from "@/assets/img/table/football_edit.svg"
 import FootballEditSuccess from "@/assets/img/table/football_edit_success.svg"
 
+import VideoRendering from "@/assets/img/features/video_rendering.svg"
+import EditingTools from "@/assets/img/features/editing_tools.svg"
+import FreePlan from "@/assets/img/features/free_plan.svg"
+import FastProcessing from "@/assets/img/features/fast_processing.svg"
+import BudgetFriendly from "@/assets/img/features/budget_friendly.svg"
+import Dashboard from "@/assets/img/features/dashboard.svg"
+import DeveloperAPI from "@/assets/img/features/developer_api.svg"
+import Storage from "@/assets/img/features/storage.svg"
+import MultiTasking from "@/assets/img/features/mutlitasking.svg"
+import NoWatermarks from "@/assets/img/features/no_water_marks.svg"
+import FileFormats from "@/assets/img/features/file_formats.svg"
+
 export const videoTools = [
   {name: "Overlay Video", icon: OverlayVideo, icon_hover: OverlayVideoHover},
   {name: "Rotate Video", icon: Rotate, icon_hover: RotateHover},
@@ -50,19 +50,69 @@ export const videoTools = [
 ]
 
 export const featureCards = [
-  { name: "A Clean Interface For Everyone", image: Interface },
-  { name: "Edit Videos, Photos, And Audio Easily", image: Edit },
-  { name: "Free For Beginners", image: Gift },
-  { name: "Fastest Video And Audio Processing", image: Fast },
-  { name: "Plans For Everyone's Needs", image: Budget },
-  { name: "A Powerful Dashboard For Easy Control", image: Powerful },
-  { name: "APIs For Developers To Use All Features", image: Key},
-  { name: "Store Your Videos, Photos, And Audio", image: Store },
-  { name: "Work On Many Files At The Same Time", image: Time },
-  { name: "Work On Many Files At The Same Time", image: Work },
-  { name: "Supports Various File Formats You Use", image: Reward },
-  { name: "Plans For Everyone's Needs", image: Budget }
+  {
+    name: "Professional 4K Video Rendering",
+    image: VideoRendering,
+    description: "Render stunning, cinema-quality videos in up to 4K resolution. Perfect for creators who demand crisp visuals and smooth playback, ensuring your content stands out on any platform."
+  },
+  {
+    name: "Intuitive Yet Advanced Editing Tools",
+    image: EditingTools,
+    description: "A beginner-friendly interface packed with professional-grade tools. Trim, filter, and enhance media effortlessly, even if you're new to editing."
+  },
+  {
+    name: "Free Plan For Beginners",
+    image: FreePlan,
+    description: "Jump in with a free plan offering loads of features and access to all the tools. Perfect for testing the waters or small projects—no credit card required."
+  },
+  {
+    name: "Lightning-Fast Processing Speeds",
+    image: FastProcessing,
+    description: "Process massive 4K videos and high-res assets in the background. Our cutting-edge cloud infrastructure delivers rapid encoding, editing, and exporting without hogging your system."
+  },
+  {
+    name: "Transparent And Budget-Friendly Pricing",
+    image: BudgetFriendly,
+    description: "No hidden fees, no surprises. Choose from flexible plans designed for freelancers, teams, and enterprises—all with straightforward pricing that scales with your needs."
+  },
+  {
+    name: "Centralized Dashboard For Total Control",
+    image: Dashboard,
+    description: "Monitor projects, track progress, and manage workflows in real time. A dashboard with all the details to prioritize tasks, view analytics, and stay organized."
+  },
+  {
+    name: "Developer-Friendly APIs",
+    image: DeveloperAPI,
+    description: "Integrate every feature into your workflow with robust APIs. Build custom solutions, automate workflows, and scale your app with comprehensive documentation."
+  },
+  {
+    name: "Store Your Videos, Photos, And Audio",
+    image: Storage,
+    description: "Store videos, photos, and audio files in a secure, searchable cloud library. Access your assets anytime, anywhere, and download them easily."
+  },
+  {
+    name: "Multi-Task Like A Pro",
+    image: MultiTasking,
+    description: "Run jobs simultaneously without slowdowns. Edit videos, process images, and export files in parallel—maximize productivity and hit deadlines faster."
+  },
+  {
+    name: "Zero Watermarks, Pure Professionalism",
+    image: NoWatermarks,
+    description: "Keep your content 100% yours—no intrusive logos or branding. Export polished videos, images, and audio files that showcase your brand, not ours."
+  },
+  {
+    name: "Various File Format Support",
+    image: FileFormats,
+    description: "Import various formats like MP4, MOV, PNG, WAV, and many others. Convert files seamlessly—ideal for cross-platform projects."
+  },
+  {
+    name: "Tailored Plans For Every User",
+    image: BudgetFriendly,
+    description: "From hobbyists to Fortune 500 teams, find a plan that fits. Upgrade, downgrade, or mix-and-match features to suit your evolving needs."
+  }
 ];
+
+
 
 export const stats = [
   {

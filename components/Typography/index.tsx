@@ -20,7 +20,7 @@ function TypographyStyle(props: TypographyProps) {
     case "h1":
       return `text-5xl font-extrabold font-montserrat text-[#2c2c2c] ${props.center && "text-center"}`;
     case "h2":
-      return `text-4xl font-extrabold text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
+      return `font-montserrat text-[40px] leading-[50px] font-bold text-[#2c2c2c] ${props.center && "text-center"}`;
     case "h3":
       return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
     case "h4":

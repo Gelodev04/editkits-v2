@@ -116,9 +116,9 @@ export default function Header() {
               <Button
                 onClick={onLogin}
                 label="Login"
-                variant="secondary"
+                variant="contained"
                 filled
-                width={112}
+                width={115}
                 height={48}
               />
             </div>

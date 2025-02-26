@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       <div
-        className="pb-[159.5px] bg-[url(../assets/img/hero_bg.svg)] max-w-[1187px] bg-cover bg-center grid grid-cols-12 mx-auto sm:items-center xl:items-end">
+        className="pb-[159.5px] bg-[url(../assets/img/hero_bg.svg)] max-w-[1187px] bg-cover sm:px-5 xl:px-0 bg-center grid grid-cols-12 mx-auto sm:items-center xl:items-end">
         <div className="sm:col-span-4 lg:col-span-6 pt-[134.5px]">
           <h1 className="font-montserrat font-extrabold text-[40px] leading-[56px] tracking-[0.2px] text-[#2c2c2c]">The
             Ultimate</h1>
@@ -100,10 +100,10 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="max-w-[1536px] mx-auto pt-[139px]">
+      <div className="max-w-[1536px] mx-auto pt-[139px] sm:pl-5 xl:pl-0">
         <Typography label="Learn more about our features" variant="h2"/>
       </div>
-      <div className="bg-[url(../assets/img/inclined_bg.svg)] bg-no-repeat bg-cover">
+      <div className="bg-[url(../assets/img/inclined_bg.svg)] bg-no-repeat bg-cover sm:pl-5 xl:pl-0">
         <div className="grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] max-w-[1536px] mx-auto">
           {featureCards.map((card) => <FeatureCard name={card.name} icon={card.image} description={card.description}/>)}
         </div>

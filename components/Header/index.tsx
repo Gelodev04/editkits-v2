@@ -38,7 +38,7 @@ export default function Header() {
   }
 
   return (
-    <div className="flex justify-between py-5 bg-white w-full max-w-[1920px] mx-auto px-8">
+    <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto px-[153px]">
       <Link href="/">
         <Image src={Logo} className="w-[187px]" alt="Logo"/>
       </Link>

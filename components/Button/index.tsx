@@ -26,7 +26,7 @@ function ButtonStyle(variant: string, filled?: boolean, disabled?: boolean, widt
   } else if (variant === "outlined") {
     return ` ${className} font-bold py-4 font-lato text-sm w-full ${filled && !disabled ? "bg-[#148CFC] text-white cursor-auto" : "bg-[#e0e0e0] text-[#2c2c2c]" } ${!disabled && "hover:scale-105 transition duration-300 hover:opacity-[90%]"} border-2 flex justify-center rounded-full`;
   } else if (variant === "contained") {
-      return `${className} cursor-auto font-bold ${!className?.includes('py') ? "py-4": className} font-montserrat text-sm w-full ${filled && !disabled ? "bg-sky-500 text-white hover:bg-sky-600" : disabled ? "bg-neutral-50 text-[#b3b3b3]" : "hover:bg-sky-100 text-[#4f4f4f]"} ${!disabled && "hover:scale-105 transition duration-300"} ${border ? "border-2 border-gray-500" : "border-2 border-zinc-100"} flex justify-center items-center gap-4 rounded-full`;
+      return `${className} cursor-auto font-bold ${!className?.includes('py') ? "py-4": className} font-montserrat text-sm w-full ${filled && !disabled ? "bg-[#148cfc] text-white hover:bg-sky-600" : disabled ? "bg-neutral-50 text-[#b3b3b3]" : "hover:bg-sky-100 text-[#4f4f4f]"} ${!disabled && "hover:scale-105 transition duration-300"} ${border ? "border-2 border-gray-500" : "border-2 border-zinc-100"} flex justify-center items-center gap-4 rounded-full`;
   }
 }
 

@@ -10,17 +10,27 @@ import Select from "@/components/Select";
 
 import {outputQualityList, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
-import {useCommitJobMutation, useInitJobMutation, useStatusQuery, useUploadMutation} from "@/services/api";
+import {
+  useCommitJobMutation,
+  useInitJobMutation,
+  useJobStatusQuery,
+  useStatusQuery,
+  useUploadMutation
+} from "@/services/api";
 import toast from "react-hot-toast";
+import FileProgressModal from "@/components/modals/FilePgrogressModal";
 
 export default function TrimVideo() {
   const [fileId, setFileId] = React.useState(null);
+  const [jobId, setJobId] = React.useState(null);
   const [upload] = useUploadMutation();
   const { data , refetch } = useStatusQuery({ fileId }, { skip: !fileId });
+  const { data: jobData, refetch: refetchJobData } = useJobStatusQuery({ job_id: jobId }, { skip: !jobId})
   const [initJob, {isLoading: isInitLoading}] = useInitJobMutation();
   const [commitJob, {isLoading: isCommitLoading}] = useCommitJobMutation();
 
   const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
+  const [progressModal, setProgressModal] = React.useState<any>(false);
   const [file, setFile] = React.useState<any>(null);
   const [startTime, setStartTime] = React.useState<any>(null);
   const [endTime, setEndTime] = React.useState<any>(null);
@@ -44,6 +54,32 @@ export default function TrimVideo() {
 
     return () => clearInterval(interval);
   }, [data]);
+
+  React.useEffect(() => {
+    if (!jobId) return;
+
+    const interval = setInterval(() => {
+      if (
+        // @ts-ignore
+        jobData?.status !== "COMMITTED" &&
+        // @ts-ignore
+        jobData?.status !== "ERROR" &&
+        // @ts-ignore
+        jobData?.status !== "COMPLETED" &&
+        // @ts-ignore
+        jobData?.status !== "FAILED" &&
+        // @ts-ignore
+        jobData?.status !== "CANCELLED"
+      ) {
+        refetchJobData();
+      } else {
+        clearInterval(interval);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+    // @ts-ignore
+  }, [jobId, jobData?.status]);
 
   async function handleTrimVideo() {
     try {
@@ -71,8 +107,10 @@ export default function TrimVideo() {
       }
 
       toast.success("Job initialized successfully");
+      setProgressModal(true)
 
       const { job_id } : any = response.data;
+      setJobId(job_id);
 
       await handleCommitJob(job_id);
     } catch (error) {
@@ -206,6 +244,12 @@ export default function TrimVideo() {
         isUploading={isUploading}
         setIsUploading={setIsUploading}
         setProgress={setProgress}
+      />
+      <FileProgressModal
+        progressModal={progressModal}
+        setProgressModal={setProgressModal}
+        data={jobData}
+        fetchedData={fetchedData}
       />
     </div>
   )

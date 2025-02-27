@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 let accessToken = null;
 
 export const setAccessToken = (token) => accessToken = token;
-const getAccessToken = () => accessToken;
+export const getAccessToken = () => accessToken;
 
 const setRefreshToken = (token) => Cookies.set("refreshToken", token);
 export const getRefreshToken = () => Cookies.get("refreshToken");
@@ -196,6 +196,20 @@ export const api = createApi({
       transformResponse(response) {
         return response;
       }
+    }),
+    jobStatus: builder.query({
+      query: ({ job_id }) => {
+        const access_token = getAccessToken();
+
+        return {
+          url: `/job/status?job_id=${job_id}`,
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }
+      },
+      transformResponse: (response) => response,
     })
   }),
 });
@@ -214,5 +228,6 @@ export const {
   useStatusQuery,
 
   useInitJobMutation,
-  useCommitJobMutation
+  useCommitJobMutation,
+  useJobStatusQuery
 } = api;

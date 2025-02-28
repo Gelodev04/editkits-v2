@@ -142,9 +142,9 @@ export default function UploadFileModal(props: UploadModalProps) {
                       <Image src={Upload} alt="Upload"/>
                     </div>
                     <div className="flex justify-center gap-2 pb-[5px]">
-                      <p className="font-lato font-bold text-md leading-[24px] text-[#333333]">Drag & drop files or</p>
+                      <p className="font-lato font-bold text-base leading-[24px] text-[#333333]">Drag & drop files or</p>
                       <div onClick={handleDivClick} className="cursor-pointer">
-                        <p className="font-lato font-bold text-md leading-[24px] text-[#17ABDB] underline">Browse</p>
+                        <p className="font-lato font-bold text-base leading-[24px] text-[#17ABDB] underline">Browse</p>
                       </div>
                     </div>
                     <p className="font-lato font-normal text-xs leading-[18px] text-[#676767] text-center">Supported

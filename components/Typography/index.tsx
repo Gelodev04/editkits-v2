@@ -34,7 +34,7 @@ function TypographyStyle(props: TypographyProps) {
     case "sm":
       return `text-sm text-[#2c2c2c] ${props.center && "text-center"}`;
     case "body":
-      return `text-md text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-light"}`
+      return `text-base text-[#2c2c2c] ${props.center && "text-center"} ${props.bold ? "font-semibold" : "font-light"}`
     case "bb1":
       return `${props.className} text-xl font-lato font-bold text-[#0b0d0e]`;
     case "b2":

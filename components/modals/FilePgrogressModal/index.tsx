@@ -49,7 +49,7 @@ export default function FileProgressModal(props) {
                       {props.fetchedData?.metadata?.thumbnail_url && (
                         <Image
                           src={props.fetchedData?.metadata?.thumbnail_url}
-                          className="object-contain h-[125px] w-[212px]"
+                          className="object-contain h-[125px] w-[212px] rounded rounded-[2px]"
                           width={212}
                           height={125}
                           alt=""

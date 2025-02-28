@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Fade, Modal} from "@mui/material";
-import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
 import Upload from "@/assets/icons/upload.svg"
 import Image from "next/image";
@@ -9,6 +8,7 @@ import Button from "@/components/Button";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 import toast from "react-hot-toast";
 import {fileUploader} from "@/lib/uploadFile";
+import {IoIosCloseCircleOutline} from "react-icons/io";
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -45,9 +45,14 @@ export default function UploadFileModal(props: UploadModalProps) {
     const file_name = file.name.split(".")[0]
 
     props.setIsUploading(true)
-    const response = await props.upload({file_name, mime_type: file.type, ext: file.name.split('.').pop(), content_length: file.size});
+    const response = await props.upload({
+      file_name,
+      mime_type: file.type,
+      ext: file.name.split('.').pop(),
+      content_length: file.size
+    });
 
-    if(response.error) {
+    if (response.error) {
       toast.error(response.error.data.errorMsg);
       return;
     }
@@ -119,59 +124,56 @@ export default function UploadFileModal(props: UploadModalProps) {
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <div
-                className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg ">
-                <div className="absolute right-2 top-2 cursor-pointer">
-                  <TbXboxX size={30} color="#000" onClick={() => props.setUploadModal(false)}/>
+                className="relative transform rounded-[23px] bg-white text-left shadow-xl transition-all w-[540px] h-[583px] ">
+                <div className="absolute right-[24.14px] top-[22.22px]">
+                  <IoIosCloseCircleOutline size={24} color="#000" onClick={() => props.setUploadModal(false)}/>
                 </div>
-                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div className="pt-[35px] pb-[6px]">
                   <Typography label="Choose file" center variant="h3"/>
+                </div>
+                <div className="w-[445px] mx-auto">
                   <div
-                    className={`h-[202px] border border-dashed border-1 border-[#17abdb] rounded rounded-md p-6 mt-4 ${isDragging ? "bg-blue-100 border-blue-500" : "border-[#17abdb]"}`}
+                    className={`h-[202px] mx-auto border border-dashed border-1 border-[#17abdb] rounded rounded-md ${isDragging ? "bg-blue-100 border-blue-500" : "border-[#17abdb]"}`}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                     onDragLeave={handleDragLeave}
                   >
-                    <div className="flex justify-center">
+                    <div className="flex justify-center pt-[30px] pb-[20.14px]">
                       <Image src={Upload} alt="Upload"/>
                     </div>
-                    <div className="flex flex-col gap-4">
-                      <div className="flex justify-center gap-2">
-                        <Typography label="Drag & drop files or" variant="hb4" center/>
-                        <div className="cursor-pointer">
-                          <Typography
-                            label="Browse"
-                            variant="hb4"
-                            center
-                            underline
-                            color="#17ABDB"
-                            onClick={handleDivClick}
-                          />
-                        </div>
+                    <div className="flex justify-center gap-2 pb-[5px]">
+                      <p className="font-lato font-bold text-md leading-[24px] text-[#333333]">Drag & drop files or</p>
+                      <div onClick={handleDivClick} className="cursor-pointer">
+                        <p className="font-lato font-bold text-md leading-[24px] text-[#17ABDB] underline">Browse</p>
                       </div>
-                      <Typography
-                        label="Supported formats: JPEG, PNG, GIF, MP4,  AVI, MOV, MKV, WEBM, FLV"
-                        variant="b4"
-                        center color="#676767"
-                      />
                     </div>
+                    <p className="font-lato font-normal text-xs leading-[18px] text-[#676767] text-center">Supported
+                      formats: JPEG, PNG, GIF, MP4, AVI, MOV, MKV, WEBM, FLV</p>
                   </div>
-                  <div className="inline-flex items-center justify-center w-full">
+                  <div className="inline-flex items-center justify-center w-full ">
                     <hr className="w-full h-[1px] my-8 bg-gray-200 border-0 rounded bg-[#e7e7e7]"/>
-                    <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 ">
-                      <Typography label="OR" variant="b4" color="#6D6D6D"/>
+                    <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2">
+                      <p className="font-lato font-normal text-xs leading-[18px] text-center text-[#6d6d6d]">OR</p>
                     </div>
                   </div>
-                  <TextField label="Upload from URL" placeholder="Add file URL" height={42} borderRadius={8} type="text"/>
-                  <div className="inline-flex items-center justify-center w-full pt-1">
-                    <hr className="w-full h-[1px] my-8 bg-gray-200 border-0 rounded bg-[#e7e7e7]"/>
-                    <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 ">
-                      <Typography label="OR" variant="b4" color="#6D6D6D"/>
-                    </div>
-                  </div>
-                  <TextField label="File ID" placeholder="Add file ID" height={42} borderRadius={8} type="text"/>
-                  <div className="flex gap-4 pt-10 pb-2">
-                    <Button onClick={() => props.setUploadModal(false)} label="Cancel" variant="contained" border className="h-[48px]"/>
-                    <Button onClick={() => props.setUploadModal(false)} label="Proceed" variant="secondary" filled className="h-[48px]"/>
+                  <TextField label="File ID" placeholder="Add file ID" height={42} type="text" variant="fileUpload"/>
+                  <div className="flex gap-[27px] pt-[76px] pb-[32px]">
+                    <Button
+                      onClick={() => props.setUploadModal(false)}
+                      label="Cancel"
+                      variant="secondary"
+                      border
+                      height={48}
+                      width={209}
+                    />
+                    <Button
+                      onClick={() => props.setUploadModal(false)}
+                      label="Proceed"
+                      variant="contained"
+                      filled
+                      height={48}
+                      width={209}
+                    />
                   </div>
                 </div>
               </div>

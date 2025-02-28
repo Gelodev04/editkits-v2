@@ -20,12 +20,16 @@ export default function Input(props: InputProps) {
   const errorClasses = props?.error && (props?.email?.length || props?.code?.length) ? "border-red-300" : "border-[#9f9f9f]";
   const disabledClasses = props.disabled && "bg-[#E0E0E0A6]";
   const variantClasses = `font-lato font-bold ${props.variant === "t2" ? "max-h-10 shadow-none border-[#e0e0e0]" : "font-normal"}`;
+  const fileUploadClasses = props.variant === "fileUpload" ? "text-xs shadow-none rounded-[8px] border-[#9f9f9f] leading-[18px] font-normal py-0 " : "";
+
+  const finalClasses = `${baseClasses} ${errorClasses} ${disabledClasses} ${variantClasses} ${fileUploadClasses}`.trim();
+
 
   return (
     <input
       disabled={props.disabled}
       //@ts-ignore
-      className={`${baseClasses} ${errorClasses} ${disabledClasses} ${variantClasses}`}
+      className={finalClasses}
       placeholder={props.placeholder}
       type={props.type || "text"}
       onChange={props.onChange}

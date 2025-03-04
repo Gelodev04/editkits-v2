@@ -3,7 +3,7 @@ import {Fade, Modal} from "@mui/material";
 import Typography from "@/components/Typography";
 import Upload from "@/assets/icons/upload.svg"
 import Image from "next/image";
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import Button from "@/components/Button";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 import toast from "react-hot-toast";
@@ -156,7 +156,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                       <p className="font-lato font-normal text-xs leading-[18px] text-center text-[#6d6d6d]">OR</p>
                     </div>
                   </div>
-                  <TextField label="File ID" placeholder="Add file ID" height={42} type="text" variant="fileUpload"/>
+                  <InputField label="File ID" placeholder="Add file ID" height={42} type="text" variant="fileUpload"/>
                   <div className="flex gap-[27px] pt-[76px] pb-[32px]">
                     <Button
                       onClick={() => props.setUploadModal(false)}

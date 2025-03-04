@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import {validatePassword} from "@/lib/validatePassword";
 import Button from "@/components/Button";
 import {useCountdownTimer} from "@/hooks/useCountdownTimer";
@@ -75,7 +75,7 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                     </div>
                   </div>
                   <div className="pt-[33px]">
-                    <TextField
+                    <InputField
                       label="Current Password"
                       placeholder="*********"
                       onChange={(e) => {
@@ -90,7 +90,7 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                       value={props.currentPassword}
                     />
                     <div className="py-[32px]">
-                      <TextField
+                      <InputField
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const passwordValue = e.target.value;
                           if (!hasTyped) setHasTyped(true);
@@ -105,7 +105,7 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                         value={props.newPassword}
                       />
                     </div>
-                    <TextField
+                    <InputField
                       onChange={(e) => {
                         if (!hasTyped) setHasTyped(true);
                         props.setConfirmPassword(e.target.value)

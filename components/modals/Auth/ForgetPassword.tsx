@@ -1,6 +1,6 @@
 import React from "react";
 
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import Button from "@/components/Button";
 import {validateEmail} from "@/lib/validateEmail";
 
@@ -19,7 +19,7 @@ export default function ForgetPassword(
   return (
     <>
       <div className="px-[43px] pt-[33px]">
-        <TextField
+        <InputField
           onChange={(e) => {
             if (!hasTyped) setHasTyped(true);
             setEmail(e.target.value);

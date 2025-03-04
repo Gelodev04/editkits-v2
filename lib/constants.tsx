@@ -36,6 +36,9 @@ import Storage from "@/assets/img/features/storage.svg"
 import MultiTasking from "@/assets/img/features/mutlitasking.svg"
 import NoWatermarks from "@/assets/img/features/no_water_marks.svg"
 import FileFormats from "@/assets/img/features/file_formats.svg"
+import SearchIcon from "@/assets/icons/search.svg";
+import ChatIcon from "@/assets/icons/chat.svg";
+import SmileIcon from "@/assets/icons/smile.svg";
 
 export const videoTools = [
   {name: "Overlay Video", icon: OverlayVideo, icon_hover: OverlayVideoHover},
@@ -1219,4 +1222,23 @@ export const presets = [
   { label: "Instagram Feed, 4:5, 1080x1350", value: "Instagram Feed, 4:5, 1080x1350" },
   { label: "Instagram Feed, 1:1, 1080x1080", value: "Instagram Feed, 1:1, 1080x1080" },
   { label: "Tiktok, 9:16, 1080x1920", value: "Tiktok, 9:16, 1080x1920" },
+]
+
+
+export const contactUsSections = [
+  {
+    icon: SearchIcon,
+    title: "Missing A Tool? Let Us Build It!",
+    description: "Didn’t find the tool you need? We’re constantly expanding EditKits and your request might be next. Whether it’s a new video, audio, or image tool, let us know—we’d love to create something that fits your workflow!"
+  },
+  {
+    icon: ChatIcon,
+    title: "Facing Issues? We’ve Got Your Back!",
+    description: "Having trouble with EditKits? Whether it's a bug, integration issue, or something not working as expected, we’re here to help. Reach out, and our team will assist you in resolving the issue quickly so you can get back to creating!"
+  },
+  {
+    icon: SmileIcon,
+    title: "Let’s Collaborate & Scale Together!",
+    description: "Looking to integrate EditKits into your business, scale your media workflows, or discuss a partnership? We’d love to explore how we can work together to create powerful solutions tailored to your needs. Let’s make something amazing happen!"
+  }
 ]

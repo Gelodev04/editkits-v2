@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import Button from "@/components/Button";
 import {validateEmail} from "@/lib/validateEmail";
 import {validatePassword} from "@/lib/validatePassword";
@@ -29,7 +29,7 @@ export default function Signup(
   return (
     <>
       <div className="px-10 pt-[32px]">
-        <TextField
+        <InputField
           onChange={(e) => {
             if (!hasTyped) setHasTyped(true);
             setEmail(e.target.value);
@@ -43,7 +43,7 @@ export default function Signup(
           type="text"
         />
         <div className="py-[32px]">
-          <TextField
+          <InputField
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const passwordValue = e.target.value;
               if (!hasTyped) setHasTyped(true);
@@ -57,7 +57,7 @@ export default function Signup(
             type="password"
           />
         </div>
-        <TextField
+        <InputField
           onChange={(e) => {
             if (!hasTyped) setHasTyped(true);
             setConfirmPassword(e.target.value)

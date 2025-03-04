@@ -1,4 +1,4 @@
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import Toggle from "@/components/Toggle";
 import Button from "@/components/Button";
 import React from "react";
@@ -28,7 +28,7 @@ export default function Login(
   return (
     <>
       <div className="px-[50.5px] min-h-[353px]">
-        <TextField
+        <InputField
           onChange={(e) => {
             if (!hasTyped) setHasTyped(true);
             setEmail(e.target.value);
@@ -43,7 +43,7 @@ export default function Login(
           height={66}
         />
         <div className="pt-[31px]">
-          <TextField
+          <InputField
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (!hasTyped) setHasTyped(true);
               const passwordValue = e.target.value;

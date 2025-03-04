@@ -11,7 +11,8 @@ export const getRefreshToken = () => Cookies.get("refreshToken");
 
 export const getUserInfo = () => {
   const data = Cookies.get("userInfo");
-  return data ? JSON.parse(data) : null
+  return data ? JSON.parse(data) : null;
+
 }
 
 export const api = createApi({
@@ -210,6 +211,30 @@ export const api = createApi({
         }
       },
       transformResponse: (response) => response,
+    }),
+
+    contactUsCommon: builder.mutation({
+      query: (body) => ({
+        url: '/contact/common',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response) => response,
+    }),
+
+    contactUsUser: builder.mutation({
+      query: (body) => {
+        const access_token = getAccessToken();
+
+        return {
+          url: '/contact/user',
+          method: 'POST',
+          body,
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+      }},
+      transformResponse: (response) => response,
     })
   }),
 });
@@ -229,5 +254,8 @@ export const {
 
   useInitJobMutation,
   useCommitJobMutation,
-  useJobStatusQuery
+  useJobStatusQuery,
+
+  useContactUsCommonMutation,
+  useContactUsUserMutation
 } = api;

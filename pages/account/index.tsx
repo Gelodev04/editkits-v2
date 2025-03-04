@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import Button from "@/components/Button";
 import AccountType from "@/components/account/AccountType";
 import Typography from "@/components/Typography";
@@ -57,7 +57,7 @@ export default function Account() {
           <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
             {active === "email" && (
               <div className="pt-4 max-w-[412px]">
-                <TextField
+                <InputField
                   label="Email"
                   placeholder={userInfo?.email}
                   type="email"

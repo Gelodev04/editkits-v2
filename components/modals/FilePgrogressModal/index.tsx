@@ -33,7 +33,7 @@ export default function FileProgressModal(props) {
                       <Image src={Rocket} width={114} alt="Upload"/>
                     </div>
                     <p
-                      className="font-lato font-bold text-sm leading-[21px] text-center text-[#273266]">Processing... {props.data?.progress?.toFixed(2)}%</p>
+                      className="font-lato font-bold text-sm leading-[21px] text-center text-[#273266]">Processing... {(props.data?.progress ?? 0).toFixed(2)}%</p>
                     <p
                       className="font-lato font-PENDINGnormal text-sm leading-[22px] text-center text-[#2c2c2c] pt-[47px] pb-[59px] px-[52px]">Your
                       job is being processed in the background. Feel free to continue exploring while we handle the

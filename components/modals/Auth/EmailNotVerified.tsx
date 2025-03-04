@@ -1,4 +1,4 @@
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import Button from "@/components/Button";
 import React from "react";
 import {AuthModalProps} from "@/components/modals/Auth/index";
@@ -17,7 +17,7 @@ export default function EmailNotConfirmedLogin(
   return (
     <>
       <div className="px-[43px] pt-[51px]">
-        <TextField
+        <InputField
           onChange={(e) => {
             if (!hasTyped) setHasTyped(true);
             setEmail(e.target.value);

@@ -5,7 +5,7 @@ import {FaAngleRight} from "react-icons/fa6";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import UploadFileModal from "@/components/modals/UploadFileModal";
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import Select from "@/components/Select";
 
 import {outputQualityList, videoType} from "@/lib/constants";
@@ -172,7 +172,7 @@ export default function TrimVideo() {
       <div className="w-full border-b-2 pt-4 border-[#D9D9D9]"/>
       <div className="flex justify-between gap-6 py-8">
         <div className="w-full">
-          <TextField
+          <InputField
             type="number"
             value={startTime}
             onChange={(e) => setStartTime((e.target.value))}
@@ -183,7 +183,7 @@ export default function TrimVideo() {
           />
         </div>
         <div className="w-full">
-          <TextField
+          <InputField
             disabled={!file}
             type="number"
             placeholder="1000 seconds"

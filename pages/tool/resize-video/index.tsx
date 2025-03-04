@@ -5,7 +5,7 @@ import {FaAngleRight} from "react-icons/fa6";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import UploadFileModal from "@/components/modals/UploadFileModal";
-import TextField from "@/components/TextField";
+import InputField from "@/components/InputField";
 import Select from "@/components/Select";
 
 import ColorPicker from "@/components/ColorPicker";
@@ -178,7 +178,7 @@ export default function ResizeVideo() {
       <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} />
       <div className="flex justify-between gap-6">
         <div className="w-full">
-          <TextField
+          <InputField
             type="number"
             disabled={!file}
             placeholder="1920"
@@ -192,7 +192,7 @@ export default function ResizeVideo() {
           />
         </div>
         <div className="w-full">
-          <TextField
+          <InputField
             type="number"
             disabled={!file}
             placeholder="1080"
@@ -255,7 +255,7 @@ export default function ResizeVideo() {
       </div>
       <div className="flex justify-between gap-6">
         <div className="w-full">
-          <TextField
+          <InputField
             type="number"
             disabled={!file}
             placeholder="30"
@@ -266,7 +266,7 @@ export default function ResizeVideo() {
           />
         </div>
         <div className="w-full">
-          <TextField
+          <InputField
             type="number"
             disabled={!file}
             placeholder="480000"

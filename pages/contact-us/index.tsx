@@ -46,7 +46,6 @@ export default function ContactUs() {
     }
 
     const response = await mutationFn(payload)
-    // const response = user ? await contactUsUser({first_name: firstName, last_name: lastName, email, message }) : await contactUsCommon({first_name: firstName, last_name: lastName, email, message, category: 'GENERIC'  });
     if(response.error) {
       // @ts-ignore
       toast.error(response.error.data.errorMsg);

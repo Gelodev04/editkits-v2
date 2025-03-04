@@ -1,5 +1,4 @@
 import React from "react";
-import {useRouter} from "next/router";
 
 import {FaCircleChevronLeft, FaCircleChevronRight} from "react-icons/fa6";
 
@@ -10,12 +9,9 @@ interface PaginationProps {
 }
 
 export default function Pagination({ totalPages, currentPage, onPageChange }: PaginationProps) {
-  const router = useRouter();
-
   const handlePageClick = (page: number) => {
     if (page !== currentPage) {
       onPageChange(page);
-      router.push(`?page=${page}`, undefined, { shallow: true });
     }
   };
 

@@ -19,3 +19,7 @@ export async function refreshAccessToken(refreshToken, handleLogout) {
   const { access_token } = response.data as IRefreshAccessTokenResponse;
   setAccessToken(access_token);
 }
+
+export function convertToNoCookieUrl(url) {
+  return url.replace("www.youtube.com/watch?v=", "www.youtube-nocookie.com/embed/");
+}

@@ -235,6 +235,27 @@ export const api = createApi({
           }
       }},
       transformResponse: (response) => response,
+    }),
+
+    getBlogs: builder.query({
+      query: () => ({
+        url: '/blogs?limit=12&offset=0',
+        method: 'GET',
+      }),
+      transformResponse: (response) => response,
+    }),
+    getArticle: builder.query({
+      query: ({slug}) => {
+        console.log("the slug is:", slug)
+        return {
+          url: `/blog/entry?slug=${slug}`,
+          method: 'GET',
+        }
+      },
+      transformResponse: (response) => {
+        console.log("===", response)
+        return response;
+      },
     })
   }),
 });
@@ -257,5 +278,8 @@ export const {
   useJobStatusQuery,
 
   useContactUsCommonMutation,
-  useContactUsUserMutation
+  useContactUsUserMutation,
+
+  useGetBlogsQuery,
+  useGetArticleQuery
 } = api;

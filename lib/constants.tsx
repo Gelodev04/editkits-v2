@@ -40,8 +40,6 @@ import SearchIcon from "@/assets/icons/search.svg";
 import ChatIcon from "@/assets/icons/chat.svg";
 import SmileIcon from "@/assets/icons/smile.svg";
 
-import BlogImg from "@/assets/img/blog.svg"
-
 export const videoTools = [
   {name: "Overlay Video", icon: OverlayVideo, icon_hover: OverlayVideoHover},
   {name: "Rotate Video", icon: Rotate, icon_hover: RotateHover},
@@ -1243,67 +1241,4 @@ export const contactUsSections = [
     title: "Let’s Collaborate & Scale Together!",
     description: "Looking to integrate EditKits into your business, scale your media workflows, or discuss a partnership? We’d love to explore how we can work together to create powerful solutions tailored to your needs. Let’s make something amazing happen!"
   }
-]
-
-export const blogs = [
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
-  {
-    img: BlogImg,
-    title: "How To Use The Some Edit Tools Some Friendly Tips",
-    date: "Octuober29, 2025"
-  },
 ]

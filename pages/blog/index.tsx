@@ -1,10 +1,12 @@
 import React from 'react';
 
-import {blogs} from "@/lib/constants";
 import Pagination from "@/components/Pagination";
 import BlogCard from "@/components/cards/BlogCard";
+import {useGetBlogsQuery} from "@/services/api";
 
 export default function Blog() {
+  // @ts-ignore
+  const { data: blogs } = useGetBlogsQuery();
   const [currentPage, setCurrentPage] = React.useState(1);
 
   return (
@@ -16,15 +18,17 @@ export default function Blog() {
         proin tellus duis tristique mauris mi donec in et. Id vel interdum scelerisque sit. Imperdiet donec mi pretium
         mauris venenatis dui in. Quam vitae in ac cras adipiscing. Urna ultrices ut volutpat cursus pellentesque.</p>
       <div className="grid grid-cols-12 gap-[34px]">
-        {blogs.map(blog => (
+        {/*@ts-ignore*/}
+        {blogs?.map(blog => (
           <div className="col-span-4">
-            <BlogCard img={blog.img} title={blog.title} date={blog.date}/>
+            <BlogCard slug={blog.slug} img={blog.thumbnail_url} title={blog.title} date={blog.created_at}/>
           </div>
         ))}
       </div>
       <Pagination
         currentPage={currentPage}
-        totalPages={20}
+        //@ts-ignore
+        totalPages={blogs?.length}
         onPageChange={setCurrentPage}
       />
     </div>

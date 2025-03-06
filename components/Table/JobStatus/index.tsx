@@ -10,10 +10,10 @@ import Image from "next/image";
 import StatusTag from "@/components/Table/StatusTag";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import * as React from "react";
-import CopyIcon from "@/assets/icons/copy.svg";
-import Success from "@/assets/icons/success.svg";
-import Failed from "@/assets/icons/failed.svg";
-import Progress from "@/assets/icons/pending.svg";
+import CopyIcon from "@/public/assets/icons/copy.svg";
+import Success from "@/public/assets/icons/success.svg";
+import Failed from "@/public/assets/icons/failed.svg";
+import Progress from "@/public/assets/icons/pending.svg";
 
 export default function JobStatusTable({data, search}: { data: any; search: string }) {
   return (
@@ -51,8 +51,14 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <Image className="rounded-md bg-[#000000] w-[138%] p-[2px]" src={row.icon} alt="icon" layout="fill"
-                         objectFit="cover"/>
+                  <Image
+                    className="rounded-md bg-[#000000] w-[138%] p-[2px]"
+                    src={row.icon}
+                    alt="icon"
+                    layout="fill"
+                    objectFit="cover"
+                    priority
+                  />
 
                   <div
                     style={{
@@ -61,8 +67,11 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                       right: "-5px",
                     }}
                   >
-                    <Image src={row.status === "Success" ? Success : row.status === "Failed" ? Failed : Progress}
-                           alt="success-icon"/>
+                    <Image
+                      src={row.status === "Success" ? Success : row.status === "Failed" ? Failed : Progress}
+                      alt="success-icon"
+                      priority
+                    />
                   </div>
                 </div>
               </TableCell>
@@ -74,6 +83,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                     className="cursor-pointer"
                     onClick={() => navigator.clipboard.writeText(row.input_id)}
                     alt="input_id"
+                    priority
                   />
                 </div>
               </TableCell>
@@ -98,6 +108,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                     className="cursor-pointer"
                     onClick={() => navigator.clipboard.writeText(row.input_id)}
                     alt="input_id"
+                    priority
                   />
                 </div>
               </TableCell>

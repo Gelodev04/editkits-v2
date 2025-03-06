@@ -1,8 +1,8 @@
 import * as React from "react";
 import Image from "next/image";
-import PlayIcon from "@/assets/icons/play.png";
-import RetryIcon from "@/assets/icons/retry.svg";
-import UploadingIcon from "@/assets/icons/cloud.svg"
+import PlayIcon from "@/public/assets/icons/play.png";
+import RetryIcon from "@/public/assets/icons/retry.svg";
+import UploadingIcon from "@/public/assets/icons/cloud.svg"
 
 import Button from "@/components/Button";
 
@@ -30,16 +30,17 @@ export function VideoUpload(props: VideoUploadProps) {
                     className="object-contain h-[45px] w-[80px]"
                     width={80}
                     height={45}
-                    alt=""
+                    alt="uploaded_file"
+                    priority
                   />
                 )}
               </div>
-              <Image className="absolute inset-0 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play Icon"/>
+              <Image priority className="absolute inset-0 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play icon"/>
             </div>
           )}
           {props.isUploading && (
             <div className="relative w-[138%] rounded-md p-1">
-              <Image className=" inset-0 bottom-1 m-auto object-contain" src={UploadingIcon} alt="Play Icon"/>
+              <Image priority className=" inset-0 bottom-1 m-auto object-contain" src={UploadingIcon} alt="Play icon"/>
               <p
                 className="font-lato font-bold text-[10px] leading-[15px] text-[#7D3CDE]">Uploading... {props.progress}%</p>
             </div>)}
@@ -65,10 +66,15 @@ export function VideoUpload(props: VideoUploadProps) {
             </div>
           </div>
           <div className="col-span-1 place-items-end">
-            <Image onClick={() => {
-              props.setUploadFileModal(true)
-            }} src={RetryIcon} alt="retry"
-                   className="cursor-pointer"/>
+            <Image
+              onClick={() => {
+                props.setUploadFileModal(true)
+              }}
+              src={RetryIcon}
+              alt="Retry icon"
+              className="cursor-pointer"
+              priority
+            />
           </div>
         </div>
       )}

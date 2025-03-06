@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Fade, Modal} from "@mui/material";
 import Typography from "@/components/Typography";
-import Upload from "@/assets/icons/upload.svg"
+import Upload from "@/public/assets/icons/upload.svg"
 import Image from "next/image";
 import InputField from "@/components/InputField";
 import Button from "@/components/Button";

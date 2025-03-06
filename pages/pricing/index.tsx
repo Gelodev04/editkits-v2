@@ -2,11 +2,11 @@ import {useState} from "react";
 import ToggleSwitch from "@/components/ToggleSwitch";
 import {pricingPlanList} from "@/lib/constants";
 import PricingPlanCard from "@/components/cards/PricingPlanCard";
-import Background from "@/assets/img/pricing-bg-circle.svg"
-import Blur from "@/assets/img/pricing-bg-blur.svg";
-import Wave1 from "@/assets/img/wave1.svg"
-import Wave1Mirrored from "@/assets/img/wave1_mirrored.svg"
-import Wave2 from "@/assets/img/wave2.svg"
+import Background from "@/public/assets/img/pricing-bg-circle.svg"
+import Blur from "@/public/assets/img/pricing-bg-blur.svg";
+import Wave1 from "@/public/assets/img/wave1.svg"
+import Wave1Mirrored from "@/public/assets/img/wave1_mirrored.svg"
+import Wave2 from "@/public/assets/img/wave2.svg"
 
 export default function Pricing() {
   const [monthly, setMonthly] = useState(true);

@@ -1,7 +1,7 @@
-import JobActiveSVG from "@/assets/img/job_white.svg";
-import JobInActiveSVG from "@/assets/img/job_black.svg";
-import UploadActiveSVG from "@/assets/img/upload_white.svg";
-import UploadInActiveSVG from "@/assets/img/upload_black.svg";
+import JobActiveSVG from "@/public/assets/img/job_white.svg";
+import JobInActiveSVG from "@/public/assets/img/job_black.svg";
+import UploadActiveSVG from "@/public/assets/img/upload_white.svg";
+import UploadInActiveSVG from "@/public/assets/img/upload_black.svg";
 import Image from "next/image";
 
 type TableTypeProps = {
@@ -16,7 +16,7 @@ export default function TableType(props: TableTypeProps) {
         onClick={() => props.setActive("Job status")}
         className={`flex justify-start pl-4 items-center py-4 max-h-[48px] rounded rounded-lg gap-4 w-[192px] mx-auto ${props.active === "Job status" ? 'bg-[#17abdb]' : ""}`}
       >
-        <Image src={props.active === "Job status" ? JobActiveSVG : JobInActiveSVG} alt="job svg" />
+        <Image src={props.active === "Job status" ? JobActiveSVG : JobInActiveSVG} alt="job svg" priority />
         <p className={`font-montserrat font-bold text-sm ${props.active === "Job status" ? "#fff" : "text-[#4f4f4f]"}`}>Job status</p>
       </button>
       <button

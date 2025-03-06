@@ -7,13 +7,13 @@ import {Fade, Modal} from "@mui/material";
 
 import {lato, montserrat, opensans} from "@/lib/fonts";
 
-import Rocket from "@/assets/img/rocket.gif"
-import CheckMark from "@/assets/icons/check-circle_success.svg"
-import Error from "@/assets/icons/error.svg"
-import PlayIcon from "@/assets/icons/play_lg.svg";
-import PlaySm from "@/assets/icons/play_sm.svg";
-import Copy from "@/assets/icons/copy.svg";
-import Download from "@/assets/icons/download.svg";
+import Rocket from "@/public/assets/img/rocket.gif"
+import CheckMark from "@/public/assets/icons/check-circle_success.svg"
+import Error from "@/public/assets/icons/error.svg"
+import PlayIcon from "@/public/assets/icons/play_lg.svg";
+import PlaySm from "@/public/assets/icons/play_sm.svg";
+import Copy from "@/public/assets/icons/copy.svg";
+import Download from "@/public/assets/icons/download.svg";
 
 export default function FileProgressModal(props) {
   const router = useRouter();
@@ -52,7 +52,8 @@ export default function FileProgressModal(props) {
                           className="object-contain h-[125px] w-[212px] rounded rounded-[2px]"
                           width={212}
                           height={125}
-                          alt=""
+                          alt="Uploaded file thumbnail"
+                          priority
                         />
                       )}
                       <Image

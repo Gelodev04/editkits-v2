@@ -246,14 +246,12 @@ export const api = createApi({
     }),
     getArticle: builder.query({
       query: ({slug}) => {
-        console.log("the slug is:", slug)
         return {
           url: `/blog/entry?slug=${slug}`,
           method: 'GET',
         }
       },
       transformResponse: (response) => {
-        console.log("===", response)
         return response;
       },
     })

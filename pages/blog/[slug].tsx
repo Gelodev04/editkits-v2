@@ -6,7 +6,7 @@ import {convertToNoCookieUrl} from "@/lib/utils";
 
 export default function Article() {
   const router = useRouter();
-  const {slug} = router.query;
+  const { slug } = router.query;
 
   const {data: article, isLoading, isError, error}: any = useGetArticleQuery({slug});
 
@@ -15,18 +15,18 @@ export default function Article() {
   }
 
   if (isError) {
-    console.log("Article not found or error occurred", error);
+    console.error("Article not found or error occurred", error);
     return <div>Article not found.</div>;
   }
 
   return (
     <div className="max-w-[1280px] mx-auto pb-[147px]">
       <h1
-        className="font-montserrat font-bold text-[48px] leading-[64px] text-[#2c2c2c] pt-[83px] ">{article.metadata.meta_title}</h1>
+        className="font-montserrat font-bold text-[48px] leading-[64px] text-[#2c2c2c] pt-[83px] ">{article?.metadata.meta_title}</h1>
       <p
-        className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] py-[58px]">{article.metadata.meta_description}</p>
+        className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] py-[58px]">{article?.metadata.meta_description}</p>
 
-      {article.content.map((content) => {
+      {article?.content.map((content) => {
         if (content.type === "heading_l") {
           return (
             <h1
@@ -41,7 +41,7 @@ export default function Article() {
         if (content.type === "image") {
           return (
             <div className="flex justify-center pb-[45px] h-[570px]">
-              <Image src={content.src} width={1280} height={1240} alt={content.alt} unoptimized/>
+              <Image src={content.src} width={1280} height={1240} alt={content.alt} unoptimized priority/>
             </div>
           )
         }
@@ -112,5 +112,19 @@ export default function Article() {
       })}
     </div>
   );
+}
+
+export async function getServerSideProps({ params }) {
+  const { slug } = params;
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/entry?slug=${slug}`);
+  const article = await response.json();
+
+
+  return {
+    props: {
+      article
+    }
+  };
 }
 

@@ -7,8 +7,8 @@ import {FaSearch} from "react-icons/fa";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 
-import Filter from "@/assets/img/table/filter.svg";
-import Calendar from "@/assets/icons/calendar.svg"
+import Filter from "@/public/assets/img/table/filter.svg";
+import Calendar from "@/public/assets/icons/calendar.svg"
 
 type TableHeaderProps = {
   setSearch: any;
@@ -33,12 +33,20 @@ export default function TableHeader(props: TableHeaderProps) {
 
       <div className="flex gap-3 col-span-4">
         <div className="flex justify-center items-center gap-2 bg-white border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 w-30">
-          <Image src={Calendar} alt="Calendar"/>
+          <Image
+            src={Calendar}
+            alt="Calendar"
+            priority
+          />
           <Typography label="All Time" variant="bb3"/>
         </div>
 
         <div className="flex justify-center items-center gap-2 bg-white border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 ">
-          <Image src={Filter} alt="filter icon"/>
+          <Image
+            src={Filter}
+            alt="filter icon"
+            priority
+          />
           <Typography label="Filters" variant="bb3"/>
         </div>
       </div>

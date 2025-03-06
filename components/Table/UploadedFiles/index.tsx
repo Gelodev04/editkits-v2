@@ -10,7 +10,7 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {BsThreeDotsVertical} from "react-icons/bs";
 
-import CopyIcon from '@/assets/icons/copy.svg';
+import CopyIcon from '@/public/assets/icons/copy.svg';
 import {uploadedFilesColumns} from "@/lib/constants";
 
 type UploadedFilesTableProps = {
@@ -41,7 +41,7 @@ export default function UploadedFilesTable(props: UploadedFilesTableProps) {
               }}
             >
               <TableCell width={172} height={92} sx={{border: "none"}} component="th" scope="row">
-                <Image className="rounded-md bg-[#000000] p-[2px]" src={row.icon} alt="icon" objectFit="cover" />
+                <Image className="rounded-md bg-[#000000] p-[2px]" src={row.icon} alt="icon" objectFit="cover" priority />
               </TableCell>
               <TableCell align="left">
                 <div className="flex items-center gap-8">
@@ -51,6 +51,7 @@ export default function UploadedFilesTable(props: UploadedFilesTableProps) {
                     className="cursor-pointer"
                     onClick={() => navigator.clipboard.writeText(row.input_id)}
                     alt="input_id"
+                    priority
                   />
                 </div>
               </TableCell>

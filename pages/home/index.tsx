@@ -6,16 +6,21 @@ import Button from "@/components/Button";
 import ToolCard from "@/components/cards/ToolCard";
 import {featureCards, videoTools} from "@/lib/constants";
 
-import HeroImg from "@/assets/img/home_hero.svg"
+import HeroImg from "@/public/assets/img/home_hero.svg"
 import FeatureCard from "@/components/cards/FeatureCard";
+import Head from "next/head";
 
 export default function Home() {
   const router = useRouter();
 
   return (
     <>
+      <Head>
+        <title>EditKits</title>
+        <meta name="description" content="EditKits is your next video and image processing tool" />
+      </Head>
       <div
-        className="pb-[159.5px] bg-[url(../assets/img/hero_bg.svg)] max-w-[1187px] bg-cover sm:px-5 xl:px-0 bg-center grid grid-cols-12 mx-auto sm:items-center xl:items-end">
+        className="pb-[159.5px] bg-[url(../public/assets/img/hero_bg.svg)] max-w-[1187px] bg-cover sm:px-5 xl:px-0 bg-center grid grid-cols-12 mx-auto sm:items-center xl:items-end">
         <div className="sm:col-span-4 lg:col-span-6 pt-[134.5px]">
           <h1 className="font-montserrat font-extrabold text-[40px] leading-[56px] tracking-[0.2px] text-[#2c2c2c]">The
             Ultimate</h1>
@@ -40,7 +45,7 @@ export default function Home() {
             height={64}
           />
         </div>
-        <div className="sm:col-span-8 lg:col-span-6 bg-[url(../assets/img/hero_bg.svg)] bg-cover bg-left">
+        <div className="sm:col-span-8 lg:col-span-6 bg-[url(../public/assets/img/hero_bg.svg)] bg-cover bg-left">
           <Image src={HeroImg} width={594} height={330} alt="hero image"/>
         </div>
       </div>
@@ -103,7 +108,7 @@ export default function Home() {
       <div className="max-w-[1536px] mx-auto pt-[139px] sm:pl-5 xl:pl-0">
         <Typography label="Learn more about our features" variant="h2"/>
       </div>
-      <div className="bg-[url(../assets/img/inclined_bg.svg)] bg-no-repeat bg-cover sm:pl-5 xl:pl-0">
+      <div className="bg-[url(../public/assets/img/inclined_bg.svg)] bg-no-repeat bg-cover sm:pl-5 xl:pl-0">
         <div className="grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] max-w-[1536px] mx-auto">
           {featureCards.map((card) => <FeatureCard name={card.name} icon={card.image} description={card.description}/>)}
         </div>

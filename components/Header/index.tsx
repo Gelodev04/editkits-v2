@@ -4,13 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 import {FaAngleDown} from "react-icons/fa";
-import Logo from "@/assets/img/logo.svg"
+import Logo from "@/public/assets/img/logo.svg"
 
 import Button from "@/components/Button";
 import AuthModal from "@/components/modals/Auth";
-import User from '@/assets/icons/user.svg'
-import Subscription from '@/assets/icons/subscription.svg'
-import Logout from '@/assets/icons/logout.svg'
+import User from '@/public/assets/icons/user.svg'
+import Subscription from '@/public/assets/icons/subscription.svg'
+import Logout from '@/public/assets/icons/logout.svg'
 import { Divider } from "@mui/material";
 import Typography from "@/components/Typography";
 import {useUserInfo} from "@/hooks/useUserInfo";
@@ -40,7 +40,7 @@ export default function Header() {
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
       <Link href="/">
-        <Image src={Logo} className="w-[187px]" alt="Logo"/>
+        <Image src={Logo} className="w-[187px]" alt="Logo" priority/>
       </Link>
       <div className="flex space-x-6 justify-center items-center">
         {userInfo && (

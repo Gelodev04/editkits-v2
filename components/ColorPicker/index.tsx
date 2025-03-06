@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 import Typography from "@/components/Typography";
-import ColorSVG from "@/assets/icons/color.svg";
+import ColorSVG from "@/public/assets/icons/color.svg";
 
 const ColorPicker = (props: any) => {
   return (
@@ -34,7 +34,7 @@ const ColorPicker = (props: any) => {
               className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
               disabled={props.disabled}
             />
-            <Image className="min-w-[39px] min-h-[40px]" src={ColorSVG} alt="Select color" />
+            <Image className="min-w-[39px] min-h-[40px]" src={ColorSVG} alt="Select color" priority/>
           </label>
         </div>
       </div>

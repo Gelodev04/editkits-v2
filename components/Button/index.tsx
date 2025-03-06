@@ -41,7 +41,7 @@ export default function Button(props: ButtonProps) {
       style={{width: props.width, height: props.height, alignItems: "center"}}
     >
       {/*@ts-ignore*/}
-      {props.leftIcon && <Image src={props.leftIcon} alt="left_icon" />}
+      {props.leftIcon && <Image src={props.leftIcon} alt="Left Icon" priority/>}
       {props.label}
       {props?.rightIcon}
     </button>

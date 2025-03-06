@@ -8,11 +8,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname:'editkits-thumbnails-dev.s3.ap-south-1.amazonaws.com',
+        hostname: 'editkits-thumbnails-dev.s3.ap-south-1.amazonaws.com',
       },
       {
         protocol: "https",
-        hostname:'editkits-temp-files-dev.s3.ap-south-1.amazonaws.com',
+        hostname: 'editkits-temp-files-dev.s3.ap-south-1.amazonaws.com',
       }
     ],
   },
@@ -37,7 +37,8 @@ const nextConfig = {
         ],
       },
     ];
-  }
+  },
+  swcMinify: true
 };
 
 export default nextConfig;

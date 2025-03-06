@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import CalendarIcon from "@/assets/icons/calendar_blog.svg";
+import CalendarIcon from "@/public/assets/icons/calendar_blog.svg";
 import Link from "next/link";
 
 export default function BlogCard({img, title, date, slug}) {
@@ -25,6 +25,7 @@ export default function BlogCard({img, title, date, slug}) {
             src={img}
             alt="image"
             unoptimized
+            priority
           />
         </div>
         <p className="font-montserrat font-bold text-[18.2px] leading-[21.84px] text-[#2c2c2c] pt-[21px]">{title}</p>

@@ -1,4 +1,4 @@
-import {Lato, Montserrat, Open_Sans, Roboto, Work_Sans} from "next/font/google";
+import {Alexandria, Lato, Montserrat, Open_Sans, Roboto, Work_Sans} from "next/font/google";
 
 export const montserrat = Montserrat({
   subsets: ['latin'],
@@ -28,4 +28,10 @@ export const workSans = Work_Sans({
   subsets: ['latin'],
   weight: ['100', '300', '400', '700', '900'],
   variable: '--font-work-sans',
+});
+
+export const alexandria = Alexandria({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-alexandria',
 });

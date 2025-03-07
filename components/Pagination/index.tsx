@@ -16,7 +16,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange }: Pa
   };
 
   const getPageNumbers = () => {
-    const pages: number[] = [];
+    const pages: any[] = [];
     const lastPage: number = totalPages;
     const startPage = Math.max(2, currentPage - 1);
     const endPage = Math.min(totalPages - 1, currentPage + 1);
@@ -46,7 +46,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange }: Pa
 
 
   return (
-    <div className="flex justify-end items-center space-x-2 mt-6 pt-[48px] pb-[61px]">
+    <div className="flex justify-end items-center gap-[14px] mt-6 pt-[62px] pb-[69px]">
       <FaCircleChevronLeft
         onClick={() => {
           if(currentPage>1) {

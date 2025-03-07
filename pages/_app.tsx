@@ -1,37 +1,21 @@
 import React from 'react'
-import './globals.css';
-import {useRouter} from "next/router";
-import Head from 'next/head';
-import {AppProps} from "next/app";
-import {Montserrat, Lato, Work_Sans} from "next/font/google";
 import dynamic from "next/dynamic";
+import {useRouter} from "next/router";
+import {AppProps} from "next/app";
 import Script from "next/script";
+import Head from 'next/head';
 
+import {Toaster} from "react-hot-toast";
+import {Provider} from "react-redux";
+
+import './globals.css';
 import "./globals.css";
 import './style.css';
-import {Provider} from "react-redux";
+
 import {store} from "@/store";
-import {Toaster} from "react-hot-toast";
+import {alexandria, lato, montserrat, workSans} from "@/lib/fonts";
 
 const RootLayout = dynamic(() => import('./layout'), {ssr: false});
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-montserrat',
-});
-
-const lato = Lato({
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '700', '900'],
-  variable: '--font-lato',
-});
-
-const workSans = Work_Sans({
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '700', '900'],
-  variable: '--font-work-sans',
-});
 
 const pageTitles = {
   '/': 'EditKits',
@@ -118,7 +102,7 @@ function MyApp({Component, pageProps}: AppProps) {
           </Script>
         </>
       )}
-      <div className={`${montserrat.variable} ${lato.variable} ${workSans.variable} font-sans`}>
+      <div className={`${montserrat.variable} ${lato.variable} ${workSans.variable} ${alexandria.variable} font-sans`}>
         <Provider store={store}>
           <RootLayout>
             <Toaster containerClassName="font-lato font-normal" position="top-right"/>

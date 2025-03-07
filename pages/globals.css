@@ -5,6 +5,7 @@
 
 :root {
   --background: #ffffff;
+  --font-alexandria: 'Alexandria', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,4 +16,5 @@
 
 body {
   color: var(--foreground);
+  font-family: "Alexandria", sans-serif;
 }

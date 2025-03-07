@@ -4,21 +4,25 @@ import Image from "next/image";
 import CalendarIcon from "@/public/assets/icons/calendar_blog.svg";
 import Link from "next/link";
 
-export default function BlogCard({img, title, date, slug}) {
+export default function BlogCard({img, title, date, slug, category}) {
   const formatDate = (date) => {
-    return date.toLocaleDateString("en-US", {
+    const parsedDate = new Date(date * 1000);
+
+    return parsedDate.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
       year: "numeric",
-    }).replace(" ", " ");
+      timeZone: "UTC",
+    });
   };
 
   return (
     <Link href={`/blog/${slug}`}>
-      <div className="w-[433px] border-[1px] border-gray-300 border-opacity-65 pt-[30px] px-[22px] rounded-[4px] max-h-[478px]">
-        <div className="w-[390px] h-[312px] flex justify-center items-center">
+      <div
+        className="cursor-auto w-[433px] border-[1px] border-gray-300 border-opacity-65 pt-[22px] px-[22px] rounded-[4px] max-h-[478px] relative hover:scale-105 transition-transform duration-500">
+        <div className="w-[390px] h-[290px] flex justify-center items-center">
           <Image
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-[4px]"
             width={390}
             height={312}
             src={img}
@@ -27,12 +31,17 @@ export default function BlogCard({img, title, date, slug}) {
             priority
           />
         </div>
-        <p className="font-montserrat font-bold text-[18.2px] leading-[21.84px] text-[#2c2c2c] pt-[21px]">{title}</p>
-        <div className="flex pt-[6.3px] pb-[34.16px] gap-[4px] items-center">
-          <Image loading="lazy" src={CalendarIcon} alt="icon" />
-          <p className="font-lato font-normal text-base leading-[28px] text-[#A0AEC0]">{formatDate(new Date(date))}</p>
+        <h3 className="font-montserrat font-bold text-base leading-[21.84px] text-[#2c2c2c] py-[12px]">{title}</h3>
+        <div className="flex pt-[6.3px] pb-[20px] gap-[4px] items-center">
+          <Image loading="lazy" src={CalendarIcon} alt="icon"/>
+          <p className="font-lato font-normal text-sm leading-[28px] text-[#a0aec0]">{formatDate(date)}</p>
+          <BlogTag category={category}/>
         </div>
       </div>
     </Link>
   )
+}
+
+function BlogTag({category}) {
+  return <p className="font-alexandria absolute top-[36px] left-[10px] rounded-[2px] pt-[8px] pb-[8px] px-[19px] bg-[#148cfc] text-w text-[#fff]">{category}</p>
 }

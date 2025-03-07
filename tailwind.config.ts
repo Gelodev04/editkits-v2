@@ -19,6 +19,7 @@ const config: Config = {
         roboto: ['Roboto', 'sans-serif'],
         openSans: ['Open Sans', 'sans-serif'],
         workSans: ['Work Sans', 'sans-serif'],
+        alexandria: ['Alexandria', 'sans-serif']
       },
       colors: {
         background: "var(--background)",

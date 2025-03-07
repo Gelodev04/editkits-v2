@@ -11,7 +11,7 @@ import "./globals.css";
 import './style.css';
 import {Provider} from "react-redux";
 import {store} from "@/store";
-import { Toaster } from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 
 const RootLayout = dynamic(() => import('./layout'), {ssr: false});
 
@@ -56,7 +56,7 @@ function MyApp({Component, pageProps}: AppProps) {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": pageProps.article?.metadata.meta_title,
-    "image": pageProps.article?.metadata.content?.filter(cont => cont.type === "image" ).map(image => image.src),
+    "image": pageProps.article?.metadata.content?.filter(cont => cont.type === "image").map(image => image.src),
     "author": {
       "@type": "Person",
       // "name": pageProps.article?.author.name,
@@ -89,34 +89,39 @@ function MyApp({Component, pageProps}: AppProps) {
     <>
       <Head>
         <title>{title}</title>
-        <link rel="icon" href="/assets/img/editkits.png" />
-        <meta name="description" content="EditKits is your next video and image processing tool" />
-        {keywords?.map(keyword => <meta name="keyword" content={keyword} /> )}
+        <link rel="icon" href="/assets/img/editkits.png"/>
+        <meta name="description" content="EditKits is your next video and image processing tool"/>
+        {keywords?.map(keyword => <meta name="keyword" content={keyword}/>)}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData)}}
+          dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLdData)}}
         >
         </script>
       </Head>
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-      >
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GA_TRACKING_ID}');
-        `}
-      </Script>
+      {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
+        <>
+          <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          />
+
+          <Script
+            id="google-analytics"
+            strategy="afterInteractive"
+          >
+            {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_TRACKING_ID}');
+          `}
+          </Script>
+        </>
+      )}
       <div className={`${montserrat.variable} ${lato.variable} ${workSans.variable} font-sans`}>
         <Provider store={store}>
           <RootLayout>
-            <Toaster containerClassName="font-lato font-normal" position="top-right" />
+            <Toaster containerClassName="font-lato font-normal" position="top-right"/>
             <Component {...pageProps} />
           </RootLayout>
         </Provider>

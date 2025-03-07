@@ -18,7 +18,8 @@ import {alexandria, lato, montserrat, workSans} from "@/lib/fonts";
 const RootLayout = dynamic(() => import('./layout'), {ssr: false});
 
 const pageTitles = {
-  '/': 'EditKits',
+  '/': 'EditKits - The Ultimate Online Media Editing Platform',
+  '/home': 'EditKits - The Ultimate Online Media Editing Platform',
   '/account': 'Account - EditKits',
   '/blog': 'Blog - EditKits',
   '/contact-us': 'Contact Us - EditKits',

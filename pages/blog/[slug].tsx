@@ -1,12 +1,18 @@
+import React from "react";
 import {useRouter} from "next/router";
 import Image from "next/image";
+
+import {Divider} from "@mui/material";
+
 import {useGetArticleQuery} from "@/services/api";
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {convertToNoCookieUrl} from "@/lib/utils";
+import Alert from "@/components/Alert";
+import {CodeBlock} from "@/CodeBlock";
+import Typography from "@/components/Typography";
 
 export default function Article() {
   const router = useRouter();
-  const { slug } = router.query;
+  const {slug} = router.query;
 
   const {data: article, isLoading, isError, error}: any = useGetArticleQuery({slug});
 
@@ -19,35 +25,57 @@ export default function Article() {
     return <div>Article not found.</div>;
   }
 
-  return (
-    <div className="max-w-[1280px] mx-auto pb-[147px]">
-      <h1
-        className="font-montserrat font-bold text-[48px] leading-[64px] text-[#2c2c2c] pt-[83px] ">{article?.metadata.meta_title}</h1>
-      <p
-        className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] py-[58px]">{article?.metadata.meta_description}</p>
+  function boldText(text){
+    const parts = text.split(/(\*\*.*?\*\*)/g);
 
+    return parts.map((part, index) =>
+      part.startsWith("**") && part.endsWith("**") ? (
+        <span className="font-lato font-bold text-base leading-[24px] text-[#4f4f4f] py-[12px]" key={index}>{part.slice(2, -2)}</span>
+      ) : (
+        part
+      )
+    );
+  }
+
+  return (
+    <div className="max-w-[1280px] mx-auto pb-[147px] pt-[83px]">
       {article?.content.map((content) => {
         if (content.type === "heading_l") {
           return (
             <h1
-              className="font-montserrat font-bold text-[18.2px] leading-[64px] text-[#2c2c2c]  pb-[16px]">{content.value}</h1>
+              className="font-montserrat font-bold text-[48px] leading-[64px] text-[#2c2c2c] py-[12px]">{boldText(content.value)}</h1>
+          )
+        }
+        if (content.type === "heading_m") {
+          return (
+            <div className="py-[12px]">
+              <Typography label={boldText(content.value)} variant="h4"/>
+            </div>
+          )
+        }
+        if (content.type === "heading_s") {
+          return (
+            <div className="py-[12px]">
+              <Typography label={boldText(content.value)} variant="h6"/>
+            </div>
           )
         }
         if (content.type === "text") {
           return (
-            <p className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] pb-[14px]">{content.value}</p>
+            <p className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] py-[12px]">{boldText(content.value)}</p>
           )
         }
         if (content.type === "image") {
           return (
-            <div className="flex justify-center pb-[45px] h-[570px]">
-              <Image src={content.src} width={1280} height={1240} alt={content.alt} unoptimized priority/>
+            <div className="flex justify-center py-[12px] min-h-[570px]">
+              <Image className="rounded-[8px]" src={content.src} width={1280} height={570} alt={content.alt} unoptimized
+                     priority/>
             </div>
           )
         }
         if (content.type === "video") {
           return (
-            <div className="flex justify-center pt-[14px] max-h-[580px]">
+            <div className="flex justify-center py-[12px] max-h-[580px]">
               <video className="rounded-[4px]" width={1280} height={506} controls>
                 <source src={content.src}/>
               </video>
@@ -56,7 +84,7 @@ export default function Article() {
         }
         if (content.type === "embed") {
           return (
-            <div className="flex justify-center pt-[14px]">
+            <div className="flex justify-center py-[12px]">
               <iframe
                 width="1280px"
                 height="580px"
@@ -72,13 +100,13 @@ export default function Article() {
         if (content.type === "list") {
           if (content.style === "unordered") {
             return (
-              <ul className="list-disc">
+              <ul className="list-disc py-[12px]">
                 {content.items.map((item, index) => (
                   <li
                     key={index}
                     className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] pt-[16px]"
                   >
-                    {item}
+                    {boldText(item)}
                   </li>
                 ))}
               </ul>
@@ -87,25 +115,46 @@ export default function Article() {
 
           if (content.style === "ordered") {
             return (
-              <ol className="list-decimal">
+              <ol className="list-decimal py-[12px]">
                 {content.items.map((item, index) => (
                   <li
                     key={index}
                     className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] pt-[16px]"
                   >
-                    {item}
+                    {boldText(item)}
                   </li>
                 ))}
               </ol>
             );
           }
         }
+
+        if (content.type === "divider") {
+          return (
+            <div className="py-[12px]">
+              <Divider sx={{borderBottomWidth: 3}} orientation="horizontal" flexItem/>
+            </div>
+          )
+        }
+
+        if (content.type === "space") {
+          return (
+            <div style={{paddingTop: content.px}}/>
+          )
+        }
+
+        if (content.type === "callout") {
+          return (
+            <div className="py-[12px]">
+              <Alert label={boldText(content.value)} mode={content.style}/>
+            </div>
+          )
+        }
+
         if (content.type === "code") {
           return (
-            <div className="pt-[24px]">
-              <SyntaxHighlighter language={content.language}>
-                {content.value}
-              </SyntaxHighlighter>
+            <div className="py-[12px]">
+              <CodeBlock content={content}/>
             </div>
           );
         }
@@ -114,8 +163,8 @@ export default function Article() {
   );
 }
 
-export async function getServerSideProps({ params }) {
-  const { slug } = params;
+export async function getServerSideProps({params}) {
+  const {slug} = params;
 
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/entry?slug=${slug}`);
   const article = await response.json();
@@ -127,4 +176,5 @@ export async function getServerSideProps({ params }) {
     }
   };
 }
+
 

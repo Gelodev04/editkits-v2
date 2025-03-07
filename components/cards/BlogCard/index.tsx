@@ -19,7 +19,6 @@ export default function BlogCard({img, title, date, slug}) {
         <div className="w-[390px] h-[312px] flex justify-center items-center">
           <Image
             className="w-full h-full object-cover"
-            loading="lazy"
             width={390}
             height={312}
             src={img}

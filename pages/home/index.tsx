@@ -104,10 +104,10 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="2xl:max-w-[1310px] lg:max-w-[960px] xl:max-w-[985px] mx-auto pt-[139px]">
+      <div className="max-w-[1555px] mx-auto pt-[139px] sm:pl-5">
         <Typography label="Learn more about our features" variant="h2"/>
       </div>
-      <div className="bg-[url(../public/assets/img/inclined_bg.svg)] bg-no-repeat bg-cover sm:pl-5 xl:pl-0 flex">
+      <div className="bg-[url(../public/assets/img/inclined_bg.svg)] bg-no-repeat bg-cover sm:pl-5">
         <div className="grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] max-w-[1536px] mx-auto">
           {featureCards.map((card) => <FeatureCard name={card.name} icon={card.image} description={card.description}/>)}
         </div>

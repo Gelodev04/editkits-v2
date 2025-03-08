@@ -11,6 +11,9 @@ export default function Custom404() {
     <div className={`${montserrat.variable} ${lato.variable} max-w-[618px] pt-[49px] mx-auto`}>
       <Image
         src={NotFoundImg}
+        alt="not found image"
+        width={618}
+        height={526}
       />
       <h2 className="text-center font-montserrat font-extrabold text-[36px] leading-[45px] text-[#262628] pt-[32px] pb-[12px]">Page not found</h2>
       <p className="font-lato font-normal text-sm leading-[21px] text-[#000000] text-center">Egestas enim dignissim nullam nunc tincidunt quis imperdiet. Lobortis dolor purus erat semper. Massa magnis commodo orci ut augue.</p>

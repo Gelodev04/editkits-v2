@@ -104,11 +104,11 @@ export default function Article() {
         if (content.type === "list") {
           if (content.style === "unordered") {
             return (
-              <ul className="list-disc py-[12px] pl-[26px]">
+              <ul className="list-disc py-[12px] pl-[26px] space-y-[16px]">
                 {content.items.map((item, index) => (
                   <li
                     key={index}
-                    className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] pt-[16px]"
+                    className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f]"
                   >
                     {boldText(item)}
                   </li>
@@ -119,11 +119,11 @@ export default function Article() {
 
           if (content.style === "ordered") {
             return (
-              <ol className="list-decimal py-[12px] pl-[26px]">
+              <ol className="list-decimal py-[12px] pl-[26px] space-y-[16px]">
                 {content.items.map((item, index) => (
                   <li
                     key={index}
-                    className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] pt-[16px]"
+                    className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f]"
                   >
                     {boldText(item)}
                   </li>

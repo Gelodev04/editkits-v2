@@ -16,7 +16,7 @@ export default function Custom404() {
         height={526}
       />
       <h2 className="text-center font-montserrat font-extrabold text-[36px] leading-[45px] text-[#262628] pt-[32px] pb-[12px]">Page not found</h2>
-      <p className="font-lato font-normal text-sm leading-[21px] text-[#000000] text-center">Egestas enim dignissim nullam nunc tincidunt quis imperdiet. Lobortis dolor purus erat semper. Massa magnis commodo orci ut augue.</p>
+      <p className="font-lato font-normal text-sm leading-[21px] text-[#000000] text-center">Oops! It looks like the page you're looking for doesn't exist.</p>
       <div className="max-w-[209px] mx-auto pt-[32px]">
         <Button onClick={() => router.back()} label="Back" variant="secondary" />
       </div>

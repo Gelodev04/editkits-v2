@@ -16,7 +16,6 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>EditKits</title>
         <meta name="description" content="EditKits is your next video and image processing tool" />
       </Head>
       <div

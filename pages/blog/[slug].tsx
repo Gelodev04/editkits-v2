@@ -38,7 +38,7 @@ export default function Article() {
   }
 
   return (
-    <div className="max-w-[1280px] mx-auto pb-[147px] pt-[83px]">
+    <div className="max-w-[1280px] mx-auto pb-[147px] pt-[12px]">
       {article?.content.map((content) => {
         if (content.type === "heading_l") {
           return (
@@ -100,7 +100,7 @@ export default function Article() {
         if (content.type === "list") {
           if (content.style === "unordered") {
             return (
-              <ul className="list-disc py-[12px]">
+              <ul className="list-disc py-[12px] pl-[26px]">
                 {content.items.map((item, index) => (
                   <li
                     key={index}
@@ -115,7 +115,7 @@ export default function Article() {
 
           if (content.style === "ordered") {
             return (
-              <ol className="list-decimal py-[12px]">
+              <ol className="list-decimal py-[12px] pl-[26px]">
                 {content.items.map((item, index) => (
                   <li
                     key={index}

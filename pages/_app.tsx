@@ -39,8 +39,8 @@ function MyApp({Component, pageProps}: AppProps) {
   const jsonLdData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": pageProps.article?.metadata.meta_title,
-    "image": pageProps.article?.metadata.content?.filter(cont => cont.type === "image").map(image => image.src),
+    "headline": pageProps.article?.metadata?.meta_title,
+    "image": pageProps.article?.metadata?.content?.filter(cont => cont.type === "image").map(image => image.src),
     "author": {
       "@type": "Person",
       // "name": pageProps.article?.author.name,
@@ -62,8 +62,8 @@ function MyApp({Component, pageProps}: AppProps) {
 
   if (router.pathname.startsWith('/blog')) {
     if (pageProps.article?.metadata) {
-      title = `${pageProps.article?.metadata.meta_title} - EditKits`;
-      keywords = pageProps.article?.metadata.keywords
+      title = `${pageProps.article?.metadata?.meta_title} - EditKits`;
+      keywords = pageProps.article?.metadata?.keywords
     } else {
       title = 'Blog - EditKits';
     }

@@ -9,28 +9,29 @@ import {convertToNoCookieUrl} from "@/lib/utils";
 import Alert from "@/components/Alert";
 import {CodeBlock} from "@/CodeBlock";
 import Typography from "@/components/Typography";
+import {notFound} from "next/navigation";
 
 export default function Article() {
   const router = useRouter();
   const {slug} = router.query;
 
-  const {data: article, isLoading, isError, error}: any = useGetArticleQuery({slug});
+  const {data: article, isLoading, isError}: any = useGetArticleQuery({slug});
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   if (isError) {
-    console.error("Article not found or error occurred", error);
-    return <div>Article not found.</div>;
+    notFound();
   }
 
-  function boldText(text){
+  function boldText(text) {
     const parts = text.split(/(\*\*.*?\*\*)/g);
 
     return parts.map((part, index) =>
       part.startsWith("**") && part.endsWith("**") ? (
-        <span className="font-lato font-bold text-base leading-[24px] text-[#4f4f4f] py-[12px]" key={index}>{part.slice(2, -2)}</span>
+        <span className="font-lato font-bold text-base leading-[24px] text-[#4f4f4f] py-[12px]"
+              key={index}>{part.slice(2, -2)}</span>
       ) : (
         part
       )
@@ -40,29 +41,32 @@ export default function Article() {
   return (
     <div className="max-w-[1280px] mx-auto pb-[147px] pt-[12px]">
       {article?.content.map((content) => {
-        if (content.type === "heading_l") {
-          return (
-            <h1
-              className="font-montserrat font-bold text-[48px] leading-[64px] text-[#2c2c2c] py-[12px]">{boldText(content.value)}</h1>
-          )
-        }
-        if (content.type === "heading_m") {
-          return (
-            <div className="py-[12px]">
-              <Typography label={boldText(content.value)} variant="h4"/>
-            </div>
-          )
-        }
-        if (content.type === "heading_s") {
-          return (
-            <div className="py-[12px]">
-              <Typography label={boldText(content.value)} variant="h6"/>
-            </div>
-          )
+        if (content.type === "heading") {
+          if (content.style === "large") {
+            return (
+              <h1
+                className="font-montserrat font-bold text-[48px] leading-[64px] text-[#2c2c2c] py-[12px]">{boldText(content.value)}</h1>
+            )
+          }
+          if (content.style === "medium") {
+            return (
+              <div className="py-[12px]">
+                <Typography label={boldText(content.value)} variant="h4"/>
+              </div>
+            )
+          }
+          if (content.style === "small") {
+            return (
+              <div className="py-[12px]">
+                <Typography label={boldText(content.value)} variant="h6"/>
+              </div>
+            )
+          }
         }
         if (content.type === "text") {
           return (
-            <p className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] py-[12px]">{boldText(content.value)}</p>
+            <p
+              className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] py-[12px]">{boldText(content.value)}</p>
           )
         }
         if (content.type === "image") {
@@ -166,15 +170,27 @@ export default function Article() {
 export async function getServerSideProps({params}) {
   const {slug} = params;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/entry?slug=${slug}`);
-  const article = await response.json();
-
-
-  return {
-    props: {
-      article
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/entry?slug=${slug}`);
+    if (!response.ok) {
+      return {notFound: true};  // Trigger 404 if the response is not ok
     }
-  };
+
+    const article = await response.json();
+    if (!article) {
+      return {notFound: true};  // Trigger 404 if article is not found
+    }
+
+    return {
+      props: {
+        article
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching article:', error);
+    return {notFound: true};  // Trigger 404 in case of an error
+  }
 }
+
 
 

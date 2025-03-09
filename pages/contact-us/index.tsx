@@ -65,7 +65,6 @@ export default function ContactUs() {
     setModalTitle("Request Submitted")
     setModalMessage("Our support team would reach out to you soon.")
     setSubmittedModal(true);
-
   }
 
 

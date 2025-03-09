@@ -7,7 +7,14 @@ import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 
-export default function PopUp(props) {
+type PopUpProps = {
+  open: boolean;
+  setOpen: (e: React.SetStateAction<boolean>) => void;
+  title: string;
+  description: string
+}
+
+export default function PopUp(props: PopUpProps) {
   return (
     <Modal open={props.open} onClose={() => props.setOpen(false)}>
       <Fade in={props.open}>

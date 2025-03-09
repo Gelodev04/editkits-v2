@@ -1,4 +1,3 @@
-import {useRouter} from "next/router";
 import Image from "next/image";
 
 import Typography from "@/components/Typography";
@@ -9,9 +8,87 @@ import {featureCards, videoTools} from "@/lib/constants";
 import HeroImg from "@/public/assets/img/home_hero.svg"
 import FeatureCard from "@/components/cards/FeatureCard";
 import Head from "next/head";
+import WaitListModal from "@/components/modals/WaitListModal";
+import {useEffect, useState} from "react";
+import {getUserInfo, useContactUsCommonMutation, useContactUsUserMutation} from "@/services/api";
+import PopUp from "@/components/modals/Popup";
 
 export default function Home() {
-  const router = useRouter();
+  const [contactUsCommon] = useContactUsCommonMutation();
+  const [contactUsUser] = useContactUsUserMutation();
+
+  const [user, setUser] = useState(getUserInfo());
+  const [firstName, setFirstName] = useState( "");
+  const [isFirstNameValid, setFirstNameValid] = useState(true);
+  const [lastName, setLastName] = useState( "");
+  const [isLastNameValid, setLastNameValid] = useState(true);
+  const [email, setEmail] = useState(user?.email || "");
+  const [isEmailValid, setEmailValid] = useState(true);
+  const [message, setMessage] = useState("");
+  const [isMessageValid, setMessageValid] = useState(true);
+  const [waitlistModal, setWaitlistModal] = useState(false);
+  const [submittedModalTitle, setSubmittedModalTitle] = useState("")
+  const [submittedModalBody, setSubmittedModalBody] = useState("")
+  const [submittedModal, setSubmittedModal] = useState(false);
+
+  useEffect(() => {
+    setFirstName("")
+    setLastName("")
+    setMessage("")
+    if (!user) {
+      setEmail("")
+    }
+  },[waitlistModal])
+
+  async function handleWaitlistSubmit() {
+    const mutationFn = user ? contactUsUser : contactUsCommon
+    const payload = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      message,
+      ...(user ? {} : { category: 'WAITLIST' })
+    }
+
+    const response = await mutationFn(payload)
+    if(response.error) {
+      // @ts-ignore
+      setSubmittedModalTitle("Uh-oh! Something’s Off");
+      // @ts-ignore
+      setSubmittedModalBody(response.error.data.errorMsg);
+      setWaitlistModal(false)
+      setSubmittedModal(true)
+      return;
+    }
+
+    setFirstName("")
+    setLastName("")
+    setMessage("")
+    if (!user) {
+      setEmail("")
+    }
+    setWaitlistModal(false);
+    setSubmittedModalTitle("Request Submitted")
+    setSubmittedModalBody("Our support team would reach out to you soon.")
+    setSubmittedModal(true);
+  }
+
+  useEffect(() => {
+    const checkUserInfo = () => {
+      const updatedUser = getUserInfo();
+      setUser(updatedUser);
+
+      if (updatedUser) {
+        setEmail(updatedUser.email || "");
+        setFirstNameValid(true);
+        setLastNameValid(true);
+        setEmailValid(true);
+      }
+    };
+
+    const interval = setInterval(checkUserInfo, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
@@ -36,11 +113,11 @@ export default function Home() {
             />
           </div>
           <Button
-            label="Explore All Tools"
+            label="Join the Waitlist"
             variant="outlined"
             filled
             width={226}
-            onClick={() => router.push("tools")}
+            onClick={() => setWaitlistModal(true)}
             height={64}
           />
         </div>
@@ -118,9 +195,34 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-
-
+      <WaitListModal
+        open={waitlistModal}
+        email={email}
+        setEmailValid={setEmailValid}
+        firstName={firstName}
+        setFirstName={setFirstName}
+        isFirstNameValid={isFirstNameValid}
+        setFirstNameValid={setFirstNameValid}
+        lastName={lastName}
+        setLastName={setLastName}
+        isLastNameValid={isLastNameValid}
+        setLastNameValid={setLastNameValid}
+        isEmailValid={isEmailValid}
+        setEmail={setEmail}
+        user={user}
+        handleWaitlistSubmit={handleWaitlistSubmit}
+        isMessageValid={isMessageValid}
+        message={message}
+        setOpen={setWaitlistModal}
+        setMessage={setMessage}
+        setMessageValid={setMessageValid}
+      />
+      <PopUp
+        open={submittedModal}
+        setOpen={setSubmittedModal}
+        title={submittedModalTitle}
+        description={submittedModalBody}
+      />
     </>
   );
 }

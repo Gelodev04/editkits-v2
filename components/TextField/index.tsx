@@ -30,7 +30,7 @@ export default function TextField(props: TextFieldProps) {
           id=""
           rows={10}
           placeholder={props.placeholder}
-          className={`w-full font-lato pt-[9px] px-[12px] font-normal text-xs text-[#6f6c90] shadow-none rounded-[8px] border ${props.error ? 'border-red-300' : 'border-[#9f9f9f]'} leading-[18px] font-normal outline-none`}
+          className={`w-full font-lato pt-[9px] px-[12px] font-normal text-sm text-[#6f6c90] shadow-none rounded-[8px] border ${props.error ? 'border-red-300' : 'border-[#9f9f9f]'} leading-[18px] font-normal outline-none`}
         />
 
       </div>

@@ -19,7 +19,7 @@ export default function Pricing() {
         backgroundPositionX: "92%, 15%, 0%, 100%, 0%, 100%",
         backgroundPositionY: "40%, 110%, 0%, 0%, 0%, 100%",
       }}
-      className="md:pt-10 pb-[69px]"
+      className="md:pt-10 min-h-[100vh]"
     >
       <p className="font-montserrat font-extrabold text-[48px] text-[#2c2c2c] leading-[64px] text-center">Pricing
         Plan</p>

@@ -48,64 +48,61 @@ export default function Account() {
   ]
 
   return (
-    <div>
-      <div className="pb-[48px]">
-        <div className="max-w-[1920px] mx-auto p-6">
-          <div className="grid grid-cols-12 w-full gap-4 mx-auto">
-            <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
-              <AccountType active={active} setActive={setActive}/>
-            </div>
-            <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
-              {active === "email" && (
-                <div className="pt-4 max-w-[412px]">
-                  <InputField
-                    label="Email"
-                    placeholder={userInfo?.email}
-                    type="email"
-                    error={!isEmailValid}
-                    email={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      // @ts-ignore
-                      setEmailValid(validateEmail(e.target.value))
-                    }}
-                    disabled
-                    bgColor="#fff"
+    <div className="bg-[#fafbfc] min-h-[100vh]">
+      <div className="max-w-[1920px] mx-auto p-6">
+        <div className="grid grid-cols-12 w-full gap-4 mx-auto">
+          <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
+            <AccountType active={active} setActive={setActive}/>
+          </div>
+          <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
+            {active === "email" && (
+              <div className="pt-4 max-w-[412px]">
+                <InputField
+                  label="Email"
+                  placeholder={userInfo?.email}
+                  type="email"
+                  error={!isEmailValid}
+                  email={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    // @ts-ignore
+                    setEmailValid(validateEmail(e.target.value))
+                  }}
+                  disabled
+                  bgColor="#fff"
+                />
+                <div className="pt-10">
+                  <Button
+                    onClick={() => setUpdatePasswordModal(true)}
+                    className="max-w-[191px] max-h-[48px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
+                    label="Change Password"
+                    variant="contained"
+                    border
                   />
-                  <div className="pt-10">
-                    <Button
-                      onClick={() => setUpdatePasswordModal(true)}
-                      className="max-w-[191px] max-h-[48px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
-                      label="Change Password"
-                      variant="contained"
-                      border
-                    />
-                  </div>
                 </div>
-              )}
-              {active === "subscription" && <Subscription benefits={benefits}/>}
-            </div>
+              </div>
+            )}
+            {active === "subscription" && <Subscription benefits={benefits}/>}
           </div>
         </div>
-        <ChangePasswordModal
-          type="Change Password"
-          handleUpdatePassword={handleUpdatePassword}
-          updatePasswordModal={updatePasswordModal}
-          setUpdatePasswordModal={setUpdatePasswordModal}
-          // @ts-ignore
-          setType={undefined}
-          // @ts-ignore
-          description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span></>}
-          currentPassword={currentPassword}
-          setCurrentPassword={setCurrentPassword}
-          newPassword={newPassword}
-          setNewPassword={setNewPassword}
-          confirmPassword={confirmPassword}
-          setConfirmPassword={setConfirmPassword}
-        />
       </div>
+      <ChangePasswordModal
+        type="Change Password"
+        handleUpdatePassword={handleUpdatePassword}
+        updatePasswordModal={updatePasswordModal}
+        setUpdatePasswordModal={setUpdatePasswordModal}
+        // @ts-ignore
+        setType={undefined}
+        // @ts-ignore
+        description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span></>}
+        currentPassword={currentPassword}
+        setCurrentPassword={setCurrentPassword}
+        newPassword={newPassword}
+        setNewPassword={setNewPassword}
+        confirmPassword={confirmPassword}
+        setConfirmPassword={setConfirmPassword}
+      />
     </div>
-
   )
 }
 

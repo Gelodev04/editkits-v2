@@ -10,7 +10,7 @@ export default function Blog() {
   const {data: blogs} = useGetBlogsQuery(currentPage);
 
   return (
-    <div className="max-w-[1367px] mx-auto pb-[69px]">
+    <div className="max-w-[1367px] mx-auto">
       <h1
         className="font-montserrat font-bold text-[48px] leading-[64px] text-center text-[#2c2c2c] pt-[59px] pb-[27px]">EditKits
         Blog – Everything Media Processing</h1>

@@ -8,7 +8,7 @@ export default function Custom404() {
   const router = useRouter();
 
   return (
-    <div className={`${montserrat.variable} ${lato.variable} max-w-[618px] pt-[49px] mx-auto pb-[87px]`}>
+    <div className={`${montserrat.variable} ${lato.variable} max-w-[618px] pt-[49px] mx-auto`}>
       <Image
         src={NotFoundImg}
         alt="not found image"

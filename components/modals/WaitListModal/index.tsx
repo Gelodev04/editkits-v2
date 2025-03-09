@@ -107,6 +107,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                           props.setMessageValid(e.target.value.trim().length > 0);
                         }}
                         placeholder="Share your thoughts with us..."
+                        //@ts-ignore
                         label={<span>What are you most interested in? <span style={{color: "#ff0000"}}>*</span></span>}
                         variant="fileUpload"
                         error={!props.isMessageValid}

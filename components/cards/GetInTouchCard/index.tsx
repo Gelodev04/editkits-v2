@@ -111,6 +111,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
             props.setMessageValid(e.target.value.trim().length > 0);
           }}
           placeholder="Share your thoughts with us..."
+          //@ts-ignore
           label={<span>How can we help? <span style={{color: "#ff0000"}}>*</span></span>}
           variant="fileUpload"
           error={!props.isMessageValid}

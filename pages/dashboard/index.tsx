@@ -14,34 +14,36 @@ export default function Dashboard() {
   const data = active === "Job status" ? tableData : uploadedFileTableData;
 
   return (
-    <div className="bg-[#fafbfc] min-h-[100vh]">
-      <div className="max-w-[1920px] mx-auto p-6">
-        <div className="grid grid-cols-12 w-full gap-4 mx-auto">
-          <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
-            <TableType active={active} setActive={setActive}/>
-          </div>
-          <div className="col-span-10 xl:col-span-10 2xl:col-span-10">
-            {active === "Job status" && (
-              <div className="flex gap-4 ">
-                {stats.map(stat => <StatCard stat={stat}/>)}
+    <div className="pb-[69px]">
+      <div className="bg-[#fafbfc]">
+        <div className="max-w-[1920px] mx-auto p-6">
+          <div className="grid grid-cols-12 w-full gap-4 mx-auto">
+            <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
+              <TableType active={active} setActive={setActive}/>
+            </div>
+            <div className="col-span-10 xl:col-span-10 2xl:col-span-10">
+              {active === "Job status" && (
+                <div className="flex gap-4 ">
+                  {stats.map(stat => <StatCard stat={stat}/>)}
+                </div>
+              )}
+              <div className="pt-4">
+                <DashboardTable
+                  active={active}
+                  jobStatusPage={jobStatusPage}
+                  uploadedFilesPage={uploadedFilesPage}
+                />
               </div>
-            )}
-            <div className="pt-4">
-              <DashboardTable
-                active={active}
-                jobStatusPage={jobStatusPage}
-                uploadedFilesPage={uploadedFilesPage}
-              />
             </div>
           </div>
-        </div>
-        <div className="pt-10 pb-10 2xl:pr-2">
-          <div className="flex justify-end">
-            <Pagination
-              totalPages={Math.ceil(data.length / 8)}
-              page={active === "Job status" ? jobStatusPage : uploadedFilesPage}
-              setPage={active === "Job status" ? setJobStatusPage : setUploadedFilesPage}
-            />
+          <div className="pt-10 pb-10 2xl:pr-2">
+            <div className="flex justify-end">
+              <Pagination
+                totalPages={Math.ceil(data.length / 8)}
+                page={active === "Job status" ? jobStatusPage : uploadedFilesPage}
+                setPage={active === "Job status" ? setJobStatusPage : setUploadedFilesPage}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ import {useUpdatePasswordMutation} from "@/services/api";
 import toast from "react-hot-toast";
 
 export default function Account() {
-  const { userInfo } = useUserInfo();
+  const {userInfo} = useUserInfo();
   const [updatePassword] = useUpdatePasswordMutation();
 
   const [active, setActive] = React.useState("email");
@@ -48,61 +48,64 @@ export default function Account() {
   ]
 
   return (
-    <div className="bg-[#fafbfc] min-h-[100vh]">
-      <div className="max-w-[1920px] mx-auto p-6">
-        <div className="grid grid-cols-12 w-full gap-4 mx-auto">
-          <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
-            <AccountType active={active} setActive={setActive} />
-          </div>
-          <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
-            {active === "email" && (
-              <div className="pt-4 max-w-[412px]">
-                <InputField
-                  label="Email"
-                  placeholder={userInfo?.email}
-                  type="email"
-                  error={!isEmailValid}
-                  email={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    // @ts-ignore
-                    setEmailValid(validateEmail(e.target.value))
-                  }}
-                  disabled
-                  bgColor="#fff"
-                />
-                <div className="pt-10">
-                  <Button
-                    onClick={() => setUpdatePasswordModal(true)}
-                    className="max-w-[191px] max-h-[48px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
-                    label="Change Password"
-                    variant="contained"
-                    border
+    <div>
+      <div className="pb-[48px]">
+        <div className="max-w-[1920px] mx-auto p-6">
+          <div className="grid grid-cols-12 w-full gap-4 mx-auto">
+            <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
+              <AccountType active={active} setActive={setActive}/>
+            </div>
+            <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
+              {active === "email" && (
+                <div className="pt-4 max-w-[412px]">
+                  <InputField
+                    label="Email"
+                    placeholder={userInfo?.email}
+                    type="email"
+                    error={!isEmailValid}
+                    email={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      // @ts-ignore
+                      setEmailValid(validateEmail(e.target.value))
+                    }}
+                    disabled
+                    bgColor="#fff"
                   />
+                  <div className="pt-10">
+                    <Button
+                      onClick={() => setUpdatePasswordModal(true)}
+                      className="max-w-[191px] max-h-[48px] border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
+                      label="Change Password"
+                      variant="contained"
+                      border
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
-            {active === "subscription" && <Subscription benefits={benefits}/>}
+              )}
+              {active === "subscription" && <Subscription benefits={benefits}/>}
+            </div>
           </div>
         </div>
+        <ChangePasswordModal
+          type="Change Password"
+          handleUpdatePassword={handleUpdatePassword}
+          updatePasswordModal={updatePasswordModal}
+          setUpdatePasswordModal={setUpdatePasswordModal}
+          // @ts-ignore
+          setType={undefined}
+          // @ts-ignore
+          description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span></>}
+          currentPassword={currentPassword}
+          setCurrentPassword={setCurrentPassword}
+          newPassword={newPassword}
+          setNewPassword={setNewPassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
+        />
       </div>
-      <ChangePasswordModal
-        type="Change Password"
-        handleUpdatePassword={handleUpdatePassword}
-        updatePasswordModal={updatePasswordModal}
-        setUpdatePasswordModal={setUpdatePasswordModal}
-        // @ts-ignore
-        setType={undefined}
-        // @ts-ignore
-        description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span></>}
-        currentPassword={currentPassword}
-        setCurrentPassword={setCurrentPassword}
-        newPassword={newPassword}
-        setNewPassword={setNewPassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
-      />
     </div>
+
   )
 }
 
@@ -129,11 +132,11 @@ function Subscription(props: any) {
       <div className="h-full border-r-2 border-dashed border-[#e2e4e9] w-12"/>
       <div className="col-span-5">
         <div className="pt-3">
-          {props.benefits.map((benefit: any) => <BenefitCard label={benefit} />)}
+          {props.benefits.map((benefit: any) => <BenefitCard label={benefit}/>)}
         </div>
       </div>
       <div className="col-span-2 pt-3 flex items-end justify-end">
-        <Button label="Change plan" variant="contained" className="py-3 max-w-[152px]" filled />
+        <Button label="Change plan" variant="contained" className="py-3 max-w-[152px]" filled/>
       </div>
     </div>
   )

@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <div className="border border-b-1">
         <Header />
       </div>
-      <div className="min-h-[100vh]">
+      <div>
         {children}
       </div>
       <Footer />

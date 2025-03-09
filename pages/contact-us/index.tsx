@@ -70,7 +70,7 @@ export default function ContactUs() {
 
 
   return (
-    <div className="max-w-[1343px] gap-x-[109px] mx-auto flex flex-col xl:flex-row items-center xl:items-start xl:justify-between pt-[71px] pb-[100px]">
+    <div className="max-w-[1343px] gap-x-[109px] mx-auto flex flex-col xl:flex-row items-center xl:items-start xl:justify-between pt-[71px] pb-[49px]">
       <div>
         <ContactUsCard />
       </div>

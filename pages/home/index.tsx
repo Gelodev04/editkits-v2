@@ -122,7 +122,7 @@ export default function Home() {
           />
         </div>
         <div className="sm:col-span-8 lg:col-span-6 bg-[url(../public/assets/img/hero_bg.svg)] bg-cover bg-left">
-          <Image src={HeroImg} width={594} height={330} alt="hero image"/>
+          <Image src={HeroImg} width={594} height={330} alt="hero image" className="animate-float"/>
         </div>
       </div>
       <div

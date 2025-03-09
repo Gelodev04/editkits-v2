@@ -57,7 +57,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                         placeholder="Your first name"
                         type="text"
                         // @ts-ignore
-                        label="First name"
+                        label={<span>First name <span style={{color: "#ff0000"}}>*</span></span>}
                         error={!props.isFirstNameValid}
                         variant="contact-us"
                         height={40}
@@ -79,8 +79,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                         error={!props.isLastNameValid}
                         placeholder="Your last name"
                         //@ts-ignore
-                        label="Last name"
-                        variant="contact-us"
+                        label={<span>Last name <span style={{color: "#ff0000"}}>*</span></span>}                        variant="contact-us"
                         height={40}
                       />
 
@@ -96,8 +95,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                       error={!props.isEmailValid}
                       placeholder="Example@gmail.com"
                       //@ts-ignore
-                      label="Email"
-                      variant="contact-us"
+                      label={<span>Email <span style={{color: "#ff0000"}}>*</span></span>}                      variant="contact-us"
                       height={40}
                     />
                     <div className="pt-[20px] w-full">
@@ -109,7 +107,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                           props.setMessageValid(e.target.value.trim().length > 0);
                         }}
                         placeholder="Share your thoughts with us..."
-                        label="What are you most interested in?"
+                        label={<span>What are you most interested in? <span style={{color: "#ff0000"}}>*</span></span>}
                         variant="fileUpload"
                         error={!props.isMessageValid}
                       />

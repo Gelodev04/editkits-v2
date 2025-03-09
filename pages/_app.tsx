@@ -57,7 +57,7 @@ function MyApp({Component, pageProps}: AppProps) {
     // "datePublished": pageProps.article?.datePublished,
     // "dateModified": pageProps.article?.dateModified,
     // "description": pageProps.article?.description,
-    "mainEntityOfPage": `${process.env.NEXT_PUBLIC_API_URL}/blog/entry?slug=${pageProps.article?.slug}`,
+    "mainEntityOfPage": `${process.env.NEXT_PUBLIC_API}/blog/entry?slug=${pageProps.article?.slug}`,
   };
 
   if (router.pathname.startsWith('/blog')) {

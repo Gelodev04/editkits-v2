@@ -171,7 +171,7 @@ export async function getServerSideProps({params}) {
   const {slug} = params;
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/entry?slug=${slug}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/blog/entry?slug=${slug}`);
     if (!response.ok) {
       return {notFound: true};  // Trigger 404 if the response is not ok
     }

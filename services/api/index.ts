@@ -18,7 +18,7 @@ export const getUserInfo = () => {
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_URL as string,
+    baseUrl: process.env.NEXT_PUBLIC_API as string,
   }),
   endpoints: (builder) => ({
     register: builder.mutation({

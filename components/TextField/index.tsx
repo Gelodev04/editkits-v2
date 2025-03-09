@@ -24,6 +24,7 @@ export default function TextField(props: TextFieldProps) {
       <p className="font-lato font-bold text-sm leading-[21px] text-[#2c2c2c] pb-[4px]">{props.label}</p>
       <div>
         <textarea
+          value={props.value}
           onChange={props.onChange}
           name=""
           id=""

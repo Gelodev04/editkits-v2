@@ -26,62 +26,62 @@ type GetInTouchCardProps = {
   setMessageValid: (e: React.SetStateAction<boolean>) => void;
   submittedModal: boolean;
   setSubmittedModal: (e: React.SetStateAction<boolean>) => void;
-  handleContactUsSubmit: any
+  handleContactUsSubmit: any;
+  modalTitle: string;
+  modalMessage: string;
 
 }
 
 export default function GetInTouchCard(props: GetInTouchCardProps) {
 
   return (
-    <div className="w-[600px] pb-[33px] pt-[30px] px-[41px] border-[1px] border-[#f0f0f0] shadow-md">
-      <p className="font-montserrat font-bold text-[24px] leading-[29.26px] text-[#111111] pb-[16px]">
+    <div className="w-[600px] pb-[30px] pt-[30px] px-[41px] border-[1px] border-[#bebebea6] rounded-[12px]">
+      <p className="font-montserrat font-bold text-[24px] leading-[24px] text-[#111111] pb-[16px]">
         Get In Touch
       </p>
-      <p className="font-lato font-normal text-[13px] leading-[24px] text-[#4f4f4f]">
+      <p className="font-lato font-normal text-sm leading-[24px] text-[#4f4f4f]">
         Use the form below to submit a message, and one of our team members will
         get back to you promptly
       </p>
-      <div className="flex pt-[24px] pb-[12px] gap-[20px]">
-        <div className="w-full">
-          <InputField
-            placeholder="Mike"
-            type="text"
-            // @ts-ignore
-            label={
-              <span>
+      <div className="w-full pt-[24px]">
+        <InputField
+          placeholder="Mike"
+          type="text"
+          // @ts-ignore
+          label={
+            <span>
                 First name <span style={{color: "#ff0000"}}>*</span>
               </span>
-            }
-            error={!props.isFirstNameValid}
-            variant="contact-us"
-            height={40}
-            value={props.firstName}
-            onChange={(e) => {
-              props.setFirstName(e.target.value);
-              props.setFirstNameValid(e.target.value.trim().length > 0);
-            }}
-          />
-        </div>
-        <div className="w-full">
-          <InputField
-            placeholder="Smith"
-            type="text"
-            // @ts-ignore
-            label={
-              <span>
+          }
+          error={!props.isFirstNameValid}
+          variant="contact-us"
+          height={40}
+          value={props.firstName}
+          onChange={(e) => {
+            props.setFirstName(e.target.value);
+            props.setFirstNameValid(e.target.value.trim().length > 0);
+          }}
+        />
+      </div>
+      <div className="w-full py-[20px]">
+        <InputField
+          placeholder="Smith"
+          type="text"
+          // @ts-ignore
+          label={
+            <span>
                 Last name<span style={{color: "#ff0000"}}>*</span>
               </span>
-            }
-            variant="contact-us"
-            height={40}
-            value={props.lastName}
-            error={!props.isLastNameValid}
-            onChange={(e) => {
-              props.setLastName(e.target.value);
-              props.setLastNameValid(e.target.value.trim().length > 0);
-            }}
-          />
-        </div>
+          }
+          variant="contact-us"
+          height={40}
+          value={props.lastName}
+          error={!props.isLastNameValid}
+          onChange={(e) => {
+            props.setLastName(e.target.value);
+            props.setLastNameValid(e.target.value.trim().length > 0);
+          }}
+        />
       </div>
       <InputField
         type="text"
@@ -102,7 +102,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
         variant="contact-us"
         height={40}
       />
-      <div className="pt-[16px] w-full">
+      <div className="pt-[20px] w-full">
         <TextField
           type="text"
           value={props.message}
@@ -116,7 +116,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
           error={!props.isMessageValid}
         />
       </div>
-      <div className="pt-[24px]">
+      <div className="pt-[20px]">
         <Button
           onClick={props.handleContactUsSubmit}
           disabled={
@@ -126,7 +126,8 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
             !props.isMessageValid ||
             (!props.firstName && !props.user) ||
             (!props.lastName && !props.user) ||
-            (!props.email && !props.user)
+            (!props.email && !props.user) ||
+            (!props.message && !props.user)
           }
           label="Submit"
           variant="contained"
@@ -137,8 +138,8 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
       <Popup
         open={props.submittedModal}
         setOpen={props.setSubmittedModal}
-        title="Request Submitted"
-        description="Our support team would reach out to you soon."
+        title={props.modalTitle}
+        description={props.modalMessage}
       />
     </div>
   );

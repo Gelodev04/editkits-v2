@@ -25,13 +25,13 @@ export default function PopUp(props) {
                   <div className="pb-[8px]">
                     <Typography label={props.title} center variant="h4"/>
                   </div>
-                  <div className="w-[432px] mx-auto">
+                  <div className="w-[432px] py-[20px] mx-auto">
                     <Typography label={props.description} center variant="b3"/>
                   </div>
                 </div>
-               
-                <div className="flex justify-center items-center gap-[6px] pt-[37px] pb-[59px]">
-                  <Button onClick={() => props.setOpen(false)} label="Dismiss" variant="contained" filled width={442}/>
+
+                <div className="flex justify-center items-center gap-[6px] pt-[32px] pb-[32px]">
+                  <Button onClick={() => props.setOpen(false)} label="Dismiss" variant="secondary" width={209} height={48}/>
                 </div>
               </div>
             </div>

@@ -21,7 +21,7 @@ export default function Input(props: InputProps) {
   const disabledClasses = props.disabled && "bg-[#E0E0E0A6]";
   const variantClasses = `font-lato font-bold ${props.variant === "t2" ? "max-h-10 shadow-none border-[#e0e0e0]" : "font-normal"}`;
   const fileUploadClasses = props.variant === "fileUpload" ? "text-xs shadow-none rounded-[8px] border-[#9f9f9f] leading-[18px] font-normal py-0 " : "";
-  const contactUs = props.variant === "contact-us" ? `text-xs shadow-none rounded-[8px] ${props?.error ? 'border-red-300' : 'border-[#9f9f9f]'} leading-[18px] font-normal py-0 ` : "";
+  const contactUs = props.variant === "contact-us" ? `text-sm shadow-none rounded-[8px] py-[22.9px] ${props?.error ? 'border-red-300' : 'border-[#9f9f9f]'} leading-[18px] font-normal py-10 ` : "";
 
   const finalClasses = `${baseClasses} ${errorClasses} ${disabledClasses} ${variantClasses} ${fileUploadClasses} ${contactUs}`.trim();
 

@@ -2,7 +2,6 @@ import ContactUsCard from "@/components/cards/ContactUsCard";
 import GetInTouchCard from "@/components/cards/GetInTouchCard";
 import {useEffect, useState} from "react";
 import {getUserInfo, useContactUsCommonMutation, useContactUsUserMutation} from "@/services/api";
-import toast from "react-hot-toast";
 
 export default function ContactUs() {
   const [contactUsCommon] = useContactUsCommonMutation();
@@ -16,7 +15,9 @@ export default function ContactUs() {
   const [isEmailValid, setEmailValid] = useState(true);
   const [message, setMessage] = useState("");
   const [isMessageValid, setMessageValid] = useState(true);
-  const [submittedModal, setSubmittedModal] = useState(false)
+  const [submittedModal, setSubmittedModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalMessage, setModalMessage] = useState("")
 
   useEffect(() => {
     const checkUserInfo = () => {
@@ -48,17 +49,28 @@ export default function ContactUs() {
     const response = await mutationFn(payload)
     if(response.error) {
       // @ts-ignore
-      toast.error(response.error.data.errorMsg);
+      setModalTitle("Uh-oh! Something’s Off");
+      // @ts-ignore
+      setModalMessage(response.error.data.errorMsg);
+      setSubmittedModal(true);
       return;
     }
 
+    setFirstName("")
+    setLastName("")
+    setMessage("")
+    if (!user) {
+      setEmail("")
+    }
+    setModalTitle("Request Submitted")
+    setModalMessage("Our support team would reach out to you soon.")
     setSubmittedModal(true);
 
   }
 
 
   return (
-    <div className="max-w-[1280px] mx-auto flex flex-col xl:flex-row items-center xl:items-start xl:justify-between pt-[71px]">
+    <div className="max-w-[1343px] gap-x-[109px] mx-auto flex flex-col xl:flex-row items-center xl:items-start xl:justify-between pt-[71px] pb-[100px]">
       <div>
         <ContactUsCard />
       </div>
@@ -84,6 +96,8 @@ export default function ContactUs() {
           setLastNameValid={setLastNameValid}
           setMessageValid={setMessageValid}
           handleContactUsSubmit={handleContactUsSubmit}
+          modalMessage={modalMessage}
+          modalTitle={modalTitle}
         />
       </div>
     </div>

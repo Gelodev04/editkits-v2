@@ -27,16 +27,6 @@ export default function Header() {
   const [showAuthModal, setAuthModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  function onSignup() {
-    setAuthModal(true);
-    setType("Sign Up");
-  }
-
-  function onLogin() {
-    setAuthModal(true);
-    setType("Log In");
-  }
-
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
       <Link href="/">
@@ -48,11 +38,14 @@ export default function Header() {
             <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"}/>
           </Link>
         )}
-        <Link href="/tools">
-          <Typography label="Tools" variant="link" bold={router.pathname === "/tools"}/>
+        <Link href="/">
+          <Typography label="Home" variant="link" bold={router.pathname === "/home"}/>
         </Link>
-        <Link href="/pricing">
-          <Typography label="Pricing" variant="link" bold={router.pathname === "/pricing"}/>
+        <Link href="/blogs">
+          <Typography label="Blogs" variant="link" bold={router.pathname === "/blogs"}/>
+        </Link>
+        <Link href="/contact-us">
+          <Typography label="Contact Us" variant="link" bold={router.pathname === "/contact-us"}/>
         </Link>
       </div>
       <div className="flex gap-[11px] justify-center items-center">
@@ -104,23 +97,8 @@ export default function Header() {
         {!userInfo && (
           <>
             <div className="w-32">
-              <Button
-                onClick={onSignup}
-                label="Signup"
-                variant="secondary"
-                width={112}
-                height={48}
-              />
             </div>
             <div className="w-32">
-              <Button
-                onClick={onLogin}
-                label="Login"
-                variant="contained"
-                filled
-                width={115}
-                height={48}
-              />
             </div>
           </>
         )}

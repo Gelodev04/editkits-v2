@@ -129,12 +129,12 @@ export default function Home() {
         className="bg-white pt-[53px] pb-[59px] border-[1px] border-solid border-[#9f9f9f] rounded-[40px] max-w-[1313px] mx-auto">
         <div className="pb-[12px]">
           <Typography
-            label="Quick Access"
+            label="Sneak Peek"
             variant="h4"
             center
           />
         </div>
-        <Typography variant="b2" label="Video Tools" center/>
+        <Typography variant="b2" label="Video, Audio and Image Tools" center/>
         <div className="sm:hidden lg:block place-items-center max-w-[1184px] mx-auto">
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 pt-[40px] pb-[32px] gap-x-10 lg:gap-x-4">
             {videoTools.slice(0, 5).map((tool) => (
@@ -174,7 +174,7 @@ export default function Home() {
         </div>
         <div className="flex justify-center pt-[42px]">
           <Button
-            label="Show All Video Tools"
+            label="More tools coming soon!"
             variant="secondary"
             width={268}
             height={48}

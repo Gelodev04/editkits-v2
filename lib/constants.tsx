@@ -3,7 +3,7 @@ import Rotate from "../public/assets/img/tools/rotate.svg"
 import Trim from "../public/assets/img/tools/trim.svg"
 import Speed from "../public/assets/img/tools/speed_up_down.svg"
 import Resize from "../public/assets/img/tools/resize.svg"
-import OverlayImage from "../public/assets/img/tools/overlay_image.svg"
+import Sound from "../public/assets/img/tools/sound.svg"
 import Crop from "../public/assets/img/tools/crop.svg"
 import Loop from "../public/assets/img/tools/loop.svg"
 import Join from "../public/assets/img/tools/join.svg"
@@ -13,7 +13,7 @@ import RotateHover from "../public/assets/img/tools/rotate_hover.svg"
 import TrimHover from "../public/assets/img/tools/trim_hover.svg"
 import SpeedHover from "../public/assets/img/tools/speed_up_down_hover.svg"
 import ResizeHover from "../public/assets/img/tools/resize_hover.svg"
-import OverlayImageHover from "../public/assets/img/tools/overlay_image_hover.svg"
+import SoundHover from "../public/assets/img/tools/sound_hover.svg"
 import CropHover from "../public/assets/img/tools/crop_hover.svg"
 import LoopHover from "../public/assets/img/tools/loop_hover.svg"
 import JoinHover from "../public/assets/img/tools/join_hover.svg"
@@ -41,15 +41,15 @@ import ChatIcon from "@/public/assets/icons/chat.svg";
 import SmileIcon from "@/public/assets/icons/smile.svg";
 
 export const videoTools = [
-  {name: "Overlay Video", icon: OverlayVideo, icon_hover: OverlayVideoHover},
-  {name: "Rotate Video", icon: Rotate, icon_hover: RotateHover},
+  {name: "Overlay Video/Image", icon: OverlayVideo, icon_hover: OverlayVideoHover},
+  {name: "Rotate Video/Image", icon: Rotate, icon_hover: RotateHover},
   {name: "Trim Video", icon: Trim, icon_hover: TrimHover},
   {name: "Speed Up/Down Video", icon: Speed, icon_hover: SpeedHover},
-  {name: "Resize Video", icon: Resize, icon_hover: ResizeHover},
-  {name: "Overlay Image on Video", icon: OverlayImage, icon_hover: OverlayImageHover},
-  {name: "Crop Video", icon: Crop, icon_hover: CropHover},
+  {name: "Resize Video/Image", icon: Resize, icon_hover: ResizeHover},
+  {name: "Clean Audio", icon: Sound, icon_hover: SoundHover},
+  {name: "Crop Image/Video", icon: Crop, icon_hover: CropHover},
   {name: "Loop Video", icon: Loop, icon_hover: LoopHover},
-  {name: "Join Video/Image", icon: Join, icon_hover: JoinHover},
+  {name: "Join Audio/Video/Image", icon: Join, icon_hover: JoinHover},
 ]
 
 export const featureCards = [

@@ -11,11 +11,11 @@ export default function Footer() {
         <Link href="/" className="font-roboto">
           <Button label="Home" variant="primary"/>
         </Link>
-        <Link href="/tools" className="font-roboto">
-          <Button label="Tools" variant="primary"/>
+        <Link href="/blogs" className="font-roboto">
+          <Button label="Blogs" variant="primary"/>
         </Link>
-        <Link href="/pricing" className="font-roboto">
-          <Button label="Pricing" variant="primary"/>
+        <Link href="/contact-us" className="font-roboto">
+          <Button label="Contact Us" variant="primary"/>
         </Link>
       </div>
       <div className="2xl:px-[32%] xl:px-[18%] lg:px-[12%]">

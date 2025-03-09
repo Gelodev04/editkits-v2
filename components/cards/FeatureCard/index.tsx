@@ -19,8 +19,8 @@ export default function FeatureCard({name, icon, description}: ToolCardProps) {
         alt={name}
         width={36}
       />
-      <p className="font-workSans font-semibold text-[16px]  py-[12px] leading-[22.4px] text-[#2c2c2c]">{name}</p>
-      <Typography label={description} />
+      <p className="font-lato font-bold text-base  py-[12px] leading-[22.4px] text-[#2c2c2c]">{name}</p>
+      <Typography label={description} variant="b3" />
     </div>
   )
 }

@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <meta name="description" content="EditKits is your next video and image processing tool" />
+        <meta name="description" content="EditKits is your next video and image processing tool"/>
       </Head>
       <div
         className="pb-[159.5px] bg-[url(../public/assets/img/hero_bg.svg)] max-w-[1187px] bg-cover sm:px-5 xl:px-0 bg-center grid grid-cols-12 mx-auto sm:items-center xl:items-end">
@@ -104,14 +104,23 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="max-w-[1555px] mx-auto pt-[139px] sm:pl-5">
-        <Typography label="Learn more about our features" variant="h2"/>
-      </div>
-      <div className="bg-[url(../public/assets/img/inclined_bg.svg)] bg-no-repeat bg-cover sm:pl-5">
-        <div className="grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] max-w-[1536px] mx-auto">
-          {featureCards.map((card) => <FeatureCard name={card.name} icon={card.image} description={card.description}/>)}
+      <div className="flex flex-col items-center">
+        <div className="w-full">
+          <div className="max-w-[1555px] mx-auto pt-[139px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-7">
+            <Typography label="Learn more about our features" variant="h2"/>
+          </div>
+          <div className="w-full bg-[url(../public/assets/img/inclined_bg.svg)] bg-no-repeat bg-cover">
+            <div className="max-w-[1536px] mx-auto grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-5">
+              {featureCards.map((card) => (
+                <FeatureCard name={card.name} icon={card.image} description={card.description}/>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
+
+
+
     </>
   );
 }

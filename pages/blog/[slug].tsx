@@ -173,12 +173,12 @@ export async function getServerSideProps({params}) {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API}/blog/entry?slug=${slug}`);
     if (!response.ok) {
-      return {notFound: true};  // Trigger 404 if the response is not ok
+      return {notFound: true};
     }
 
     const article = await response.json();
     if (!article) {
-      return {notFound: true};  // Trigger 404 if article is not found
+      return {notFound: true};
     }
 
     return {
@@ -188,7 +188,7 @@ export async function getServerSideProps({params}) {
     };
   } catch (error) {
     console.error('Error fetching article:', error);
-    return {notFound: true};  // Trigger 404 in case of an error
+    return {notFound: true};
   }
 }
 

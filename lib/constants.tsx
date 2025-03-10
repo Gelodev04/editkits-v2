@@ -1242,3 +1242,74 @@ export const contactUsSections = [
     description: "Looking to integrate EditKits into your business, scale your media workflows, or discuss a partnership? We’d love to explore how we can work together to create powerful solutions tailored to your needs. Let’s make something amazing happen!"
   }
 ]
+
+export const jsonLdData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "EditKits",
+  "url": "https://editkits.com",
+  "description": "EditKits is the ultimate cloud-based media editing platform offering powerful APIs for fast, scalable, and cost-effective video, image, and audio processing.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "EditKits",
+    "url": "https://editkits.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://editkits.com/logo.png"
+    },
+    "sameAs": [
+      "https://en.wikipedia.org/wiki/Video_editing",
+      "https://www.producthunt.com/",
+      "https://www.g2.com/categories/video-editing",
+      "https://www.capterra.com/video-editing-software/",
+      "https://www.trustpilot.com/",
+      "https://www.reddit.com/r/videoediting/",
+      "https://www.quora.com/topic/Video-Editing",
+      "https://stackoverflow.com/questions/tagged/video-processing",
+      "https://medium.com/tag/video-editing",
+      "https://www.linkedin.com/pulse/",
+      "https://www.goodfirms.co/video-editing-software/",
+      "https://www.slashdot.org/",
+      "https://www.sitejabber.com/",
+      "https://betalist.com/",
+      "https://www.startupranking.com/",
+      "https://alternativeto.net/",
+      "https://www.saashub.com/",
+      "https://www.techcrunch.com/",
+      "https://news.ycombinator.com/",
+      "https://www.indiehackers.com/",
+      "https://dev.to/",
+      "https://www.makeuseof.com/",
+      "https://www.smashingmagazine.com/",
+      "https://www.wired.com/",
+      "https://www.forbes.com/innovation/",
+      "https://www.zdnet.com/",
+      "https://www.cnet.com/topics/software/",
+      "https://www.digitaltrends.com/",
+      "https://www.entrepreneur.com/topic/technology",
+      "https://www.founderclub.com/",
+      "https://angel.co/startups",
+      "https://www.appsumo.com/",
+      "https://www.crunchbase.com/",
+      "https://www.getapp.com/",
+      "https://www.softwareadvice.com/",
+      "https://www.saasworthy.com/",
+      "https://www.expertreviews.co.uk/",
+      "https://www.theverge.com/",
+      "https://www.venturebeat.com/",
+      "https://www.mashable.com/",
+      "https://www.pcmag.com/",
+      "https://www.ghacks.net/",
+      "https://www.programmableweb.com/",
+      "https://www.the-next-web.com/",
+      "https://www.cmswire.com/",
+      "https://www.technologyreview.com/",
+      "https://www.datamation.com/"
+    ]
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://editkits.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}

@@ -45,8 +45,20 @@ export function VideoUpload(props: VideoUploadProps) {
                 className="font-lato font-bold text-[10px] leading-[15px] text-[#7D3CDE]">Uploading... {props.progress}%</p>
             </div>)}
           <div className="pl-8 col-span-10">
-            <p className="text-base font-lato font-bold text-[#2c2c2c] leading-[24px]">{props.file.name}</p>
+            <p className="text-base font-lato font-bold text-[#2c2c2c] leading-[24px]">
+              {(() => {
+                const fileName = props.file.name;
+                const extIndex = fileName.lastIndexOf(".");
 
+                if (extIndex !== -1) {
+                  const namePart = fileName.slice(0, 20);
+                  const extPart = fileName.slice(extIndex);
+                  return `${namePart}...${extPart}`;
+                }
+
+                return fileName.length > 15 ? `${fileName.slice(0, 15)}...` : fileName;
+              })()}
+            </p>
             <div className="flex gap-3">
               <div className="flex items-end gap-1">
                 <p className="text-sm font-lato font-bold text-[#A0AEC0] leading-[21px]">Duration: </p>

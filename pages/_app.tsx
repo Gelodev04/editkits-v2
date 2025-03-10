@@ -14,11 +14,12 @@ import './style.css';
 
 import {store} from "@/store";
 import {alexandria, lato, montserrat, workSans} from "@/lib/fonts";
+import {jsonLdData} from "@/lib/constants";
 
 const RootLayout = dynamic(() => import('./layout'), {ssr: false});
 
 const pageTitles = {
-  '/home': 'EditKits - The Ultimate Online Media Editing Platform',
+  '/home': 'The Ultimate Online Video, Audio and Image Tools Platform',
   '/account': 'Account - EditKits',
   '/blog': 'Blog - EditKits',
   '/contact-us': 'Contact Us - EditKits',
@@ -36,29 +37,6 @@ function MyApp({Component, pageProps}: AppProps) {
   let keywords = [];
   const GA_TRACKING_ID = 'G-HFNS6G8Q4R'
 
-  const jsonLdData = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": pageProps.article?.metadata?.meta_title,
-    "image": pageProps.article?.metadata?.content?.filter(cont => cont.type === "image").map(image => image.src),
-    "author": {
-      "@type": "Person",
-      // "name": pageProps.article?.author.name,
-      // "url": pageProps.article?.author.url,
-    },
-    "publisher": {
-      "@type": "Company",
-      "name": "EditKits",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "/assets/img/editkits.png",
-      },
-    },
-    // "datePublished": pageProps.article?.datePublished,
-    // "dateModified": pageProps.article?.dateModified,
-    // "description": pageProps.article?.description,
-    "mainEntityOfPage": `${process.env.NEXT_PUBLIC_API}/blog/entry?slug=${pageProps.article?.slug}`,
-  };
 
   if (router.pathname.startsWith('/blog')) {
     if (pageProps.article?.metadata) {
@@ -69,12 +47,19 @@ function MyApp({Component, pageProps}: AppProps) {
     }
   }
 
+  console.log()
+
   return (
     <>
       <Head>
         <title>{title}</title>
         <link rel="icon" href="/assets/img/editkits.png"/>
-        <meta name="description" content="EditKits is your next video and image processing tool"/>
+        <link rel="canonical" href={"https://editkits.com" + router.pathname} />
+        <meta name="viewport" content="width=1400, user-scalable=no" />
+        <meta
+          name="description"
+          content="EditKits is the fastest, most affordable destination for cloud media tools and kits with powerful APIs. Process videos, images, and audio seamlessly with high-speed, scalable, and automated workflows, no waiting required!"
+        />
         {keywords?.map(keyword => <meta name="keyword" content={keyword}/>)}
         <script
           type="application/ld+json"

@@ -41,7 +41,7 @@ export default function Header() {
         <Link href="/">
           <Typography label="Home" variant="link" bold={router.pathname === "/home"}/>
         </Link>
-        <Link href="/blogs">
+        <Link href="/blog">
           <Typography label="Blogs" variant="link" bold={router.pathname === "/blogs"}/>
         </Link>
         <Link href="/contact-us">

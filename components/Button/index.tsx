@@ -20,7 +20,7 @@ type ButtonProps = {
 
 function ButtonStyle(variant: string, filled?: boolean, disabled?: boolean, width?: number, border?: boolean, bold?: boolean, className?: string, font?: string, fontWeight?: string) {
   if (variant === "primary") {
-    return ` ${className} ${bold ? "font-semibold text-[#2c2c2c]": `${fontWeight ?? "font-bold"} text-[#000]`} text-sm flex justify-center cursor-auto`
+    return ` ${className} ${bold ? "font-semibold text-[#2c2c2c]": `${fontWeight ?? "font-bold"} text-[#000]`} text-sm flex justify-center cursor-default`
   } else if (variant === "secondary") {
     return `${className} ${!className?.includes('py') ? "py-4" : className} cursor-auto font-bold font-montserrat text-sm w-full ${filled && !disabled ? "bg-[#273266] text-white" : filled && disabled ? "bg-[#e0e0e0] text-[#4f4f4f]" : "text-[#4f4f4f]"} ${!disabled && "hover:scale-105 transition duration-300"} border-[1px] border-[#4f4f4f] flex justify-center items-center gap-2 rounded-full`;
   } else if (variant === "outlined") {

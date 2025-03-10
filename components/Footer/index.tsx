@@ -11,7 +11,7 @@ export default function Footer() {
         <Link href="/" className="font-roboto">
           <Button label="Home" variant="primary" className="font-normal"/>
         </Link>
-        <Link href="/blogs" className="font-roboto">
+        <Link href="/blog" className="font-roboto">
           <Button label="Blogs" variant="primary" className="font-normal"/>
         </Link>
         <Link href="/contact-us" className="font-roboto">

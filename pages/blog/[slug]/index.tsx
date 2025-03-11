@@ -7,7 +7,7 @@ import {Divider} from "@mui/material";
 import {useGetArticleQuery} from "@/services/api";
 import {convertToNoCookieUrl} from "@/lib/utils";
 import Alert from "@/components/Alert";
-import {CodeBlock} from "@/CodeBlock";
+import {CodeBlock} from "@/components/CodeBlock";
 import Typography from "@/components/Typography";
 import {notFound} from "next/navigation";
 

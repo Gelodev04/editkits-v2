@@ -57,7 +57,7 @@ function MyApp({Component, pageProps}: AppProps) {
         <meta name="viewport" content="width=1400, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta
           name="description"
-          content="EditKits is the fastest, most affordable destination for cloud media tools and kits with powerful APIs. Process videos, images, and audio seamlessly with high-speed, scalable, and automated workflows, no waiting required!"
+          content="EditKits provides fast, affordable cloud media tools & APIs for seamless video, image & audio processing with scalable, automated workflows & delivery."
         />
         {keywords?.map(keyword => <meta name="keyword" content={keyword}/>)}
         <script

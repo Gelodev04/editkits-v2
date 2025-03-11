@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://editkits.com/account</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/blogs</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/contact-us</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/dashboard</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/home</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/layout</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/page</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/pricing</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/tool/resize-video</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/tool/trim-video</loc><lastmod>2025-03-09T20:38:03.069Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://editkits.com/tools</loc><lastmod>2025-03-09T20:38:03.070Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/account</loc><lastmod>2025-03-11T14:03:30.570Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/blog</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/blog/loading</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/contact-us</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/dashboard</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/home</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/layout</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/page</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/pricing</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/tool/resize-video</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/tool/trim-video</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://editkits.com/tools</loc><lastmod>2025-03-11T14:03:30.571Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

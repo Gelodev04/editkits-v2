@@ -260,6 +260,13 @@ export const api = createApi({
       transformResponse: (response) => {
         return response;
       },
+    }),
+    getPlans: builder.query({
+      query: ({}) => ({
+        url: '/subscription/plans',
+        method: 'GET'
+      }),
+      transformResponse: (response) => response
     })
   }),
 });
@@ -285,5 +292,7 @@ export const {
   useContactUsUserMutation,
 
   useGetBlogsQuery,
-  useGetArticleQuery
+  useGetArticleQuery,
+
+  useGetPlansQuery
 } = api;

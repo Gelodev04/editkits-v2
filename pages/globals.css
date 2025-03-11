@@ -17,7 +17,5 @@
 body {
   color: var(--foreground);
   font-family: "Alexandria", sans-serif;
-  width: 1400px;
-  margin: 0 auto;
-  overflow-x: auto;
+
 }

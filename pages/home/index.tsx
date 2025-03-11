@@ -18,9 +18,9 @@ export default function Home() {
   const [contactUsUser] = useContactUsUserMutation();
 
   const [user, setUser] = useState(getUserInfo());
-  const [firstName, setFirstName] = useState( "");
+  const [firstName, setFirstName] = useState("");
   const [isFirstNameValid, setFirstNameValid] = useState(true);
-  const [lastName, setLastName] = useState( "");
+  const [lastName, setLastName] = useState("");
   const [isLastNameValid, setLastNameValid] = useState(true);
   const [email, setEmail] = useState(user?.email || "");
   const [isEmailValid, setEmailValid] = useState(true);
@@ -38,7 +38,7 @@ export default function Home() {
     if (!user) {
       setEmail("")
     }
-  },[waitlistModal])
+  }, [waitlistModal])
 
   async function handleWaitlistSubmit() {
     const mutationFn = user ? contactUsUser : contactUsCommon
@@ -47,11 +47,11 @@ export default function Home() {
       last_name: lastName,
       email,
       message,
-      ...(user ? {} : { category: 'WAITLIST' })
+      ...(user ? {} : {category: 'WAITLIST'})
     }
 
     const response = await mutationFn(payload)
-    if(response.error) {
+    if (response.error) {
       // @ts-ignore
       setSubmittedModalTitle("Uh-oh! Something’s Off");
       // @ts-ignore
@@ -135,8 +135,8 @@ export default function Home() {
           />
         </div>
         <Typography variant="b2" label="Video, Audio and Image Tools" center/>
-        <div className="sm:hidden lg:block place-items-center max-w-[1184px] mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 pt-[40px] pb-[32px] gap-x-10 lg:gap-x-4">
+        <div className="place-items-center max-w-[1184px] mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 pt-[40px] pb-[32px] gap-x-[35px]">
             {videoTools.slice(0, 5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -148,21 +148,8 @@ export default function Home() {
           </div>
 
           <div
-            className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full gap-y-10 gap-x-10 lg:gap-x-4 max-w-[1920px]">
+            className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full gap-x-[35px] max-w-[1920px]">
             {videoTools.slice(5).map((tool) => (
-              <ToolCard
-                key={tool.name}
-                name={tool.name}
-                icon={tool?.icon}
-                icon_hover={tool?.icon_hover}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="sm:block lg:hidden place-items-center">
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10 py-10 gap-x-10 lg:gap-x-4 max-w-[1920px]">
-            {videoTools.map((tool) => (
               <ToolCard
                 key={tool.name}
                 name={tool.name}
@@ -183,11 +170,13 @@ export default function Home() {
       </div>
       <div className="flex flex-col items-center">
         <div className="w-full">
-          <div className="max-w-[1555px] mx-auto pt-[139px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-7">
+          <div
+            className="max-w-[1555px] mx-auto pt-[139px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-7">
             <Typography label="Learn more about our features" variant="h2"/>
           </div>
           <div className="w-full bg-[url(../public/assets/img/inclined_bg.svg)] bg-no-repeat bg-cover">
-            <div className="max-w-[1536px] mx-auto grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-5">
+            <div
+              className="max-w-[1536px] mx-auto grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-5">
               {featureCards.map((card) => (
                 <FeatureCard name={card.name} icon={card.image} description={card.description}/>
               ))}

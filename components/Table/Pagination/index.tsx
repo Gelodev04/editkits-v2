@@ -65,7 +65,7 @@ export default function Pagination({totalPages, page, setPage}: PaginationProps)
         );
         // @ts-ignore
         pageNumbers.push(<span key="dots-left" className="px-2 text-[#2c2c2c]">...</span>);
-        for (let i = totalPages - 3; i < totalPages; i++) {  // Exclude the last page
+        for (let i = totalPages - 3; i < totalPages; i++) {
           pageNumbers.push(
             // @ts-ignore
             <button

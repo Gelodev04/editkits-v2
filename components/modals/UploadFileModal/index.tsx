@@ -73,7 +73,6 @@ export default function UploadFileModal(props: UploadModalProps) {
         // @ts-ignore
         props.setFile(file);
         await handleFileUpload(file)
-        // props.setUploadModal(false);
         // @ts-ignore
         if (props.videoRef.current) {
           // @ts-ignore

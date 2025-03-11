@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+import type {Config} from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -34,15 +34,20 @@ const config: Config = {
       'xl': '1280px',
       'mxl': '1350px',
       '2xl': '1536px',
-      '3xl' : '1920px'
+      '3xl': '1920px'
     },
     animation: {
       float: "float 3s ease-in-out infinite",
+      pulse: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
     },
     keyframes: {
       float: {
-        "0%, 100%": { transform: "translateY(0)" },
-        "50%": { transform: "translateY(-10px)" },
+        "0%, 100%": {transform: "translateY(0)"},
+        "50%": {transform: "translateY(-10px)"},
+      },
+      pulse: {
+        '0%, 100%': { opacity: '1' },
+        '50%': { opacity: '.5' },
       },
     },
   },

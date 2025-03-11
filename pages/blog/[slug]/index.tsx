@@ -1,7 +1,6 @@
 import React from "react";
 import {useRouter} from "next/router";
 import Image from "next/image";
-
 import {Divider} from "@mui/material";
 
 import {useGetArticleQuery} from "@/services/api";
@@ -10,15 +9,22 @@ import Alert from "@/components/Alert";
 import {CodeBlock} from "@/components/CodeBlock";
 import Typography from "@/components/Typography";
 import {notFound} from "next/navigation";
+import ArticleLoading from "@/pages/blog/[slug]/loading";
 
 export default function Article() {
   const router = useRouter();
   const {slug} = router.query;
 
-  const {data: article, isLoading, isError}: any = useGetArticleQuery({slug});
+  const [loading, setLoading] = React.useState(true);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  React.useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  const {data: article, isError}: any = useGetArticleQuery({slug});
+
+  if (loading) {
+    return <ArticleLoading />;
   }
 
   if (isError) {

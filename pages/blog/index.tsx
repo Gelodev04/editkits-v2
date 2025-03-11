@@ -3,11 +3,21 @@ import React from 'react';
 import Pagination from "@/components/Pagination";
 import BlogCard from "@/components/cards/BlogCard";
 import {useGetBlogsQuery} from "@/services/api";
+import BlogLoading from "@/pages/blog/loading";
 
 export default function Blog() {
   // @ts-ignore
   const [currentPage, setCurrentPage] = React.useState(1);
   const {data: blogs} = useGetBlogsQuery(currentPage);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  if (loading) {
+    return <BlogLoading />;
+  }
 
   return (
     <div className="max-w-[1367px] mx-auto">

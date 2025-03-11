@@ -53,18 +53,18 @@ function MyApp({Component, pageProps}: AppProps) {
       <Head>
         <title>{title}</title>
         <link rel="icon" href="/assets/img/editkits.png"/>
-        <link rel="canonical" href={"https://editkits.com" + router.pathname} />
-        <meta name="viewport" content="width=1400, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta
-          name="description"
-          content="EditKits provides fast, affordable cloud media tools & APIs for seamless video, image & audio processing with scalable, automated workflows & delivery."
-        />
-        {keywords?.map(keyword => <meta name="keyword" content={keyword}/>)}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLdData)}}
-        >
-        </script>
+        <link rel="canonical" href={"https://editkits.com" + router.pathname}/>
+        <meta name="viewport" content="width=1400, user-scalable=no" />
+          <meta
+            name="description"
+            content="EditKits provides fast, affordable cloud media tools & APIs for seamless video, image & audio processing with scalable, automated workflows & delivery."
+          />
+          {keywords?.map(keyword => <meta name="keyword" content={keyword}/>)}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLdData)}}
+          >
+          </script>
       </Head>
       {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
         <>
@@ -95,7 +95,7 @@ function MyApp({Component, pageProps}: AppProps) {
         </Provider>
       </div>
     </>
-  );
+);
 }
 
 export default MyApp;

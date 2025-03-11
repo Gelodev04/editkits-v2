@@ -21,8 +21,8 @@ export default function Pricing() {
       }}
       className="md:pt-10 min-h-[100vh]"
     >
-      <p className="font-montserrat font-extrabold text-[48px] text-[#2c2c2c] leading-[64px] text-center">Pricing
-        Plan</p>
+      <h1 className="font-montserrat font-extrabold text-[48px] text-[#2c2c2c] leading-[64px] text-center">Pricing
+        Plan</h1>
       <div className="pt-[12px]">
         <p className="font-lato font-normal text-base text-[#4f4f4f] text-center leading-[24px]">Access a set of
           powerful features with simple and transparent pricing</p>

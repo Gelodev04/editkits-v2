@@ -231,7 +231,9 @@ export default function TrimVideo() {
           label="Proceed"
           variant="contained"
           filled
-          rightIcon={<FaAngleRight/>} />
+          rightIcon={<FaAngleRight/>}
+          isLoading={isInitLoading}
+        />
       </div>
       <UploadFileModal
         videoRef={videoRef}

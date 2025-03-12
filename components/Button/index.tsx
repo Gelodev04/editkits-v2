@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Spinner from "@/components/Spinner";
 
 type ButtonProps = {
   label: string;
@@ -16,6 +17,7 @@ type ButtonProps = {
   className?: string;
   font?: string;
   fontWeight?: string;
+  isLoading?: boolean
 }
 
 function ButtonStyle(variant: string, filled?: boolean, disabled?: boolean, width?: number, border?: boolean, bold?: boolean, className?: string, font?: string, fontWeight?: string) {
@@ -42,6 +44,7 @@ export default function Button(props: ButtonProps) {
     >
       {/*@ts-ignore*/}
       {props.leftIcon && <Image src={props.leftIcon} alt="Left Icon" priority/>}
+      {props.isLoading && <Spinner />}
       {props.label}
       {props?.rightIcon}
     </button>

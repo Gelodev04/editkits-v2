@@ -29,6 +29,7 @@ type GetInTouchCardProps = {
   handleContactUsSubmit: any;
   modalTitle: string;
   modalMessage: string;
+  isLoading: boolean;
 
 }
 
@@ -134,6 +135,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
           variant="contained"
           filled
           height={48}
+          isLoading={props.isLoading}
         />
       </div>
       <Popup

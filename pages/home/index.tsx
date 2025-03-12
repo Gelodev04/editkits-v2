@@ -14,7 +14,7 @@ import {getUserInfo, useContactUsCommonMutation, useContactUsUserMutation} from 
 import PopUp from "@/components/modals/Popup";
 
 export default function Home() {
-  const [contactUsCommon] = useContactUsCommonMutation();
+  const [contactUsCommon, {isLoading: isWaitlistLoading}] = useContactUsCommonMutation();
   const [contactUsUser] = useContactUsUserMutation();
 
   const [user, setUser] = useState(getUserInfo());
@@ -205,6 +205,7 @@ export default function Home() {
         setOpen={setWaitlistModal}
         setMessage={setMessage}
         setMessageValid={setMessageValid}
+        isLoading={isWaitlistLoading}
       />
       <PopUp
         open={submittedModal}

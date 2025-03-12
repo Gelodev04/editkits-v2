@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {getUserInfo, useContactUsCommonMutation, useContactUsUserMutation} from "@/services/api";
 
 export default function ContactUs() {
-  const [contactUsCommon] = useContactUsCommonMutation();
+  const [contactUsCommon, {isLoading: isContactUsLoading}] = useContactUsCommonMutation();
   const [contactUsUser] = useContactUsUserMutation();
   const [user, setUser] = useState(getUserInfo());
   const [firstName, setFirstName] = useState( "");
@@ -97,6 +97,7 @@ export default function ContactUs() {
           handleContactUsSubmit={handleContactUsSubmit}
           modalMessage={modalMessage}
           modalTitle={modalTitle}
+          isLoading={isContactUsLoading}
         />
       </div>
     </div>

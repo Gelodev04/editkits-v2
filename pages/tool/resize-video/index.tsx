@@ -280,8 +280,11 @@ export default function ResizeVideo() {
       <div className="max-w-[171px] mx-auto py-16">
         <Button
           disabled={!settings.isColorValid || !file}
-          label="Proceed" variant="contained" filled
-          rightIcon={<FaAngleRight/>}/>
+          label="Proceed"
+          variant="contained"
+          filled
+          rightIcon={<FaAngleRight/>}
+        />
       </div>
       <UploadFileModal
         videoRef={videoRef}

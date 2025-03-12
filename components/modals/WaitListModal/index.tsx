@@ -30,6 +30,7 @@ type GetInTouchCardProps = {
   handleWaitlistSubmit: any;
   open: boolean
   setOpen: (e: React.SetStateAction<boolean>) => void;
+  isLoading: boolean
 }
 
 export default function WaitListModal(props: GetInTouchCardProps) {
@@ -133,6 +134,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                     variant="contained"
                     filled
                     height={64}
+                    isLoading={props.isLoading}
                   />
                 </div>
               </div>

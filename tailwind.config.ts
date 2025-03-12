@@ -39,6 +39,7 @@ const config: Config = {
     animation: {
       float: "float 3s ease-in-out infinite",
       pulse: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      spin: 'spin 1s linear infinite'
     },
     keyframes: {
       float: {
@@ -48,6 +49,10 @@ const config: Config = {
       pulse: {
         '0%, 100%': { opacity: '1' },
         '50%': { opacity: '.5' },
+      },
+      spin: {
+        "0%": { transform: "rotate(0deg)" },
+        "100%": { transform: "rotate(360deg)" },
       },
     },
   },

@@ -3,18 +3,19 @@ import * as React from "react";
 import InputField from "@/components/InputField";
 import Button from "@/components/Button";
 import AccountType from "@/components/account/AccountType";
-import Typography from "@/components/Typography";
-import Tag from "@/components/Tag";
-import BenefitCard from "@/components/cards/BenefitCard";
+
 import {validateEmail} from "@/lib/validateEmail";
 import ChangePasswordModal from "@/components/modals/ChnagePasswordModal";
 import {useUserInfo} from "@/hooks/useUserInfo";
 import {useUpdatePasswordMutation} from "@/services/api";
 import toast from "react-hot-toast";
+import {useState} from "react";
+import {Subscription} from "@/components/account/Subscription";
+import PopUp from "@/components/modals/Popup";
 
 export default function Account() {
   const {userInfo} = useUserInfo();
-  const [updatePassword] = useUpdatePasswordMutation();
+  const [updatePassword, {isLoading: isUpdatePasswordLoading}] = useUpdatePasswordMutation();
 
   const [active, setActive] = React.useState("email");
   const [email, setEmail] = React.useState("")
@@ -22,21 +23,28 @@ export default function Account() {
   const [newPassword, setNewPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [isEmailValid, setEmailValid] = React.useState("");
-  const [updatePasswordModal, setUpdatePasswordModal] = React.useState(false)
+  const [updatePasswordModal, setUpdatePasswordModal] = React.useState(false);
+
+  const [changePasswordConfirmationModal, setChangePasswordConfirmationModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalMessage, setModalMessage] = useState("")
 
   async function handleUpdatePassword() {
     const response = await updatePassword({current_password: currentPassword, new_password: newPassword});
 
     if (response.error) {
+      setModalTitle("Uh-oh! Something's Off");
       //@ts-ignore
-      toast.error(response.error.data.errorMsg);
+      setModalMessage(response.error.data.errorMsg);
+      setUpdatePasswordModal(false);
+      setChangePasswordConfirmationModal(true);
+
       return;
     }
 
     //@ts-ignore
     toast.success(response.data.message);
     setUpdatePasswordModal(false);
-
   }
 
   const benefits = [
@@ -101,40 +109,14 @@ export default function Account() {
         setNewPassword={setNewPassword}
         confirmPassword={confirmPassword}
         setConfirmPassword={setConfirmPassword}
+        isUpdatePasswordLoading={isUpdatePasswordLoading}
       />
-    </div>
-  )
-}
-
-function Subscription(props: any) {
-  return (
-    <div
-      className="rounded rounded-2xl border border-solid border-slate-50 grid grid-cols-12 p-8 shadow-lg min-h-[306px]">
-      <div className="col-span-4">
-        <div className="flex justify-between pb-8">
-          <Typography label="Free Plan" variant="bb1"/>
-          <Tag label="500 credits / month" variant="md"/>
-        </div>
-        <div className="flex items-end pt-4">
-          <p className="text-5xl font-lato font-bold text-[#0b0e0d]">$0</p>
-          <Typography label="/ month" bold className="italic text-xl font-lato"/>
-        </div>
-        <div className="flex gap-2 pb-8">
-          <p className="text-[#838696] font-lato font-normal text-base">Billed</p>
-          <p className="text-[#838696] font-lato font-normal text-base">monthly</p>
-        </div>
-        <p className="font-medium font-lato  text-base text-[#4f4f4f]">Next credits renew date</p>
-        <p className="text-lg text-[#2c2c2c] font-bold font-lato">24th December 2024</p>
-      </div>
-      <div className="h-full border-r-2 border-dashed border-[#e2e4e9] w-12"/>
-      <div className="col-span-5">
-        <div className="pt-3">
-          {props.benefits.map((benefit: any) => <BenefitCard label={benefit}/>)}
-        </div>
-      </div>
-      <div className="col-span-2 pt-3 flex items-end justify-end">
-        <Button label="Change plan" variant="contained" className="py-3 max-w-[152px]" filled/>
-      </div>
+      <PopUp
+        open={changePasswordConfirmationModal}
+        description={modalMessage}
+        setOpen={setChangePasswordConfirmationModal}
+        title={modalTitle}
+      />
     </div>
   )
 }

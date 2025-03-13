@@ -21,7 +21,8 @@ export type AuthModalProps = {
   setNewPassword: any;
   confirmPassword: string;
   setConfirmPassword: any;
-  handleUpdatePassword: any
+  handleUpdatePassword: any;
+  isUpdatePasswordLoading: boolean;
 }
 
 export default function ChangePasswordModal(props: AuthModalProps) {
@@ -123,12 +124,13 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                   </div>
                   <div className="pb-[38px] pt-[49.5px] max-w-[446px] mx-auto">
                     <Button
-                      disabled={hasTyped && (!isCurrentPasswordValid || !isPasswordValid || props.newPassword !== props.confirmPassword)}
+                      disabled={hasTyped && (!isCurrentPasswordValid || !isPasswordValid || props.newPassword !== props.confirmPassword) || props.isUpdatePasswordLoading}
                       onClick={props.handleUpdatePassword}
                       label="Reset Password"
                       variant="outlined"
                       filled
                       height={67}
+                      isLoading={props.isUpdatePasswordLoading}
                     />
                   </div>
                 </div>

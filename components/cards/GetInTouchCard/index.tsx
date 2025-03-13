@@ -126,10 +126,11 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
             !props.isLastNameValid ||
             !props.isEmailValid ||
             !props.isMessageValid ||
-            !props.firstName  ||
-            !props.lastName  ||
-            !props.email  ||
-            !props.message
+            !props.firstName ||
+            !props.lastName ||
+            !props.email ||
+            !props.message ||
+            props.isLoading
           }
           label="Submit"
           variant="contained"

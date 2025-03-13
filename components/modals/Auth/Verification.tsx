@@ -46,12 +46,13 @@ export default function Verification(
       </div>
       <div className="pb-[38px] p max-w-[446px] mx-auto">
         <Button
-          onClick={() => handleConfirmRegister(email, codes, confirmRegister, props.setType)}
+          onClick={() => handleConfirmRegister(email, codes, confirmRegister, props.setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
           label="Verify"
           variant="outlined"
           filled
-          disabled={hasTyped && (codes.length !== 6 || isConfirmRegisterLoading)}
+          disabled={hasTyped && (codes.length !== 6) || isConfirmRegisterLoading}
           height={67}
+          isLoading={isConfirmRegisterLoading}
         />
       </div>
     </>

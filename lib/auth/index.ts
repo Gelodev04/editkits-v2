@@ -95,7 +95,7 @@ export async function handleRegister(email, password, setType, register, setAuth
   setType('Enter verification code')
 }
 
-export async function handleConfirmRegister(email, codes, confirmRegister, setType) {
+export async function handleConfirmRegister(email, codes, confirmRegister, setType, setModalTitle, setModalMessage, setAuthConfirmationModal, setAuthModal) {
   const confirmRegisterPayload: IConfirmRegistrationPayload = {
     email,
     code: codes
@@ -106,7 +106,12 @@ export async function handleConfirmRegister(email, codes, confirmRegister, setTy
   if (response.error) {
     const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
     const {errorMsg} = errorResponse;
-    toast.error(errorMsg);
+
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
     return
   }
   toast.success(response.data.message);

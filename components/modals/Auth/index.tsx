@@ -24,7 +24,8 @@ import {
   handleLogin,
   handleRegister,
   handleResendConfirmationCode,
-  handleResetPassword, handleSendResetCode
+  handleResetPassword,
+  handleSendResetCode
 } from "@/lib/auth";
 import Typography from "@/components/Typography";
 import {getModalDescription} from "@/lib/getModalDescription";
@@ -54,7 +55,7 @@ export default function AuthModal(props: AuthModalProps) {
   const [refreshToken] = useRefreshTokenMutation();
   const [resendConfirmationCode] = useResendConfirmationCodeMutation();
   const [requestPasswordReset] = useRequestPasswordResetMutation();
-  const [confirmPasswordReset] = useConfirmPasswordResetMutation();
+  const [confirmPasswordReset, {isLoading: isConfirmPasswordResetLoading}] = useConfirmPasswordResetMutation();
 
   const [email, setEmail] = useState("");
   const [isEmailValid, setEmailValid] = useState(false);
@@ -136,7 +137,7 @@ export default function AuthModal(props: AuthModalProps) {
                   setHasTyped
                 )}
                 {props.type === "Forgot your password?" && ForgetPassword(props.type, props.setType, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode, requestPasswordReset, hasTyped, setHasTyped)}
-                {props.type === "Reset Password" && ResetPassword(props.type, email, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword, confirmPasswordReset, props.setType, hasTyped, setHasTyped)}
+                {props.type === "Reset Password" && ResetPassword(props, email, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword, confirmPasswordReset, props.setType, hasTyped, setHasTyped, isConfirmPasswordResetLoading)}
                 {props.type === "Email already registered" && EmailNotVerified(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode, hasTyped, setHasTyped)}
                 {props.type === "Email not verified" && EmailNotVerified(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode, hasTyped, setHasTyped)}
               </div>

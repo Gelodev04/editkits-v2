@@ -113,7 +113,7 @@ export async function handleConfirmRegister(email, codes, confirmRegister, setTy
   setType("Log In");
 }
 
-export async function handleResetPassword(email, code, password, confirmPasswordReset, setType) {
+export async function handleResetPassword(email, code, password, confirmPasswordReset, setType, setModalTitle, setModalMessage, setAuthConfirmationModal, setAuthModal) {
   const resetPasswordPayload: IConfirmPasswordResetPayload = {
     email,
     resetCode: code,
@@ -124,7 +124,13 @@ export async function handleResetPassword(email, code, password, confirmPassword
   if (response.error) {
     const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
     const {errorMsg} = errorResponse;
-    toast.error(errorMsg);
+
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
+
     return
   }
 

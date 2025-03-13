@@ -44,7 +44,7 @@ export async function handleLogin(email, password, login, setType, setAuthModal,
   setAuthModal(false);
 }
 
-export async function handleResendConfirmationCode(email, type, setTimer, setType, resendConfirmationCode) {
+export async function handleResendConfirmationCode(email, type, setTimer, setType, resendConfirmationCode, setModalTitle, setAuthConfirmationModal,setModalMessage, setAuthModal) {
   const resendConfirmationCodePayload: IResendConfirmationCodePayload = {
     email
   }
@@ -53,7 +53,12 @@ export async function handleResendConfirmationCode(email, type, setTimer, setTyp
   if (response.error) {
     const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
     const {errorMsg} = errorResponse;
-    toast.error(errorMsg);
+
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
     return;
   }
   toast.success(response.data.message);

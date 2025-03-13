@@ -121,8 +121,7 @@ export default function AuthModal(props: AuthModalProps) {
                 {props.type === "Sign Up" && Signup(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleRegister, register, props.setAuthModal, isSignupLoading, hasTyped, setHasTyped )}
                 {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid, handleLogin, isLoginLoading, login, props.setType, props.setAuthModal, hasTyped, setHasTyped)}
                 {props.type === "Enter verification code" && Verification(
-                  props.type,
-                  props.setType,
+                  props,
                   timer,
                   email,
                   codes,

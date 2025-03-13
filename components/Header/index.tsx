@@ -24,8 +24,8 @@ export default function Header() {
   const [logout] = useLogoutMutation();
   const handleLogout = useLogout(router, logout);
 
-  const [type, setType] = useState("Log In");
-  const [showAuthModal, setAuthModal] = useState(true);
+  const [type, setType] = useState("");
+  const [showAuthModal, setAuthModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const [authConfirmationModal, setAuthConfirmationModal] = useState(false);

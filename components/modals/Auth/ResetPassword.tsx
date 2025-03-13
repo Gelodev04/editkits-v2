@@ -4,9 +4,10 @@ import InputField from "@/components/InputField";
 import Button from "@/components/Button";
 import {validatePassword} from "@/lib/validatePassword";
 import {PasswordValidation} from "@/components/PasswordValidtion";
+import {AuthModalProps} from "@/components/modals/Auth/index";
 
 export default function ResetPassword(
-  type: string,
+  props: AuthModalProps,
   email: string,
   code: string,
   setCode: (e: React.SetStateAction<string>) => void,
@@ -21,6 +22,7 @@ export default function ResetPassword(
   setType: (e: React.SetStateAction<string>) => void,
   hasTyped: boolean,
   setHasTyped: (e: React.SetStateAction<boolean>) => void,
+  isConfirmPasswordResetLoading: boolean
 ) {
   return (
     <>
@@ -70,12 +72,13 @@ export default function ResetPassword(
       </div>
       <div className="pt-[38.5px] pb-[38px] max-w-[446px] mx-auto">
         <Button
-          disabled={hasTyped && (code?.length !== 6 || !isPasswordValid || password !== confirmPassword)}
-          onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType)}
+          disabled={hasTyped && (code?.length !== 6 || !isPasswordValid || password !== confirmPassword) || isConfirmPasswordResetLoading}
+          onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
           label="Reset Password"
           variant="outlined"
           filled
           height={67}
+          isLoading={isConfirmPasswordResetLoading}
         />
       </div>
     </>

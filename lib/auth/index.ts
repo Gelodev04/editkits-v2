@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import {jwtDecode} from "jwt-decode";
 import {setUserInfo} from "@/lib/cookies";
 
-export async function handleLogin(email, password, login, setType, setAuthModal) {
+export async function handleLogin(email, password, login, setType, setAuthModal, setModalTitle, setModalMessage, setAuthConfirmationModal) {
   const loginPayload: ILoginPayload = {
     email,
     password
@@ -27,7 +27,11 @@ export async function handleLogin(email, password, login, setType, setAuthModal)
       setType("Email not verified")
     }
 
-    toast.error(errorMsg);
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
     return;
   }
 
@@ -40,7 +44,7 @@ export async function handleLogin(email, password, login, setType, setAuthModal)
   setAuthModal(false);
 }
 
-export async function handleResendConfirmationCode(email, type, setTimer, setType, resendConfirmationCode) {
+export async function handleResendConfirmationCode(email, type, setTimer, setType, resendConfirmationCode, setModalTitle, setAuthConfirmationModal,setModalMessage, setAuthModal) {
   const resendConfirmationCodePayload: IResendConfirmationCodePayload = {
     email
   }
@@ -49,7 +53,12 @@ export async function handleResendConfirmationCode(email, type, setTimer, setTyp
   if (response.error) {
     const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
     const {errorMsg} = errorResponse;
-    toast.error(errorMsg);
+
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
     return;
   }
   toast.success(response.data.message);
@@ -59,7 +68,7 @@ export async function handleResendConfirmationCode(email, type, setTimer, setTyp
   setTimer(60)
 }
 
-export async function handleRegister(email, password, setType, register) {
+export async function handleRegister(email, password, setType, register, setAuthModal, setModalTitle, setModalMessage, setAuthConfirmationModal) {
   const registerPayload: IRegisterPayload = {
     name: email,
     email,
@@ -75,14 +84,18 @@ export async function handleRegister(email, password, setType, register) {
       setType("Email already registered")
     }
 
-    toast.error(errorMsg);
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
     return
   }
   toast.success(response.data.message)
   setType('Enter verification code')
 }
 
-export async function handleConfirmRegister(email, codes, confirmRegister, setType) {
+export async function handleConfirmRegister(email, codes, confirmRegister, setType, setModalTitle, setModalMessage, setAuthConfirmationModal, setAuthModal) {
   const confirmRegisterPayload: IConfirmRegistrationPayload = {
     email,
     code: codes
@@ -93,14 +106,19 @@ export async function handleConfirmRegister(email, codes, confirmRegister, setTy
   if (response.error) {
     const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
     const {errorMsg} = errorResponse;
-    toast.error(errorMsg);
+
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
     return
   }
   toast.success(response.data.message);
   setType("Log In");
 }
 
-export async function handleResetPassword(email, code, password, confirmPasswordReset, setType) {
+export async function handleResetPassword(email, code, password, confirmPasswordReset, setType, setModalTitle, setModalMessage, setAuthConfirmationModal, setAuthModal) {
   const resetPasswordPayload: IConfirmPasswordResetPayload = {
     email,
     resetCode: code,
@@ -111,7 +129,13 @@ export async function handleResetPassword(email, code, password, confirmPassword
   if (response.error) {
     const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
     const {errorMsg} = errorResponse;
-    toast.error(errorMsg);
+
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
+
     return
   }
 
@@ -121,7 +145,7 @@ export async function handleResetPassword(email, code, password, confirmPassword
   setType("Log In");
 }
 
-export async function handleSendResetCode(email, requestPasswordReset, setType) {
+export async function handleSendResetCode(email, requestPasswordReset, setType, setModalTitle, setModalMessage, setAuthConfirmationModal, setAuthModal) {
   const sendResetCodePayload: IRequestPasswordResetPayload = {
     email
   }
@@ -130,7 +154,12 @@ export async function handleSendResetCode(email, requestPasswordReset, setType) 
   if (response.error) {
     const errorResponse = (response.error as FetchBaseQueryError).data as IErrorResponse;
     const {errorMsg} = errorResponse;
-    toast.error(errorMsg);
+
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
     return
   }
 

@@ -48,7 +48,6 @@ export default function ContactUs() {
 
     const response = await mutationFn(payload)
     if(response.error) {
-      // @ts-ignore
       setModalTitle("Uh-oh! Something’s Off");
       // @ts-ignore
       setModalMessage(response.error.data.errorMsg);

@@ -19,6 +19,7 @@ import {
 } from "@/services/api";
 import toast from "react-hot-toast";
 import FileProgressModal from "@/components/modals/FilePgrogressModal";
+import PopUp from "@/components/modals/Popup";
 
 export default function TrimVideo() {
   const [fileId, setFileId] = React.useState(null);
@@ -41,6 +42,10 @@ export default function TrimVideo() {
   const [isUploading, setIsUploading] = React.useState(false);
   const [outputQuality, setOutputQuality] = React.useState("LOW");
   const [videoContainer, setVideoContainer] = React.useState("mp4");
+
+  const [uploadedModal, setUploadedModal] = React.useState(false);
+  const [modalTitle, setModalTitle] = React.useState("");
+  const [modalMessage, setModalMessage] = React.useState("");
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -168,7 +173,10 @@ export default function TrimVideo() {
           className="text-[#2c2c2c]"
         />
       </div>
-      <UploadFileModal uploadModal={uploadFileModal} setUploadModal={setUploadFileModal} />
+      <UploadFileModal
+        uploadModal={uploadFileModal}
+        setUploadModal={setUploadFileModal}
+      />
       <div className="w-full border-b-2 pt-4 border-[#D9D9D9]"/>
       <div className="flex justify-between gap-6 py-8">
         <div className="w-full">
@@ -246,12 +254,24 @@ export default function TrimVideo() {
         isUploading={isUploading}
         setIsUploading={setIsUploading}
         setProgress={setProgress}
+        uploadedModal={uploadedModal}
+        setUploadedModal={setUploadedModal}
+        modalTitle={modalTitle}
+        setModalTitle={setModalTitle}
+        modalMessage={modalMessage}
+        setModalMessage={setModalMessage}
       />
       <FileProgressModal
         progressModal={progressModal}
         setProgressModal={setProgressModal}
         data={jobData}
         fetchedData={fetchedData}
+      />
+      <PopUp
+        open={uploadedModal}
+        description={modalMessage}
+        title={modalTitle}
+        setOpen={setUploadedModal}
       />
     </div>
   )

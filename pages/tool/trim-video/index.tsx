@@ -227,7 +227,7 @@ export default function TrimVideo() {
       <div className="max-w-[171px] mx-auto py-16">
         <Button
           onClick={handleTrimVideo}
-          disabled={!file || isInitLoading || isCommitLoading}
+          disabled={!file || isInitLoading || isCommitLoading || isInitLoading}
           label="Proceed"
           variant="contained"
           filled

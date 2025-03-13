@@ -80,7 +80,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                         error={!props.isLastNameValid}
                         placeholder="Your last name"
                         //@ts-ignore
-                        label={<span>Last name <span style={{color: "#ff0000"}}>*</span></span>}                        variant="contact-us"
+                        label={<span>Last name <span style={{color: "#ff0000"}}>*</span></span>} variant="contact-us"
                         height={40}
                       />
 
@@ -96,7 +96,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                       error={!props.isEmailValid}
                       placeholder="Example@gmail.com"
                       //@ts-ignore
-                      label={<span>Email <span style={{color: "#ff0000"}}>*</span></span>}                      variant="contact-us"
+                      label={<span>Email <span style={{color: "#ff0000"}}>*</span></span>} variant="contact-us"
                       height={40}
                     />
                     <div className="pt-[20px] w-full">
@@ -128,7 +128,8 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                       !props.firstName ||
                       !props.lastName ||
                       !props.email ||
-                      !props.message
+                      !props.message ||
+                      props.isLoading
                     }
                     label="Submit"
                     variant="contained"

@@ -5,10 +5,10 @@ import Button from "@/components/Button";
 import {validateEmail} from "@/lib/validateEmail";
 import {validatePassword} from "@/lib/validatePassword";
 import {PasswordValidation} from "@/components/PasswordValidtion";
+import {AuthModalProps} from "@/components/modals/Auth/index";
 
 export default function Signup(
-  type: string,
-  setType: (e: React.SetStateAction<string>) => void,
+  props: AuthModalProps,
   password: string,
   setPassword: (e: React.SetStateAction<string>) => void,
   email: string,
@@ -21,7 +21,8 @@ export default function Signup(
   setPasswordValid: (e: React.SetStateAction<boolean>) => void,
   handleRegister: any,
   register: any,
-  isLoading: any,
+  setAuthModal: (e: React.SetStateAction<boolean>) => void,
+  isSignupLoading: any,
   hasTyped: boolean,
   setHasTyped: (e: React.SetStateAction<boolean>) => void,
 ) {
@@ -74,19 +75,20 @@ export default function Signup(
       </div>
       <div className="pt-[47.5px] pb-[12px] max-w-[446px] mx-auto">
         <Button
-          onClick={() => handleRegister(email, password, setType, register)}
-          disabled={hasTyped && (!isEmailValid || !isPasswordValid || password !== confirmPassword || isLoading)}
+          onClick={() => handleRegister(email, password, props.setType, register, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal)}
+          disabled={hasTyped && (!isEmailValid || !isPasswordValid || password !== confirmPassword || isSignupLoading)}
           label="Create account"
           variant="outlined"
           filled
           height={67}
+          isLoading={isSignupLoading}
         />
       </div>
       <div className="flex justify-center pb-[32px] gap-4 items-center">
         <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Already have an account?</p>
         <Button
           className="font-openSans font-bold text-xs text-[#148CFC]"
-          onClick={() => setType("Log In")}
+          onClick={() => props.setType("Log In")}
           label="Login"
           variant="primary"
           filled

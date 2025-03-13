@@ -28,7 +28,7 @@ export default function Header() {
   const [showAuthModal, setAuthModal] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [loggedInModal, setLoggedInModal] = useState(false);
+  const [authConfirmationModal, setAuthConfirmationModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("")
   const [modalMessage, setModalMessage] = useState("")
 
@@ -113,16 +113,16 @@ export default function Header() {
         setType={setType}
         showAuthModal={showAuthModal}
         setAuthModal={setAuthModal}
-        loggedInModal={loggedInModal}
+        authConfirmationModal={authConfirmationModal}
         modalTitle={modalTitle}
         modalMessage={modalMessage}
-        setLoggedInModal={setLoggedInModal}
+        setAuthConfirmationModal={setAuthConfirmationModal}
         setModalTitle={setModalTitle}
         setModalMessage={setModalMessage}
       />
      <PopUp
-        open={loggedInModal}
-        setOpen={setLoggedInModal}
+        open={authConfirmationModal}
+        setOpen={setAuthConfirmationModal}
         description={modalMessage}
         title={modalTitle}
       />

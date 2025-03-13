@@ -68,7 +68,7 @@ export default function Login(
       <div className="pt-20 max-w-[446px] mx-auto">
         <Button
           disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
-          onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setLoggedInModal)}
+          onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal)}
           label="Login"
           variant="outlined"
           filled

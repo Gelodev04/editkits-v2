@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import {jwtDecode} from "jwt-decode";
 import {setUserInfo} from "@/lib/cookies";
 
-export async function handleLogin(email, password, login, setType, setAuthModal, setModalTitle, setModalMessage, setLoggedInModal) {
+export async function handleLogin(email, password, login, setType, setAuthModal, setModalTitle, setModalMessage, setAuthConfirmationModal) {
   const loginPayload: ILoginPayload = {
     email,
     password
@@ -29,7 +29,7 @@ export async function handleLogin(email, password, login, setType, setAuthModal,
 
     setModalTitle("Uh-oh! Something's Off");
     setModalMessage(errorMsg);
-    setLoggedInModal(true);
+    setAuthConfirmationModal(true);
     setType("");
     setAuthModal(false);
     return;
@@ -63,7 +63,7 @@ export async function handleResendConfirmationCode(email, type, setTimer, setTyp
   setTimer(60)
 }
 
-export async function handleRegister(email, password, setType, register) {
+export async function handleRegister(email, password, setType, register, setAuthModal, setModalTitle, setModalMessage, setAuthConfirmationModal) {
   const registerPayload: IRegisterPayload = {
     name: email,
     email,
@@ -79,7 +79,11 @@ export async function handleRegister(email, password, setType, register) {
       setType("Email already registered")
     }
 
-    toast.error(errorMsg);
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setAuthConfirmationModal(true);
+    setType("");
+    setAuthModal(false);
     return
   }
   toast.success(response.data.message)

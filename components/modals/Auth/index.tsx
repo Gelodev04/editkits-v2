@@ -36,6 +36,12 @@ export type AuthModalProps = {
   setAuthModal: (e: React.SetStateAction<boolean>) => void;
   setType: (e: React.SetStateAction<string>) => void;
   description?: string;
+  loggedInModal: boolean;
+  modalTitle: string;
+  modalMessage: string;
+  setModalTitle: (e: React.SetStateAction<string>) => void;
+  setModalMessage: (e: React.SetStateAction<string>) => void;
+  setLoggedInModal: (e: React.SetStateAction<boolean>) => void;
 }
 
 export default function AuthModal(props: AuthModalProps) {

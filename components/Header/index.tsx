@@ -16,6 +16,7 @@ import Typography from "@/components/Typography";
 import {useUserInfo} from "@/hooks/useUserInfo";
 import {useLogoutMutation} from "@/services/api";
 import useLogout from "@/hooks/useLogout";
+import PopUp from "@/components/modals/Popup";
 
 export default function Header() {
   const router = useRouter();
@@ -23,9 +24,13 @@ export default function Header() {
   const [logout] = useLogoutMutation();
   const handleLogout = useLogout(router, logout);
 
-  const [type, setType] = useState("");
-  const [showAuthModal, setAuthModal] = useState(false);
+  const [type, setType] = useState("Log In");
+  const [showAuthModal, setAuthModal] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [loggedInModal, setLoggedInModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalMessage, setModalMessage] = useState("")
 
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
@@ -103,7 +108,24 @@ export default function Header() {
           </>
         )}
       </div>
-      <AuthModal type={type} setType={setType} showAuthModal={showAuthModal} setAuthModal={setAuthModal}/>
+      <AuthModal
+        type={type}
+        setType={setType}
+        showAuthModal={showAuthModal}
+        setAuthModal={setAuthModal}
+        loggedInModal={loggedInModal}
+        modalTitle={modalTitle}
+        modalMessage={modalMessage}
+        setLoggedInModal={setLoggedInModal}
+        setModalTitle={setModalTitle}
+        setModalMessage={setModalMessage}
+      />
+     <PopUp
+        open={loggedInModal}
+        setOpen={setLoggedInModal}
+        description={modalMessage}
+        title={modalTitle}
+      />
     </div>
   )
 }

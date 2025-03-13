@@ -1,13 +1,14 @@
 import React from "react";
 
+import { TbXboxX } from "react-icons/tb";
+import { Fade, Modal } from "@mui/material";
+
 import InputField from "@/components/InputField";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import {validateEmail} from "@/lib/validateEmail";
-import {Fade, Modal} from "@mui/material";
-import {lato, montserrat, opensans} from "@/lib/fonts";
 import Typography from "@/components/Typography";
-import {TbXboxX} from "react-icons/tb";
+import { validateEmail } from "@/lib/validateEmail";
+import { lato, montserrat, opensans } from "@/lib/fonts";
 
 type GetInTouchCardProps = {
   user: any

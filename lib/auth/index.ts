@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import {jwtDecode} from "jwt-decode";
 import {setUserInfo} from "@/lib/cookies";
 
-export async function handleLogin(email, password, login, setType, setAuthModal) {
+export async function handleLogin(email, password, login, setType, setAuthModal, setModalTitle, setModalMessage, setLoggedInModal) {
   const loginPayload: ILoginPayload = {
     email,
     password
@@ -27,7 +27,11 @@ export async function handleLogin(email, password, login, setType, setAuthModal)
       setType("Email not verified")
     }
 
-    toast.error(errorMsg);
+    setModalTitle("Uh-oh! Something's Off");
+    setModalMessage(errorMsg);
+    setLoggedInModal(true);
+    setType("");
+    setAuthModal(false);
     return;
   }
 

@@ -68,11 +68,12 @@ export default function Login(
       <div className="pt-20 max-w-[446px] mx-auto">
         <Button
           disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
-          onClick={() => handleLogin(email, password, login, setType, setAuthModal)}
+          onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setLoggedInModal)}
           label="Login"
           variant="outlined"
           filled
           height={67}
+          isLoading={isLoginLoading}
         />
       </div>
       <div className="flex justify-center pb-[32px] pt-[12px] gap-4">

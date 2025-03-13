@@ -2,11 +2,11 @@ import React from "react";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import VerificationCodeInput from "../../VerificationCodeInput/index";
+import {AuthModalProps} from "@/components/modals/Auth/index";
 
 //@ts-ignore
 export default function Verification(
-  type: string,
-  setType: (e: React.SetStateAction<string>) => void,
+  props: AuthModalProps,
   timer: number,
   email: string,
   codes: string,
@@ -32,7 +32,7 @@ export default function Verification(
           <Typography label="Didn't get the code ?" variant="b3"/>
           {timer === 0 && (
             <Typography
-              onClick={() => handleResendConfirmationCode(email, type, setTimer, setType, resendConfirmationCode)}
+              onClick={() => handleResendConfirmationCode(email, props.type, setTimer, props.setType, resendConfirmationCode, props.setModalTitle, props.setAuthConfirmationModal, props.setModalMessage, props.setAuthModal)}
               label="Click to resend"
               variant="bb3"
               button
@@ -46,12 +46,13 @@ export default function Verification(
       </div>
       <div className="pb-[38px] p max-w-[446px] mx-auto">
         <Button
-          onClick={() => handleConfirmRegister(email, codes, confirmRegister, setType)}
+          onClick={() => handleConfirmRegister(email, codes, confirmRegister, props.setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
           label="Verify"
           variant="outlined"
           filled
-          disabled={hasTyped && (codes.length !== 6 || isConfirmRegisterLoading)}
+          disabled={hasTyped && (codes.length !== 6) || isConfirmRegisterLoading}
           height={67}
+          isLoading={isConfirmRegisterLoading}
         />
       </div>
     </>

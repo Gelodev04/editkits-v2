@@ -1,14 +1,17 @@
-import React, {useState} from "react";
-import {Fade, Modal} from "@mui/material";
-import Typography from "@/components/Typography";
-import Upload from "@/public/assets/icons/upload.svg"
 import Image from "next/image";
-import InputField from "@/components/InputField";
-import Button from "@/components/Button";
-import {lato, montserrat, opensans} from "@/lib/fonts";
+import React  from "react";
+
 import toast from "react-hot-toast";
-import {fileUploader} from "@/lib/uploadFile";
+import {Fade, Modal} from "@mui/material";
 import {IoIosCloseCircleOutline} from "react-icons/io";
+
+import Button from "@/components/Button";
+import InputField from "@/components/InputField";
+import Typography from "@/components/Typography";
+import {fileUploader} from "@/lib/uploadFile";
+import {lato, montserrat, opensans} from "@/lib/fonts";
+
+import Upload from "@/public/assets/icons/upload.svg"
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -21,6 +24,12 @@ export type UploadModalProps = {
   isUploading?: boolean;
   setIsUploading?: any
   setProgress?: (e: React.SetStateAction<number>) => void;
+  uploadedModal?: boolean;
+  setUploadedModal?: (e: React.SetStateAction<boolean>) => void;
+  modalTitle?: string;
+  setModalTitle?: (e: React.SetStateAction<string>) => void;
+  modalMessage?: string;
+  setModalMessage?: (e: React.SetStateAction<string>) => void;
 }
 
 const style = {
@@ -35,7 +44,8 @@ const style = {
 
 export default function UploadFileModal(props: UploadModalProps) {
   const fileInputRef = React.useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const [isDragging, setIsDragging] = React.useState(false);
+
   const handleDivClick = () => {
     //@ts-ignore
     fileInputRef.current.click();
@@ -53,7 +63,13 @@ export default function UploadFileModal(props: UploadModalProps) {
     });
 
     if (response.error) {
-      toast.error(response.error.data.errorMsg);
+      //@ts-ignore
+      props.setModalTitle("Uh-oh! Something's Off");
+      //@ts-ignore
+      props.setModalMessage(response.error.data.errorMsg);
+      props.setUploadModal(false);
+      //@ts-ignore
+      props.setUploadedModal(true)
       return;
     }
 

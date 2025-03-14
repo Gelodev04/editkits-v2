@@ -149,7 +149,7 @@ export default function Home() {
 
           <div
             className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full gap-x-[35px] max-w-[1920px]">
-            {videoTools.slice(5).map((tool) => (
+            {videoTools.slice(5, 9).map((tool) => (
               <ToolCard
                 key={tool.name}
                 name={tool.name}

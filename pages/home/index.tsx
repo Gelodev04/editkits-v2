@@ -93,7 +93,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <meta name="description" content="EditKits is your next video and image processing tool"/>
+        <meta name="description" content="EditKits is the ultimate online platform for fast, high-quality video, audio, and image processing. Edit, enhance, and optimize media effortlessly with powerful cloud-based tools and APIs."/>
       </Head>
       <div
         className="pb-[159.5px] bg-[url(../public/assets/img/hero_bg.svg)] max-w-[1187px] bg-cover sm:px-5 xl:px-0 bg-center grid grid-cols-12 mx-auto sm:items-center xl:items-end">

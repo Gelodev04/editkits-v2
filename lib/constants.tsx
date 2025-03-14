@@ -41,16 +41,68 @@ import ChatIcon from "@/public/assets/icons/chat.svg";
 import SmileIcon from "@/public/assets/icons/smile.svg";
 
 export const videoTools = [
-  {name: "Overlay Video/Image", icon: OverlayVideo, icon_hover: OverlayVideoHover},
-  {name: "Rotate Video/Image", icon: Rotate, icon_hover: RotateHover},
-  {name: "Trim Video", icon: Trim, icon_hover: TrimHover},
-  {name: "Speed Up/Down Video", icon: Speed, icon_hover: SpeedHover},
-  {name: "Resize Video/Image", icon: Resize, icon_hover: ResizeHover},
-  {name: "Clean Audio", icon: Sound, icon_hover: SoundHover},
-  {name: "Crop Image/Video", icon: Crop, icon_hover: CropHover},
-  {name: "Loop Video", icon: Loop, icon_hover: LoopHover},
-  {name: "Join Audio/Video/Image", icon: Join, icon_hover: JoinHover},
-]
+  {
+    name: "Overlay Video/Image",
+    icon: OverlayVideo,
+    icon_hover: OverlayVideoHover,
+    description: "Seamlessly combine two videos, with one beautifully overlaying the other."
+  },
+  {
+    name: "Rotate Video/Image",
+    icon: Rotate,
+    icon_hover: RotateHover,
+    description: "Effortlessly change the orientation of your video for the perfect view."
+  },
+  {
+    name: "Trim Video",
+    icon: Trim,
+    icon_hover: TrimHover,
+    description: "Quickly cut unwanted sections from your video to enhance its flow."
+  },
+  {
+    name: "Speed Up/Down Video",
+    icon: Speed,
+    icon_hover: SpeedHover,
+    description: "Adjust the playback speed of your video for dramatic effects."
+  },
+  {
+    name: "Resize Video/Image",
+    icon: Resize,
+    icon_hover: ResizeHover,
+    description: "Easily change the dimensions of your video to fit any platform."
+  },
+  {
+    name: "Clean Audio",
+    icon: Sound,
+    icon_hover: SoundHover,
+    description: "Remove unwanted noise and enhance audio clarity in your videos."
+  },
+  {
+    name: "Crop Image/Video",
+    icon: Crop,
+    icon_hover: CropHover,
+    description: "Seamlessly crop your video or image to highlight the most important parts."
+  },
+  {
+    name: "Loop Video",
+    icon: Loop,
+    icon_hover: LoopHover,
+    description: "Play your video repeatedly for continuous viewing pleasure."
+  },
+  {
+    name: "Join Audio/Video/Image",
+    icon: Join,
+    icon_hover: JoinHover,
+    description: "Combine multiple video clips into one seamless, cohesive video."
+  },
+  {
+    name: "Overlay Video/Image",
+    icon: OverlayVideo,
+    icon_hover: OverlayVideoHover,
+    description: "Add a stunning image on top of your video for enhanced visuals."
+  }
+];
+
 
 export const featureCards = [
   {

@@ -17,6 +17,8 @@ type TypographyProps = {
 function TypographyStyle(props: TypographyProps) {
 
   switch (props.variant) {
+    case "h1":
+      return `font-montserrat font-bold text-[48px] leading-[62px] text-[#2c2c2c] ${props.center && "text-center"}`;
     case "h2":
       return `font-montserrat text-[40px] leading-[50px] font-bold text-[#2c2c2c] ${props.center && "text-center"}`;
     case "h3":

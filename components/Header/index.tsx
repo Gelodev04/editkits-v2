@@ -4,19 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 
 import {FaAngleDown} from "react-icons/fa";
-import Logo from "@/public/assets/img/logo.svg"
-
-import Button from "@/components/Button";
-import AuthModal from "@/components/modals/Auth";
-import User from '@/public/assets/icons/user.svg'
-import Subscription from '@/public/assets/icons/subscription.svg'
-import Logout from '@/public/assets/icons/logout.svg'
 import { Divider } from "@mui/material";
+
+import AuthModal from "@/components/modals/Auth";
+import Button from "@/components/Button";
+import PopUp from "@/components/modals/Popup";
 import Typography from "@/components/Typography";
+import useLogout from "@/hooks/useLogout";
 import {useUserInfo} from "@/hooks/useUserInfo";
 import {useLogoutMutation} from "@/services/api";
-import useLogout from "@/hooks/useLogout";
-import PopUp from "@/components/modals/Popup";
+
+import Logout from '@/public/assets/icons/logout.svg'
+import Logo from "@/public/assets/img/logo.svg"
+import Subscription from '@/public/assets/icons/subscription.svg'
+import User from '@/public/assets/icons/user.svg'
 
 export default function Header() {
   const router = useRouter();
@@ -43,7 +44,7 @@ export default function Header() {
             <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"}/>
           </Link>
         )}
-        <Link href="/">
+        <Link href="/home">
           <Typography label="Home" variant="link" bold={router.pathname === "/home"}/>
         </Link>
         <Link href="/blog">

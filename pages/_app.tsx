@@ -35,6 +35,7 @@ function MyApp({Component, pageProps}: AppProps) {
   const router = useRouter();
   let title = pageTitles[router.pathname] || 'EditKits';
   let keywords = [];
+  const GA_TRACKING_ID = 'G-HFNS6G8Q4R'
 
   if (router.pathname.startsWith('/blog')) {
     if (pageProps.article?.metadata) {
@@ -68,7 +69,7 @@ function MyApp({Component, pageProps}: AppProps) {
         <>
           <Script
             strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_TRACKING_ID}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
 
           <Script
@@ -79,7 +80,7 @@ function MyApp({Component, pageProps}: AppProps) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', ${process.env.GA_TRACKING_ID});
+            gtag('config', '${GA_TRACKING_ID}');
           `}
           </Script>
         </>

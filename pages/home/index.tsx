@@ -5,7 +5,7 @@ import Button from "@/components/Button";
 import ToolCard from "@/components/cards/ToolCard";
 import {featureCards, videoTools} from "@/lib/constants";
 
-import HeroImg from "@/public/assets/img/home_hero.svg"
+import HeroImg from "@/public/assets/img/home_hero.png"
 import FeatureCard from "@/components/cards/FeatureCard";
 import Head from "next/head";
 import WaitListModal from "@/components/modals/WaitListModal";

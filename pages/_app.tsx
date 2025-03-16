@@ -59,16 +59,17 @@ function MyApp({Component, pageProps}: AppProps) {
             content="EditKits is the ultimate online platform for fast, high-quality video, audio, and image processing. Edit, enhance, and optimize media effortlessly with powerful cloud-based tools and APIs."
           />
           {keywords?.map(keyword => <meta name="keyword" key={keyword} content={keyword}/>)}
-          <script
+          <Script
             type="application/ld+json"
             dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLdData)}}
+            strategy="lazyOnload"
           >
-          </script>
+          </Script>
       </Head>
       {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
         <>
           <Script
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
 

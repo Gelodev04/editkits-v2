@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import {useState} from "react";
 import {Subscription} from "@/components/account/Subscription";
 import PopUp from "@/components/modals/Popup";
+import {benefits} from "@/lib/constants";
 
 export default function Account() {
   const {userInfo} = useUserInfo();
@@ -46,14 +47,6 @@ export default function Account() {
     toast.success(response.data.message);
     setUpdatePasswordModal(false);
   }
-
-  const benefits = [
-    "No Credit Card required",
-    "Max 1 concurrent job",
-    "2 hours of file storage",
-    "50 credits/GB for content delivery",
-    "Up to FHD (1920 x 1080) or equivalent export"
-  ]
 
   return (
     <div className="bg-[#fafbfc] min-h-[100vh]">

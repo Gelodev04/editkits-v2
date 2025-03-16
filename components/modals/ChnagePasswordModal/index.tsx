@@ -59,80 +59,77 @@ export default function ChangePasswordModal(props: AuthModalProps) {
         {/*@ts-ignore*/}
         <div className={`${montserrat.variable} ${lato.variable} ${opensans.variable}`}>
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0 ">
-              <div
-                className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:w-[532px]">
-                <div className="absolute right-[14px] top-[14px] cursor-pointer">
-                  <TbXboxX size={30} color="#000" onClick={() => props.setUpdatePasswordModal(false)}/>
+          <div
+            className="fixed inset-0 z-10 w-screen overflow-y-auto flex min-h-full items-end justify-center text-center sm:items-center sm:p-0 ">
+            <div
+              className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:w-[532px]">
+              <div className="absolute right-[14px] top-[14px] cursor-pointer">
+                <TbXboxX size={30} color="#000" onClick={() => props.setUpdatePasswordModal(false)}/>
+              </div>
+              <div className="px-[43px]">
+                <div className="pb-[8px] pt-[32px]">
+                  <Typography label={props.type} center variant="h4"/>
                 </div>
-                <div className="px-[43px]">
-                  <div className="bg-white text-center pt-[32px]">
-                    <div className="pb-[8px]">
-                      <Typography label={props.type} center variant="h4"/>
-                    </div>
-                    <div className="w-[432px] mx-auto">
-                      <Typography label={props.description} center variant="b3"/>
-                    </div>
-                  </div>
-                  <div className="pt-[33px]">
+                <div className="w-[432px] mx-auto">
+                  <Typography label={props.description} center variant="b3"/>
+                </div>
+                <div className="pt-[33px]">
+                  <InputField
+                    label="Current Password"
+                    placeholder="*********"
+                    onChange={(e) => {
+                      const currentPassword = e.target.value;
+                      if (!hasTyped) setHasTyped(true);
+                      props.setCurrentPassword(currentPassword);
+                      setCurrentPasswordValid(validatePassword(currentPassword))
+                    }}
+                    error={!isCurrentPasswordValid}
+                    password={props.currentPassword}
+                    type="password"
+                    value={props.currentPassword}
+                  />
+                  <div className="py-[32px]">
                     <InputField
-                      label="Current Password"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const passwordValue = e.target.value;
+                        if (!hasTyped) setHasTyped(true);
+                        props.setNewPassword(passwordValue);
+                        setPasswordValid(validatePassword(passwordValue));
+                      }}
+                      error={!isPasswordValid}
+                      password={props.newPassword}
+                      label="New Password"
                       placeholder="*********"
-                      onChange={(e) => {
-                        const currentPassword = e.target.value;
-                        if (!hasTyped) setHasTyped(true);
-                        props.setCurrentPassword(currentPassword);
-                        setCurrentPasswordValid(validatePassword(currentPassword))
-                      }}
-                      error={!isCurrentPasswordValid}
-                      password={props.currentPassword}
                       type="password"
-                      value={props.currentPassword}
-                    />
-                    <div className="py-[32px]">
-                      <InputField
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                          const passwordValue = e.target.value;
-                          if (!hasTyped) setHasTyped(true);
-                          props.setNewPassword(passwordValue);
-                          setPasswordValid(validatePassword(passwordValue));
-                        }}
-                        error={!isPasswordValid}
-                        password={props.newPassword}
-                        label="New Password"
-                        placeholder="*********"
-                        type="password"
-                        value={props.newPassword}
-                      />
-                    </div>
-                    <InputField
-                      onChange={(e) => {
-                        if (!hasTyped) setHasTyped(true);
-                        props.setConfirmPassword(e.target.value)
-                      }}
-                      password={props.confirmPassword}
-                      error={props.newPassword !== props.confirmPassword}
-                      label="Confirm the password"
-                      placeholder="**********"
-                      type="password"
-                      value={props.confirmPassword}
-                    />
-                    <div className="pt-[23px]">
-                      <PasswordValidation password={props.newPassword}/>
-                    </div>
-                  </div>
-                  <div className="pb-[38px] pt-[49.5px] max-w-[446px] mx-auto">
-                    <Button
-                      disabled={hasTyped && (!isCurrentPasswordValid || !isPasswordValid || props.newPassword !== props.confirmPassword) || props.isUpdatePasswordLoading}
-                      onClick={props.handleUpdatePassword}
-                      label="Reset Password"
-                      variant="outlined"
-                      filled
-                      height={67}
-                      isLoading={props.isUpdatePasswordLoading}
+                      value={props.newPassword}
                     />
                   </div>
+                  <InputField
+                    onChange={(e) => {
+                      if (!hasTyped) setHasTyped(true);
+                      props.setConfirmPassword(e.target.value)
+                    }}
+                    password={props.confirmPassword}
+                    error={props.newPassword !== props.confirmPassword}
+                    label="Confirm the password"
+                    placeholder="**********"
+                    type="password"
+                    value={props.confirmPassword}
+                  />
+                  <div className="pt-[23px]">
+                    <PasswordValidation password={props.newPassword}/>
+                  </div>
+                </div>
+                <div className="pb-[38px] pt-[49.5px] max-w-[446px] mx-auto">
+                  <Button
+                    disabled={hasTyped && (!isCurrentPasswordValid || !isPasswordValid || props.newPassword !== props.confirmPassword) || props.isUpdatePasswordLoading}
+                    onClick={props.handleUpdatePassword}
+                    label="Reset Password"
+                    variant="outlined"
+                    filled
+                    height={67}
+                    isLoading={props.isUpdatePasswordLoading}
+                  />
                 </div>
               </div>
             </div>

@@ -83,6 +83,7 @@ export default function Tools() {
         <div className="grid grid-cols-12 grid-cols-5  gap-y-10 gap-x-4 px-6">
           {videoTools.filter(tool => tool.name.includes(filterBy)).map(tool => (
             <ToolCard
+              key={tool.name}
               name={tool.name}
               description={tool.description}
               icon={tool.icon}

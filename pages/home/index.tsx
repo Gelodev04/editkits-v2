@@ -178,7 +178,7 @@ export default function Home() {
             <div
               className="max-w-[1536px] mx-auto grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-5">
               {featureCards.map((card) => (
-                <FeatureCard name={card.name} icon={card.image} description={card.description}/>
+                <FeatureCard key={card.name} name={card.name} icon={card.image} description={card.description}/>
               ))}
             </div>
           </div>

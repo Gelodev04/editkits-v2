@@ -34,11 +34,21 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;",
           },
+
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains; preload", // 1-year max age
+          },
         ],
       },
     ];
   },
-  swcMinify: true
+  swcMinify: true,
+  productionBrowserSourceMaps: true
 };
 
 export default nextConfig;

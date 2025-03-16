@@ -58,7 +58,7 @@ function MyApp({Component, pageProps}: AppProps) {
             name="description"
             content="EditKits is the ultimate online platform for fast, high-quality video, audio, and image processing. Edit, enhance, and optimize media effortlessly with powerful cloud-based tools and APIs."
           />
-          {keywords?.map(keyword => <meta name="keyword" content={keyword}/>)}
+          {keywords?.map(keyword => <meta name="keyword" key={keyword} content={keyword}/>)}
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLdData)}}

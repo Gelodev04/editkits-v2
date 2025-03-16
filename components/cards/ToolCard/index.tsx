@@ -16,7 +16,7 @@ export default function ToolCard({name, description, icon, icon_hover, variant}:
 
 function ForToolsPage({name, description, icon, icon_hover, }) {
   return (
-    <div className="group w-[208px] pt-[18.77px] h-[181px] border-solid border-[1px] border-[#e4e4e4] rounded-md justify-center cursor-pointer hover:text-white text-[#262628] hover:scale-105 hover:bg-[#273266] transition-transform transition-colors duration-500 relative">
+    <div key={name} className="group w-[208px] pt-[18.77px] h-[181px] border-solid border-[1px] border-[#e4e4e4] rounded-md justify-center cursor-pointer hover:text-white text-[#262628] hover:scale-105 hover:bg-[#273266] transition-transform transition-colors duration-500 relative">
       <div
         className="max-w-[178px] mx-auto flex flex-col items-center"
       >
@@ -50,6 +50,7 @@ function ForToolsPage({name, description, icon, icon_hover, }) {
 function ForHomePage({icon, name, icon_hover}) {
   return (
     <div
+      key={name}
       className="group hover:text-white text-[#262628] w-[208px] h-[121px] px-4 flex flex-col items-center border-solid border-[1px] border-[#9f9f9f] py-6 rounded-md justify-center cursor-pointer hover:scale-105 hover:bg-[#273266] transition-transform transition-colors duration-500 relative"
     >
       <Image

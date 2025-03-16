@@ -12,6 +12,7 @@ type ToolCardProps = {
 export default function FeatureCard({name, icon, description}: ToolCardProps) {
   return (
     <div
+      key={name}
       className="w-[328px] h-[174px] flex flex-col relative"
     >
       <Image

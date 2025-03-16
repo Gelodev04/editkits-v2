@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
+import CompressionPlugin from 'compression-webpack-plugin'
+
 const nextConfig = {
+  webpack(config) {
+    config.plugins.push(new CompressionPlugin());
+    return config;
+  },
   images: {
     remotePatterns: [
       {
@@ -13,6 +19,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: 'editkits-temp-files-dev.s3.ap-south-1.amazonaws.com',
+      },
+      {
+        protocol: "https",
+        hostname: 'd3okthxtjspo10.cloudfront.net',
       }
     ],
   },

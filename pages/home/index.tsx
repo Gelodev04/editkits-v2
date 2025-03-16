@@ -1,17 +1,27 @@
-import Image from "next/image";
-
-import Typography from "@/components/Typography";
-import Button from "@/components/Button";
-import ToolCard from "@/components/cards/ToolCard";
-import {featureCards, videoTools} from "@/lib/constants";
-
-import HeroImg from "@/public/assets/img/home_hero.png"
-import FeatureCard from "@/components/cards/FeatureCard";
-import Head from "next/head";
-import WaitListModal from "@/components/modals/WaitListModal";
 import {useEffect, useState} from "react";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+
+import Button from "@/components/Button";
+import FeatureCard from "@/components/cards/FeatureCard";
+
+const PopUp = dynamic(() => import ("@/components/modals/Popup"), {
+  ssr: false
+})
+import Typography from "@/components/Typography";
+import ToolCard from "@/components/cards/ToolCard";
+
+const WaitListModal = dynamic(() => import("@/components/modals/WaitListModal"), {
+  ssr: false
+})
+
+import {featureCards, videoTools} from "@/lib/constants";
 import {getUserInfo, useContactUsCommonMutation, useContactUsUserMutation} from "@/services/api";
-import PopUp from "@/components/modals/Popup";
+
+const Hero = dynamic(() => import("@/components/home/Hero"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>
+});
 
 export default function Home() {
   const [contactUsCommon, {isLoading: isWaitlistLoading}] = useContactUsCommonMutation();
@@ -93,38 +103,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <meta name="description" content="EditKits is the ultimate online platform for fast, high-quality video, audio, and image processing. Edit, enhance, and optimize media effortlessly with powerful cloud-based tools and APIs."/>
+        <meta name="description"
+              content="EditKits is the ultimate online platform for fast, high-quality video, audio, and image processing. Edit, enhance, and optimize media effortlessly with powerful cloud-based tools and APIs."/>
       </Head>
-      <div
-        className="pb-[159.5px] bg-[url(../public/assets/img/hero_bg.svg)] max-w-[1187px] bg-cover sm:px-5 xl:px-0 bg-center grid grid-cols-12 mx-auto sm:items-center xl:items-end">
-        <div className="sm:col-span-4 lg:col-span-6 pt-[134.5px]">
-          <h1 className="font-montserrat font-extrabold text-[40px] leading-[56px] tracking-[0.2px] text-[#2c2c2c]">The
-            Ultimate</h1>
-          <h1
-            className="font-montserrat font-extrabold text-[40px] leading-[56px] tracking-[0.2px] text-[#2c2c2c]">Online
-            Media Platform to</h1>
-          <h1
-            className="font-montserrat font-extrabold text-[40px] leading-[56px] tracking-[0.2px] text-transparent bg-clip-text bg-gradient-to-r from-[#637EFF] to-[#148CFC]">Edit,
-            Process & Automate</h1>
-          <div className="w-[520px] pt-[3.5px] pb-[22px]">
-            <Typography
-              label="Empower your creativity with powerful yet easy-to-use toolkits and APIs on the cloud. Build custom workflows by connecting tools for seamless video, image, and audio editing."
-              variant="b2"
-            />
-          </div>
-          <Button
-            label="Join the Waitlist"
-            variant="outlined"
-            filled
-            width={226}
-            onClick={() => setWaitlistModal(true)}
-            height={64}
-          />
-        </div>
-        <div className="sm:col-span-8 lg:col-span-6 bg-[url(../public/assets/img/hero_bg.svg)] bg-cover bg-left">
-          <Image src={HeroImg} width={594} height={330} alt="hero image" className="animate-float"/>
-        </div>
-      </div>
+      <Hero setWaitlistModal={setWaitlistModal} />
       <div
         className="bg-white pt-[53px] pb-[59px] border-[1px] border-solid border-[#9f9f9f] rounded-[40px] max-w-[1313px] mx-auto">
         <div className="pb-[12px]">

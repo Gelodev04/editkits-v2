@@ -58,6 +58,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                     layout="fill"
                     objectFit="cover"
                     priority
+                    quality={75}
                   />
 
                   <div

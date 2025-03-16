@@ -27,8 +27,8 @@ export default function BlogCard({img, title, date, slug, category}) {
             height={312}
             src={img}
             alt="image"
-            unoptimized
             priority
+            quality={75}
           />
         </div>
         <h3 className="font-montserrat font-bold text-base leading-[21.84px] text-[#2c2c2c] py-[12px]">{title}</h3>

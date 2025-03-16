@@ -54,6 +54,7 @@ export default function FileProgressModal(props) {
                         height={125}
                         alt="Uploaded file thumbnail"
                         priority
+                        quality={75}
                       />
                     )}
                     <Image

@@ -25,7 +25,7 @@ export default function UploadedFilesTable(props: UploadedFilesTableProps) {
         <TableHead sx={{backgroundColor: "#f0f0f0"}}>
           <TableRow>
             {uploadedFilesColumns.map(col => (
-              <TableCell align="left">
+              <TableCell key={col.name} align="left">
                 <p className="font-lato font-bold text-xs leading-[16.8px]  text-[#201D23]">{col.name}</p>
               </TableCell>
             ))}

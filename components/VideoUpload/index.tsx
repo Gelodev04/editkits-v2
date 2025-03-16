@@ -32,6 +32,7 @@ export function VideoUpload(props: VideoUploadProps) {
                     height={45}
                     alt="uploaded_file"
                     priority
+                    quality={75}
                   />
                 )}
               </div>

@@ -24,7 +24,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
         <TableHead sx={{backgroundColor: "#f0f0f0"}}>
           <TableRow>
             {tableColumns.map(col => (
-              <TableCell align="left">
+              <TableCell key={col.name} align="left">
                 <p className="font-lato font-bold text-xs leading-[16.8px]  text-[#201D23]">{col.name}</p>
               </TableCell>
             ))}
@@ -58,6 +58,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                     layout="fill"
                     objectFit="cover"
                     priority
+                    quality={75}
                   />
 
                   <div

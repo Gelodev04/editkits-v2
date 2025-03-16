@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
+import CompressionPlugin from 'compression-webpack-plugin'
+
 const nextConfig = {
+  webpack(config) {
+    config.plugins.push(new CompressionPlugin());
+    return config;
+  },
   images: {
     remotePatterns: [
       {
@@ -13,6 +19,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: 'editkits-temp-files-dev.s3.ap-south-1.amazonaws.com',
+      },
+      {
+        protocol: "https",
+        hostname: 'd3okthxtjspo10.cloudfront.net',
       }
     ],
   },
@@ -34,11 +44,21 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;",
           },
+
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains; preload", // 1-year max age
+          },
         ],
       },
     ];
   },
-  swcMinify: true
+  swcMinify: true,
+  productionBrowserSourceMaps: true
 };
 
 export default nextConfig;

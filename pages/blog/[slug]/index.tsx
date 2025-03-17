@@ -1,34 +1,25 @@
 import React from "react";
 import {useRouter} from "next/router";
 import Image from "next/image";
+
 import {Divider} from "@mui/material";
 
-import {useGetArticleQuery} from "@/services/api";
-import {convertToNoCookieUrl} from "@/lib/utils";
 import Alert from "@/components/Alert";
-import {CodeBlock} from "@/components/CodeBlock";
-import Typography from "@/components/Typography";
-import {notFound} from "next/navigation";
 import ArticleLoading from "@/pages/blog/[slug]/loading";
+import Typography from "@/components/Typography";
+import {convertToNoCookieUrl} from "@/lib/utils";
+import {CodeBlock} from "@/components/CodeBlock";
 
-export default function Article() {
+export default function Article({article}) {
   const router = useRouter();
-  const {slug} = router.query;
-
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  const {data: article, isError}: any = useGetArticleQuery({slug});
-
-  if (loading) {
+  if (router.isFallback || loading) {
     return <ArticleLoading />;
-  }
-
-  if (isError) {
-    notFound();
   }
 
   function boldText(text) {

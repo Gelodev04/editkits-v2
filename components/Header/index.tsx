@@ -31,7 +31,18 @@ export default function Header() {
 
   const [authConfirmationModal, setAuthConfirmationModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("")
-  const [modalMessage, setModalMessage] = useState("")
+  const [modalMessage, setModalMessage] = useState("");
+
+
+  function onSignup() {
+    setAuthModal(true);
+    setType("Sign Up");
+  }
+
+  function onLogin() {
+    setAuthModal(true);
+    setType("Log In");
+  }
 
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
@@ -103,8 +114,23 @@ export default function Header() {
         {!userInfo && (
           <>
             <div className="w-32">
+              <Button
+                onClick={onSignup}
+                label="Signup"
+                variant="secondary"
+                width={112}
+                height={48}
+              />
             </div>
             <div className="w-32">
+              <Button
+                onClick={onLogin}
+                label="Login"
+                variant="contained"
+                filled
+                width={115}
+                height={48}
+              />
             </div>
           </>
         )}

@@ -78,8 +78,15 @@ export default function Article() {
         if (content.type === "image") {
           return (
             <div className="flex justify-center py-[12px] min-h-[570px]">
-              <Image className="rounded-[8px]" src={content.src} width={1280} height={570} alt={content.alt} unoptimized
-                     priority/>
+              <Image
+                className="rounded-[8px]"
+                src={content.src}
+                width={1280}
+                height={570}
+                alt={content.alt}
+                priority
+                quality={75}
+              />
             </div>
           )
         }

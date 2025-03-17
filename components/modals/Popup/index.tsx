@@ -21,25 +21,27 @@ export default function PopUp(props: PopUpProps) {
         {/*@ts-ignore*/}
         <div>
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
-              <div
-                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:w-[532px]`}>
-                <div className="absolute right-[14px] top-[14px] cursor-pointer">
-                  <TbXboxX size={30} color="#000" onClick={() => props.setOpen(false)}/>
-                </div>
-                <div className="bg-white text-center pt-[32px]">
-                  <div className="pb-[8px]">
-                    <Typography label={props.title} center variant="h4"/>
-                  </div>
-                  <div className="w-[432px] py-[20px] mx-auto">
-                    <Typography label={props.description} center variant="b3"/>
-                  </div>
-                </div>
-
-                <div className="flex justify-center items-center gap-[6px] pt-[32px] pb-[32px]">
-                  <Button onClick={() => props.setOpen(false)} label="Dismiss" variant="secondary" width={209} height={48}/>
-                </div>
+          <div
+            className="fixed inset-0 z-10 w-screen overflow-y-auto flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
+            <div
+              className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:w-[532px]`}>
+              <div className="absolute right-[14px] top-[14px] cursor-pointer">
+                <TbXboxX size={30} color="#000" onClick={() => props.setOpen(false)}/>
+              </div>
+              <div className="pb-[28px] pt-[32px]">
+                <Typography label={props.title} center variant="h4"/>
+              </div>
+              <div className="w-[432px] mx-auto">
+                <Typography label={props.description} center variant="b3"/>
+              </div>
+              <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[32px]">
+                <Button
+                  onClick={() => props.setOpen(false)}
+                  label="Dismiss"
+                  variant="secondary"
+                  width={209}
+                  height={48}
+                />
               </div>
             </div>
           </div>

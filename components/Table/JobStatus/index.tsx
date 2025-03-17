@@ -31,7 +31,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.filter((row: any) => row.file_name.toLowerCase().includes(search)).map((row: any) => (
+          {data?.filter((row: any) => row.file_name.toLowerCase().includes(search)).map((row: any) => (
             <TableRow
               key={row.input_id}
               sx={{

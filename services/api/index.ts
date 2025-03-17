@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import Cookies from 'js-cookie';
 
-let accessToken = null;
+let accessToken = "eyJraWQiOiJRMStGT3NORGE0eXp2TEFxOUFZQVhZaXJSZkVXa3M5cUI0ZmtvckxPU01VPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwMWIzYWQzYS02MDIxLTcwZmQtODFlNi1jNDAyYWMwNWRmODMiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX3J1NWZWOEJDSyIsImNsaWVudF9pZCI6IjduYW1iM25hNmZmYWxwb3N2NGppbXF2MHF2Iiwib3JpZ2luX2p0aSI6ImZkNTEyNDAyLWU0OGEtNDk2Yy1hMDY0LTZmMDk3ZmFmOGY2YSIsImV2ZW50X2lkIjoiMTllZTIwZGItYjNlMS00NTllLWE1ODQtNzE4MDczNzUyZWE0IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc0MjIxMTk1NCwiZXhwIjoxNzQyMjE1NTU0LCJpYXQiOjE3NDIyMTE5NTQsImp0aSI6ImI1NjEzMWYzLTZkN2MtNDk2Mi1hYjg5LTE0ZDRjOWE4NjgxNSIsInVzZXJuYW1lIjoiMDFiM2FkM2EtNjAyMS03MGZkLTgxZTYtYzQwMmFjMDVkZjgzIn0.SM5ZyBYn8dXoSYQp588UEg24gqQ1WLPTe3UoWFPlCm-3zhH9QvFKxNz9GVJw2uwyj7f3Ul1g6DdnQNljE7rYCljFnB2fK8lDkaELDn5sovAIAIUekeDK8EfOPWFKISEyhjCIMGB0hRVMnhJKlb7YAjvMKLgE8yIClARj2YtyqcINqRD1rTjJE6jep1ZZIAqVIHaghA51QM9c3lq8VAyx1CtYkEjwhDfK09r5LlYWduUK2G1aqrOSKFT5teunIFKrlZHnmZek9jh_X4lh_Ck3UBvlkGstPHx-Csd2rVJPkfDuFKEgz4IRL0XkGW1bopj-U1derExqkYL8NnvjlcVnJw";
 
 export const setAccessToken = (token) => accessToken = token;
 export const getAccessToken = () => accessToken;
@@ -162,6 +162,31 @@ export const api = createApi({
       },
       transformResponse: (response) => response,
     }),
+    getJobs: builder.query({
+      query: (params) => {
+        const access_token = getAccessToken();
+        console.log("params", params)
+
+        const queryString = Object.entries(params)
+          .filter(([_, value]) => value !== null && value !== undefined)
+          .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+          .join("&");
+
+        const baseUrl = "http://ec2-3-110-220-105.ap-south-1.compute.amazonaws.com:8081/api/v1/jobs?offset=0&limit=12";
+        const url = queryString ? `${baseUrl}&${queryString}` : baseUrl;
+
+        return {
+          url,
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }
+      },
+      transformResponse(response) {
+        console.log("========jobs======", response);
+      }
+    }),
     initJob: builder.mutation({
       query: (body) => {
         const access_token = getAccessToken();
@@ -250,17 +275,7 @@ export const api = createApi({
       }),
       transformResponse: (response) => response,
     }),
-    getArticle: builder.query({
-      query: ({slug}) => {
-        return {
-          url: `/blog/entry?slug=${slug}`,
-          method: 'GET'
-        }
-      },
-      transformResponse: (response) => {
-        return response;
-      },
-    }),
+
     getPlans: builder.query({
       query: ({isYearly}) => ({
         url: `/subscription/plans?is_yearly=${isYearly}`,
@@ -284,6 +299,7 @@ export const {
   useUploadMutation,
   useStatusQuery,
 
+  useGetJobsQuery,
   useInitJobMutation,
   useCommitJobMutation,
   useJobStatusQuery,
@@ -292,7 +308,6 @@ export const {
   useContactUsUserMutation,
 
   useGetBlogsQuery,
-  useGetArticleQuery,
 
   useGetPlansQuery
 } = api;

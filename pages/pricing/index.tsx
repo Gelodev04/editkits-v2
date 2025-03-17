@@ -41,7 +41,7 @@ export default function Pricing() {
           } place-items-center px-[22px] py-[14px] rounded rounded-2xl max-w-[1920px]`}
         >
           {/*@ts-ignore*/}
-          {plans.map((plan) => (
+          {plans?.map((plan) => (
               <PricingPlanCard
                 key={plan.title}
                 title={plan.title}

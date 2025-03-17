@@ -10,20 +10,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "editkits-p-dev.s3.ap-south-1.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: 'editkits-thumbnails-dev.s3.ap-south-1.amazonaws.com',
-      },
-      {
-        protocol: "https",
-        hostname: 'editkits-temp-files-dev.s3.ap-south-1.amazonaws.com',
-      },
-      {
-        protocol: "https",
-        hostname: 'd3okthxtjspo10.cloudfront.net',
+        hostname: "**",
       }
+
     ],
   },
   async redirects() {

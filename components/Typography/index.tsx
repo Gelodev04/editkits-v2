@@ -12,6 +12,7 @@ type TypographyProps = {
   onClick?: () => void;
   color?: string;
   underline?: boolean;
+  width?: number
 }
 
 function TypographyStyle(props: TypographyProps) {
@@ -55,7 +56,7 @@ export default function Typography(props: TypographyProps) {
   return (
     <p
       //@ts-ignore
-      style={{color: props.color, textDecoration: props.underline && "underline"}}
+      style={{color: props.color, textDecoration: props.underline && "underline", width: props.width}}
       onClick={props.onClick}
       className={TypographyStyle(props)}
     >

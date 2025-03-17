@@ -262,8 +262,8 @@ export const api = createApi({
       },
     }),
     getPlans: builder.query({
-      query: ({}) => ({
-        url: '/subscription/plans',
+      query: ({isYearly}) => ({
+        url: `/subscription/plans?is_yearly=${isYearly}`,
         method: 'GET'
       }),
       transformResponse: (response) => response

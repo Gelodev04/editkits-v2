@@ -1,15 +1,19 @@
 import {useState} from "react";
-import ToggleSwitch from "@/components/ToggleSwitch";
-import {pricingPlanList} from "@/lib/constants";
+
 import PricingPlanCard from "@/components/cards/PricingPlanCard";
+import ToggleSwitch from "@/components/ToggleSwitch";
+
+import {useGetPlansQuery} from "@/services/api";
+
 import Background from "@/public/assets/img/pricing-bg-circle.svg"
 import Blur from "@/public/assets/img/pricing-bg-blur.svg";
-import Wave1 from "@/public/assets/img/wave1.svg"
 import Wave1Mirrored from "@/public/assets/img/wave1_mirrored.svg"
+import Wave1 from "@/public/assets/img/wave1.svg"
 import Wave2 from "@/public/assets/img/wave2.svg"
 
 export default function Pricing() {
   const [monthly, setMonthly] = useState(true);
+  const {data: plans} = useGetPlansQuery({isYearly: !monthly});
 
   return (
     <div
@@ -36,19 +40,17 @@ export default function Pricing() {
             monthly ? 'xl:grid-cols-2 2xl:grid-cols-4' : 'xl:grid-cols-3'
           } place-items-center px-[22px] py-[14px] rounded rounded-2xl max-w-[1920px]`}
         >
-          {pricingPlanList
-            .filter(plan => plan.type === (monthly ? 'monthly' : 'yearly'))
-            .map(plan => (
+          {/*@ts-ignore*/}
+          {plans.map((plan) => (
               <PricingPlanCard
                 key={plan.title}
                 title={plan.title}
                 description={plan.description}
                 credits={plan.credits}
-                type={plan.type}
                 benefits={plan.benefits}
-                originalPrice={plan.originalPrice}
-                discountPrice={plan?.discountPrice}
-                mostPopular={plan?.mostPopular}
+                original_price={plan.original_price}
+                new_price={plan?.new_price}
+                is_popular={plan?.is_popular}
               />
             ))}
         </div>

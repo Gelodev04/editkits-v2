@@ -38,20 +38,20 @@ export default function Header() {
       <Link href="/">
         <Image src={Logo} className="w-[187px]" alt="Logo" priority/>
       </Link>
-      <div className="flex space-x-6 justify-center items-center">
+      <div className="flex space-x-[21px] justify-center items-center">
         {userInfo && (
           <Link href="/dashboard">
             <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"}/>
           </Link>
         )}
         <Link href="/home">
-          <Typography label="Home" variant="link" bold={router.pathname === "/home"}/>
+          <Typography width={45} label="Home" variant="link" bold={router.pathname === "/home"}/>
         </Link>
         <Link href="/blog">
-          <Typography label="Blogs" variant="link" bold={router.pathname === "/blogs"}/>
+          <Typography width={42} label="Blogs" variant="link" bold={router.pathname === "/blogs"}/>
         </Link>
         <Link href="/contact-us">
-          <Typography label="Contact Us" variant="link" bold={router.pathname === "/contact-us"}/>
+          <Typography width={100} label="Contact Us" variant="link" bold={router.pathname === "/contact-us"}/>
         </Link>
       </div>
       <div className="flex gap-[11px] justify-center items-center">

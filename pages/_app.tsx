@@ -35,6 +35,7 @@ function MyApp({Component, pageProps}: AppProps) {
   const router = useRouter();
   let title = pageTitles[router.pathname] || 'EditKits';
   let keywords = [];
+  const GA_TRACKING_ID = 'G-HFNS6G8Q4R'
 
   if (router.pathname.startsWith('/blog')) {
     if (pageProps.article?.metadata) {
@@ -52,23 +53,24 @@ function MyApp({Component, pageProps}: AppProps) {
         <title>{title}</title>
         <link rel="icon" href="/assets/img/editkits.png"/>
         <link rel="canonical" href={"https://editkits.com" + router.pathname}/>
-        <meta name="viewport" content="width=1400, user-scalable=no" />
-          <meta
-            name="description"
-            content="EditKits is the ultimate online platform for fast, high-quality video, audio, and image processing. Edit, enhance, and optimize media effortlessly with powerful cloud-based tools and APIs."
-          />
-          {keywords?.map(keyword => <meta name="keyword" content={keyword}/>)}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLdData)}}
-          >
-          </script>
+        <meta name="viewport" content="width=1400, user-scalable=no"/>
+        <meta
+          name="description"
+          content="EditKits is the ultimate online platform for fast, high-quality video, audio, and image processing. Edit, enhance, and optimize media effortlessly with powerful cloud-based tools and APIs."
+        />
+        {keywords?.map(keyword => <meta name="keyword" key={keyword} content={keyword}/>)}
       </Head>
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLdData)}}
+        strategy="lazyOnload"
+        id="jsonld"
+      />
       {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
         <>
           <Script
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_TRACKING_ID}`}
+            strategy="lazyOnload"
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
 
           <Script
@@ -79,7 +81,7 @@ function MyApp({Component, pageProps}: AppProps) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', ${process.env.GA_TRACKING_ID});
+            gtag('config', '${GA_TRACKING_ID}');
           `}
           </Script>
         </>
@@ -93,7 +95,7 @@ function MyApp({Component, pageProps}: AppProps) {
         </Provider>
       </div>
     </>
-);
+  );
 }
 
 export default MyApp;

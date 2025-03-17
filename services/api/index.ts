@@ -254,7 +254,7 @@ export const api = createApi({
       query: ({slug}) => {
         return {
           url: `/blog/entry?slug=${slug}`,
-          method: 'GET',
+          method: 'GET'
         }
       },
       transformResponse: (response) => {

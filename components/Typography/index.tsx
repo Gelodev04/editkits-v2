@@ -44,7 +44,7 @@ function TypographyStyle(props: TypographyProps) {
     case "bb4":
       return `text-sm text-[#4f4f4f] font-lato ${props.center && "text-center"} font-bold leading-[18px]`
     case "link":
-      return `font-montserrat text-sm leading-[24px] text-[#737373] hover:scale-105 transition-transform duration-300 ${props.bold ? "font-bold" : "font-semibold"} ${props.center && 'text-center'}`
+      return `font-montserrat text-sm leading-[24px] text-[#737373] hover:scale-105 hover:font-bold transition-transform duration-300 will-change-transform ${props.bold ? "font-bold" : "font-semibold"}`
     default:
       return `${props.className} text-sm ${props.center && "text-center"} text-[#2c2c2c] font-sans`;
 

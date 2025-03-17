@@ -40,6 +40,14 @@ import SearchIcon from "@/public/assets/icons/search.svg";
 import ChatIcon from "@/public/assets/icons/chat.svg";
 import SmileIcon from "@/public/assets/icons/smile.svg";
 
+export const benefits = [
+  "No Credit Card required",
+  "Max 1 concurrent job",
+  "2 hours of file storage",
+  "50 credits/GB for content delivery",
+  "Up to FHD (1920 x 1080) or equivalent export"
+]
+
 export const videoTools = [
   {
     name: "Overlay Video/Image",

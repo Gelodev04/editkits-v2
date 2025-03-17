@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Button from "@/components/Button";
 import Typography from "@/components/Typography";
+import LanguageSelector from "@/components/LanguageSelector";
 
 
 export default function Footer() {
@@ -19,18 +20,27 @@ export default function Footer() {
         </Link>
       </div>
       <div className="2xl:px-[32%] xl:px-[18%] lg:px-[12%]">
+        <p className="font-roboto font-normal text-[#2c2c2c] text-sm leading-[24px] text-center">
+          Lörem ipsum od ohet dilogi. Bell trabel, samuligt, ohöbel utom diska. Jinesade bel när feras redorade i
+          belogi. FAR paratyp i muvåning, och pesask vyfisat. Viktiga poddradio har un mad och inde.
+        </p>
         <Typography
           className="font-lato"
           center
         />
       </div>
       <div className="grid grid-cols-3 place-items-center w-full pt-10 max-w-[1920px] mx-auto">
-        <p className="font-openSans font-normal text-[13px] text-[#2c2c28] leading-[17px]">© 2025 Edikits. All rights reserved</p>
+        <p className="font-openSans font-normal text-[13px] text-[#2c2c28] leading-[17px]">© 2025 Edikits. All rights
+          reserved</p>
         <div className="flex space-x-6 justify-center">
-          <Button label="Terms of Use" variant="primary" className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
-          <Button label="Privacy Policy" variant="primary" className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
-          <Button label="Help" variant="primary" className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
+          <Button label="Terms of Use" variant="primary"
+                  className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
+          <Button label="Privacy Policy" variant="primary"
+                  className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
+          <Button label="Help" variant="primary"
+                  className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
         </div>
+        <LanguageSelector/>
       </div>
     </div>
   )

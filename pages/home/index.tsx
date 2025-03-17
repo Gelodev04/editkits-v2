@@ -111,12 +111,12 @@ export default function Home() {
         className="bg-white pt-[53px] pb-[59px] border-[1px] border-solid border-[#9f9f9f] rounded-[40px] max-w-[1313px] mx-auto">
         <div className="pb-[12px]">
           <Typography
-            label="Sneak Peek"
+            label="Quick Access"
             variant="h4"
             center
           />
         </div>
-        <Typography variant="b2" label="Video, Audio and Image Tools" center/>
+        <Typography variant="b2" label="Video Tools" center/>
         <div className="place-items-center max-w-[1184px] mx-auto">
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 pt-[40px] pb-[32px] gap-x-[35px]">
             {videoTools.slice(0, 5).map((tool) => (

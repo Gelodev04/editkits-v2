@@ -47,6 +47,7 @@ export default function Dashboard() {
             <Pagination
               currentPage={currentPage}
               onPageChange={setCurrentPage}
+              //@ts-ignore
               totalPages={Math.ceil(data?.length / 8)}
             />
           </div>

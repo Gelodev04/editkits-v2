@@ -19,12 +19,12 @@ interface Plan {
 
 type PricingPlanCardProps = {
   plan: Plan;
-  setAdditionalContent: (e: React.SetStateAction<string[]>) => void;
+  additionalContent: string[];
+  setAdditionalContent: (e: React.SetStateAction<any>) => void;
   setWhatCanYouDoModal: (e: React.SetStateAction<boolean>) => void;
 }
 
 export default function PricingPlanCard(props: PricingPlanCardProps) {
-
   function handleWhatCanYouDoModal() {
     props.setAdditionalContent(props.plan.credit_actions)
     props.setWhatCanYouDoModal(true)

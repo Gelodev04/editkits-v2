@@ -1,6 +1,12 @@
 import React from "react";
 
-export default function ToggleSwitch({monthly, setMonthly}: {monthly: boolean, setMonthly: (e: React.SetStateAction<boolean>) => void}) {
+type ToggleSwitchProps = {
+  monthly: boolean;
+  setMonthly: (e: React.SetStateAction<boolean>) => void;
+  setLoading: (e: React.SetStateAction<boolean>) => void;
+}
+
+export default function ToggleSwitch({monthly, setMonthly, setLoading}: ToggleSwitchProps) {
 
   return (
     <div className="flex rounded-full w-max border border-solid border-[1px] border-[#979797]">
@@ -16,7 +22,10 @@ export default function ToggleSwitch({monthly, setMonthly}: {monthly: boolean, s
         className={`py-2 rounded-full font-bold transition-all duration-300 font-montserrat text-[10px] font-semibold w-[111px] h-[44px] ${
           !monthly ? 'bg-[#273266] text-white' : 'text-[#2c2c2c]'
         }`}
-        onClick={() => setMonthly(false)}
+        onClick={() => {
+          setMonthly(false);
+          setLoading(true)
+        }}
       >
         YEARLY
       </button>

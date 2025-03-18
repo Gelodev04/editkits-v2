@@ -4,13 +4,19 @@ import { getAccessToken } from './index';
 export const jobApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getJobs: builder.query({
-      query: () => {
-        const access_token = getAccessToken();
-        return {
+      queryFn: async (_, _api, _extraOptions, baseQuery) => {
+        let token = getAccessToken();
+
+        while (!token) {
+          await new Promise((resolve) => setTimeout(resolve, 0));
+          token = getAccessToken();
+        }
+
+        return baseQuery({
           url: '/jobs?offset=0&limit=12',
           method: 'GET',
-          headers: { Authorization: `Bearer ${access_token}` },
-        };
+          headers: { Authorization: `Bearer ${token}` },
+        });
       },
     }),
     initJob: builder.mutation({

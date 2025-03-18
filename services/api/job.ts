@@ -8,7 +8,7 @@ export const jobApi = api.injectEndpoints({
         let token = getAccessToken();
 
         while (!token) {
-          await new Promise((resolve) => setTimeout(resolve, 0));
+          await new Promise((resolve) => setTimeout(resolve));
           token = getAccessToken();
         }
 

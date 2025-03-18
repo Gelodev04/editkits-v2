@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const DashboardTable = dynamic(() => import("@/components/Table"), {
   ssr: false
@@ -10,12 +10,13 @@ import {stats, uploadedFileTableData} from "@/lib/constants";
 import TableType from "@/components/Table/TableType";
 import Pagination from "@/components/Pagination";
 import {useGetJobsQuery} from "@/services/api/job";
+import Loading from "@/pages/dashboard/loading";
 
 export default function Dashboard() {
   const {data: jobs} = useGetJobsQuery({});
 
   const [active, setActive] = useState("Job status");
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
 
   const data = active === "Job status" ? jobs : uploadedFileTableData;
 
@@ -27,19 +28,23 @@ export default function Dashboard() {
             <TableType active={active} setActive={setActive}/>
           </div>
           <div className="col-span-10 xl:col-span-10 2xl:col-span-10">
-            {active === "Job status" && (
-              <div className="flex gap-4 ">
-                {stats.map(stat => <StatCard stat={stat}/>)}
-              </div>
+            {!jobs ? <Loading /> : (
+              <>
+                {active === "Job status" && (
+                  <div className="flex gap-4 ">
+                    {stats.map(stat => <StatCard stat={stat}/>)}
+                  </div>
+                )}
+                <div className="pt-4">
+                  <DashboardTable
+                    active={active}
+                    jobStatusPage={currentPage}
+                    uploadedFilesPage={currentPage}
+                    data={data}
+                  />
+                </div>
+              </>
             )}
-            <div className="pt-4">
-              <DashboardTable
-                active={active}
-                jobStatusPage={currentPage}
-                uploadedFilesPage={currentPage}
-                data={data}
-              />
-            </div>
           </div>
         </div>
         <div className="pt-10 pb-10 2xl:pr-2">

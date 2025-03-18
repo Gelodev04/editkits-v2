@@ -3,17 +3,21 @@ import {useState} from "react";
 import PricingPlanCard from "@/components/cards/PricingPlanCard";
 import ToggleSwitch from "@/components/ToggleSwitch";
 
-import { useGetPlansQuery } from "@/services/api/public";
+import {useGetPlansQuery} from "@/services/api/public";
 
 import Background from "@/public/assets/img/pricing-bg-circle.svg"
 import Blur from "@/public/assets/img/pricing-bg-blur.svg";
 import Wave1Mirrored from "@/public/assets/img/wave1_mirrored.svg"
 import Wave1 from "@/public/assets/img/wave1.svg"
 import Wave2 from "@/public/assets/img/wave2.svg"
+import WhatCanYouDoPopup from "@/components/modals/WhatCanYouDoPopup";
 
 export default function Pricing() {
   const [monthly, setMonthly] = useState(true);
   const {data: plans} = useGetPlansQuery({isYearly: !monthly});
+
+  const [whatCanYouDoModal, setWhatCanYouDoModal] = useState(false);
+  const [additionalContent, setAdditionalContent] = useState([])
 
   return (
     <div
@@ -42,19 +46,22 @@ export default function Pricing() {
         >
           {/*@ts-ignore*/}
           {plans?.map((plan) => (
-              <PricingPlanCard
-                key={plan.title}
-                title={plan.title}
-                description={plan.description}
-                credits={plan.credits}
-                benefits={plan.benefits}
-                original_price={plan.original_price}
-                new_price={plan?.new_price}
-                is_popular={plan?.is_popular}
-              />
-            ))}
+            <PricingPlanCard
+              plan={plan}
+              setWhatCanYouDoModal={setWhatCanYouDoModal}
+              additionalContent={additionalContent}
+              setAdditionalContent={setAdditionalContent}
+            />
+          ))}
         </div>
       </div>
+      <WhatCanYouDoPopup
+        open={whatCanYouDoModal}
+        setOpen={setWhatCanYouDoModal}
+        title="What can you do?"
+        description="For 12000 credits, you can do the following :"
+        additionalContent={additionalContent}
+      />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { uploadedFileTableData, tableData} from "@/lib/constants";
+import { uploadedFileTableData } from "@/lib/constants";
 import {useState} from "react";
 import UploadFileModal from "@/components/modals/UploadFileModal";
 import TableHeader from "@/components/Table/TableHeader";

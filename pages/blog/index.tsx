@@ -2,7 +2,7 @@ import React from 'react';
 
 import Pagination from "@/components/Pagination";
 import BlogCard from "@/components/cards/BlogCard";
-import {useGetBlogsQuery} from "@/services/api";
+import {useGetBlogsQuery} from "@/services/api/public";
 import BlogLoading from "@/pages/blog/loading";
 
 export default function Blog() {

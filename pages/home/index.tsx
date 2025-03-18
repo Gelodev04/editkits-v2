@@ -16,7 +16,9 @@ const WaitListModal = dynamic(() => import("@/components/modals/WaitListModal"),
 })
 
 import {featureCards, videoTools} from "@/lib/constants";
-import {getUserInfo, useContactUsCommonMutation, useContactUsUserMutation} from "@/services/api";
+import {getUserInfo} from "@/services/api";
+import { useContactUsUserMutation} from "@/services/api/auth";
+import {useContactUsCommonMutation} from "@/services/api/public";
 
 const Hero = dynamic(() => import("@/components/home/Hero"), {
   ssr: false,

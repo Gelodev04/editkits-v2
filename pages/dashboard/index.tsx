@@ -5,14 +5,12 @@ import {useState} from "react";
 import TableType from "@/components/Table/TableType";
 import Pagination from "@/components/Pagination";
 import * as React from "react";
-import {useGetJobsQuery} from "@/services/api";
+import {useGetJobsQuery} from "@/services/api/job";
 
 export default function Dashboard() {
   const {data: jobs} = useGetJobsQuery({});
 
   const [active, setActive] = useState("Job status");
-  const [jobStatusPage, setJobStatusPage] = useState(1);
-  const [uploadedFilesPage, setUploadedFilesPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1)
 
   const data = active === "Job status" ? jobs : uploadedFileTableData;
@@ -33,8 +31,8 @@ export default function Dashboard() {
             <div className="pt-4">
               <DashboardTable
                 active={active}
-                jobStatusPage={jobStatusPage}
-                uploadedFilesPage={uploadedFilesPage}
+                jobStatusPage={currentPage}
+                uploadedFilesPage={currentPage}
                 data={data}
               />
             </div>

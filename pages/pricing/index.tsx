@@ -3,7 +3,7 @@ import {useState} from "react";
 import PricingPlanCard from "@/components/cards/PricingPlanCard";
 import ToggleSwitch from "@/components/ToggleSwitch";
 
-import {useGetPlansQuery} from "@/services/api";
+import { useGetPlansQuery } from "@/services/api/public";
 
 import Background from "@/public/assets/img/pricing-bg-circle.svg"
 import Blur from "@/public/assets/img/pricing-bg-blur.svg";

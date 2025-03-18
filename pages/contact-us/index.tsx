@@ -1,7 +1,10 @@
+import {useEffect, useState} from "react";
+
 import ContactUsCard from "@/components/cards/ContactUsCard";
 import GetInTouchCard from "@/components/cards/GetInTouchCard";
-import {useEffect, useState} from "react";
-import {getUserInfo, useContactUsCommonMutation, useContactUsUserMutation} from "@/services/api";
+import {getUserInfo} from "@/services/api";
+import {useContactUsUserMutation} from "@/services/api/auth";
+import {useContactUsCommonMutation} from "@/services/api/public";
 
 export default function ContactUs() {
   const [contactUsCommon, {isLoading: isContactUsLoading}] = useContactUsCommonMutation();

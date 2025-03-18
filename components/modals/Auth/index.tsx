@@ -13,7 +13,7 @@ import {
   useConfirmRegisterMutation,
   useLoginMutation, useLogoutMutation, useRefreshTokenMutation,
   useRegisterMutation, useRequestPasswordResetMutation, useResendConfirmationCodeMutation
-} from "@/services/api";
+} from "@/services/api/auth";
 
 import EmailNotVerified from "@/components/modals/Auth/EmailNotVerified";
 import useLogout from "@/hooks/useLogout";

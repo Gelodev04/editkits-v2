@@ -14,9 +14,9 @@ import {
   useCommitJobMutation,
   useInitJobMutation,
   useJobStatusQuery,
-  useStatusQuery,
-  useUploadMutation
-} from "@/services/api";
+} from "@/services/api/job";
+
+import {useStatusQuery, useUploadMutation} from "@/services/api/file";
 import toast from "react-hot-toast";
 import FileProgressModal from "@/components/modals/FilePgrogressModal";
 import PopUp from "@/components/modals/Popup";

@@ -7,7 +7,7 @@ import AccountType from "@/components/account/AccountType";
 import {validateEmail} from "@/lib/validateEmail";
 import ChangePasswordModal from "@/components/modals/ChnagePasswordModal";
 import {useUserInfo} from "@/hooks/useUserInfo";
-import {useUpdatePasswordMutation} from "@/services/api";
+import {useUpdatePasswordMutation} from "@/services/api/auth";
 import toast from "react-hot-toast";
 import {useState} from "react";
 import {Subscription} from "@/components/account/Subscription";

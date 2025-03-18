@@ -1,19 +1,18 @@
-import TableContainer from "@mui/material/TableContainer";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import {tableColumns} from "@/lib/constants";
-import TableCell from "@mui/material/TableCell";
-import Typography from "@/components/Typography";
-import TableBody from "@mui/material/TableBody";
 import Image from "next/image";
-import StatusTag from "@/components/Table/StatusTag";
+
 import {BsThreeDotsVertical} from "react-icons/bs";
-import * as React from "react";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+
+import Typography from "@/components/Typography";
+import StatusTag from "@/components/Table/StatusTag";
+
+import {tableColumns} from "@/lib/constants";
+
 import CopyIcon from "@/public/assets/icons/copy.svg";
 import Success from "@/public/assets/icons/success.svg";
 import Failed from "@/public/assets/icons/failed.svg";
 import Progress from "@/public/assets/icons/pending.svg";
+import ExpiredIcon from "@/public/assets/icons/expired_icon.svg"
 
 export default function JobStatusTable({data, search}: { data: any; search: string }) {
   return (
@@ -31,9 +30,9 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.filter((row: any) => row.file_name.toLowerCase().includes(search)).map((row: any) => (
+          {data?.filter((row: any) => row.input_file_name.toLowerCase().includes(search)).map((row: any) => (
             <TableRow
-              key={row.input_id}
+              key={row.input_file_id}
               sx={{
                 '&:last-child td, &:last-child th': {border: "none"},
                 '&:nth-of-type(even)': {backgroundColor: '#fcfcfc'},
@@ -53,7 +52,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                 >
                   <Image
                     className="rounded-md bg-[#000000] w-[138%] p-[2px]"
-                    src={row.icon}
+                    src={row.thumbnail_url === "EXPIRED" ? ExpiredIcon : row.thumbnail_url}
                     alt="icon"
                     layout="fill"
                     objectFit="cover"
@@ -78,40 +77,42 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
               </TableCell>
               <TableCell align="left">
                 <div className="flex items-center gap-8">
-                  <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_id}</p>
+                  <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_file_id}</p>
                   <Image
                     src={CopyIcon}
                     className="cursor-pointer"
-                    onClick={() => navigator.clipboard.writeText(row.input_id)}
+                    onClick={() => navigator.clipboard.writeText(row.input_file_id)}
                     alt="input_id"
                     priority
                   />
                 </div>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.file_name}</p>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_file_name}</p>
 
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <Typography label="View Details" variant="bl3" underline/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.credits_used}</p>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.credits}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <StatusTag status={row.status} />
               </TableCell>
               <TableCell align="left">
-                <div className="flex items-center gap-8">
-                  <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_id}</p>
-                  <Image
-                    src={CopyIcon}
-                    className="cursor-pointer"
-                    onClick={() => navigator.clipboard.writeText(row.input_id)}
-                    alt="input_id"
-                    priority
-                  />
-                </div>
+                {row.output_file_ids.map(id => (
+                  <div className="flex items-center gap-8">
+                    <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{id}</p>
+                    <Image
+                      src={CopyIcon}
+                      className="cursor-pointer"
+                      onClick={() => navigator.clipboard.writeText(id)}
+                      alt="input_id"
+                      priority
+                    />
+                  </div>
+                ))}
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.created_at}</p>

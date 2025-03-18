@@ -12,7 +12,7 @@ import ColorPicker from "@/components/ColorPicker";
 import {useEffect, useState} from "react";
 import {aspectRatio, outputQualityList, presets, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
-import {useStatusQuery, useUploadMutation} from "@/services/api";
+import {useStatusQuery, useUploadMutation} from "@/services/api/file";
 
 export default function ResizeVideo() {
   const  [fileId, setFileId] = useState(null);

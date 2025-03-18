@@ -12,7 +12,7 @@ import PopUp from "@/components/modals/Popup";
 import Typography from "@/components/Typography";
 import useLogout from "@/hooks/useLogout";
 import {useUserInfo} from "@/hooks/useUserInfo";
-import {useLogoutMutation} from "@/services/api";
+import {useLogoutMutation} from "@/services/api/auth";
 
 import Logout from '@/public/assets/icons/logout.svg'
 import Logo from "@/public/assets/img/logo.svg"

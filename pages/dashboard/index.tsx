@@ -1,10 +1,14 @@
+import dynamic from "next/dynamic";
+import { useState } from "react";
+
+const DashboardTable = dynamic(() => import("@/components/Table"), {
+  ssr: false
+})
+
 import StatCard from "@/components/cards/StatCard";
 import {stats, uploadedFileTableData} from "@/lib/constants";
-import DashboardTable from "@/components/Table";
-import {useState} from "react";
 import TableType from "@/components/Table/TableType";
 import Pagination from "@/components/Pagination";
-import * as React from "react";
 import {useGetJobsQuery} from "@/services/api/job";
 
 export default function Dashboard() {

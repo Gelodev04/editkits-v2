@@ -46,7 +46,7 @@ export default function Header() {
 
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
-      <Link href="/">
+      <Link href="/home">
         <Image src={Logo} className="w-[187px]" alt="Logo" priority/>
       </Link>
       <div className="flex space-x-[21px] justify-center items-center">
@@ -55,11 +55,13 @@ export default function Header() {
             <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"}/>
           </Link>
         )}
-        <Link href="/home">
+        {!userInfo && (
+          <Link href="/home">
           <Typography width={45} label="Home" variant="link" bold={router.pathname === "/home"}/>
         </Link>
+        )}
         <Link href="/blog">
-          <Typography width={42} label="Blogs" variant="link" bold={router.pathname === "/blogs"}/>
+          <Typography width={42} label="Blogs" variant="link" bold={router.pathname === "/blog"}/>
         </Link>
         <Link href="/contact-us">
           <Typography width={100} label="Contact Us" variant="link" bold={router.pathname === "/contact-us"}/>

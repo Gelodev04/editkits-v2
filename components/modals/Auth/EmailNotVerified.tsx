@@ -16,21 +16,19 @@ export default function EmailNotConfirmedLogin(
 ) {
   return (
     <>
-      <div className="px-[43px] pt-[51px]">
-        <InputField
-          onChange={(e) => {
-            if (!hasTyped) setHasTyped(true);
-            setEmail(e.target.value);
-            setEmailValid(validateEmail(e.target.value));
-          }}
-          error={!isEmailValid}
-          email={email}
-          label="Email"
-          placeholder="abc@editkits.com"
-          value={email}
-          type="text"
-        />
-      </div>
+      <InputField
+        onChange={(e) => {
+          if (!hasTyped) setHasTyped(true);
+          setEmail(e.target.value);
+          setEmailValid(validateEmail(e.target.value));
+        }}
+        error={!isEmailValid}
+        email={email}
+        label="Email"
+        placeholder="abc@editkits.com"
+        value={email}
+        type="text"
+      />
       <div className="pb-[38px] pt-[112px] max-w-[446px] mx-auto">
         <Button
           disabled={hasTyped && (!isEmailValid)}

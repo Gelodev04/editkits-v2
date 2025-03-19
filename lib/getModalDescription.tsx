@@ -8,7 +8,7 @@ export const getModalDescription = (messageType, email = "") => {
     case "Email not verified":
       return "Your email is not verified yet. Please verify email to continue using your account. If you've forgotten your password, you can reset it and proceed to login";
 
-    case "Email already registered":
+    case "Email already\nregistered":
       return "Your email is already registered, but it's not verified yet. Please verify email to continue using your existing account. If you've forgotten your password, you can reset it and proceed to login";
 
     case "Forgot your password?":

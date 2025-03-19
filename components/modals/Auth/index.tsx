@@ -138,7 +138,7 @@ export default function AuthModal(props: AuthModalProps) {
                 )}
                 {props.type === "Forgot your password?" && ForgetPassword(props, email, setEmail, isEmailValid, setEmailValid, handleSendResetCode, requestPasswordReset, isRequestPasswordResetLoading, hasTyped, setHasTyped)}
                 {props.type === "Reset Password" && ResetPassword(props, email, code, setCode, password, setPassword, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleResetPassword, confirmPasswordReset, props.setType, hasTyped, setHasTyped, isConfirmPasswordResetLoading)}
-                {props.type === "Email already registered" && EmailNotVerified(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode, hasTyped, setHasTyped)}
+                {props.type === "Email already\nregistered" && EmailNotVerified(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode, hasTyped, setHasTyped)}
                 {props.type === "Email not verified" && EmailNotVerified(props, email, setEmail, isEmailValid, setEmailValid, handleResendConfirmationCode, hasTyped, setHasTyped)}
               </div>
             </div>

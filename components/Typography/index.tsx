@@ -35,7 +35,7 @@ function TypographyStyle(props: TypographyProps) {
     case "b2":
       return `group-hover:text-white font-lato text-base text-[#4f4f4f] font-normal ${props.center && "text-center"} leading-[24px]`
     case "b3":
-      return `text-sm text-[#4f4f4f] font-lato ${props.center && "text-center"} font-normal leading-[21px] ${props.button && "cursor-pointer"}`;
+      return `font-lato font-normal text-sm leading-[21px] text-[#4f4f4f] ${props.center && "text-center"} ${props.button && "cursor-pointer"}`;
     case "bb3":
       return `font-lato font-bold text-sm leading-[21px] text-sm text-[#2c2c2c] ${props.center && "text-center"} ${props.button && "cursor-default"} leading-[21px]`;
     case "bl3":

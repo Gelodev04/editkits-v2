@@ -49,7 +49,7 @@ export default function Header() {
       <Link href="/home">
         <Image src={Logo} className="w-[187px]" alt="Logo" priority/>
       </Link>
-      <div className="flex space-x-[21px] justify-center items-center">
+      <div className="flex space-x-[30px] justify-center items-center">
         {userInfo && (
           <Link href="/dashboard">
             <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"}/>
@@ -60,6 +60,12 @@ export default function Header() {
           <Typography width={45} label="Home" variant="link" bold={router.pathname === "/home"}/>
         </Link>
         )}
+        <Link href="/tools">
+          <Typography width={42} label="Tools" variant="link" bold={router.pathname === "/tools"}/>
+        </Link>
+        <Link href="/pricing">
+          <Typography width={42} label="Pricing" variant="link" bold={router.pathname === "/pricing"}/>
+        </Link>
         <Link href="/blog">
           <Typography width={42} label="Blogs" variant="link" bold={router.pathname === "/blog"}/>
         </Link>

@@ -13,7 +13,7 @@ const codeInputProps = {
     color: '#4f4f4f',
     borderBottom: '2px solid #d4d4d4',
     width: "55px",
-    outline: "none",
+    outline: "none"
   },
 }
 

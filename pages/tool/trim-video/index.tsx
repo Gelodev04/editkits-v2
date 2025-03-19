@@ -235,7 +235,7 @@ export default function TrimVideo() {
           onClick={handleTrimVideo}
           disabled={!file || isInitLoading || isCommitLoading || isInitLoading}
           label="Proceed"
-          variant="contained"
+          variant="primary"
           filled
           rightIcon={<FaAngleRight/>}
           isLoading={isInitLoading}

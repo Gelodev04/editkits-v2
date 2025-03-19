@@ -118,7 +118,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
           error={!props.isMessageValid}
         />
       </div>
-      <div className="pt-[20px]">
+      <div className="pt-[20px] flex justify-center">
         <Button
           onClick={props.handleContactUsSubmit}
           disabled={
@@ -133,9 +133,8 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
             props.isLoading
           }
           label="Submit"
-          variant="contained"
+          variant="popup"
           filled
-          height={48}
           isLoading={props.isLoading}
         />
       </div>

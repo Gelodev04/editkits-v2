@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import {FaAngleDown} from "react-icons/fa";
-import { Divider } from "@mui/material";
+import {Divider} from "@mui/material";
 
 import AuthModal from "@/components/modals/Auth";
 import Button from "@/components/Button";
@@ -21,7 +21,7 @@ import User from '@/public/assets/icons/user.svg'
 
 export default function Header() {
   const router = useRouter();
-  const { userInfo } = useUserInfo();
+  const {userInfo} = useUserInfo();
   const [logout] = useLogoutMutation();
   const handleLogout = useLogout(router, logout);
 
@@ -49,28 +49,28 @@ export default function Header() {
       <Link href="/home">
         <Image src={Logo} className="w-[187px]" alt="Logo" priority/>
       </Link>
-      <div className="flex space-x-[30px] justify-center items-center">
+      <div className="flex justify-center items-center">
         {userInfo && (
-          <Link href="/dashboard">
+          <Link className="pr-[35px]" href="/dashboard">
             <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"}/>
           </Link>
         )}
         {!userInfo && (
-          <Link href="/home">
-          <Typography width={45} label="Home" variant="link" bold={router.pathname === "/home"}/>
-        </Link>
+          <Link className="pr-[35px]" href="/home">
+            <Typography label="Home" variant="link" bold={router.pathname === "/home"}/>
+          </Link>
         )}
-        <Link href="/tools">
-          <Typography width={42} label="Tools" variant="link" bold={router.pathname === "/tools"}/>
+        <Link className="pr-[35px]" href="/tools">
+          <Typography label="Tools" variant="link" bold={router.pathname === "/tools"}/>
         </Link>
-        <Link href="/pricing">
-          <Typography width={42} label="Pricing" variant="link" bold={router.pathname === "/pricing"}/>
+        <Link className="pr-[35px]" href="/pricing">
+          <Typography label="Pricing" variant="link" bold={router.pathname === "/pricing"}/>
         </Link>
-        <Link href="/blog">
-          <Typography width={42} label="Blogs" variant="link" bold={router.pathname === "/blog"}/>
+        <Link className="pr-[35px]" href="/blog">
+          <Typography label="Blogs" variant="link" bold={router.pathname === "/blog"}/>
         </Link>
-        <Link href="/contact-us">
-          <Typography width={100} label="Contact Us" variant="link" bold={router.pathname === "/contact-us"}/>
+        <Link className="pr-[35px]" href="/contact-us">
+          <Typography label="Contact Us" variant="link" bold={router.pathname === "/contact-us"}/>
         </Link>
       </div>
       <div className="flex gap-[11px] justify-center items-center">
@@ -78,10 +78,9 @@ export default function Header() {
           <div className="w-[160px] relative inline-block">
             <Button
               onClick={() => setIsOpen(!isOpen)}
-              variant="contained"
+              variant="primary"
               label="Account"
               rightIcon={<FaAngleDown size={16}/>}
-              className="bg-[#f0f0f0] py-3 w-[160px] font-montserrat"
             />
             {isOpen && (
               <div
@@ -90,29 +89,21 @@ export default function Header() {
               >
                 <Button
                   onClick={() => router.push('/account')}
-                  fontWeight="font-normal"
-                  font="font-inter"
                   variant="primary"
                   label="Profile"
                   leftIcon={User}
-                  className="font-inter font-normal gap-4 px-4"
                 />
                 <Button
                   onClick={() => router.push('account')}
-                  fontWeight="font-normal"
-                  font="font-inter"
-                  variant="primary" label="Subscription"
+                  variant="primary"
+                  label="Subscription"
                   leftIcon={Subscription}
-                  className="font-inter font-normal gap-4 px-4"
                 />
                 <Divider orientation="horizontal" flexItem/>
                 <Button
                   onClick={handleLogout}
-                  fontWeight="font-normal"
-                  font="font-inter"
                   variant="primary"
                   label="Log Out" leftIcon={Logout}
-                  className="font-inter font-normal gap-4 px-4"
                 />
               </div>
             )}
@@ -120,27 +111,19 @@ export default function Header() {
         )}
 
         {!userInfo && (
-          <>
-            <div className="w-32">
-              <Button
-                onClick={onSignup}
-                label="Signup"
-                variant="secondary"
-                width={112}
-                height={48}
-              />
-            </div>
-            <div className="w-32">
-              <Button
-                onClick={onLogin}
-                label="Login"
-                variant="contained"
-                filled
-                width={115}
-                height={48}
-              />
-            </div>
-          </>
+          <div className="flex gap-[23px]">
+            <Button
+              onClick={onSignup}
+              label="Signup"
+              variant="standard_sm"
+            />
+            <Button
+              onClick={onLogin}
+              label="Login"
+              variant="standard_sm"
+              filled
+            />
+          </div>
         )}
       </div>
       <AuthModal
@@ -155,7 +138,7 @@ export default function Header() {
         setModalTitle={setModalTitle}
         setModalMessage={setModalMessage}
       />
-     <PopUp
+      <PopUp
         open={authConfirmationModal}
         setOpen={setAuthConfirmationModal}
         description={modalMessage}

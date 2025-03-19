@@ -35,9 +35,8 @@ export default function ForgetPassword(
           disabled={(hasTyped && !isEmailValid) || isRequestPasswordResetLoading}
           onClick={() => handleSendResetCode(email, requestPasswordReset, props.setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
           label="Send reset code"
-          variant="outlined"
+          variant="popup"
           filled
-          height={67}
           isLoading={isRequestPasswordResetLoading}
         />
       </div>

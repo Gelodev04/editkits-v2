@@ -94,10 +94,8 @@ export function VideoUpload(props: VideoUploadProps) {
       {!props.file && (
         <Button
           onClick={() => props.setUploadFileModal(true)}
-          className="max-w-[113px] py-[6.5px] font-bold border border-2 border-neutral-300 text-[#4f4f4f]"
           label="Add File"
-          variant="contained"
-          border
+          variant="standard_sm"
         />
       )}
     </div>

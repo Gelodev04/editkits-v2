@@ -106,8 +106,6 @@ export default function FileProgressModal(props) {
                   }}
                   label="Dashboard"
                   variant="secondary"
-                  width={209}
-                  height={48}
                 />
                 <Button
                   onClick={() => {
@@ -115,10 +113,8 @@ export default function FileProgressModal(props) {
                     router.push("/tools")
                   }}
                   label="Explore All Tools"
-                  variant="contained"
+                  variant="standard"
                   filled
-                  width={209}
-                  height={48}
                 />
               </div>)}
             </div>

@@ -73,10 +73,8 @@ export default function Account() {
                 <div className="pt-10">
                   <Button
                     onClick={() => setUpdatePasswordModal(true)}
-                    className="max-w-[191px] max-h-12 border border-2 border-neutral-300 py-[13px] text-[#4f4f4f]"
                     label="Change Password"
-                    variant="contained"
-                    border
+                    variant="secondary"
                   />
                 </div>
               </div>

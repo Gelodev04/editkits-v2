@@ -74,9 +74,8 @@ export default function ResetPassword(
           disabled={hasTyped && (code?.length !== 6 || !isPasswordValid || password !== confirmPassword) || isConfirmPasswordResetLoading}
           onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
           label="Reset Password"
-          variant="outlined"
+          variant="popup"
           filled
-          height={67}
           isLoading={isConfirmPasswordResetLoading}
         />
       </div>

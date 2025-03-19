@@ -147,8 +147,6 @@ export default function Home() {
           <Button
             label="More tools coming soon!"
             variant="secondary"
-            width={268}
-            height={48}
           />
         </div>
       </div>

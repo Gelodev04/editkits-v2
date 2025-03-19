@@ -277,7 +277,7 @@ export default function ResizeVideo() {
         <Button
           disabled={!settings.isColorValid || !file}
           label="Proceed"
-          variant="contained"
+          variant="primary"
           filled
           rightIcon={<FaAngleRight/>}
         />

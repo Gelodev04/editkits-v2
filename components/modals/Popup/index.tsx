@@ -39,8 +39,6 @@ export default function PopUp(props: PopUpProps) {
                   onClick={() => props.setOpen(false)}
                   label="Dismiss"
                   variant="secondary"
-                  width={209}
-                  height={48}
                 />
               </div>
             </div>

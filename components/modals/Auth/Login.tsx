@@ -75,9 +75,8 @@ export default function Login(
         <Button
           onClick={() => props.setType("Sign Up")}
           label="Signup"
-          variant="primary"
+          variant="popup_link"
           filled
-          width={40}
         />
       </div>
     </>

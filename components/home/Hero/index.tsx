@@ -24,11 +24,9 @@ export default function Hero({setWaitlistModal}) {
         </div>
         <Button
           label="Join the Waitlist"
-          variant="outlined"
+          variant="primary"
           filled
-          width={226}
           onClick={() => setWaitlistModal(true)}
-          height={64}
         />
       </div>
       <div className="sm:col-span-8 lg:col-span-6 bg-[url(../public/assets/img/hero_bg.svg)] bg-cover bg-left">

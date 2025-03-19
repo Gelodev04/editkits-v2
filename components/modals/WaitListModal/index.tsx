@@ -133,9 +133,8 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                       props.isLoading
                     }
                     label="Submit"
-                    variant="contained"
+                    variant="popup"
                     filled
-                    height={64}
                     isLoading={props.isLoading}
                   />
                 </div>

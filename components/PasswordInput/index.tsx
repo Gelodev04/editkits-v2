@@ -7,7 +7,7 @@ type InputProps = {
     type?: string;
     error?: boolean;
     height?: number;
-    value: number | string
+    value?: number | string
 }
 
 export default function PasswordInput(props: InputProps) {

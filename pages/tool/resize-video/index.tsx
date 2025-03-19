@@ -182,7 +182,6 @@ export default function ResizeVideo() {
             type="number"
             disabled={!file}
             placeholder="1920"
-            variant="t2"
             label="Width"
             value={settings.width}
             onChange={(e) => {
@@ -196,7 +195,6 @@ export default function ResizeVideo() {
             type="number"
             disabled={!file}
             placeholder="1080"
-            variant="t2"
             label="Height"
             value={settings.height}
             onChange={(e) => {
@@ -259,7 +257,6 @@ export default function ResizeVideo() {
             type="number"
             disabled={!file}
             placeholder="30"
-            variant="t2"
             label="Framerate"
             value={settings.framerate}
             onChange={e => updateSettings("framerate", e.target.value)}
@@ -270,7 +267,6 @@ export default function ResizeVideo() {
             type="number"
             disabled={!file}
             placeholder="480000"
-            variant="t2"
             label="Audio Sample Rate"
             value={settings.audioSampleRate}
             onChange={(e) => updateSettings("audioSampleRate", e.target.value)}

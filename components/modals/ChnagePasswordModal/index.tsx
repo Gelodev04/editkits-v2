@@ -85,7 +85,6 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                       setCurrentPasswordValid(validatePassword(currentPassword))
                     }}
                     error={!isCurrentPasswordValid}
-                    password={props.currentPassword}
                     type="password"
                     value={props.currentPassword}
                   />
@@ -98,7 +97,6 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                         setPasswordValid(validatePassword(passwordValue));
                       }}
                       error={!isPasswordValid}
-                      password={props.newPassword}
                       label="New Password"
                       placeholder="*********"
                       type="password"
@@ -110,7 +108,6 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                       if (!hasTyped) setHasTyped(true);
                       props.setConfirmPassword(e.target.value)
                     }}
-                    password={props.confirmPassword}
                     error={props.newPassword !== props.confirmPassword}
                     label="Confirm the password"
                     placeholder="**********"

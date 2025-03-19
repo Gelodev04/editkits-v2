@@ -186,7 +186,6 @@ export default function TrimVideo() {
             onChange={(e) => setStartTime((e.target.value))}
             disabled={!file}
             placeholder="0 second"
-            variant="t2"
             label="Start time"
           />
         </div>
@@ -195,7 +194,6 @@ export default function TrimVideo() {
             disabled={!file}
             type="number"
             placeholder="1000 seconds"
-            variant="t2"
             label="End time"
             value={endTime}
             onChange={(e) => setEndTime((e.target.value))}

@@ -7,7 +7,7 @@ type InputFieldProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   type: string;
-  error: boolean;
+  error?: boolean;
   disabled?: boolean;
   value?: string | number;
 }
@@ -20,6 +20,7 @@ export default function InputField(props: InputFieldProps) {
         {props.type === "password" && (
           <PasswordInput
             value={props.value}
+            //@ts-ignore
             error={props.error && props?.value?.length > 0}
             onChange={props.onChange}
             placeholder={props.placeholder}

@@ -5,29 +5,21 @@ import {HiOutlineQuestionMarkCircle} from "react-icons/hi";
 import Typography from "@/components/Typography";
 import Tag from "@/components/Tag";
 import BenefitCard from "@/components/cards/BenefitCard";
-
-interface Plan {
-  title: string;
-  description: string;
-  credits: number;
-  original_price: number;
-  new_price: number;
-  is_popular: boolean;
-  benefits: string[];
-  credit_actions: string[];
-}
+import { Plan } from "@/interfaces/Plan";
 
 type PricingPlanCardProps = {
   plan: Plan;
   additionalContent: string[];
   setAdditionalContent: (e: React.SetStateAction<any>) => void;
   setWhatCanYouDoModal: (e: React.SetStateAction<boolean>) => void;
+  setPlan: (e: Plan) => void;
 }
 
 export default function PricingPlanCard(props: PricingPlanCardProps) {
   function handleWhatCanYouDoModal() {
     props.setAdditionalContent(props.plan.credit_actions)
     props.setWhatCanYouDoModal(true)
+    props.setPlan(props.plan)
   }
 
   return (
@@ -40,7 +32,7 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
         </div>
       )}
       <div className="flex-grow">
-        {(props.plan.original_price !== props.plan.new_price) && <p className="font-lato font-semibold text-[20px] leading-[18px] text-[#2c2c2c] line-through">{props.plan.original_price}</p>}
+        {(props.plan.original_price !== props.plan.new_price) && <p className="group-hover:text-white font-lato font-semibold text-[20px] leading-[18px] text-[#2c2c2c] line-through">${props.plan.original_price}</p>}
         <div className="flex justify-between items-center pr-[15px]">
           <div className="flex items-center">
             <p
@@ -51,8 +43,7 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
           <Tag label={`${props.plan.credits} Credits / month`}/>
         </div>
         <div className="flex justify-end pr-[15px] gap-[6.5px] cursor-pointer" onClick={handleWhatCanYouDoModal}>
-          <p className="font-lato font-normal text-sm leading-[21px] text-[#2c2c2c] group-hover:text-white">What can you
-            do</p>
+          <p className="font-lato font-normal text-sm leading-[21px] text-[#2c2c2c] group-hover:text-white">What can you do</p>
           <HiOutlineQuestionMarkCircle color="#2c2c2c" size={20} className="block group-hover:hidden"/>
           <HiOutlineQuestionMarkCircle color="white" size={20} className="hidden group-hover:block"/>
         </div>

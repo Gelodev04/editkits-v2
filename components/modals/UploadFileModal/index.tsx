@@ -171,7 +171,8 @@ export default function UploadFileModal(props: UploadModalProps) {
                       <p className="font-lato font-normal text-xs leading-[18px] text-center text-[#6d6d6d]">OR</p>
                     </div>
                   </div>
-                  <InputField label="File ID" placeholder="Add file ID" height={42} type="text" variant="fileUpload"/>
+                  {/*@ts-ignore*/}
+                  <InputField label="File ID" placeholder="Add file ID" type="text" />
                   <div className="flex gap-[27px] pt-[76px] pb-[32px]">
                     <Button
                       onClick={() => props.setUploadModal(false)}

@@ -38,7 +38,6 @@ export default function Login(
         placeholder="Email address"
         value={email}
         type="text"
-        height={48}
       />
       <div className="pt-[32px]">
         <InputField
@@ -53,7 +52,6 @@ export default function Login(
           type="password"
           label="Password"
           placeholder="Password"
-          height={48}
         />
       </div>
       <div className="flex justify-between items-center pt-[20px]">

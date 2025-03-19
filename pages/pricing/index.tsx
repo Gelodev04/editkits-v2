@@ -12,10 +12,21 @@ import Wave1 from "@/public/assets/img/wave1.svg"
 import Wave2 from "@/public/assets/img/wave2.svg"
 import WhatCanYouDoPopup from "@/components/modals/WhatCanYouDoPopup";
 import Loading from "@/pages/pricing/laoding";
+import {Plan} from "@/interfaces/Plan";
 
 export default function Pricing() {
   const [monthly, setMonthly] = useState(true);
   const { data: plans } = useGetPlansQuery({isYearly: !monthly});
+  const [plan, setPlan] = useState<Plan>({
+    benefits: [],
+    credit_actions: [],
+    credits: 0,
+    description: "",
+    is_popular: false,
+    new_price: 0,
+    original_price: 0,
+    title: ""
+  })
 
   const [whatCanYouDoModal, setWhatCanYouDoModal] = useState(false);
   const [additionalContent, setAdditionalContent] = useState([]);
@@ -59,6 +70,7 @@ export default function Pricing() {
                   setWhatCanYouDoModal={setWhatCanYouDoModal}
                   additionalContent={additionalContent}
                   setAdditionalContent={setAdditionalContent}
+                  setPlan={setPlan}
                 />
               ))}
             </>
@@ -69,8 +81,7 @@ export default function Pricing() {
         open={whatCanYouDoModal}
         setOpen={setWhatCanYouDoModal}
         title="What can you do?"
-        description="For 12000 credits, you can do the following :"
-        additionalContent={additionalContent}
+        plan={plan}
       />
     </div>
   )

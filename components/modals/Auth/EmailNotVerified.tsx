@@ -23,10 +23,9 @@ export default function EmailNotConfirmedLogin(
           setEmailValid(validateEmail(e.target.value));
         }}
         error={!isEmailValid}
-        email={email}
+        value={email}
         label="Email"
         placeholder="abc@editkits.com"
-        value={email}
         type="text"
       />
       <div className="pb-[38px] pt-[112px] max-w-[446px] mx-auto">

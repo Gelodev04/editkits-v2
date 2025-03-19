@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import {validatePassword} from "@/lib/validatePassword";
 import {PasswordValidation} from "@/components/PasswordValidtion";
 import {AuthModalProps} from "@/components/modals/Auth/index";
+import Toggle from "@/components/Toggle";
 
 export default function ResetPassword(
   props: AuthModalProps,
@@ -26,51 +27,49 @@ export default function ResetPassword(
 ) {
   return (
     <>
-      <div className="px-[43px] pt-[23px]">
+      <InputField
+        label="Code"
+        placeholder="Reset Code"
+        onChange={(e) => {
+          const code = e.target.value;
+          if (!hasTyped) setHasTyped(true);
+          setCode(code)
+        }}
+        value={code}
+        error={!(code.length >= 6)}
+        type="text"
+      />
+      <div className="py-[32px]">
         <InputField
-          label="Code"
-          placeholder="Reset Code"
-          onChange={(e) => {
-            const code = e.target.value;
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const passwordValue = e.target.value;
             if (!hasTyped) setHasTyped(true);
-            setCode(code)
+            setPassword(passwordValue);
+            setPasswordValid(validatePassword(passwordValue));
           }}
-          value={code}
-          code={code}
-          error={!(code.length >= 6)}
-          type="text"
-        />
-        <div className="py-[32px]">
-          <InputField
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const passwordValue = e.target.value;
-              if (!hasTyped) setHasTyped(true);
-              setPassword(passwordValue);
-              setPasswordValid(validatePassword(passwordValue));
-            }}
-            error={!isPasswordValid}
-            password={password}
-            label="New Password"
-            placeholder="*********"
-            type="password"
-          />
-        </div>
-        <InputField
-          onChange={(e) => {
-            if (!hasTyped) setHasTyped(true);
-            setConfirmPassword(e.target.value)
-          }}
-          password={password}
-          error={password !== confirmPassword}
-          label="Confirm the password"
-          placeholder="**********"
+          error={!isPasswordValid}
+          value={password}
+          label="New Password"
+          placeholder="*********"
           type="password"
         />
-        <div className="pt-[23px]">
-          <PasswordValidation password={password}/>
-        </div>
       </div>
-      <div className="pt-[38.5px] pb-[38px] max-w-[446px] mx-auto">
+      <InputField
+        onChange={(e) => {
+          if (!hasTyped) setHasTyped(true);
+          setConfirmPassword(e.target.value)
+        }}
+        value={password}
+        error={password !== confirmPassword}
+        label="Confirm the password"
+        placeholder="**********"
+        type="password"
+      />
+      <div className="py-[20px]">
+        <Toggle label="Remember me"/>
+      </div>
+      <PasswordValidation password={password}/>
+      <div className="pt-[42px] max-w-[446px] mx-auto">
         <Button
           disabled={hasTyped && (code?.length !== 6 || !isPasswordValid || password !== confirmPassword) || isConfirmPasswordResetLoading}
           onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}

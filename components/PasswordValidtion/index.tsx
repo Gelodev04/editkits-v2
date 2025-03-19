@@ -1,6 +1,8 @@
-import {FaCheckCircle} from "react-icons/fa";
-import Typography from "@/components/Typography";
 import React from "react";
+
+import {FaCheckCircle} from "react-icons/fa";
+
+import Typography from "@/components/Typography";
 
 export function PasswordValidation(props) {
   return (

@@ -107,7 +107,7 @@ export default function AuthModal(props: AuthModalProps) {
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
               <div
-                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-[23px] bg-white text-left shadow-xl transition-all sm:w-[532px]`}>
+                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} px-[43px] pb-[34.5px] relative transform overflow-hidden rounded-[23px] bg-white text-left shadow-xl transition-all sm:w-[532px]`}>
                 <div className="absolute right-[14px] top-[14px] cursor-pointer">
                   <TbXboxX size={30} color="#000" onClick={() => props.setAuthModal(false)}/>
                 </div>

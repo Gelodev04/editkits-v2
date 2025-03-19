@@ -41,7 +41,7 @@ function TypographyStyle(props: TypographyProps) {
     case "bl3":
       return `text-sm text-sky-500 ${props.center && "text-center"} font-lato font-normal underline  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "b4":
-      return `font-lato font-normal text-sm leading-[18px] text-[#4f4f4f]`
+      return `font-lato font-normal text-sm leading-[21px] text-[#4f4f4f]`
     case "bb4":
       return `text-sm text-[#4f4f4f] font-lato ${props.center && "text-center"} font-bold leading-[18px]`
     case "link":

@@ -65,16 +65,14 @@ export default function Login(
           disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
           onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal)}
           label="Login"
-          variant="outlined"
+          variant="popup"
           filled
-          height={67}
           isLoading={isLoginLoading}
         />
       </div>
       <div className="flex justify-center pt-[13px] gap-4">
         <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Don&apos;t have an account?</p>
         <Button
-          className="font-openSans font-bold text-xs text-[#148CFC]"
           onClick={() => props.setType("Sign Up")}
           label="Signup"
           variant="primary"

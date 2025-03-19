@@ -57,9 +57,8 @@ export default function TableHeader(props: TableHeaderProps) {
             onClick={() => props.setUploadModal(true)}
             label={props.active === "Job status" ? "New Job" : "Upload Files"}
             rightIcon={<IoAdd size={20}/>}
-            variant="secondary"
+            variant="standard_sm"
             filled
-            className="py-3"
           />
         </div>
       </div>

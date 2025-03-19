@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Button from "@/components/Button";
 import Typography from "@/components/Typography";
 import LanguageSelector from "@/components/LanguageSelector";
+import React from "react";
 
 
 export default function Footer() {
@@ -9,14 +9,14 @@ export default function Footer() {
   return (
     <div className="pt-10 bg-zinc-50 pb-5 px-8">
       <div className="flex space-x-6 justify-center pb-8 max-w-[1920px] mx-auto">
-        <Link href="/" className="font-roboto">
-          <Button label="Home" variant="primary" className="font-normal"/>
+        <Link href="/home">
+          <p className="font-roboto font-normal text-sm text-[#000000]">Home</p>
         </Link>
-        <Link href="/blog" className="font-roboto">
-          <Button label="Blogs" variant="primary" className="font-normal"/>
+        <Link href="/tools">
+          <p className="font-roboto font-normal text-sm text-[#000000]">Tools</p>
         </Link>
-        <Link href="/contact-us" className="font-roboto">
-          <Button label="Contact Us" variant="primary" className="font-normal"/>
+        <Link href="/pricing">
+          <p className="font-roboto font-normal text-sm text-[#000000]">Pricing</p>
         </Link>
       </div>
       <div className="2xl:px-[32%] xl:px-[18%] lg:px-[12%]">
@@ -33,12 +33,9 @@ export default function Footer() {
         <p className="font-openSans font-normal text-[13px] text-[#2c2c28] leading-[17px]">© 2025 Edikits. All rights
           reserved</p>
         <div className="flex space-x-6 justify-center">
-          <Button label="Terms of Use" variant="primary"
-                  className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
-          <Button label="Privacy Policy" variant="primary"
-                  className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
-          <Button label="Help" variant="primary"
-                  className="font-openSans font-normal text-[#262628] text-[13px] leading-[17px]"/>
+          <p className="font-openSans font-normal text-[13px] text-[#262628]">Terms of Use</p>
+          <p className="font-openSans font-normal text-[13px] text-[#262628]">Privacy Policy</p>
+          <p className="font-openSans font-normal text-[13px] text-[#262628]">Help</p>
         </div>
         <LanguageSelector/>
       </div>

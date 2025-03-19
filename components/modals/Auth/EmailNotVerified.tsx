@@ -33,9 +33,8 @@ export default function EmailNotConfirmedLogin(
           disabled={hasTyped && (!isEmailValid)}
           onClick={handleSendResetCode}
           label="Send Verification Code"
-          variant="outlined"
+          variant="popup"
           filled
-          height={67}
         />
       </div>
     </>

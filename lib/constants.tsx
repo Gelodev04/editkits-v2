@@ -402,7 +402,7 @@ export const jsonLdData = {
     "url": "https://editkits.com",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://editkits.com/logo.png"
+      "url": "https://editkits.com/logo.svg"
     },
     "sameAs": [
       "https://en.wikipedia.org/wiki/Video_editing",

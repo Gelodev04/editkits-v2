@@ -31,7 +31,7 @@ export function Subscription(props: any) {
         </div>
       </div>
       <div className="col-span-2 pt-3 flex items-end justify-end">
-        <Button label="Change plan" variant="contained" className="py-3 max-w-[152px]" filled/>
+        <Button label="Change plan" variant="primary" filled/>
       </div>
     </div>
   )

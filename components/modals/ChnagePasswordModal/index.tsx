@@ -124,9 +124,8 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                     disabled={hasTyped && (!isCurrentPasswordValid || !isPasswordValid || props.newPassword !== props.confirmPassword) || props.isUpdatePasswordLoading}
                     onClick={props.handleUpdatePassword}
                     label="Reset Password"
-                    variant="outlined"
+                    variant="popup"
                     filled
-                    height={67}
                     isLoading={props.isUpdatePasswordLoading}
                   />
                 </div>

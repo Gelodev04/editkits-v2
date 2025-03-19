@@ -1,30 +1,30 @@
-import * as React from "react";
+import {useState} from "react";
 
-import InputField from "@/components/InputField";
-import Button from "@/components/Button";
+import toast from "react-hot-toast";
+
 import AccountType from "@/components/account/AccountType";
-
-import {validateEmail} from "@/lib/validateEmail";
+import Button from "@/components/Button";
+import InputField from "@/components/InputField";
 import ChangePasswordModal from "@/components/modals/ChnagePasswordModal";
+import PopUp from "@/components/modals/Popup";
+
+import {benefits} from "@/lib/constants";
+import {Subscription} from "@/components/account/Subscription";
+import {validateEmail} from "@/lib/validateEmail";
 import {useUserInfo} from "@/hooks/useUserInfo";
 import {useUpdatePasswordMutation} from "@/services/api/auth";
-import toast from "react-hot-toast";
-import {useState} from "react";
-import {Subscription} from "@/components/account/Subscription";
-import PopUp from "@/components/modals/Popup";
-import {benefits} from "@/lib/constants";
 
 export default function Account() {
   const {userInfo} = useUserInfo();
   const [updatePassword, {isLoading: isUpdatePasswordLoading}] = useUpdatePasswordMutation();
 
-  const [active, setActive] = React.useState("email");
-  const [email, setEmail] = React.useState("")
-  const [currentPassword, setCurrentPassword] = React.useState("");
-  const [newPassword, setNewPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [isEmailValid, setEmailValid] = React.useState("");
-  const [updatePasswordModal, setUpdatePasswordModal] = React.useState(false);
+  const [active, setActive] = useState("email");
+  const [email, setEmail] = useState("")
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isEmailValid, setEmailValid] = useState("");
+  const [updatePasswordModal, setUpdatePasswordModal] = useState(false);
 
   const [changePasswordConfirmationModal, setChangePasswordConfirmationModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("")
@@ -39,7 +39,6 @@ export default function Account() {
       setModalMessage(response.error.data.errorMsg);
       setUpdatePasswordModal(false);
       setChangePasswordConfirmationModal(true);
-
       return;
     }
 
@@ -55,7 +54,7 @@ export default function Account() {
           <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
             <AccountType active={active} setActive={setActive}/>
           </div>
-          <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
+          <div className="col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
             {active === "email" && (
               <div className="pt-4 max-w-[412px]">
                 <InputField
@@ -63,7 +62,7 @@ export default function Account() {
                   placeholder={userInfo?.email}
                   type="email"
                   error={!isEmailValid}
-                  email={email}
+                  value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
                     // @ts-ignore

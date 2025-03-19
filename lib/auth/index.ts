@@ -62,7 +62,7 @@ export async function handleResendConfirmationCode(email, type, setTimer, setTyp
     return;
   }
   toast.success(response.data.message);
-  if (type === "Email already registered" || type === "Email not verified") {
+  if (type === "Email already\nregistered" || type === "Email not verified") {
     setType("Enter verification code")
   }
   setTimer(60)
@@ -81,7 +81,7 @@ export async function handleRegister(email, password, setType, register, setAuth
     const {errorMsg, errorCode} = errorResponse;
 
     if (errorCode === "11018") {
-      setType("Email already registered")
+      setType("Email already\nregistered")
     }
 
     setModalTitle("Uh-oh! Something's Off");

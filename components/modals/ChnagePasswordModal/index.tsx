@@ -8,6 +8,7 @@ import Button from "@/components/Button";
 import {useCountdownTimer} from "@/hooks/useCountdownTimer";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 import {PasswordValidation} from "@/components/PasswordValidtion";
+import Toggle from "@/components/Toggle";
 
 export type AuthModalProps = {
   type: string;
@@ -66,14 +67,14 @@ export default function ChangePasswordModal(props: AuthModalProps) {
               <div className="absolute right-[14px] top-[14px] cursor-pointer">
                 <TbXboxX size={30} color="#000" onClick={() => props.setUpdatePasswordModal(false)}/>
               </div>
-              <div className="px-[43px]">
+              <div className="px-[43px] pb-[34.5px]">
                 <div className="pb-[8px] pt-[32px]">
                   <Typography label={props.type} center variant="h4"/>
                 </div>
                 <div className="w-[432px] mx-auto">
                   <Typography label={props.description} center variant="b3"/>
                 </div>
-                <div className="pt-[33px]">
+                <div className="pt-[42px]">
                   <InputField
                     label="Current Password"
                     placeholder="*********"
@@ -84,7 +85,6 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                       setCurrentPasswordValid(validatePassword(currentPassword))
                     }}
                     error={!isCurrentPasswordValid}
-                    password={props.currentPassword}
                     type="password"
                     value={props.currentPassword}
                   />
@@ -97,7 +97,6 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                         setPasswordValid(validatePassword(passwordValue));
                       }}
                       error={!isPasswordValid}
-                      password={props.newPassword}
                       label="New Password"
                       placeholder="*********"
                       type="password"
@@ -109,18 +108,18 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                       if (!hasTyped) setHasTyped(true);
                       props.setConfirmPassword(e.target.value)
                     }}
-                    password={props.confirmPassword}
                     error={props.newPassword !== props.confirmPassword}
                     label="Confirm the password"
                     placeholder="**********"
                     type="password"
                     value={props.confirmPassword}
                   />
-                  <div className="pt-[23px]">
-                    <PasswordValidation password={props.newPassword}/>
+                  <div className="py-[20px]">
+                    <Toggle label="Remember me"/>
                   </div>
+                  <PasswordValidation password={props.newPassword}/>
                 </div>
-                <div className="pb-[38px] pt-[49.5px] max-w-[446px] mx-auto">
+                <div className="pt-[42px] max-w-[446px] mx-auto">
                   <Button
                     disabled={hasTyped && (!isCurrentPasswordValid || !isPasswordValid || props.newPassword !== props.confirmPassword) || props.isUpdatePasswordLoading}
                     onClick={props.handleUpdatePassword}

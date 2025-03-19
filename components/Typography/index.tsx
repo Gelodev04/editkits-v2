@@ -25,7 +25,7 @@ function TypographyStyle(props: TypographyProps) {
     case "h3":
       return `text-3xl font-montserrat text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
     case "h4":
-      return `font-montserrat font-bold text-[32px] text-[#2c2c2c] ${props.center && "text-center"} leading-[40px]`;
+      return `font-montserrat font-bold text-[32px] text-[#2c2c2c] ${props.center && "text-center"} leading-[40px] whitespace-pre-line`;
     case "hb4":
       return `text-base font-bold font-lato text-[#333333] ${props.center && "text-center"}`;
     case "h6":
@@ -35,13 +35,13 @@ function TypographyStyle(props: TypographyProps) {
     case "b2":
       return `group-hover:text-white font-lato text-base text-[#4f4f4f] font-normal ${props.center && "text-center"} leading-[24px]`
     case "b3":
-      return `text-sm text-[#4f4f4f] font-lato ${props.center && "text-center"} font-normal leading-[21px] ${props.button && "cursor-pointer"}`;
+      return `font-lato font-normal text-sm leading-[21px] text-[#4f4f4f] ${props.center && "text-center"} ${props.button && "cursor-pointer"}`;
     case "bb3":
       return `font-lato font-bold text-sm leading-[21px] text-sm text-[#2c2c2c] ${props.center && "text-center"} ${props.button && "cursor-default"} leading-[21px]`;
     case "bl3":
       return `text-sm text-sky-500 ${props.center && "text-center"} font-lato font-normal underline  hover:scale-105 transition-transform duration-300 cursor-pointer`;
     case "b4":
-      return `font-lato font-normal text-sm leading-[18px] text-[#4f4f4f]`
+      return `font-lato font-normal text-sm leading-[21px] text-[#4f4f4f]`
     case "bb4":
       return `text-sm text-[#4f4f4f] font-lato ${props.center && "text-center"} font-bold leading-[18px]`
     case "link":

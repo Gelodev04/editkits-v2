@@ -27,45 +27,40 @@ export default function Login(
 
   return (
     <>
-      <div className="px-[50.5px] min-h-[353px]">
+      <InputField
+        onChange={(e) => {
+          if (!hasTyped) setHasTyped(true);
+          setEmail(e.target.value);
+          setEmailValid(validateEmail(e.target.value));
+        }}
+        error={!isEmailValid}
+        label="Username"
+        placeholder="Email address"
+        value={email}
+        type="text"
+      />
+      <div className="pt-[32px]">
         <InputField
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             if (!hasTyped) setHasTyped(true);
-            setEmail(e.target.value);
-            setEmailValid(validateEmail(e.target.value));
+            const passwordValue = e.target.value;
+            setPassword(passwordValue);
+            setPasswordValid(validatePassword(passwordValue));
           }}
-          error={!isEmailValid}
-          email={email}
-          label="Username"
-          placeholder="Email address"
-          value={email}
-          type="text"
-          height={66}
+          error={!isPasswordValid}
+          value={password}
+          type="password"
+          label="Password"
+          placeholder="Password"
         />
-        <div className="pt-[31px]">
-          <InputField
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              if (!hasTyped) setHasTyped(true);
-              const passwordValue = e.target.value;
-              setPassword(passwordValue);
-              setPasswordValid(validatePassword(passwordValue));
-            }}
-            error={!isPasswordValid}
-            password={password}
-            type="password"
-            label="Password"
-            placeholder="Password"
-            height={66}
-          />
-        </div>
-        <div className="flex justify-between items-center pt-[53px]">
-          <Toggle label="Remember me"/>
-          <p onClick={() => props.setType("Forgot your password?")}
-             className="font-lato font-normal text-xs leading-[18px] text-[#6F6C90] cursor-pointer">Forgot your
-            password?</p>
-        </div>
       </div>
-      <div className="pt-20 max-w-[446px] mx-auto">
+      <div className="flex justify-between items-center pt-[20px]">
+        <Toggle label="Remember me"/>
+        <p onClick={() => props.setType("Forgot your password?")}
+           className="font-lato font-normal text-xs leading-[18px] text-[#6F6C90] cursor-pointer">Forgot your
+          password?</p>
+      </div>
+      <div className="pt-[42px] max-w-[446px] mx-auto">
         <Button
           disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
           onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal)}
@@ -76,7 +71,7 @@ export default function Login(
           isLoading={isLoginLoading}
         />
       </div>
-      <div className="flex justify-center pb-[32px] pt-[12px] gap-4">
+      <div className="flex justify-center pt-[13px] gap-4">
         <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Don&apos;t have an account?</p>
         <Button
           className="font-openSans font-bold text-xs text-[#148CFC]"

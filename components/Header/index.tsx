@@ -78,9 +78,13 @@ export default function Header() {
           <div className="w-[160px] relative inline-block">
             <Button
               onClick={() => setIsOpen(!isOpen)}
-              variant="primary"
+              variant="standard_sm"
               label="Account"
-              rightIcon={<FaAngleDown size={16}/>}
+              disabled
+              filled
+              rightIcon={<FaAngleDown size={16}
+              />
+              }
             />
             {isOpen && (
               <div

@@ -92,19 +92,18 @@ export default function Header() {
                 onMouseLeave={() => setIsOpen(false)}
               >
                 <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
-                  <Image src={User} />
+                  <Image src={User} alt="user icon"  />
                   <p className="font-inter font-normal text-sm text-[#4f4f4f]">Profile</p>
                 </Link>
                 <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
-                  <Image src={Subscription} />
+                  <Image src={Subscription} alt="subscription icon" />
                   <p className="font-inter font-normal text-sm text-[#4f4f4f]">Subscription</p>
                 </Link>
                 <Divider orientation="horizontal" flexItem/>
                 <div onClick={handleLogout} className="flex gap-[8px] pl-[10px] items-center cursor-pointer">
-                  <Image src={Logout} />
+                  <Image src={Logout} alt="logout icon" />
                   <p className="font-inter font-normal text-sm text-[#4f4f4f]">Logout</p>
                 </div>
-
               </div>
             )}
           </div>

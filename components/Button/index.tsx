@@ -37,7 +37,7 @@ export default function Button(props: ButtonProps) {
       onClick={props.onClick}
       // @ts-ignore
       className={ButtonStyle(props.variant, props.filled, props.disabled)}
-      disabled={props.disabled}
+      disabled={props.disabled && props.label !== "Account"}
     >
       {/*@ts-ignore*/}
       {props.leftIcon && <Image src={props.leftIcon} alt="Left Icon" priority/>}

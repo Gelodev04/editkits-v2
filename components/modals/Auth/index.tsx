@@ -71,18 +71,26 @@ export default function AuthModal(props: AuthModalProps) {
   const handleLogout = useLogout(router, logout)
 
   React.useEffect(() => {
+    const {login, ...rest} = router.query;
+    //@ts-ignore
+    setPassword(login)
     if (!props.showAuthModal) {
       setEmail('');
       setPassword('');
       setConfirmPassword('');
       setCode("")
       setCodes("");
+
+    router.push({
+      pathname: router.pathname,
+      query: rest,
+    });
     }
   }, [props.showAuthModal]);
 
   React.useEffect(() => {
     setHasTyped(false)
-  },[props.type])
+  }, [props.type])
 
   React.useEffect(() => {
     refreshAccessToken(refreshToken, handleLogout);
@@ -113,13 +121,13 @@ export default function AuthModal(props: AuthModalProps) {
                 </div>
                 <div className="bg-white text-center pt-[32px] pb-[42px]">
                   <div className="pb-[8px]">
-                    <Typography label={props.type} center variant="h4" />
+                    <Typography label={props.type} center variant="h4"/>
                   </div>
                   <div className="w-[432px] mx-auto">
-                    <Typography label={getModalDescription(props.type, email)} center variant="b3" />
+                    <Typography label={getModalDescription(props.type, email)} center variant="b3"/>
                   </div>
                 </div>
-                {props.type === "Sign Up" && Signup(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleRegister, register, props.setAuthModal, isSignupLoading, hasTyped, setHasTyped )}
+                {props.type === "Sign Up" && Signup(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, confirmPassword, setConfirmPassword, isPasswordValid, setPasswordValid, handleRegister, register, props.setAuthModal, isSignupLoading, hasTyped, setHasTyped)}
                 {props.type === "Log In" && Login(props, password, setPassword, email, setEmail, isEmailValid, setEmailValid, isPasswordValid, setPasswordValid, handleLogin, isLoginLoading, login, props.setType, props.setAuthModal, hasTyped, setHasTyped)}
                 {props.type === "Enter verification code" && Verification(
                   props,

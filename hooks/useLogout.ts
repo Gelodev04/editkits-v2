@@ -13,6 +13,7 @@ const useLogout = (router, logout) => {
 
       toast.success(response.data.message);
       removeUserInfo();
+      router.push("/home")
   }
 
   return handleLogout;

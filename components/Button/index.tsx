@@ -16,7 +16,7 @@ type ButtonProps = {
 function ButtonStyle(variant: string, filled?: boolean, disabled?: boolean) {
   switch (variant) {
     case "popup":
-      return `w-[448px] h-[64px] rounded-[86px] outline-none ${disabled ? "bg-[#ebebeb]" : "bg-[#148cfc]"} shadow-[rgba(201, 229, 255, 1)] font-lato font-bold text-lg leading-[20px]`;
+      return `w-[448px] h-[64px] rounded-[86px] outline-none ${disabled ? "bg-[#ebebeb] text-[#2c2c2c]" : "bg-[#148cfc]"} shadow-[rgba(201, 229, 255, 1)] font-lato font-bold text-lg leading-[20px]`;
     case "popup_link":
       return "font-openSans font-bold text-xs leading-[15px] text-[#148cfc]";
     case "primary":

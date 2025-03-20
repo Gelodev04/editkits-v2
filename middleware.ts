@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import {NextResponse} from "next/server";
+import type {NextRequest} from "next/server";
 
 export function middleware(req: NextRequest) {
   // @ts-ignore
   const user = req.cookies.get("userInfo");
 
   if (!user) {
-    return NextResponse.redirect(new URL("/home", req.url));
+    return NextResponse.redirect(new URL("/home?login=true", req.url));
   }
 
   return NextResponse.next();

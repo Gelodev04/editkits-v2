@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState, useEffect} from "react";
 import {useRouter} from "next/router";
 import Image from "next/image";
 import Link from "next/link";
@@ -43,6 +43,14 @@ export default function Header() {
     setAuthModal(true);
     setType("Log In");
   }
+
+  useEffect(() => {
+    const { login } = router.query;
+    if(login) {
+      setType("Log In");
+      setAuthModal(true)
+    }
+  }, []);
 
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
@@ -92,16 +100,16 @@ export default function Header() {
                 onMouseLeave={() => setIsOpen(false)}
               >
                 <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
-                  <Image src={User} alt="user icon"  />
+                  <Image src={User} alt="user icon"/>
                   <p className="font-inter font-normal text-sm text-[#4f4f4f]">Profile</p>
                 </Link>
                 <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
-                  <Image src={Subscription} alt="subscription icon" />
+                  <Image src={Subscription} alt="subscription icon"/>
                   <p className="font-inter font-normal text-sm text-[#4f4f4f]">Subscription</p>
                 </Link>
                 <Divider orientation="horizontal" flexItem/>
                 <div onClick={handleLogout} className="flex gap-[8px] pl-[10px] items-center cursor-pointer">
-                  <Image src={Logout} alt="logout icon" />
+                  <Image src={Logout} alt="logout icon"/>
                   <p className="font-inter font-normal text-sm text-[#4f4f4f]">Logout</p>
                 </div>
               </div>

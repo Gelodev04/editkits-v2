@@ -78,33 +78,33 @@ export default function Header() {
           <div className="w-[160px] relative inline-block">
             <Button
               onClick={() => setIsOpen(!isOpen)}
-              variant="primary"
+              variant="standard_sm"
               label="Account"
-              rightIcon={<FaAngleDown size={16}/>}
+              disabled
+              filled
+              rightIcon={<FaAngleDown size={16}
+              />
+              }
             />
             {isOpen && (
               <div
-                className="absolute w-[235px] mx-auto right-[-40px] mt-4 bg-white rounded-lg shadow-xl py-4 flex flex-col gap-y-4 items-start"
+                className="absolute w-[235px] right-[-40px] mt-4 bg-white rounded-lg shadow-xl py-4 flex items-start justify-start flex-col gap-y-4"
                 onMouseLeave={() => setIsOpen(false)}
               >
-                <Button
-                  onClick={() => router.push('/account')}
-                  variant="primary"
-                  label="Profile"
-                  leftIcon={User}
-                />
-                <Button
-                  onClick={() => router.push('account')}
-                  variant="primary"
-                  label="Subscription"
-                  leftIcon={Subscription}
-                />
+                <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
+                  <Image src={User} />
+                  <p className="font-inter font-normal text-sm text-[#4f4f4f]">Profile</p>
+                </Link>
+                <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
+                  <Image src={Subscription} />
+                  <p className="font-inter font-normal text-sm text-[#4f4f4f]">Subscription</p>
+                </Link>
                 <Divider orientation="horizontal" flexItem/>
-                <Button
-                  onClick={handleLogout}
-                  variant="primary"
-                  label="Log Out" leftIcon={Logout}
-                />
+                <div onClick={handleLogout} className="flex gap-[8px] pl-[10px] items-center cursor-pointer">
+                  <Image src={Logout} />
+                  <p className="font-inter font-normal text-sm text-[#4f4f4f]">Logout</p>
+                </div>
+
               </div>
             )}
           </div>

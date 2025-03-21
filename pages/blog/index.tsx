@@ -20,7 +20,7 @@ export default function Blog() {
   }
 
   return (
-    <div className="max-w-[1367px] mx-auto">
+    <div className="max-w-[1367px] mx-auto pb-[69px]">
       <h1
         className="font-montserrat font-bold text-[48px] leading-[64px] text-center text-[#2c2c2c] pt-[59px] pb-[27px]">EditKits
         Blog – Everything Media Processing</h1>
@@ -36,12 +36,14 @@ export default function Blog() {
           </div>
         ))}
       </div>
-      <Pagination
-        currentPage={currentPage}
-        //@ts-ignore
-        totalPages={Math.ceil(blogs?.length / 12)}
-        onPageChange={setCurrentPage}
-      />
+      <div className="mt-6 pt-[62px]">
+        <Pagination
+          currentPage={currentPage}
+          //@ts-ignore
+          totalPages={Math.ceil(blogs?.length / 12)}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </div>
   )
 }

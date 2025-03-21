@@ -46,7 +46,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange }: Pa
 
 
   return (
-    <div className="flex justify-end items-center gap-[14px] mt-6 pt-[62px] pb-[69px]">
+    <div className="flex justify-end items-center gap-[14px]">
       <FaCircleChevronLeft
         onClick={() => {
           if(currentPage>1) {

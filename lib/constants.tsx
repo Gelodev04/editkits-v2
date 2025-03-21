@@ -295,23 +295,27 @@ export const uploadedFileTableData = [
 ];
 
 export const tableColumns = [
+  {},
   {
-    name: ""
+    name: "Input File(s)"
   },
   {
-    name: "Input File Id"
-  }, {
     name: "Input File Name"
-  }, {
-    name: "Job Details"
-  }, {
-    name: "Credits Used"
-  }, {
+  },
+  {
+    name: "Created At"
+  },
+  {
+    name: "Tools Used"
+  },
+  {
+    name: "Credits Required"
+  },
+  {
     name: "Status"
-  }, {
-    name: "Output File Id"
-  }, {
-    name: "Created at"
+  },
+  {
+    name: "Output File"
   },
   {
     name: ""

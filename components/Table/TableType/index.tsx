@@ -11,17 +11,17 @@ type TableTypeProps = {
 
 export default function TableType(props: TableTypeProps) {
   return (
-    <div className="py-8 px-2 flex flex-col gap-2 bg-white w-[228px] min-h-full rounded rounded-lg">
+    <div className="pt-[32px] px-2 flex flex-col gap-2 w-[228px] min-h-full rounded rounded-lg">
       <button
         onClick={() => props.setActive("Job status")}
-        className={`flex justify-start pl-4 items-center py-4 max-h-12 rounded rounded-lg gap-4 w-[192px] mx-auto ${props.active === "Job status" ? 'bg-[#17abdb]' : ""}`}
+        className={`flex justify-start pl-[16px] items-center py-[15.5px] max-h-12 rounded rounded-lg gap-4 w-[192px] mx-auto ${props.active === "Job status" ? 'bg-[#273277]' : ""}`}
       >
         <Image src={props.active === "Job status" ? JobActiveSVG : JobInActiveSVG} alt="job svg" priority />
         <p className={`font-montserrat font-bold text-sm ${props.active === "Job status" ? "#fff" : "text-[#4f4f4f]"}`}>Job status</p>
       </button>
       <button
         onClick={() => props.setActive("Uploaded files")}
-        className={`flex justify-start pl-4 items-center py-4 max-h-12 rounded rounded-lg gap-4 w-[192px] mx-auto ${props.active === "Uploaded files" ? 'bg-[#17abdb]' : ""}`}
+        className={`flex justify-start pl-4 items-center py-4 max-h-12 rounded rounded-lg gap-4 w-[192px] mx-auto ${props.active === "Uploaded files" ? 'bg-[#273277]' : ""}`}
       >
         <Image src={props.active === "Uploaded files" ? UploadActiveSVG : UploadInActiveSVG} alt="upload svg" />
         <p className={`font-montserrat font-bold text-sm ${props.active === "Uploaded files" ? "#fff" : "text-[#4f4f4f]"}`}>Uploaded files</p>

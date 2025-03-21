@@ -18,9 +18,6 @@ import CropHover from "../public/assets/img/tools/crop_hover.svg"
 import LoopHover from "../public/assets/img/tools/loop_hover.svg"
 import JoinHover from "../public/assets/img/tools/join_hover.svg"
 
-import HouseEditUploaded from "@/public/assets/img/table/house_edit_uploaded.svg"
-import FootballEditSuccess from "@/public/assets/img/table/football_edit_success.svg"
-
 import VideoRendering from "@/public/assets/img/features/video_rendering.svg"
 import EditingTools from "@/public/assets/img/features/editing_tools.svg"
 import FreePlan from "@/public/assets/img/features/free_plan.svg"
@@ -35,6 +32,9 @@ import FileFormats from "@/public/assets/img/features/file_formats.svg"
 import SearchIcon from "@/public/assets/icons/search.svg";
 import ChatIcon from "@/public/assets/icons/chat.svg";
 import SmileIcon from "@/public/assets/icons/smile.svg";
+
+import StatusIcon from "@/public/assets/icons/status.svg"
+import CreditsIcon from "@/public/assets/icons/credit.svg"
 
 export const benefits = [
   "No Credit Card required",
@@ -176,6 +176,7 @@ export const featureCards = [
 export const stats = [
   {
     label: "Credits",
+    icon: CreditsIcon,
     data: [
       {
         title: "Available",
@@ -193,6 +194,7 @@ export const stats = [
   },
   {
     label: "Job Status",
+    icon: StatusIcon,
     data: [
       {
         title: "In progress",
@@ -210,108 +212,28 @@ export const stats = [
   }
 ]
 
-export const uploadedFileTableData = [
-  {
-    icon: FootballEditSuccess,
-    input_id: "#44544",
-    file_name: "Car Edit",
-    size: "20 MB",
-    status: "Failed",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  },
-  {
-    icon: HouseEditUploaded,
-    input_id: "#44545",
-    file_name: "House Edit",
-    size: "30 MB",
-    status: "Progress",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  },
-  {
-    icon: FootballEditSuccess,
-    input_id: "#44544",
-    file_name: "Football Edit",
-    size: "25 MB",
-    status: "Success",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  },
-  {
-    icon: HouseEditUploaded,
-    input_id: "#44544",
-    file_name: "House Edit",
-    size: "30 MB",
-    status: "Progress",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  },
-  {
-    icon: FootballEditSuccess,
-    input_id: "#44544",
-    file_name: "Football Edit",
-    size: "25 MB",
-    status: "Success",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  },
-  {
-    icon: HouseEditUploaded,
-    input_id: "#44544",
-    file_name: "House Edit",
-    size: "30 MB",
-    status: "Progress",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  },
-  {
-    icon: FootballEditSuccess,
-    input_id: "#44544",
-    file_name: "Football Edit",
-    size: "25 MB",
-    status: "Success",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  },
-  {
-    icon: HouseEditUploaded,
-    input_id: "#44544",
-    file_name: "House Edit",
-    size: "30 MB",
-    status: "Progress",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  },
-  {
-    icon: FootballEditSuccess,
-    input_id: "#44544",
-    file_name: "Football Edit",
-    size: "25 MB",
-    status: "Success",
-    output_id: "#44544",
-    created_at: "Abcdef"
-  }
-];
-
 export const tableColumns = [
+  {},
   {
-    name: ""
+    name: "Input File(s)"
   },
   {
-    name: "Input File Id"
-  }, {
     name: "Input File Name"
-  }, {
-    name: "Job Details"
-  }, {
-    name: "Credits Used"
-  }, {
+  },
+  {
+    name: "Created At"
+  },
+  {
+    name: "Tools Used"
+  },
+  {
+    name: "Credits Required"
+  },
+  {
     name: "Status"
-  }, {
-    name: "Output File Id"
-  }, {
-    name: "Created at"
+  },
+  {
+    name: "Output File"
   },
   {
     name: ""
@@ -328,8 +250,15 @@ export const uploadedFilesColumns = [
   },
   {
     name: "Size"
-  }, {
+  },
+  {
+    name: "Type"
+  },
+  {
     name: "Created At"
+  },
+  {
+    name: "Expires At"
   },
   {
     name: ""

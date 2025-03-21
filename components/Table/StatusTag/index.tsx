@@ -1,12 +1,20 @@
-import * as React from "react";
-
-import {GoDotFill} from "react-icons/go";
-
 export default function StatusTag({status}: {status: any}) {
+  function statusMapper(status) {
+    switch (status) {
+      case "COMPLETED":
+        return "Success"
+      case "Failed":
+        return "Failed"
+      case "IN_PROGRESS":
+        return "In Progress"
+    }
+
+  }
   return (
-    <div className="flex items-center gap-1">
-      <GoDotFill color={status === "Failed" ? "#d80027" : status === "Progress" ? "#ff9407" : "#0f930f"} />
-      <p className={`font-lato ${status === "Failed" ? "text-[#d80027]" : status === "Progress" ? "text-[#ff9407]" : "text-[#0f930f]"}`}>{status}</p>
+    <div className={`${status === "Failed" ? "bg-[#d80027]" : status === "Progress" ? "bg-[#ff9407]" : "bg-[#0f930f]"} w-[96px] rounded-[22px] py-[4px]`}>
+      <p className={`font-lato text-white text-center text-[10px]`}>
+        {statusMapper(status)}
+      </p>
     </div>
   )
 }

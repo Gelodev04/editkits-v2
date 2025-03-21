@@ -6,19 +6,21 @@ const DashboardTable = dynamic(() => import("@/components/Table"), {
 })
 
 import StatCard from "@/components/cards/StatCard";
-import {stats, uploadedFileTableData} from "@/lib/constants";
+import { stats } from "@/lib/constants";
 import TableType from "@/components/Table/TableType";
 import Pagination from "@/components/Pagination";
 import {useGetJobsQuery} from "@/services/api/job";
 import Loading from "@/pages/dashboard/loading";
+import {useGetRecentFilesQuery} from "@/services/api/file";
 
 export default function Dashboard() {
   const {data: jobs} = useGetJobsQuery({});
+  const { data: recentFiles } = useGetRecentFilesQuery({});
 
   const [active, setActive] = useState("Job status");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const data = active === "Job status" ? jobs : uploadedFileTableData;
+  const data = active === "Job status" ? jobs : recentFiles;
 
   return (
     <div className="min-h-[100vh] pt-[26px]">

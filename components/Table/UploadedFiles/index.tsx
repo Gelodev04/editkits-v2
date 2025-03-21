@@ -12,6 +12,8 @@ import {BsThreeDotsVertical} from "react-icons/bs";
 
 import CopyIcon from '@/public/assets/icons/copy.svg';
 import {uploadedFilesColumns} from "@/lib/constants";
+import ExpiredIcon from "@/public/assets/icons/expired_icon.svg";
+import {PiPlayCircleLight} from "react-icons/pi";
 
 type UploadedFilesTableProps = {
   search: string;
@@ -19,6 +21,7 @@ type UploadedFilesTableProps = {
 }
 
 export default function UploadedFilesTable(props: UploadedFilesTableProps) {
+  console.log("===", props.data)
   return (
     <TableContainer component={Paper} className="min-h-full">
       <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -32,34 +35,47 @@ export default function UploadedFilesTable(props: UploadedFilesTableProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.data.filter((row: any) => row.file_name.toLowerCase().includes(props.search)).map((row: any) => (
+          {props.data.filter((row: any) => row.name.toLowerCase().includes(props.search)).map((row: any) => (
             <TableRow
               key={row.input_id}
               sx={{
                 '&:last-child td, &:last-child th': {border: "none"},
-                '&:nth-of-type(even)': { backgroundColor: '#fcfcfc' },
+                '&:nth-of-type(even)': {backgroundColor: '#fcfcfc'},
               }}
             >
               <TableCell width={172} height={92} sx={{border: "none"}} component="th" scope="row">
-                <Image className="rounded-md bg-[#000000] p-[2px]" src={row.icon} alt="icon" objectFit="cover" priority />
+                <Image
+                  className="rounded-md bg-[#000000] p-[2px]"
+                  src={row.thumbnail_url === "EXPIRED" ? ExpiredIcon : row.thumbnail_url}
+                  alt="icon"
+                  objectFit="cover"
+                  priority
+                  quality={75}
+                  width={80}
+                  height={47}
+                />
               </TableCell>
               <TableCell align="left">
-                <div className="flex items-center gap-8">
-                  <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_id}</p>
-                  <Image
-                    src={CopyIcon}
-                    className="cursor-pointer"
-                    onClick={() => navigator.clipboard.writeText(row.input_id)}
-                    alt="input_id"
-                    priority
-                  />
+                <div className="flex items-center gap-[12px]">
+                  <div className="flex items-center gap-[32px]">
+                    <p
+                      className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.id.slice(0, 5)}</p>
+                    <Image
+                      src={CopyIcon}
+                      className="cursor-pointer"
+                      onClick={() => navigator.clipboard.writeText(row.id)}
+                      alt="input_id"
+                      priority
+                    />
+                  </div>
+                  <PiPlayCircleLight size={23}/>
                 </div>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.file_name}</p>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.name}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.size}</p>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.size_in_mb}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.created_at}</p>

@@ -20,11 +20,11 @@ export default function TableType(props: TableTypeProps) {
         <p className={`font-montserrat font-bold text-sm ${props.active === "Job status" ? "#fff" : "text-[#4f4f4f]"}`}>Job status</p>
       </button>
       <button
-        onClick={() => props.setActive("Uploaded files")}
-        className={`flex justify-start pl-4 items-center py-4 max-h-12 rounded rounded-lg gap-4 w-[192px] mx-auto ${props.active === "Uploaded files" ? 'bg-[#273277]' : ""}`}
+        onClick={() => props.setActive("Recent Uploads")}
+        className={`flex justify-start pl-4 items-center py-4 max-h-12 rounded rounded-lg gap-4 w-[192px] mx-auto ${props.active === "Recent Uploads" ? 'bg-[#273277]' : ""}`}
       >
-        <Image src={props.active === "Uploaded files" ? UploadActiveSVG : UploadInActiveSVG} alt="upload svg" />
-        <p className={`font-montserrat font-bold text-sm ${props.active === "Uploaded files" ? "#fff" : "text-[#4f4f4f]"}`}>Uploaded files</p>
+        <Image src={props.active === "Recent Uploads" ? UploadActiveSVG : UploadInActiveSVG} alt="upload svg" />
+        <p className={`font-montserrat font-bold text-sm ${props.active === "Recent Uploads" ? "#fff" : "text-[#4f4f4f]"}`}>Recent Uploads</p>
       </button>
     </div>
   )

@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import {jwtDecode} from "jwt-decode";
 import {setUserInfo} from "@/lib/cookies";
 
-export async function handleLogin(email, password, login, setType, setAuthModal, setModalTitle, setModalMessage, setAuthConfirmationModal) {
+export async function handleLogin(email, password, login, setType, setAuthModal, setModalTitle, setModalMessage, setAuthConfirmationModal, router) {
   const loginPayload: ILoginPayload = {
     email,
     password
@@ -39,12 +39,13 @@ export async function handleLogin(email, password, login, setType, setAuthModal,
   const user_info = jwtDecode(id_token);
   setUserInfo(user_info);
 
+  await router.push("/dashboard")
   toast.success("Login successful");
   setType("");
   setAuthModal(false);
 }
 
-export async function handleResendConfirmationCode(email, type, setTimer, setType, resendConfirmationCode, setModalTitle, setAuthConfirmationModal,setModalMessage, setAuthModal) {
+export async function handleResendConfirmationCode(email, type, setTimer, setType, resendConfirmationCode, setModalTitle, setAuthConfirmationModal, setModalMessage, setAuthModal) {
   const resendConfirmationCodePayload: IResendConfirmationCodePayload = {
     email
   }

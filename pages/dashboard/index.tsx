@@ -27,7 +27,7 @@ export default function Dashboard() {
           <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
             <TableType active={active} setActive={setActive}/>
           </div>
-          <div className="col-span-10 xl:col-span-10 2xl:col-span-10">
+          <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white py-[16px] rounded-[24px] pl-[18px] pr-[13px]">
             {!jobs ? <Loading/> : (
               <>
                 {active === "Job status" && (

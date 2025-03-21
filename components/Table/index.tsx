@@ -25,8 +25,8 @@ export default function DashboardTable(props: DashboardTableProps) {
   };
 
   return (
-    <div className="bg-white pt-2">
-      <div className="px-2">
+    <div className="bg-white border-[1px] border-[#ebebeb] rounded-[24px]">
+      <div className="px-[45px]">
         <TableHeader setSearch={setSearch} setUploadModal={setUploadModal} active={props.active} />
       </div>
       {props.active === "Job status" && <JobStatusTable data={getItemsForPage(props.data, props.jobStatusPage)} search={search}/>}

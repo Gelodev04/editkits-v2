@@ -5,6 +5,7 @@ import React from "react";
 import {AuthModalProps} from "@/components/modals/Auth/index";
 import {validateEmail} from "@/lib/validateEmail";
 import {validatePassword} from "@/lib/validatePassword";
+import {useRouter} from "next/router";
 
 export default function Login(
   props: AuthModalProps,
@@ -24,6 +25,8 @@ export default function Login(
   hasTyped: boolean,
   setHasTyped: (e: React.SetStateAction<boolean>) => void,
 ) {
+
+  const router = useRouter();
 
   return (
     <>
@@ -63,7 +66,7 @@ export default function Login(
       <div className="pt-[42px] max-w-[446px] mx-auto">
         <Button
           disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
-          onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal)}
+          onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, router)}
           label="Login"
           variant="popup"
           filled

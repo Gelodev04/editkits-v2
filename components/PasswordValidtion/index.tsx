@@ -24,7 +24,7 @@ export function PasswordValidation(props) {
           <Typography variant="b4" label="One uppercase character"/>
         </div>
         <div className="flex items-center gap-x-[6px]">
-          <FaCheckCircle size={20} color={props.password.length >= 8 ? "#273266" : "#d9d9d9"}/>
+          <FaCheckCircle size={20} color={props.password?.length >= 8 ? "#273266" : "#d9d9d9"}/>
           <Typography variant="b4" label="8 character minimum"/>
         </div>
       </div>

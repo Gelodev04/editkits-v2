@@ -87,7 +87,6 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_file_name}</p>
-
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
                 <p>{new Date(row.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(row.created_at * 1000).toLocaleTimeString('en-GB')}</p>

@@ -36,6 +36,9 @@ import SearchIcon from "@/public/assets/icons/search.svg";
 import ChatIcon from "@/public/assets/icons/chat.svg";
 import SmileIcon from "@/public/assets/icons/smile.svg";
 
+import StatusIcon from "@/public/assets/icons/status.svg"
+import CreditsIcon from "@/public/assets/icons/credit.svg"
+
 export const benefits = [
   "No Credit Card required",
   "Max 1 concurrent job",
@@ -176,6 +179,7 @@ export const featureCards = [
 export const stats = [
   {
     label: "Credits",
+    icon: CreditsIcon,
     data: [
       {
         title: "Available",
@@ -193,6 +197,7 @@ export const stats = [
   },
   {
     label: "Job Status",
+    icon: StatusIcon,
     data: [
       {
         title: "In progress",

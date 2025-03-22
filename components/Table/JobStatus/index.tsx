@@ -93,7 +93,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                   />
                 </div>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="center">
+              <TableCell sx={{border: "none"}} align="left">
                 <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_file_name}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="center">
@@ -109,7 +109,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                 <StatusTag status={row.status}/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="center">
-                {row.output_file_ids?.map(id => (
+                {row.is_multi_output ? row.output_file_ids?.map(id => (
                   <div className="flex items-center gap-[6.75px]">
                     <div className="flex items-center gap-[12px]">
                       <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}</p>
@@ -121,10 +121,26 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                         priority
                       />
                     </div>
-                    <PiPlayCircleLight size={23}/>
-                    <IoDownloadOutline size={23}/>
+                    <PiPlayCircleLight className="cursor-pointer" size={24}/>
+                    <IoDownloadOutline className="cursor-pointer" size={24}/>
                   </div>
-                ))}
+                ))
+                : (
+                    <div className="flex items-center gap-[10px]">
+                      <div className="flex items-end gap-[18px]">
+                        <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)}</p>
+                        <Image
+                          src={CopyIcon}
+                          className="cursor-pointer"
+                          onClick={() => navigator.clipboard.writeText(row.output_file_id)}
+                          alt="input_id"
+                          priority
+                        />
+                      </div>
+                      <PiPlayCircleLight className="cursor-pointer" size={24}/>
+                      <IoDownloadOutline className="cursor-pointer" size={22}/>
+                    </div>
+                  )}
               </TableCell>
               <TableCell
                 sx={{

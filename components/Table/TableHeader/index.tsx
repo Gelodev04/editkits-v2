@@ -6,6 +6,7 @@ import Button from "@/components/Button";
 
 import Filter from "@/public/assets/img/table/filter.svg";
 import Calendar from "@/public/assets/icons/calendar.svg"
+import {useRouter} from "next/router";
 
 type TableHeaderProps = {
   setSearch: any;
@@ -14,6 +15,8 @@ type TableHeaderProps = {
 }
 
 export default function TableHeader(props: TableHeaderProps) {
+  const router = useRouter();
+
   return (
     <div className="flex justify-between py-4">
       <div className="flex gap-[17px]">
@@ -39,7 +42,7 @@ export default function TableHeader(props: TableHeaderProps) {
       </div>
       <div className="w-[134px]">
         <Button
-          onClick={() => props.setUploadModal(true)}
+          onClick={() => router.push("/tools")}
           label={props.active === "Job status" ? "New Job" : "Upload Files"}
           rightIcon={<IoAdd size={20}/>}
           variant="standard_sm"

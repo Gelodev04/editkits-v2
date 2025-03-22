@@ -103,7 +103,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                 <StatusTag status={row.status} />
               </TableCell>
               <TableCell sx={{border: "none"}} align="center">
-                {row.output_file_ids.map(id => (
+                {row.output_file_ids?.map(id => (
                   <div className="flex items-center gap-[6.75px]">
                     <div className="flex items-center gap-[12px]">
                       <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0,5)}</p>

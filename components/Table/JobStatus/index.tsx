@@ -17,7 +17,7 @@ import {IoDownloadOutline} from "react-icons/io5";
 import PlayIcon from "@/public/assets/icons/play.png";
 import Menu from "@/components/Menu";
 
-export default function JobStatusTable({data, search, handleVideoPreview, videoUrl}: { data: any; search: string }) {
+export default function JobStatusTable({data, search, handleVideoPreview, setVideoPreviewModal}: { data: any; search: string }) {
   return (
     <TableContainer className="px-[42px]">
       <Table
@@ -137,7 +137,10 @@ export default function JobStatusTable({data, search, handleVideoPreview, videoU
                           priority
                         />
                       </div>
-                      <PiPlayCircleLight onClick={() => handleVideoPreview(row.output_file_id)} className="cursor-pointer" size={24} />
+                      <PiPlayCircleLight onClick={() => {
+                        handleVideoPreview(row.output_file_id)
+                        setVideoPreviewModal(true)
+                      }} className="cursor-pointer" size={24} />
                       <IoDownloadOutline className="cursor-pointer" size={22} />
                     </div>
                   )}

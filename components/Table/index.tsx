@@ -5,8 +5,7 @@ import TableHeader from "@/components/Table/TableHeader";
 import JobStatusTable from "@/components/Table/JobStatus";
 import UploadedFilesTable from "@/components/Table/UploadedFiles";
 import {usePreviewVideoQuery} from "@/services/api/file";
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
+import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 
 type DashboardTableProps = {
   active: any;
@@ -22,8 +21,7 @@ export default function DashboardTable(props: DashboardTableProps) {
 
   const [search, setSearch] = useState("");
   const [uploadModal, setUploadModal] = useState(false);
-
-  const videoNode = useRef<HTMLVideoElement>(null);
+  const [videoPreviewModal, setVideoPreviewModal] = useState(false)
 
   const getItemsForPage = (items: any, pageNumber: any, itemsPerPage = 9) => {
     const startIndex = (pageNumber - 1) * itemsPerPage;
@@ -33,29 +31,26 @@ export default function DashboardTable(props: DashboardTableProps) {
 
   async function handleVideoPreview(id) {
     await setFileId(id)
-    console.log("====", videoUrl?.url)
   }
 
   return (
     <div className="bg-white border-[1px] border-[#ebebeb] rounded-[24px]">
-      {videoUrl && (
-        <div data-vjs-player>
-        <video ref={videoNode} className="video-js vjs-default-skin" controls>
-          <source src={videoUrl?.url} type="video/mp4"/>
-        </video>
-      </div>
-      )}
       <div className="px-[45px]">
         <TableHeader setSearch={setSearch} setUploadModal={setUploadModal} active={props.active}/>
       </div>
       {props.active === "Job status" &&
       <JobStatusTable data={getItemsForPage(props.data, props.jobStatusPage)} search={search}
-                      handleVideoPreview={handleVideoPreview} videoUrl={videoUrl}/>}
+                      handleVideoPreview={handleVideoPreview} setVideoPreviewModal={setVideoPreviewModal}/>}
       {props.active === "Recent Uploads" &&
       <UploadedFilesTable data={getItemsForPage(props.data, props.uploadedFilesPage)} search={search}/>}
       <UploadFileModal uploadModal={uploadModal} setUploadModal={setUploadModal} setFile={() => {
         return 1
       }} videoRef={videoRef}/>
+      <VideoPreviewModal
+        open={videoPreviewModal}
+        setOpen={setVideoPreviewModal}
+        videoUrl={videoUrl}
+      />
     </div>
   );
 }

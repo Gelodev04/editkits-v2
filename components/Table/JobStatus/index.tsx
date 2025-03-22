@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useState } from "react"
 
 import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from "@mui/material";
 
@@ -17,7 +16,14 @@ import {IoDownloadOutline} from "react-icons/io5";
 import PlayIcon from "@/public/assets/icons/play.png";
 import Menu from "@/components/Menu";
 
-export default function JobStatusTable({data, search, handleVideoPreview, setVideoPreviewModal}: { data: any; search: string }) {
+export default function JobStatusTable({
+  data,
+  search,
+  handleVideoPreview,
+  handleVideoDownload,
+  setVideoPreviewModal,
+  videoUrl
+}: { data: any; search: string }) {
   return (
     <TableContainer className="px-[42px]">
       <Table
@@ -110,25 +116,26 @@ export default function JobStatusTable({data, search, handleVideoPreview, setVid
               </TableCell>
               <TableCell sx={{border: "none"}} align="center">
                 {row.is_multi_output ? row.output_file_ids?.map(id => (
-                  <div className="flex items-center gap-[6.75px]">
-                    <div className="flex items-center gap-[12px]">
-                      <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}</p>
-                      <Image
-                        src={CopyIcon}
-                        className="cursor-pointer"
-                        onClick={() => navigator.clipboard.writeText(id)}
-                        alt="input_id"
-                        priority
-                      />
+                    <div className="flex items-center gap-[6.75px]">
+                      <div className="flex items-center gap-[12px]">
+                        <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}</p>
+                        <Image
+                          src={CopyIcon}
+                          className="cursor-pointer"
+                          onClick={() => navigator.clipboard.writeText(id)}
+                          alt="input_id"
+                          priority
+                        />
+                      </div>
+                      <PiPlayCircleLight className="cursor-pointer" size={24}/>
+                      <IoDownloadOutline className="cursor-pointer" size={24}/>
                     </div>
-                    <PiPlayCircleLight className="cursor-pointer" size={24}/>
-                    <IoDownloadOutline className="cursor-pointer" size={24}/>
-                  </div>
-                ))
-                : (
+                  ))
+                  : (
                     <div className="flex items-center gap-[10px]">
                       <div className="flex items-end gap-[18px]">
-                        <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)}</p>
+                        <p
+                          className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)}</p>
                         <Image
                           src={CopyIcon}
                           className="cursor-pointer"
@@ -137,11 +144,23 @@ export default function JobStatusTable({data, search, handleVideoPreview, setVid
                           priority
                         />
                       </div>
-                      <PiPlayCircleLight onClick={() => {
-                        handleVideoPreview(row.output_file_id)
-                        setVideoPreviewModal(true)
-                      }} className="cursor-pointer" size={24} />
-                      <IoDownloadOutline className="cursor-pointer" size={22} />
+                      <PiPlayCircleLight
+                        onClick={() => {
+                          handleVideoPreview(row.output_file_id)
+                          setVideoPreviewModal(true)
+                        }}
+                        className="cursor-pointer"
+                        size={24}
+                      />
+                      <a href={videoUrl?.url} download target="_blank">
+                        <IoDownloadOutline
+                          onClick={() => {
+                            handleVideoDownload(row.output_file_id)
+                          }}
+                          className="cursor-pointer"
+                          size={22}
+                        />
+                      </a>
                     </div>
                   )}
               </TableCell>
@@ -153,7 +172,7 @@ export default function JobStatusTable({data, search, handleVideoPreview, setVid
                 align="center"
 
               >
-                <Menu />
+                <Menu/>
               </TableCell>
 
             </TableRow>

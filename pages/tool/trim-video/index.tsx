@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect, useRef } from "react";
 
 import {FaAngleRight} from "react-icons/fa6";
 
@@ -22,32 +22,32 @@ import FileProgressModal from "@/components/modals/FilePgrogressModal";
 import PopUp from "@/components/modals/Popup";
 
 export default function TrimVideo() {
-  const [fileId, setFileId] = React.useState(null);
-  const [jobId, setJobId] = React.useState(null);
+  const [fileId, setFileId] = useState(null);
+  const [jobId, setJobId] = useState(null);
   const [upload] = useUploadMutation();
   const { data , refetch } = useStatusQuery({ fileId }, { skip: !fileId });
   const { data: jobData, refetch: refetchJobData } = useJobStatusQuery({ job_id: jobId }, { skip: !jobId})
   const [initJob, {isLoading: isInitLoading}] = useInitJobMutation();
   const [commitJob, {isLoading: isCommitLoading}] = useCommitJobMutation();
 
-  const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
-  const [progressModal, setProgressModal] = React.useState<any>(false);
-  const [file, setFile] = React.useState<any>(null);
-  const [startTime, setStartTime] = React.useState<any>(null);
-  const [endTime, setEndTime] = React.useState<any>(null);
-  const videoRef = React.useRef(null);
+  const [uploadFileModal, setUploadFileModal] = useState<any>(false);
+  const [progressModal, setProgressModal] = useState<any>(false);
+  const [file, setFile] = useState<any>(null);
+  const [startTime, setStartTime] = useState<any>(null);
+  const [endTime, setEndTime] = useState<any>(null);
+  const videoRef = useRef(null);
 
-  const [fetchedData, setFetchedData] = React.useState(null);
-  const [progress, setProgress] = React.useState(0);
-  const [isUploading, setIsUploading] = React.useState(false);
-  const [outputQuality, setOutputQuality] = React.useState("LOW");
-  const [videoContainer, setVideoContainer] = React.useState("mp4");
+  const [fetchedData, setFetchedData] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const [outputQuality, setOutputQuality] = useState("LOW");
+  const [videoContainer, setVideoContainer] = useState("mp4");
 
-  const [uploadedModal, setUploadedModal] = React.useState(false);
-  const [modalTitle, setModalTitle] = React.useState("");
-  const [modalMessage, setModalMessage] = React.useState("");
+  const [uploadedModal, setUploadedModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       //@ts-ignore
       if(data?.status !== "COMMITTED" && data?.status !== "ERROR" && fileId) {
@@ -60,7 +60,7 @@ export default function TrimVideo() {
     return () => clearInterval(interval);
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!jobId) return;
 
     const interval = setInterval(() => {
@@ -181,7 +181,7 @@ export default function TrimVideo() {
       <div className="flex justify-between gap-6 py-8">
         <div className="w-full">
           <InputField
-            type="number"
+            type="text"
             value={startTime}
             onChange={(e) => setStartTime((e.target.value))}
             disabled={!file}
@@ -192,7 +192,7 @@ export default function TrimVideo() {
         <div className="w-full">
           <InputField
             disabled={!file}
-            type="number"
+            type="text"
             placeholder="1000 seconds"
             label="End time"
             value={endTime}

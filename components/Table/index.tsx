@@ -12,9 +12,11 @@ type DashboardTableProps = {
 }
 
 export default function DashboardTable(props: DashboardTableProps) {
+  const videoRef = useRef(null)
+
   const [search, setSearch] = useState("");
   const [uploadModal, setUploadModal] = useState(false);
-  const videoRef = useRef(null)
+  const [optionsModal, setOptionsModal] = useState();
 
   const getItemsForPage = (items: any, pageNumber: any, itemsPerPage = 9) => {
     const startIndex = (pageNumber - 1) * itemsPerPage;
@@ -27,8 +29,8 @@ export default function DashboardTable(props: DashboardTableProps) {
       <div className="px-[45px]">
         <TableHeader setSearch={setSearch} setUploadModal={setUploadModal} active={props.active} />
       </div>
-      {props.active === "Job status" && <JobStatusTable data={getItemsForPage(props.data, props.jobStatusPage)} search={search}/>}
-      {props.active === "Recent Uploads" && <UploadedFilesTable data={getItemsForPage(props.data, props.uploadedFilesPage)} search={search}/>}
+      {props.active === "Job status" && <JobStatusTable data={getItemsForPage(props.data, props.jobStatusPage)} search={search} optionsModal={optionsModal} setOptionsModal={setOptionsModal}/>}
+      {props.active === "Recent Uploads" && <UploadedFilesTable data={getItemsForPage(props.data, props.uploadedFilesPage)} search={search} optionsModal={optionsModal} setOptionsModal={setOptionsModal}/>}
       <UploadFileModal uploadModal={uploadModal} setUploadModal={setUploadModal} setFile={() => {return 1}} videoRef={videoRef} />
     </div>
   );

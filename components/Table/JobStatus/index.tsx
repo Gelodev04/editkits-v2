@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useState } from "react"
 
 import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from "@mui/material";
 
@@ -16,8 +17,7 @@ import {IoDownloadOutline} from "react-icons/io5";
 import PlayIcon from "@/public/assets/icons/play.png";
 import Menu from "@/components/Menu";
 
-export default function JobStatusTable({data, search}: { data: any; search: string }) {
-
+export default function JobStatusTable({data, search, handleVideoPreview, videoUrl}: { data: any; search: string }) {
   return (
     <TableContainer className="px-[42px]">
       <Table
@@ -137,8 +137,8 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                           priority
                         />
                       </div>
-                      <PiPlayCircleLight className="cursor-pointer" size={24}/>
-                      <IoDownloadOutline className="cursor-pointer" size={22}/>
+                      <PiPlayCircleLight onClick={() => handleVideoPreview(row.output_file_id)} className="cursor-pointer" size={24} />
+                      <IoDownloadOutline className="cursor-pointer" size={22} />
                     </div>
                   )}
               </TableCell>

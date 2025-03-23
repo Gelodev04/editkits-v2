@@ -5,8 +5,11 @@ import {IoAdd} from "react-icons/io5";
 import Button from "@/components/Button";
 
 import Filter from "@/public/assets/img/table/filter.svg";
-import Calendar from "@/public/assets/icons/calendar.svg"
+import CalendarIcon from "@/public/assets/icons/calendar.svg"
 import {useRouter} from "next/router";
+
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 type TableHeaderProps = {
   setSearch: any;
@@ -21,9 +24,10 @@ export default function TableHeader(props: TableHeaderProps) {
     <div className="flex justify-between py-4">
       <div className="flex gap-[17px]">
         <div
-          className="flex justify-center items-center gap-2 bg-white border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 w-30">
+          onClick={() => props.setDateFilterModal(true)}
+          className="flex justify-center items-center gap-2 bg-white border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 w-30 cursor-pointer">
           <Image
-            src={Calendar}
+            src={CalendarIcon}
             alt="Calendar"
             priority
           />

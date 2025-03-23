@@ -6,6 +6,7 @@ import JobStatusTable from "@/components/Table/JobStatus";
 import UploadedFilesTable from "@/components/Table/UploadedFiles";
 import {usePreviewVideoQuery} from "@/services/api/file";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
+import DateFilterModal from "@/components/modals/DateFilterModal";
 
 type DashboardTableProps = {
   active: any;
@@ -24,10 +25,12 @@ export default function DashboardTable(props: DashboardTableProps) {
   const [uploadModal, setUploadModal] = useState(false);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
 
+  const [dateFilterModal, setDateFilterModal] = useState(false)
+
 
   useEffect(() => {
     setVideo(videoUrl?.url)
-  },[videoUrl])
+  }, [videoUrl])
 
   const getItemsForPage = (items: any, pageNumber: any, itemsPerPage = 9) => {
     const startIndex = (pageNumber - 1) * itemsPerPage;
@@ -46,7 +49,12 @@ export default function DashboardTable(props: DashboardTableProps) {
   return (
     <div className="bg-white border-[1px] border-[#ebebeb] rounded-[24px]">
       <div className="px-[45px]">
-        <TableHeader setSearch={setSearch} setUploadModal={setUploadModal} active={props.active}/>
+        <TableHeader
+          setSearch={setSearch}
+          setUploadModal={setUploadModal}
+          active={props.active}
+          setDateFilterModal={setDateFilterModal}
+        />
       </div>
       {props.active === "Job status" && (
         <JobStatusTable
@@ -58,16 +66,28 @@ export default function DashboardTable(props: DashboardTableProps) {
           videoUrl={videoUrl}
         />
       )}
-      {props.active === "Recent Uploads" &&
-      <UploadedFilesTable data={getItemsForPage(props.data, props.uploadedFilesPage)} search={search}/>}
-      <UploadFileModal uploadModal={uploadModal} setUploadModal={setUploadModal} setFile={() => {
-        return 1
-      }} videoRef={videoRef}
+      {props.active === "Recent Uploads" && (
+        <UploadedFilesTable
+          data={getItemsForPage(props.data, props.uploadedFilesPage)}
+          search={search}
+        />
+      )}
+      <UploadFileModal
+        uploadModal={uploadModal}
+        setUploadModal={setUploadModal}
+        setFile={() => {
+          return 1
+        }}
+        videoRef={videoRef}
       />
       <VideoPreviewModal
         open={videoPreviewModal}
         setOpen={setVideoPreviewModal}
         video={video}
+      />
+      <DateFilterModal
+        open={dateFilterModal}
+        setOpen={setDateFilterModal}
       />
     </div>
   );

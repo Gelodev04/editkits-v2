@@ -21,7 +21,6 @@ type UploadedFilesTableProps = {
 }
 
 export default function UploadedFilesTable(props: UploadedFilesTableProps) {
-  console.log("===", props.data)
   return (
     <TableContainer component={Paper} className="min-h-full">
       <Table sx={{minWidth: 650}} aria-label="simple table">

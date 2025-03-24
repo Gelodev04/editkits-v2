@@ -13,7 +13,7 @@ export const jobApi = api.injectEndpoints({
         }
 
         return baseQuery({
-          url: '/jobs?offset=0&limit=12',
+          url: (_.from_ts && _.to_ts) ? `/jobs?offset=0&limit=12&from_ts=${_.from_ts}&to_ts=${_.to_ts}` : '/jobs?offset=0&limit=12',
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
         });

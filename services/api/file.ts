@@ -40,7 +40,18 @@ export const fileApi = api.injectEndpoints({
         };
       },
     }),
+    previewVideo: builder.query({
+      query: ({ fileId }) => {
+        const access_token = getAccessToken();
+        return {
+          url: `/file/preview?file_id=${fileId}`,
+          method: 'GET',
+          headers: { Authorization: `Bearer ${access_token}`}
+        }
+      },
+      transformResponse: response => response
+    })
   }),
 });
 
-export const { useUploadMutation, useStatusQuery, useGetRecentFilesQuery } = fileApi;
+export const { useUploadMutation, useStatusQuery, useGetRecentFilesQuery, usePreviewVideoQuery } = fileApi;

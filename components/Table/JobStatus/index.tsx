@@ -1,7 +1,6 @@
 import Image from "next/image";
 
-import {BsThreeDotsVertical} from "react-icons/bs";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from "@mui/material";
 
 import StatusTag from "@/components/Table/StatusTag";
 import {tableColumns} from "@/lib/constants";
@@ -14,7 +13,26 @@ import ExpiredIcon from "@/public/assets/icons/expired_icon.svg"
 import {PiPlayCircleLight} from "react-icons/pi";
 import {IoDownloadOutline} from "react-icons/io5";
 
-export default function JobStatusTable({data, search}: { data: any; search: string }) {
+import PlayIcon from "@/public/assets/icons/play.png";
+import Menu from "@/components/Menu";
+
+type JobStatusTableProps = {
+  data: any;
+  search: string;
+  handleVideoPreview: any;
+  handleVideoDownload: any;
+  setVideoPreviewModal: any;
+  videoUrl: any;
+}
+
+export default function JobStatusTable({
+  data,
+  search,
+  handleVideoPreview,
+  handleVideoDownload,
+  setVideoPreviewModal,
+  videoUrl
+}: JobStatusTableProps ) {
   return (
     <TableContainer className="px-[42px]">
       <Table
@@ -60,6 +78,8 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                     quality={75}
                   />
 
+                  {row.thumbnail_url !== "EXPIRED" &&
+                  <Image src={PlayIcon} className="absolute" width={50} height={50} alt="play icon"/>}
                   <div
                     style={{
                       position: "absolute",
@@ -77,7 +97,8 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
               </TableCell>
               <TableCell align="center">
                 <div className="flex items-center gap-[12px]">
-                  <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.input_file_id.slice(0,5)}</p>
+                  <p
+                    className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.input_file_id.slice(0, 5)}</p>
                   <Image
                     src={CopyIcon}
                     className="cursor-pointer"
@@ -87,7 +108,7 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                   />
                 </div>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="center">
+              <TableCell sx={{border: "none"}} align="left">
                 <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_file_name}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="center">
@@ -100,34 +121,69 @@ export default function JobStatusTable({data, search}: { data: any; search: stri
                 <p className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]">{row.credits}</p>
               </TableCell>
               <TableCell align="left">
-                <StatusTag status={row.status} />
+                <StatusTag status={row.status}/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="center">
-                {row.output_file_ids?.map(id => (
-                  <div className="flex items-center gap-[6.75px]">
-                    <div className="flex items-center gap-[12px]">
-                      <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0,5)}</p>
-                      <Image
-                        src={CopyIcon}
-                        className="cursor-pointer"
-                        onClick={() => navigator.clipboard.writeText(id)}
-                        alt="input_id"
-                        priority
-                      />
+                {row.is_multi_output ? row.output_file_ids?.map(id => (
+                    <div className="flex items-center gap-[6.75px]">
+                      <div className="flex items-center gap-[12px]">
+                        <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}</p>
+                        <Image
+                          src={CopyIcon}
+                          className="cursor-pointer"
+                          onClick={() => navigator.clipboard.writeText(id)}
+                          alt="input_id"
+                          priority
+                        />
+                      </div>
+                      <PiPlayCircleLight className="cursor-pointer" size={24}/>
+                      <IoDownloadOutline className="cursor-pointer" size={24}/>
                     </div>
-                    <PiPlayCircleLight size={23}/>
-                    <IoDownloadOutline size={23}/>
-                  </div>
-                ))}
+                  ))
+                  : (
+                    <div className="flex items-center gap-[10px]">
+                      <div className="flex items-end gap-[18px]">
+                        <p
+                          className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)}</p>
+                        <Image
+                          src={CopyIcon}
+                          className="cursor-pointer"
+                          onClick={() => navigator.clipboard.writeText(row.output_file_id)}
+                          alt="input_id"
+                          priority
+                        />
+                      </div>
+                      <PiPlayCircleLight
+                        onClick={() => {
+                          handleVideoPreview(row.output_file_id)
+                          setVideoPreviewModal(true)
+                        }}
+                        className="cursor-pointer"
+                        size={24}
+                      />
+                      <a href={videoUrl?.url} download target="_blank">
+                        <IoDownloadOutline
+                          onClick={() => {
+                            handleVideoDownload(row.output_file_id)
+                          }}
+                          className="cursor-pointer"
+                          size={22}
+                        />
+                      </a>
+                    </div>
+                  )}
               </TableCell>
               <TableCell
-                sx={{border: "none"}}
-                align="center">
-                <BsThreeDotsVertical
-                  color="#4f4f4f"
-                  cursor="pointer"
-                />
+                sx={{
+                  border: "none",
+
+                }}
+                align="center"
+
+              >
+                <Menu/>
               </TableCell>
+
             </TableRow>
           ))}
         </TableBody>

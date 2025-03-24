@@ -7,6 +7,7 @@ import UploadedFilesTable from "@/components/Table/UploadedFiles";
 import {usePreviewVideoQuery} from "@/services/api/file";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 import DateFilterModal from "@/components/modals/DateFilterModal";
+import FilterModal from "@/components/modals/FilterModal";
 
 type DashboardTableProps = {
   active: any;
@@ -27,7 +28,11 @@ export default function DashboardTable(props: DashboardTableProps) {
   const [uploadModal, setUploadModal] = useState(false);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
 
-  const [dateFilterModal, setDateFilterModal] = useState(false)
+  const [dateFilterModal, setDateFilterModal] = useState(false);
+  const [filterModal, setFilterModal] = useState(false);
+
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filters, setFilters] = useState([])
 
 
   useEffect(() => {
@@ -49,6 +54,11 @@ export default function DashboardTable(props: DashboardTableProps) {
     await setFileId(id)
   };
 
+  function applyFilter() {
+    setFilters(selectedFilters)
+    setFilterModal(false)
+  }
+
 
   return (
     <div className="bg-white border-[1px] border-[#ebebeb] rounded-[24px]">
@@ -58,11 +68,13 @@ export default function DashboardTable(props: DashboardTableProps) {
           setUploadModal={setUploadModal}
           active={props.active}
           setDateFilterModal={setDateFilterModal}
+          setFilterModal={setFilterModal}
         />
       </div>
       {props.active === "Job status" && (
         <JobStatusTable
-          data={getItemsForPage(props.data, props.jobStatusPage)}
+          //@ts-ignore
+          data={getItemsForPage(filters.length === 0 ? props.data : props.data.filter(item => filters.includes(item.status)), props.jobStatusPage)}
           search={search}
           handleVideoPreview={handleVideoPreview}
           handleVideoDownload={handleVideoDownload}
@@ -93,6 +105,16 @@ export default function DashboardTable(props: DashboardTableProps) {
         open={dateFilterModal}
         setOpen={setDateFilterModal}
         setDateRange={props.setDateRange}
+      />
+      <FilterModal
+        open={filterModal}
+        setOpen={setFilterModal}
+        title="Filters"
+        description="Status"
+        selected={selectedFilters}
+        //@ts-ignore
+        setSelected={setSelectedFilters}
+        onClick={applyFilter}
       />
     </div>
   );

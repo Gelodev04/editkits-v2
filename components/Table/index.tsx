@@ -7,13 +7,14 @@ import UploadedFilesTable from "@/components/Table/UploadedFiles";
 import {usePreviewVideoQuery} from "@/services/api/file";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 import DateFilterModal from "@/components/modals/DateFilterModal";
-import {DateRangePicker} from "mui-daterange-picker";
 
 type DashboardTableProps = {
   active: any;
   jobStatusPage: any;
   uploadedFilesPage: any;
-  data: any
+  data: any;
+  dateRange: any;
+  setDateRange: any;
 }
 
 export default function DashboardTable(props: DashboardTableProps) {
@@ -30,6 +31,7 @@ export default function DashboardTable(props: DashboardTableProps) {
 
 
   useEffect(() => {
+    // @ts-ignore
     setVideo(videoUrl?.url)
   }, [videoUrl])
 
@@ -46,6 +48,7 @@ export default function DashboardTable(props: DashboardTableProps) {
   const handleVideoDownload = async (id) => {
     await setFileId(id)
   };
+
 
   return (
     <div className="bg-white border-[1px] border-[#ebebeb] rounded-[24px]">
@@ -89,7 +92,6 @@ export default function DashboardTable(props: DashboardTableProps) {
       <DateFilterModal
         open={dateFilterModal}
         setOpen={setDateFilterModal}
-        dateRage={props.dateRange}
         setDateRange={props.setDateRange}
       />
     </div>

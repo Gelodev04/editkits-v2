@@ -1,4 +1,4 @@
-import React, {useRef, SetStateAction} from "react";
+import { SetStateAction} from "react";
 import {Fade, Modal} from "@mui/material";
 
 import {lato, montserrat, opensans} from "@/lib/fonts";
@@ -11,8 +11,6 @@ type PopUpProps = {
 };
 
 export default function VideoPreviewModal(props: PopUpProps) {
-  const videoNode = useRef<HTMLVideoElement>();
-
   return (
     <Modal open={props.open && props.video} onClose={() => props.setOpen(false)}>
       <Fade in={props.open}>
@@ -25,7 +23,7 @@ export default function VideoPreviewModal(props: PopUpProps) {
             <div
               className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all w-[532px]`}
             >
-              <video ref={videoNode} className="video-js vjs-default-skin w-[532px]" controls>
+              <video className="video-js vjs-default-skin w-[532px]" controls>
                 <source src={props.video} type="video/mp4"/>
               </video>
             </div>

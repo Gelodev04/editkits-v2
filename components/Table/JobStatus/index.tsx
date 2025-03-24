@@ -16,6 +16,15 @@ import {IoDownloadOutline} from "react-icons/io5";
 import PlayIcon from "@/public/assets/icons/play.png";
 import Menu from "@/components/Menu";
 
+type JobStatusTableProps = {
+  data: any;
+  search: string;
+  handleVideoPreview: any;
+  handleVideoDownload: any;
+  setVideoPreviewModal: any;
+  videoUrl: any;
+}
+
 export default function JobStatusTable({
   data,
   search,
@@ -23,7 +32,7 @@ export default function JobStatusTable({
   handleVideoDownload,
   setVideoPreviewModal,
   videoUrl
-}: { data: any; search: string }) {
+}: JobStatusTableProps ) {
   return (
     <TableContainer className="px-[42px]">
       <Table

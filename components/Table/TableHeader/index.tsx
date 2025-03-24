@@ -1,3 +1,4 @@
+import {SetStateAction} from "react";
 import Image from "next/image";
 
 import {IoAdd} from "react-icons/io5";
@@ -11,7 +12,8 @@ import {useRouter} from "next/router";
 type TableHeaderProps = {
   setSearch: any;
   setUploadModal: any;
-  active: any
+  active: any;
+  setDateFilterModal: (e: SetStateAction<boolean>) => void;
 }
 
 export default function TableHeader(props: TableHeaderProps) {

@@ -29,6 +29,7 @@ export default function Menu() {
         aria-expanded={open ? 'true' : undefined}
         color="#4f4f4f"
         cursor="pointer"
+        //@ts-ignore
         onClick={handleClick}
       />
       <MenuComponent

@@ -6,6 +6,8 @@ import StatusTag from "@/components/Table/StatusTag";
 import {tableColumns} from "@/lib/constants";
 
 import CopyIcon from "@/public/assets/icons/copy.svg";
+import PlayIconSm from "@/public/assets/icons/play_sm.svg";
+import DownloadIcon from "@/public/assets/icons/download.svg";
 import Success from "@/public/assets/icons/success.svg";
 import Failed from "@/public/assets/icons/failed.svg";
 import Progress from "@/public/assets/icons/pending.svg";
@@ -26,13 +28,12 @@ type JobStatusTableProps = {
 }
 
 export default function JobStatusTable({
-  data,
-  search,
-  handleVideoPreview,
-  handleVideoDownload,
-  setVideoPreviewModal,
-  videoUrl
-}: JobStatusTableProps ) {
+                                         data,
+                                         search,
+                                         handleVideoPreview,
+                                         handleVideoDownload,
+                                         setVideoPreviewModal,
+                                       }: JobStatusTableProps) {
   return (
     <TableContainer className="px-[42px]">
       <Table
@@ -41,7 +42,7 @@ export default function JobStatusTable({
         <TableHead sx={{backgroundColor: "#f0f0f0"}}>
           <TableRow>
             {tableColumns.map(col => (
-              <TableCell key={col.name} align="center">
+              <TableCell key={col.name} align="center" className="py-[18px] px-0" padding="none" sx={{paddingY: "18px"}}>
                 <p className="font-lato font-bold text-xs leading-[16.8px]  text-[#201D23]">{col.name}</p>
               </TableCell>
             ))}
@@ -78,8 +79,7 @@ export default function JobStatusTable({
                     quality={75}
                   />
 
-                  {row.thumbnail_url !== "EXPIRED" &&
-                  <Image src={PlayIcon} className="absolute" width={50} height={50} alt="play icon"/>}
+                  <Image src={PlayIcon} className="absolute" width={50} height={50} alt="play icon"/>
                   <div
                     style={{
                       position: "absolute",
@@ -109,18 +109,18 @@ export default function JobStatusTable({
                 </div>
               </TableCell>
               <TableCell sx={{border: "none"}} align="left">
-                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_file_name}</p>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_file_name.slice(0,10)} {row.input_file_name.length > 10 && "..."}</p>
+              </TableCell>
+              <TableCell sx={{border: "none"}} align="center" className="w-[154px]" padding="none">
+                <p className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f] p-[0px]">{new Date(row.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(row.created_at * 1000).toLocaleTimeString('en-GB')}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="center">
-                <p>{new Date(row.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(row.created_at * 1000).toLocaleTimeString('en-GB')}</p>
+                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px] w-full">{row.tools_used}</p>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="center">
-                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.tools_used}</p>
-              </TableCell>
-              <TableCell sx={{border: "none"}} align="center">
+              <TableCell sx={{border: "none"}} align="center" className="w-[104px]" padding="none">
                 <p className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]">{row.credits}</p>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="left" className="w-[124px]">
                 <StatusTag status={row.status}/>
               </TableCell>
               <TableCell sx={{border: "none"}} align="center">
@@ -141,35 +141,33 @@ export default function JobStatusTable({
                     </div>
                   ))
                   : (
-                    <div className="flex items-center gap-[10px]">
-                      <div className="flex items-end gap-[18px]">
-                        <p
-                          className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)}</p>
-                        <Image
-                          src={CopyIcon}
-                          className="cursor-pointer"
-                          onClick={() => navigator.clipboard.writeText(row.output_file_id)}
-                          alt="input_id"
-                          priority
-                        />
-                      </div>
-                      <PiPlayCircleLight
+                    <div className="flex items-center gap-[12px]">
+                      <p
+                        className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)} ...</p>
+                      <Image
+                        src={CopyIcon}
+                        className="cursor-pointer"
+                        onClick={() => navigator.clipboard.writeText(row.output_file_id)}
+                        alt="input_id"
+                        priority
+                      />
+                      <Image
+                        className="cursor-pointer"
+                        src={PlayIconSm}
                         onClick={() => {
                           handleVideoPreview(row.output_file_id)
                           setVideoPreviewModal(true)
                         }}
-                        className="cursor-pointer"
-                        size={24}
+                        alt="play icon"
                       />
-                      <a href={videoUrl?.url} download target="_blank">
-                        <IoDownloadOutline
-                          onClick={() => {
-                            handleVideoDownload(row.output_file_id)
-                          }}
-                          className="cursor-pointer"
-                          size={22}
-                        />
-                      </a>
+                      <Image
+                        className="cursor-pointer"
+                        src={DownloadIcon}
+                        onClick={() => {
+                          handleVideoDownload(row.output_file_id)
+                        }}
+                        alt="download icon"
+                      />
                     </div>
                   )}
               </TableCell>
@@ -178,10 +176,16 @@ export default function JobStatusTable({
                   border: "none",
 
                 }}
-                align="center"
 
               >
-                <Menu/>
+                <Menu
+                  handleCopy={() => navigator.clipboard.writeText(row.output_file_id)}
+                  handleDownload={() => handleVideoDownload(row.output_file_id)}
+                  handlePreview={() => {
+                    handleVideoPreview(row.output_file_id)
+                    setVideoPreviewModal(true)
+                  }}
+                />
               </TableCell>
 
             </TableRow>

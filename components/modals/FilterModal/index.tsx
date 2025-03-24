@@ -45,23 +45,22 @@ export default function FilterModal(props: PopUpProps) {
               <div className="absolute right-[14px] top-[14px] cursor-pointer">
                 <TbXboxX size={30} color="#000" onClick={() => props.setOpen(false)}/>
               </div>
-              <div className="pb-[28px] pt-[32px]">
+              <div className="pb-[60px] pt-[32px]">
                 <Typography label={props.title} center variant="h4"/>
               </div>
-              <div className="w-[432px] mx-auto">
-                <Typography label={props.description} center variant="b3"/>
-              </div>
+              <p
+                className="font-lato font-bold text-[20px] leading-[30px] text-center text-[#2c2c2c]">{props.description}</p>
 
               <div className="flex justify-center gap-[12px] pt-[24px]">
                 {filters.map((filter) => (
                   <button
                     onClick={() => handleFilterSelect(filter.value)}
-                    className={`px-[24px] py-[15px] rounded-[100px] border-[1px] border-[#d2d3d3] ${props.selected.includes(filter.value) ? "bg-[#4f4f4f] text-white": "bg-white text-[#363939]"} font-lato font-medium text-sm leading-[17.5px]`}>
+                    className={`px-[24px] py-[15px] rounded-[100px] border-[1px] border-[#d2d3d3] ${props.selected.includes(filter.value) ? "bg-[#4f4f4f] text-white" : "bg-white text-[#363939]"} font-lato font-medium text-sm leading-[17.5px]`}>
                     {filter.label}
                   </button>
                 ))}
               </div>
-              <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[32px]">
+              <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[34px]">
                 <Button
                   onClick={() => props.setOpen(false)}
                   label="Dismiss"

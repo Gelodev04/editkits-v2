@@ -1,4 +1,4 @@
-import {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect} from "react";
 
 import UploadFileModal from "@/components/modals/UploadFileModal";
 import TableHeader from "@/components/Table/TableHeader";
@@ -7,6 +7,7 @@ import UploadedFilesTable from "@/components/Table/UploadedFiles";
 import {usePreviewVideoQuery} from "@/services/api/file";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 import DateFilterModal from "@/components/modals/DateFilterModal";
+import {DateRangePicker} from "mui-daterange-picker";
 
 type DashboardTableProps = {
   active: any;
@@ -88,6 +89,8 @@ export default function DashboardTable(props: DashboardTableProps) {
       <DateFilterModal
         open={dateFilterModal}
         setOpen={setDateFilterModal}
+        dateRage={props.dateRange}
+        setDateRange={props.setDateRange}
       />
     </div>
   );

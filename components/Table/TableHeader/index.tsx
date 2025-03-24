@@ -8,9 +8,6 @@ import Filter from "@/public/assets/img/table/filter.svg";
 import CalendarIcon from "@/public/assets/icons/calendar.svg"
 import {useRouter} from "next/router";
 
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-
 type TableHeaderProps = {
   setSearch: any;
   setUploadModal: any;

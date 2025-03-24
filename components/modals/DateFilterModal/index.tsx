@@ -1,24 +1,23 @@
-import { useState } from 'react';
-import {DateRange} from 'react-date-range'
-import {lato, montserrat, opensans} from "@/lib/fonts";
-import {TbXboxX} from "react-icons/tb";
 import React from "react";
-import Button from "@/components/Button";
+
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+import {TbXboxX} from "react-icons/tb";
 import {Fade, Modal} from "@mui/material";
 
+import {lato, montserrat, opensans} from "@/lib/fonts";
+
+import { DateRangePicker } from "mui-daterange-picker";
+
+
+import Button from "@/components/Button";
+
 export default function DateFilterModal(props) {
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: null,
-      key: 'selection'
-    }
-  ]);
-
   function handleFilter() {
-
+    props.setOpen(false)
   }
-
 
   return (
     <Modal open={props.open} onClose={() => props.setOpen(false)}>
@@ -29,25 +28,18 @@ export default function DateFilterModal(props) {
           <div
             className="fixed inset-0 z-10 w-screen overflow-y-auto flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
             <div
-              className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:w-[400px]`}>
-              <div className="absolute right-[14px] top-[14px] cursor-pointer">
-                <TbXboxX size={30} color="#000" onClick={() => props.setOpen(false)}/>
-              </div>
+              >
               <div className="flex justify-center pt-12">
-                <DateRange
-                  showDateDisplay={false}
-                  editableDateInputs={true}
-                  onChange={item => {
-                    setDateRange([item.selection]);
-                    console.log("===", dateRange)
-                  }}
-                  moveRangeOnFirstSelection={false}
-                  ranges={dateRange}
+                <DateRangePicker
+                  wrapperClassName={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all`}
+                  toggle={() => props.setOpen(false)}
+                  open={true}
+                  onChange={(range) => props.setDateRange(range)}
                 />
               </div>
               <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[32px]">
                 <Button
-                  onClick={() => props.setOpen(false)}
+                  onClick={handleFilter}
                   label="Filter"
                   filled
                   variant="primary"

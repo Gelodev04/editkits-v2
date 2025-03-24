@@ -14,6 +14,10 @@ import Loading from "@/pages/dashboard/loading";
 import {useGetRecentFilesQuery} from "@/services/api/file";
 
 export default function Dashboard() {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null)
+
+  const [dateRange, setDateRange] = useState({});
   const {data: jobs} = useGetJobsQuery({});
   const { data: recentFiles } = useGetRecentFilesQuery({});
 
@@ -43,6 +47,12 @@ export default function Dashboard() {
                     jobStatusPage={currentPage}
                     uploadedFilesPage={currentPage}
                     data={data}
+                    startDate={startDate}
+                    setStartDate={setStartDate}
+                    endDate={endDate}
+                    setEndDate={setEndDate}
+                    dateRange={dateRange}
+                    setDateRange={setDateRange}
                   />
                 </div>
               </>

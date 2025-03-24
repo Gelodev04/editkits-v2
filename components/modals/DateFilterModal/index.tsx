@@ -4,7 +4,8 @@ import {Fade, Modal} from "@mui/material";
 
 import {lato, montserrat, opensans} from "@/lib/fonts";
 
-import { DateRangePicker } from "mui-daterange-picker";
+// import { DateRangePicker } from "mui-daterange-picker";
+import DateRangePicker from "@/components/DateRangePicker";
 
 type DateFilterModalProps = {
   open: boolean;
@@ -26,6 +27,7 @@ export default function DateFilterModal(props: DateFilterModalProps) {
               >
               <div className="flex justify-center pt-12">
                 <DateRangePicker
+                  //@ts-ignore
                   wrapperClassName={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all`}
                   toggle={() => props.setOpen(false)}
                   open={true}

@@ -14,6 +14,7 @@ type TableHeaderProps = {
   setUploadModal: any;
   active: any;
   setDateFilterModal: (e: SetStateAction<boolean>) => void;
+  setFilterModal: (e: SetStateAction<boolean>) => void;
 }
 
 export default function TableHeader(props: TableHeaderProps) {
@@ -34,7 +35,8 @@ export default function TableHeader(props: TableHeaderProps) {
         </div>
 
         <div
-          className="flex justify-center items-center gap-2 bg-white border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 ">
+          onClick={() => props.setFilterModal(true)}
+          className="flex justify-center items-center gap-2 bg-white border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 cursor-pointer">
           <Image
             src={Filter}
             alt="filter icon"

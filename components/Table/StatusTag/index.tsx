@@ -3,7 +3,7 @@ export default function StatusTag({status}: {status: any}) {
     switch (status) {
       case "COMPLETED":
         return "Success"
-      case "Failed":
+      case "FAILED":
         return "Failed"
       case "IN_PROGRESS":
         return "In Progress"

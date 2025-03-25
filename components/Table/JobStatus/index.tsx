@@ -20,7 +20,6 @@ import Menu from "@/components/Menu";
 
 type JobStatusTableProps = {
   data: any;
-  search: string;
   handleVideoPreview: any;
   handleVideoDownload: any;
   setVideoPreviewModal: any;
@@ -29,7 +28,6 @@ type JobStatusTableProps = {
 
 export default function JobStatusTable({
   data,
-  search,
   handleVideoPreview,
   handleVideoDownload,
   setVideoPreviewModal
@@ -49,7 +47,7 @@ export default function JobStatusTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.filter((row: any) => row.input_file_name.toLowerCase().includes(search)).map((row: any) => (
+          {data?.filter((row: any) => row.input_file_name.toLowerCase()).map((row: any) => (
             <TableRow
               key={row.input_file_id}
               sx={{
@@ -175,7 +173,6 @@ export default function JobStatusTable({
               <TableCell
                 sx={{
                   border: "none",
-
                 }}
                 padding="none"
                 width={50}

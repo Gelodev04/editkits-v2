@@ -69,6 +69,8 @@ export default function DashboardTable(props: DashboardTableProps) {
           active={props.active}
           setDateFilterModal={setDateFilterModal}
           setFilterModal={setFilterModal}
+          dateRange={props.dateRange}
+          selectedFilters={selectedFilters}
         />
       </div>
       {props.active === "Job status" && (

@@ -33,6 +33,7 @@ const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
     maxDate,
     definedRanges = getDefaultRanges(new Date(), props.locale),
     locale,
+    toggle
   } = props;
 
   const minDateValid = parseOptionalDate(minDate, addYears(today, -10));
@@ -148,6 +149,7 @@ const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
       helpers={helpers}
       handlers={handlers}
       locale={locale}
+      toggle={toggle}
     />
   ) : null;
 };

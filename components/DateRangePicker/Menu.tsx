@@ -13,6 +13,7 @@ import {
   NavigationAction,
 } from './types';
 import { MARKERS } from './Markers';
+import {TbXboxX} from "react-icons/tb";
 
 interface MenuProps {
   dateRange: DateRange;
@@ -52,7 +53,9 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
     setDateRange,
     helpers,
     handlers,
-    locale
+    locale,
+    toggle
+
   } = props;
 
   const { startDate, endDate } = dateRange;
@@ -61,7 +64,10 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
     dateRange, minDate, maxDate, helpers, handlers,
   };
   return (
-    <Paper elevation={5} square>
+    <Paper elevation={5} square className="rounded-3xl pt-10 px-8 relative">
+      <div className="absolute right-[14px] top-[14px] cursor-pointer">
+        <TbXboxX size={30} color="#000" onClick={toggle} />
+      </div>
       <Grid container direction="row" wrap="nowrap">
         <Grid>
           <DefinedRanges

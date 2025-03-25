@@ -18,6 +18,7 @@ interface DateRangePickerProps {
   // eslint-disable-next-line no-unused-vars
   onChange: (dateRange: DateRange) => void;
   locale?: Locale;
+  toggle: any
 }
 
 const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
@@ -33,6 +34,7 @@ const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
     maxDate,
     definedRanges = getDefaultRanges(new Date(), props.locale),
     locale,
+    toggle
   } = props;
 
   const minDateValid = parseOptionalDate(minDate, addYears(today, -10));
@@ -148,6 +150,7 @@ const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
       helpers={helpers}
       handlers={handlers}
       locale={locale}
+      toggle={toggle}
     />
   ) : null;
 };

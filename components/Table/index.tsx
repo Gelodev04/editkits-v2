@@ -69,13 +69,14 @@ export default function DashboardTable(props: DashboardTableProps) {
           active={props.active}
           setDateFilterModal={setDateFilterModal}
           setFilterModal={setFilterModal}
+          dateRange={props.dateRange}
+          selectedFilters={selectedFilters}
         />
       </div>
       {props.active === "Job status" && (
         <JobStatusTable
           //@ts-ignore
           data={getItemsForPage(filters.length === 0 ? props.data : props.data.filter(item => filters.includes(item.status)), props.jobStatusPage)}
-          search={search}
           handleVideoPreview={handleVideoPreview}
           handleVideoDownload={handleVideoDownload}
           setVideoPreviewModal={setVideoPreviewModal}

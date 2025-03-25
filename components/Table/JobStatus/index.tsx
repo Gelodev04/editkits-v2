@@ -3,7 +3,7 @@ import Image from "next/image";
 import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from "@mui/material";
 
 import StatusTag from "@/components/Table/StatusTag";
-import {tableColumns} from "@/lib/constants";
+import {jobStatusColumns} from "@/lib/constants";
 
 import CopyIcon from "@/public/assets/icons/copy.svg";
 import PlayIconSm from "@/public/assets/icons/play_sm.svg";
@@ -20,7 +20,6 @@ import Menu from "@/components/Menu";
 
 type JobStatusTableProps = {
   data: any;
-  search: string;
   handleVideoPreview: any;
   handleVideoDownload: any;
   setVideoPreviewModal: any;
@@ -28,12 +27,11 @@ type JobStatusTableProps = {
 }
 
 export default function JobStatusTable({
-                                         data,
-                                         search,
-                                         handleVideoPreview,
-                                         handleVideoDownload,
-                                         setVideoPreviewModal,
-                                       }: JobStatusTableProps) {
+  data,
+  handleVideoPreview,
+  handleVideoDownload,
+  setVideoPreviewModal
+}: JobStatusTableProps) {
   return (
     <TableContainer className="px-[42px]">
       <Table
@@ -41,7 +39,7 @@ export default function JobStatusTable({
       >
         <TableHead sx={{backgroundColor: "#f0f0f0"}}>
           <TableRow>
-            {tableColumns.map(col => (
+            {jobStatusColumns.map(col => (
               <TableCell key={col.name} align="center" className="py-[18px] px-0" padding="none" sx={{paddingY: "18px"}}>
                 <p className="font-lato font-bold text-xs leading-[16.8px]  text-[#201D23]">{col.name}</p>
               </TableCell>
@@ -49,7 +47,7 @@ export default function JobStatusTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.filter((row: any) => row.input_file_name.toLowerCase().includes(search)).map((row: any) => (
+          {data?.filter((row: any) => row.input_file_name.toLowerCase()).map((row: any) => (
             <TableRow
               key={row.input_file_id}
               sx={{
@@ -57,7 +55,7 @@ export default function JobStatusTable({
                 '&:nth-of-type(even)': {backgroundColor: '#fcfcfc'},
               }}
             >
-              <TableCell sx={{border: "none"}} component="th" scope="row">
+              <TableCell sx={{border: "none"}} component="th" scope="row" width={109} padding="none" align="right">
                 <div
                   style={{
                     position: "relative",
@@ -67,6 +65,7 @@ export default function JobStatusTable({
                     alignItems: "center",
                     justifyContent: "center",
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
+                    margin: "auto"
                   }}
                 >
                   <Image
@@ -88,14 +87,14 @@ export default function JobStatusTable({
                     }}
                   >
                     <Image
-                      src={row.status === "Success" ? Success : row.status === "Failed" ? Failed : Progress}
+                      src={row.status === "COMPLETED" ? Success : row.status === "FAILED" ? Failed : Progress}
                       alt="success-icon"
                       priority
                     />
                   </div>
                 </div>
               </TableCell>
-              <TableCell align="center">
+              <TableCell width={150}>
                 <div className="flex items-center gap-[12px]">
                   <p
                     className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.input_file_id.slice(0, 5)}</p>
@@ -108,26 +107,26 @@ export default function JobStatusTable({
                   />
                 </div>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="left">
+              <TableCell sx={{border: "none"}} align="left" width={140}>
                 <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{row.input_file_name.slice(0,10)} {row.input_file_name.length > 10 && "..."}</p>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="center" className="w-[154px]" padding="none">
+              <TableCell sx={{border: "none"}} width={154} align="center" className="w-[154px]" padding="none">
                 <p className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f] p-[0px]">{new Date(row.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(row.created_at * 1000).toLocaleTimeString('en-GB')}</p>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="center">
+              <TableCell sx={{border: "none"}} align="center" width={123}>
                 <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px] w-full">{row.tools_used}</p>
               </TableCell>
               <TableCell sx={{border: "none"}} align="center" className="w-[104px]" padding="none">
                 <p className="font-lato font-normal text-sm leading-[19.6px] text-[#4f4f4f]">{row.credits}</p>
               </TableCell>
-              <TableCell align="left" className="w-[124px]">
+              <TableCell align="center" className="w-[124px]" padding="none">
                 <StatusTag status={row.status}/>
               </TableCell>
-              <TableCell sx={{border: "none"}} align="center">
+              <TableCell sx={{border: "none"}} align="center" padding="none" width={156}>
                 {row.is_multi_output ? row.output_file_ids?.map(id => (
                     <div className="flex items-center gap-[6.75px]">
                       <div className="flex items-center gap-[12px]">
-                        <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}</p>
+                        <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}...</p>
                         <Image
                           src={CopyIcon}
                           className="cursor-pointer"
@@ -141,9 +140,9 @@ export default function JobStatusTable({
                     </div>
                   ))
                   : (
-                    <div className="flex items-center gap-[12px]">
+                    <div className="flex items-center gap-[6px]">
                       <p
-                        className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)} ...</p>
+                        className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)}...</p>
                       <Image
                         src={CopyIcon}
                         className="cursor-pointer"
@@ -174,8 +173,9 @@ export default function JobStatusTable({
               <TableCell
                 sx={{
                   border: "none",
-
                 }}
+                padding="none"
+                width={50}
 
               >
                 <Menu

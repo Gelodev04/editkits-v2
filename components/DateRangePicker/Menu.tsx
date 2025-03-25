@@ -13,6 +13,8 @@ import {
   NavigationAction,
 } from './types';
 import { MARKERS } from './Markers';
+import {TbXboxX} from "react-icons/tb";
+import Button from "@/components/Button";
 
 interface MenuProps {
   dateRange: DateRange;
@@ -37,6 +39,7 @@ interface MenuProps {
     onMonthNavigate: (marker: symbol, action: NavigationAction) => void;
   };
   locale?: Locale;
+  toggle: any
 }
 
 const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
@@ -52,7 +55,9 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
     setDateRange,
     helpers,
     handlers,
-    locale
+    locale,
+    toggle
+
   } = props;
 
   const { startDate, endDate } = dateRange;
@@ -61,7 +66,10 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
     dateRange, minDate, maxDate, helpers, handlers,
   };
   return (
-    <Paper elevation={5} square>
+    <Paper elevation={5} square className="rounded-3xl pt-10 px-8 relative">
+      <div className="absolute right-[14px] top-[14px] cursor-pointer">
+        <TbXboxX size={30} color="#000" onClick={toggle} />
+      </div>
       <Grid container direction="row" wrap="nowrap">
         <Grid>
           <DefinedRanges
@@ -109,6 +117,14 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
           </Grid>
         </Grid>
       </Grid>
+      <div className="flex justify-center py-[34px]">
+        <Button
+          variant="primary"
+          filled
+          label="Apply"
+          onClick={toggle}
+        />
+      </div>
     </Paper>
   );
 };

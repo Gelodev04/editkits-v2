@@ -212,7 +212,7 @@ export const stats = [
   }
 ]
 
-export const tableColumns = [
+export const jobStatusColumns: { name?: string }[] = [
   {},
   {
     name: "Input File(s)"

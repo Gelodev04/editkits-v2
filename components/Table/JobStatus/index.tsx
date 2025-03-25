@@ -126,7 +126,7 @@ export default function JobStatusTable({
                 {row.is_multi_output ? row.output_file_ids?.map(id => (
                     <div className="flex items-center gap-[6.75px]">
                       <div className="flex items-center gap-[12px]">
-                        <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}</p>
+                        <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}...</p>
                         <Image
                           src={CopyIcon}
                           className="cursor-pointer"
@@ -142,7 +142,7 @@ export default function JobStatusTable({
                   : (
                     <div className="flex items-center gap-[6px]">
                       <p
-                        className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)} </p>
+                        className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.output_file_id.slice(0, 5)}...</p>
                       <Image
                         src={CopyIcon}
                         className="cursor-pointer"

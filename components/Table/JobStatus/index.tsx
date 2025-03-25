@@ -97,7 +97,7 @@ export default function JobStatusTable({
               <TableCell width={150}>
                 <div className="flex items-center gap-[12px]">
                   <p
-                    className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.input_file_id.slice(0, 5)}</p>
+                    className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{row.input_file_id.slice(0, 5)}...</p>
                   <Image
                     src={CopyIcon}
                     className="cursor-pointer"

@@ -19,6 +19,7 @@ export default function Dashboard() {
   const {data: jobs} = useGetJobsQuery({
     from_ts: new Date(dateRange.startDate /1000).getTime(), to_ts: new Date(dateRange.endDate / 1000).getTime()
   });
+
   const { data: recentFiles } = useGetRecentFilesQuery({});
 
   const [active, setActive] = useState("Job status");

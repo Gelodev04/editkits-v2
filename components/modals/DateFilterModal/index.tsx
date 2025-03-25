@@ -1,4 +1,4 @@
-import {SetStateAction} from "react";
+import {SetStateAction, useState} from "react";
 
 import {Fade, Modal} from "@mui/material";
 
@@ -13,6 +13,7 @@ type DateFilterModalProps = {
 }
 
 export default function DateFilterModal(props: DateFilterModalProps) {
+  const [range, setRange] = useState()
 
   return (
     <Modal open={props.open} onClose={() => props.setOpen(false)}>
@@ -25,9 +26,12 @@ export default function DateFilterModal(props: DateFilterModalProps) {
             <DateRangePicker
               //@ts-ignore
               wrapperClassName={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden bg-white text-left shadow-xl transition-all`}
-              toggle={() => props.setOpen(false)}
+              toggle={() => {
+                props.setOpen(false)
+                props.setDateRange(range)
+              }}
               open={props.open}
-              onChange={(range: any) => props.setDateRange(range)}
+              onChange={(range: any) => setRange(range)}
             />
           </div>
         </div>

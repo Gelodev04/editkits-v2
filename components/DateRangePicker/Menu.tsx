@@ -14,6 +14,7 @@ import {
 } from './types';
 import { MARKERS } from './Markers';
 import {TbXboxX} from "react-icons/tb";
+import Button from "@/components/Button";
 
 interface MenuProps {
   dateRange: DateRange;
@@ -115,6 +116,14 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
           </Grid>
         </Grid>
       </Grid>
+      <div className="flex justify-center py-[34px]">
+        <Button
+          variant="primary"
+          filled
+          label="Apply"
+          onClick={toggle}
+        />
+      </div>
     </Paper>
   );
 };

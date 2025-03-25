@@ -39,6 +39,7 @@ interface MenuProps {
     onMonthNavigate: (marker: symbol, action: NavigationAction) => void;
   };
   locale?: Locale;
+  toggle: any
 }
 
 const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {

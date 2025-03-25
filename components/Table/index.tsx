@@ -77,7 +77,6 @@ export default function DashboardTable(props: DashboardTableProps) {
         <JobStatusTable
           //@ts-ignore
           data={getItemsForPage(filters.length === 0 ? props.data : props.data.filter(item => filters.includes(item.status)), props.jobStatusPage)}
-          search={search}
           handleVideoPreview={handleVideoPreview}
           handleVideoDownload={handleVideoDownload}
           setVideoPreviewModal={setVideoPreviewModal}

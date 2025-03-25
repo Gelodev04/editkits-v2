@@ -14,7 +14,7 @@ type TableHeaderProps = {
   active: any;
   setDateFilterModal: (e: SetStateAction<boolean>) => void;
   setFilterModal: (e: SetStateAction<boolean>) => void;
-  dateRange: any;
+  dateRange?: any;
   selectedFilters: any
 }
 
@@ -26,8 +26,8 @@ export default function TableHeader(props: TableHeaderProps) {
       <div className="flex gap-[17px]">
         <div
           onClick={() => props.setDateFilterModal(true)}
-          className={`flex justify-center items-center gap-2 ${(props.dateRange.startDate || props.dateRange.endDate) ? "bg-[#148cfc] text-white": "bg-white text-[#4f4f4f]"} border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 cursor-pointer`}>
-          <RxCalendar size={18} color={(props.dateRange.startDate || props.dateRange.endDate) ? "white": "#4f4f4f"} />
+          className={`flex justify-center items-center gap-2 ${(props.dateRange?.startDate || props.dateRange?.endDate) ? "bg-[#148cfc] text-white": "bg-white text-[#4f4f4f]"} border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 cursor-pointer`}>
+          <RxCalendar size={18} color={(props.dateRange?.startDate || props.dateRange?.endDate) ? "white": "#4f4f4f"} />
 
           <p className="font-lato font-bold text-sm leading-[19.6px]">All Time</p>
         </div>

@@ -28,6 +28,7 @@ export default function DateFilterModal(props: DateFilterModalProps) {
               wrapperClassName={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden bg-white text-left shadow-xl transition-all`}
               toggle={() => {
                 props.setOpen(false)
+                //@ts-ignore
                 props.setDateRange(range)
               }}
               open={props.open}

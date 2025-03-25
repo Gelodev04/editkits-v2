@@ -18,6 +18,7 @@ interface DateRangePickerProps {
   // eslint-disable-next-line no-unused-vars
   onChange: (dateRange: DateRange) => void;
   locale?: Locale;
+  toggle: any
 }
 
 const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (

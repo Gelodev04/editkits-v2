@@ -21,7 +21,7 @@ export default function DateFilterModal(props: DateFilterModalProps) {
         <div>
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
           <div
-            className="fixed inset-0 z-10 w-screen overflow-y-auto flex min-h-full items-end justify-center text-center items-center rounded-[8px]"
+            className="fixed flex inset-0 z-10 w-screen overflow-y-auto flex min-h-full justify-center text-center items-center rounded-[8px]"
           >
             <DateRangePicker
               //@ts-ignore

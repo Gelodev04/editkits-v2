@@ -39,7 +39,7 @@ export default function FilterModal(props: PopUpProps) {
         <div>
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
           <div
-            className="fixed inset-0 z-10 w-screen overflow-y-auto flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
+            className="fixed inset-0 z-10 w-screen overflow-y-auto flex min-h-full justify-center text-center items-center sm:p-0">
             <div
               className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:w-[532px]`}>
               <div className="absolute right-[14px] top-[14px] cursor-pointer">

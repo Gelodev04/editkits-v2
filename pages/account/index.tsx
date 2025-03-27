@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import AccountType from "@/components/account/AccountType";
 import Button from "@/components/Button";
 import InputField from "@/components/InputField";
-import ChangePasswordModal from "@/components/modals/ChnagePasswordModal";
+import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
 import PopUp from "@/components/modals/Popup";
 
 import {benefits} from "@/lib/constants";

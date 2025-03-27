@@ -3,6 +3,7 @@ import React, {useState, useEffect} from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {montserrat, roboto, opensans, workSans} from "@/lib/fonts";
+import {SidebarProvider} from "@/context/SidebarContext";
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -20,7 +21,9 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
         <Header/>
       </div>
       <div className="flex-1">
-        {children}
+        <SidebarProvider>
+          {children}
+        </SidebarProvider>
       </div>
       <Footer/>
     </div>

@@ -55,7 +55,7 @@ export default function Header() {
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
       <Link href="/home">
-        <Image src={Logo} className="w-[187px]" alt="Logo" priority/>
+        {router.pathname !== "/dashboard" && <Image src={Logo} className="w-[187px]" alt="Logo" priority/>}
       </Link>
       <div className="flex justify-center items-center">
         {userInfo && (

@@ -272,7 +272,7 @@ export default function DataTableOne() {
         {/* <!-- Metric Item Start --> */}
         <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
           <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-            <Image className="text-gray-800 size-6 dark:text-white/90" src={GroupIcon} />
+            <Image className="text-gray-800 size-6 dark:text-white/90" src={GroupIcon} alt="group icon" />
           </div>
 
           <div className="flex items-end justify-between mt-5">
@@ -285,7 +285,7 @@ export default function DataTableOne() {
               </h4>
             </div>
             <Badge color="success">
-              <Image src={ArrowUpIcon} />
+              <Image src={ArrowUpIcon} alt="up icon" />
               11.01%
             </Badge>
           </div>
@@ -295,7 +295,7 @@ export default function DataTableOne() {
         {/* <!-- Metric Item Start --> */}
         <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
           <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-            <Image src={BoxIconLine} className="text-gray-800 dark:text-white/90" />
+            <Image src={BoxIconLine} className="text-gray-800 dark:text-white/90" alt="box icon" />
           </div>
           <div className="flex items-end justify-between mt-5">
             <div>
@@ -308,7 +308,7 @@ export default function DataTableOne() {
             </div>
 
             <Badge color="error">
-              <Image src={ArrowDownIcon} className="text-error-500" />
+              <Image src={ArrowDownIcon} className="text-error-500" alt="down icon" />
               9.05%
             </Badge>
           </div>
@@ -417,7 +417,9 @@ export default function DataTableOne() {
                               sortKey === key && sortOrder === "asc"
                                 ? "text-brand-500"
                                 : ""
-                            }`} src={AngleDownIcon}/>
+                            }`} src={AngleDownIcon}
+                            alt="down icon"
+                          />
                           <Image
                             src={AngleUpIcon}
                             className={`text-gray-300 dark:text-gray-700 ${
@@ -425,6 +427,7 @@ export default function DataTableOne() {
                                 ? "text-brand-500"
                                 : ""
                             }`}
+                            alt="up icon"
                           />
 
                         </button>

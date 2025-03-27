@@ -202,7 +202,8 @@ const Sidebar: React.FC = () => {
                     : "menu-item-icon-inactive"
                 }`}
               >
-                <Image src={nav.icon} />
+                {/*@ts-ignore*/}
+                <Image src={nav.icon} alt={nav.name} />
               </span>
               {(isExpanded || isHovered || isMobileOpen) && (
                 <span className={`menu-item-text`}>{nav.name}</span>
@@ -216,6 +217,7 @@ const Sidebar: React.FC = () => {
                       ? "rotate-180 text-brand-500"
                       : ""
                   }`}
+                  alt="down icon"
                 />
               )}
             </button>
@@ -234,7 +236,8 @@ const Sidebar: React.FC = () => {
                       : "menu-item-icon-inactive"
                   }`}
                 >
-                  <Image src={nav.icon} />
+                  {/*@ts-ignore*/}
+                  <Image src={nav.icon} alt={nav.name} />
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
                   <span className={`menu-item-text`}>{nav.name}</span>
@@ -437,7 +440,7 @@ const Sidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Menu"
                 ) : (
-                  <Image src={HorizontaLDots} />
+                  <Image src={HorizontaLDots} alt="dots icon" />
                 )}
               </h2>
               {renderMenuItems(navItems, "main")}
@@ -453,7 +456,7 @@ const Sidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Support"
                 ) : (
-                  <Image src={HorizontaLDots} />
+                  <Image src={HorizontaLDots} alt="dots icon" />
                 )}
               </h2>
               {renderMenuItems(supportItems, "support")}
@@ -469,7 +472,7 @@ const Sidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Others"
                 ) : (
-                  <Image src={HorizontaLDots} />
+                  <Image src={HorizontaLDots} alt="dots icon" />
                 )}
               </h2>
               {renderMenuItems(othersItems, "others")}

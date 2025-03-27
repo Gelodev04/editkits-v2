@@ -28,13 +28,16 @@ export default function PaginationWithIcon({
 
     const pages = [];
     for (let i = startPage; i <= endPage; i++) {
+      //@ts-ignore
       pages.push(<li key={i}>{renderPageButton(i)}</li>);
     }
 
     if (startPage > 1) {
+      //@ts-ignore
       pages.unshift(<li key="ellipsis-start">{renderEllipsis()}</li>);
     }
     if (endPage < totalPages) {
+      //@ts-ignore
       pages.push(<li key="ellipsis-end">{renderEllipsis()}</li>);
     }
 

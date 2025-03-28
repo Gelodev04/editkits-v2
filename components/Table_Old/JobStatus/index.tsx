@@ -9,24 +9,9 @@ import {
   TopHeader
 } from "@/components/Table";
 import Badge from "@/components/Badge";
-// import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from "@mui/material";
-
-// import StatusTag from "@/components/Table_Old/StatusTag";
 import {jobStatusColumns} from "@/lib/constants";
 
-// import CopyIcon from "@/public/assets/icons/copy.svg";
-// import PlayIconSm from "@/public/assets/icons/play_sm.svg";
-// import DownloadIcon from "@/public/assets/icons/download.svg";
-// import Success from "@/public/assets/icons/success.svg";
-// import Failed from "@/public/assets/icons/failed.svg";
-// import Progress from "@/public/assets/icons/pending.svg";
 import ExpiredIcon from "@/icons/expired_icon.svg"
-import {useGetJobsQuery} from "@/services/api/job";
-// import {PiPlayCircleLight} from "react-icons/pi";
-// import {IoDownloadOutline} from "react-icons/io5";
-//
-// import PlayIcon from "@/public/assets/icons/play.png";
-// import Menu from "@/components/Menu";
 
 type JobStatusTableProps = {
   data: any;
@@ -40,18 +25,6 @@ export default function JobStatusTable({
   data,
 }: JobStatusTableProps) {
 
-  const { data: jobs } = useGetJobsQuery({})
-
-  function statusMapper(status) {
-    switch (status) {
-      case "COMPLETED":
-        return "Success"
-      case "FAILED":
-        return "Failed"
-      case "IN_PROGRESS":
-        return "In Progress"
-    }
-  }
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">

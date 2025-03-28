@@ -19,23 +19,26 @@ import {useGetJobsQuery} from "@/services/api/job";
 import {jobStatusColumns, stats} from "@/lib/constants";
 import StatCard from "@/components/cards/StatCard";
 
-type SortKey = "name" | "position" | "location" | "age" | "date" | "salary";
+type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
-  const [dateRange, setDateRange] = useState<any>({});
+  //@ts-ignore
+  const dateRange = {};
   const {data: jobs} = useGetJobsQuery({
+    //@ts-ignore
     from_ts: new Date(dateRange?.startDate / 1000).getTime(), to_ts: new Date(dateRange?.endDate / 1000).getTime()
   });
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredAndSortedData = useMemo(() => {
     return (jobs || [])
+      //@ts-ignore
       .filter((item) =>
         Object.values(item).some(
           (value) =>
@@ -179,9 +182,9 @@ export default function JobStatus() {
             <Table>
               <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
-                  {jobStatusColumns?.map(({key, name}) => (
+                  {jobStatusColumns?.map(({name}) => (
                     <TableCell
-                      key={key}
+                      key={name}
                       isHeader
                       className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
                     >
@@ -195,7 +198,7 @@ export default function JobStatus() {
                         <button className="flex flex-col gap-0.5">
                           <Image
                             className={`text-gray-300 dark:text-gray-700 ${
-                              sortKey === key && sortOrder === "asc"
+                              sortKey === name && sortOrder === "asc"
                                 ? "text-brand-500"
                                 : ""
                             }`} src={AngleDownIcon}
@@ -204,7 +207,7 @@ export default function JobStatus() {
                           <Image
                             src={AngleUpIcon}
                             className={`text-gray-300 dark:text-gray-700 ${
-                              sortKey === key && sortOrder === "asc"
+                              sortKey === name && sortOrder === "asc"
                                 ? "text-brand-500"
                                 : ""
                             }`}

@@ -8,7 +8,6 @@ import Head from 'next/head';
 import {Toaster} from "react-hot-toast";
 import {Provider} from "react-redux";
 
-import './globals.css';
 import "./globals.css";
 import './style.css';
 

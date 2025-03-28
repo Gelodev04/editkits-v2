@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
-import {ChevronDownIcon, GridIcon, HorizontaLDots, PieChartIcon,} from "@/icons";
+import {ChevronDownIcon, GridIcon, HorizontaLDots,} from "@/icons";
 
 import Logo from "@/public/assets/img/logo.svg"
 
@@ -27,7 +27,7 @@ const navItems: NavItem[] = [
 ];
 
 const Sidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered, setIsMobileOpen } = useSidebar();
+  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
 
   const renderMenuItems = (

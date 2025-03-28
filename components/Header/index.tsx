@@ -56,15 +56,13 @@ export default function Header() {
     }
   }, []);
 
-  console.log(router.pathname)
-
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
       <button
         className="lg:hidden p-2 text-gray-700 dark:text-gray-300"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
       >
-        <Image src={ListIcon} />
+        <Image src={ListIcon} alt="list icon" />
       </button>
       <Link href="/home">
         {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && <Image src={Logo} className="w-[187px]" alt="Logo" priority/>}

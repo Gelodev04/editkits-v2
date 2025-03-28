@@ -1,74 +1,3 @@
-// import dynamic from "next/dynamic";
-// import React, {useState} from "react";
-//
-// const DashboardTable = dynamic(() => import("@/components/Table_Old"), {
-//   ssr: false
-// })
-//
-// import StatCard from "@/components/cards/StatCard";
-// import { stats } from "@/lib/constants";
-// import TableType from "@/components/Table_Old/TableType";
-// import Pagination from "@/components/Pagination";
-// import {useGetJobsQuery} from "@/services/api/job";
-// import Loading from "@/pages/dashboard/loading";
-// import {useGetRecentFilesQuery} from "@/services/api/file";
-//
-// export default function Dashboard() {
-//
-//   const [dateRange, setDateRange] = useState<any>({});
-//   const {data: jobs} = useGetJobsQuery({
-//     from_ts: new Date(dateRange?.startDate /1000).getTime(), to_ts: new Date(dateRange?.endDate / 1000).getTime()
-//   });
-//
-//   const { data: recentFiles } = useGetRecentFilesQuery({});
-//
-//   const [active, setActive] = useState("Job status");
-//   const [currentPage, setCurrentPage] = useState(1);
-//
-//   const data = active === "Job status" ? jobs : recentFiles;
-//
-//   return (
-//     <div className="min-h-[100vh] pt-[26px]">
-//       <div className="max-w-[1536px] mx-auto pt-[26px] bg-[#f5f7f9] rounded-[42px] pl-[20px] py-[24px] pr-[29px]">
-//         <div className="grid grid-cols-12 gap-4">
-//           <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
-//             <TableType active={active} setActive={setActive}/>
-//           </div>
-//           <div className="col-span-10 xl:col-span-10 2xl:col-span-10 bg-white py-[16px] rounded-[24px] pl-[18px] pr-[13px]">
-//             {!jobs ? <Loading/> : (
-//               <>
-//                 {active === "Job status" && (
-//                   <div className="flex gap-4 ">
-//                     {stats.map(stat => <StatCard stat={stat}/>)}
-//                   </div>
-//                 )}
-//                 <div className="pt-4">
-//                   <DashboardTable
-//                     active={active}
-//                     jobStatusPage={currentPage}
-//                     uploadedFilesPage={currentPage}
-//                     data={data}
-//                     dateRange={dateRange}
-//                     setDateRange={setDateRange}
-//                   />
-//                 </div>
-//               </>
-//             )}
-//           </div>
-//         </div>
-//         <div className="flex justify-end pt-[26px]">
-//           <Pagination
-//             currentPage={currentPage}
-//             onPageChange={setCurrentPage}
-//             //@ts-ignore
-//             totalPages={Math.ceil(data?.length / 8)}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
 import {useState, useMemo} from "react";
 import {
   Table,
@@ -86,26 +15,24 @@ import {
 import Image from "next/image";
 import PaginationWithIcon from "../PaginationWithIcon";
 import Sidebar from "@/components/Sidebar";
-import {useGetJobsQuery} from "@/services/api/job";
-import {jobStatusColumns, stats, uploadedFilesColumns} from "@/lib/constants";
-import StatCard from "@/components/cards/StatCard";
+import {uploadedFilesColumns} from "@/lib/constants";
 import {useGetRecentFilesQuery} from "@/services/api/file";
 
-type SortKey = "name" | "position" | "location" | "age" | "date" | "salary";
+type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
-  const [dateRange, setDateRange] = useState<any>({});
   const { data: recentFiles } = useGetRecentFilesQuery({});
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredAndSortedData = useMemo(() => {
     return (recentFiles || [])
+      //@ts-ignore
       .filter((item) =>
         Object.values(item).some(
           (value) =>
@@ -246,9 +173,9 @@ export default function JobStatus() {
             <Table>
               <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
-                  {uploadedFilesColumns?.map(({key, name}) => (
+                  {uploadedFilesColumns?.map(({name}) => (
                     <TableCell
-                      key={key}
+                      key={name}
                       isHeader
                       className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
                     >
@@ -262,7 +189,7 @@ export default function JobStatus() {
                         <button className="flex flex-col gap-0.5">
                           <Image
                             className={`text-gray-300 dark:text-gray-700 ${
-                              sortKey === key && sortOrder === "asc"
+                              sortKey === name && sortOrder === "asc"
                                 ? "text-brand-500"
                                 : ""
                             }`} src={AngleDownIcon}
@@ -271,7 +198,7 @@ export default function JobStatus() {
                           <Image
                             src={AngleUpIcon}
                             className={`text-gray-300 dark:text-gray-700 ${
-                              sortKey === key && sortOrder === "asc"
+                              sortKey === name && sortOrder === "asc"
                                 ? "text-brand-500"
                                 : ""
                             }`}

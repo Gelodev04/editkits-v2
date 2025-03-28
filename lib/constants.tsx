@@ -33,8 +33,6 @@ import SearchIcon from "@/public/assets/icons/search.svg";
 import ChatIcon from "@/public/assets/icons/chat.svg";
 import SmileIcon from "@/public/assets/icons/smile.svg";
 
-import StatusIcon from "@/public/assets/icons/status.svg"
-import CreditsIcon from "@/public/assets/icons/credit.svg"
 import {DollarLineIcon, ListIcon} from "@/icons";
 
 export const benefits = [

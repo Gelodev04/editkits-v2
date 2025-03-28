@@ -1,22 +1,24 @@
 import Image from 'next/image'
-import {ArrowUpIcon, DollarLineIcon} from "@/icons";
+import { ArrowUpIcon } from "@/icons";
 import Badge from "@/components/Badge";
 
 type StatData = {
   title: string;
   value: string;
+  icon: any
 }
 
 export default function StatCard(props: any) {
   return (
     <>
+      {/*@ts-ignore*/}
       {props.stat.map(((s: StatData) => <Stat title={s.label} value={s.data[0].value} icon={s.icon}/>))}
     </>
   )
 }
 
 
-function Stat({title, value, icon}: { title: string; value: string }) {
+function Stat({title, value, icon}: { title: string; value: string , icon: any}) {
   return (
     <div
       className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">

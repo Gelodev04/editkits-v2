@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import {montserrat, roboto, opensans, workSans} from "@/lib/fonts";
+import {montserrat, roboto, opensans, workSans, lato, alexandria} from "@/lib/fonts";
 import {SidebarProvider} from "@/context/SidebarContext";
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
@@ -16,7 +16,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
 
   return (
     <div
-      className={`${montserrat.variable} ${roboto.variable} ${opensans.variable} ${workSans.variable} flex flex-col min-h-screen`}>
+      className={`${alexandria.variable} ${lato.variable} ${montserrat.variable} ${roboto.variable} ${opensans.variable} ${workSans.variable} flex flex-col min-h-screen`}>
       <div className="flex-1">
         <SidebarProvider>
           <div className="border border-b-1">

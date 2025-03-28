@@ -20,7 +20,8 @@ import {jobStatusColumns} from "@/lib/constants";
 // import Success from "@/public/assets/icons/success.svg";
 // import Failed from "@/public/assets/icons/failed.svg";
 // import Progress from "@/public/assets/icons/pending.svg";
-import ExpiredIcon from "@/public/assets/icons/expired_icon.svg"
+import ExpiredIcon from "@/icons/expired_icon.svg"
+import {useGetJobsQuery} from "@/services/api/job";
 // import {PiPlayCircleLight} from "react-icons/pi";
 // import {IoDownloadOutline} from "react-icons/io5";
 //
@@ -35,60 +36,23 @@ type JobStatusTableProps = {
   videoUrl: any;
 }
 
-// const tableData: Product[] = [
-//   {
-//     id: 1,
-//     name: "MacBook Pro 13”",
-//     variants: "2 Variants",
-//     category: "Laptop",
-//     price: "$2399.00",
-//     status: "Delivered",
-//     image: "/images/product/product-01.jpg", // Replace with actual image URL
-//   },
-//   {
-//     id: 2,
-//     name: "Apple Watch Ultra",
-//     variants: "1 Variant",
-//     category: "Watch",
-//     price: "$879.00",
-//     status: "Pending",
-//     image: "/images/product/product-02.jpg", // Replace with actual image URL
-//   },
-//   {
-//     id: 3,
-//     name: "iPhone 15 Pro Max",
-//     variants: "2 Variants",
-//     category: "SmartPhone",
-//     price: "$1869.00",
-//     status: "Delivered",
-//     image: "/images/product/product-03.jpg", // Replace with actual image URL
-//   },
-//   {
-//     id: 4,
-//     name: "iPad Pro 3rd Gen",
-//     variants: "2 Variants",
-//     category: "Electronics",
-//     price: "$1699.00",
-//     status: "Canceled",
-//     image: "/images/product/product-04.jpg", // Replace with actual image URL
-//   },
-//   {
-//     id: 5,
-//     name: "AirPods Pro 2nd Gen",
-//     variants: "1 Variant",
-//     category: "Accessories",
-//     price: "$240.00",
-//     status: "Delivered",
-//     image: "/images/product/product-05.jpg", // Replace with actual image URL
-//   },
-// ];
-
 export default function JobStatusTable({
   data,
-  // handleVideoPreview,
-  // handleVideoDownload,
-  // setVideoPreviewModal
 }: JobStatusTableProps) {
+
+  const { data: jobs } = useGetJobsQuery({})
+
+  function statusMapper(status) {
+    switch (status) {
+      case "COMPLETED":
+        return "Success"
+      case "FAILED":
+        return "Failed"
+      case "IN_PROGRESS":
+        return "In Progress"
+    }
+  }
+
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
       <TopHeader />
@@ -157,7 +121,7 @@ export default function JobStatusTable({
                         : "error"
                     }
                   >
-                    {product.status}
+
                   </Badge>
                 </TableCell>
               </TableRow>

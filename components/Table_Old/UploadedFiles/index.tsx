@@ -12,7 +12,7 @@ import {BsThreeDotsVertical} from "react-icons/bs";
 
 import CopyIcon from '@/public/assets/icons/copy.svg';
 import {uploadedFilesColumns} from "@/lib/constants";
-import ExpiredIcon from "@/public/assets/icons/expired_icon.svg";
+import ExpiredIcon from "@/icons/expired_icon.svg";
 import {PiPlayCircleLight} from "react-icons/pi";
 
 type UploadedFilesTableProps = {

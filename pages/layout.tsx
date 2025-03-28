@@ -17,11 +17,11 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
     <div
       className={`${montserrat.variable} ${roboto.variable} ${opensans.variable} ${workSans.variable} flex flex-col min-h-screen`}>
-      <div className="border border-b-1">
-        <Header/>
-      </div>
       <div className="flex-1">
         <SidebarProvider>
+          <div className="border border-b-1">
+            <Header/>
+          </div>
           {children}
         </SidebarProvider>
       </div>

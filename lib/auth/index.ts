@@ -39,7 +39,7 @@ export async function handleLogin(email, password, login, setType, setAuthModal,
   const user_info = jwtDecode(id_token);
   setUserInfo(user_info);
 
-  await router.push("/dashboard")
+  await router.push("/dashboard/jobs-status")
   toast.success("Login successful");
   setType("");
   setAuthModal(false);

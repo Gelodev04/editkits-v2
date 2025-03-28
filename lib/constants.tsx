@@ -35,6 +35,7 @@ import SmileIcon from "@/public/assets/icons/smile.svg";
 
 import StatusIcon from "@/public/assets/icons/status.svg"
 import CreditsIcon from "@/public/assets/icons/credit.svg"
+import {DollarLineIcon, ListIcon} from "@/icons";
 
 export const benefits = [
   "No Credit Card required",
@@ -176,7 +177,7 @@ export const featureCards = [
 export const stats = [
   {
     label: "Credits",
-    icon: CreditsIcon,
+    icon: DollarLineIcon,
     data: [
       {
         title: "Available",
@@ -194,7 +195,7 @@ export const stats = [
   },
   {
     label: "Job Status",
-    icon: StatusIcon,
+    icon: ListIcon,
     data: [
       {
         title: "In progress",
@@ -235,9 +236,7 @@ export const jobStatusColumns: { name?: string }[] = [
   {
     name: "Output File"
   },
-  {
-    name: ""
-  }]
+]
 export const uploadedFilesColumns = [
   {
     name: ""

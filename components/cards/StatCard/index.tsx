@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import {ArrowUpIcon, DollarLineIcon} from "@/icons";
+import Badge from "@/components/Badge";
 
 type StatData = {
   title: string;
@@ -7,27 +9,35 @@ type StatData = {
 
 export default function StatCard(props: any) {
   return (
-    <div
-      className="flex py-[23.5px] px-[33px] border-[1px] border-[#e9e9e9] rounded-[24px] items-center bg-white gap-[20px]">
-      <div>
-        <Image src={props.stat.icon} alt="card icon"/>
-      </div>
-      <div>
-        <p className="font-lato text-lg text-[#148cfc] font-bold leading-[24px]">{props.stat.label}</p>
-        <div className="pt-[12px]">
-          {props.stat.data.map(((s: StatData) => <Stat title={s.title} value={s.value}/>))}
-        </div>
-      </div>
-    </div>
+    <>
+      {props.stat.map(((s: StatData) => <Stat title={s.label} value={s.data[0].value} icon={s.icon}/>))}
+    </>
   )
 }
 
 
-function Stat({title, value}: { title: string; value: string }) {
+function Stat({title, value, icon}: { title: string; value: string }) {
   return (
-    <div className="w-[100px] flex items-center gap-[20px]">
-      <p className="font-lato font-normal text-[#747474] text-sm w-[80px]">{title}</p>
-      <p className="font-lato font-medium text-base leading-[21.6px] text-[#2c2c2c] text-left">{value}</p>
+    <div
+      className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+      <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
+        <Image className="text-gray-800 size-6 dark:text-white/90" src={icon} alt="group icon"/>
+      </div>
+
+      <div className="flex items-end justify-between mt-5">
+        <div>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {title}
+            </span>
+          <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
+            {value}
+          </h4>
+        </div>
+        <Badge color="success">
+          <Image src={ArrowUpIcon} alt="up icon"/>
+          11.01%
+        </Badge>
+      </div>
     </div>
   )
 }

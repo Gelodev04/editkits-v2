@@ -102,7 +102,7 @@ export default function FileProgressModal(props) {
                 <Button
                   onClick={() => {
                     props.setProgressModal(false)
-                    router.push("/dashboard")
+                    router.push("/dashboard/jobs-status")
                   }}
                   label="Dashboard"
                   variant="secondary"

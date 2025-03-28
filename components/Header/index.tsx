@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {useRouter} from "next/router";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,12 +18,16 @@ import Logout from '@/public/assets/icons/logout.svg'
 import Logo from "@/public/assets/img/logo.svg"
 import Subscription from '@/public/assets/icons/subscription.svg'
 import User from '@/public/assets/icons/user.svg'
+import {ListIcon} from "@/icons";
+import {useSidebar} from "@/context/SidebarContext";
 
 export default function Header() {
   const router = useRouter();
   const {userInfo} = useUserInfo();
   const [logout] = useLogoutMutation();
   const handleLogout = useLogout(router, logout);
+
+  const { setIsMobileOpen, isMobileOpen } = useSidebar();
 
   const [type, setType] = useState("");
   const [showAuthModal, setAuthModal] = useState(false);
@@ -52,15 +56,23 @@ export default function Header() {
     }
   }, []);
 
+  console.log(router.pathname)
+
   return (
     <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
+      <button
+        className="lg:hidden p-2 text-gray-700 dark:text-gray-300"
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+      >
+        <Image src={ListIcon} />
+      </button>
       <Link href="/home">
-        {router.pathname !== "/dashboard" && <Image src={Logo} className="w-[187px]" alt="Logo" priority/>}
+        {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && <Image src={Logo} className="w-[187px]" alt="Logo" priority/>}
       </Link>
       <div className="flex justify-center items-center">
         {userInfo && (
-          <Link className="pr-[35px]" href="/dashboard">
-            <Typography label="Dashboard" variant="link" bold={router.pathname === "/dashboard"}/>
+          <Link className="pr-[35px]" href="/dashboard/uploaded-files">
+            <Typography label="Dashboard" variant="link" bold={(router.pathname === "/dashboard/uploaded-files" || router.pathname === "/dashboard/job-status")}/>
           </Link>
         )}
         {!userInfo && (

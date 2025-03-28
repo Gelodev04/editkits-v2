@@ -69,8 +69,6 @@
 //   )
 // }
 
-"use client";
-
 import {useState, useMemo} from "react";
 import {
   Table,
@@ -80,138 +78,26 @@ import {
   TableRow,
 } from "@/components/Table";
 import Badge from '@/components/Badge'
-import {AngleDownIcon, AngleUpIcon, GroupIcon, ArrowUpIcon, BoxIconLine, ArrowDownIcon} from "@/icons";
+import {
+  AngleDownIcon,
+  AngleUpIcon,
+  ExpiredIcon,
+} from "@/icons";
 import Image from "next/image";
-import PaginationWithIcon from "./PaginationWithIcon";
+import PaginationWithIcon from "../PaginationWithIcon";
 import Sidebar from "@/components/Sidebar";
-
-const tableRowData = [
-  {
-    id: 1,
-    user: {
-      image: "/images/user/user-20.jpg",
-      name: "Abram Schleifer",
-    },
-    position: "Sales Assistant",
-    location: "Edinburgh",
-    age: 57,
-    date: "25 Apr, 2027",
-    salary: "$89,500",
-  },
-  {
-    id: 2,
-    user: {
-      image: "/images/user/user-21.jpg",
-      name: "Charlotte Anderson",
-    },
-    position: "Marketing Manager",
-    location: "London",
-    age: 42,
-    date: "12 Mar, 2025",
-    salary: "$105,000",
-  },
-  {
-    id: 3,
-    user: {
-      image: "/images/user/user-22.jpg",
-      name: "Ethan Brown",
-    },
-    position: "Software Engineer",
-    location: "San Francisco",
-    age: 30,
-    date: "01 Jan, 2024",
-    salary: "$120,000",
-  },
-  {
-    id: 4,
-    user: {
-      image: "/images/user/user-23.jpg",
-      name: "Sophia Martinez",
-    },
-    position: "Product Manager",
-    location: "New York",
-    age: 35,
-    date: "15 Jun, 2026",
-    salary: "$95,000",
-  },
-  {
-    id: 5,
-    user: {
-      image: "/images/user/user-24.jpg",
-      name: "James Wilson",
-    },
-    position: "Data Analyst",
-    location: "Chicago",
-    age: 28,
-    date: "20 Sep, 2025",
-    salary: "$80,000",
-  },
-  {
-    id: 6,
-    user: {
-      image: "/images/user/user-25.jpg",
-      name: "Olivia Johnson",
-    },
-    position: "HR Specialist",
-    location: "Los Angeles",
-    age: 40,
-    date: "08 Nov, 2026",
-    salary: "$75,000",
-  },
-  {
-    id: 7,
-    user: {
-      image: "/images/user/user-26.jpg",
-      name: "William Smith",
-    },
-    position: "Financial Analyst",
-    location: "Seattle",
-    age: 38,
-    date: "03 Feb, 2026",
-    salary: "$88,000",
-  },
-  {
-    id: 8,
-    user: {
-      image: "/images/user/user-27.jpg",
-      name: "Isabella Davis",
-    },
-    position: "UI/UX Designer",
-    location: "Austin",
-    age: 29,
-    date: "18 Jul, 2025",
-    salary: "$92,000",
-  },
-  {
-    id: 9,
-    user: {
-      image: "/images/user/user-28.jpg",
-      name: "Liam Moore",
-    },
-    position: "DevOps Engineer",
-    location: "Boston",
-    age: 33,
-    date: "30 Oct, 2024",
-    salary: "$115,000",
-  },
-  {
-    id: 10,
-    user: {
-      image: "/images/user/user-29.jpg",
-      name: "Mia Garcia",
-    },
-    position: "Content Strategist",
-    location: "Denver",
-    age: 27,
-    date: "12 Dec, 2027",
-    salary: "$70,000",
-  },
-];
+import {useGetJobsQuery} from "@/services/api/job";
+import {jobStatusColumns, stats, uploadedFilesColumns} from "@/lib/constants";
+import StatCard from "@/components/cards/StatCard";
+import {useGetRecentFilesQuery} from "@/services/api/file";
 
 type SortKey = "name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
 
-export default function DataTableOne() {
+export default function JobStatus() {
+  const [dateRange, setDateRange] = useState<any>({});
+  const { data: recentFiles } = useGetRecentFilesQuery({});
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>("name");
@@ -219,102 +105,71 @@ export default function DataTableOne() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredAndSortedData = useMemo(() => {
-    return tableRowData
+    return (recentFiles || [])
       .filter((item) =>
         Object.values(item).some(
           (value) =>
             typeof value === "string" &&
-            value.toLowerCase().includes(searchTerm.toLowerCase())
+            value?.toLowerCase().includes(searchTerm.toLowerCase())
         )
       )
       .sort((a, b) => {
-        if (sortKey === "name") {
+        if (sortKey === "input_file_name") {
           return sortOrder === "asc"
-            ? a.user.name.localeCompare(b.user.name)
-            : b.user.name.localeCompare(a.user.name);
+            ? a.input_file_name.localeCompare(b.input_file_name)
+            : b.input_file_name.localeCompare(a.input_file_name);
         }
         if (sortKey === "salary") {
-          const salaryA = Number.parseInt(a[sortKey].replace(/\$|,/g, ""));
-          const salaryB = Number.parseInt(b[sortKey].replace(/\$|,/g, ""));
+          const salaryA = Number.parseInt(
+            String(a[sortKey] || "0").replace(/\$|,/g, "")
+          );
+          const salaryB = Number.parseInt(
+            String(b[sortKey] || "0").replace(/\$|,/g, "")
+          );
           return sortOrder === "asc" ? salaryA - salaryB : salaryB - salaryA;
         }
         return sortOrder === "asc"
-          ? String(a[sortKey]).localeCompare(String(b[sortKey]))
-          : String(b[sortKey]).localeCompare(String(a[sortKey]));
+          ? String(a[sortKey] || "").localeCompare(String(b[sortKey] || ""))
+          : String(b[sortKey] || "").localeCompare(String(a[sortKey] || ""));
       });
-  }, [sortKey, sortOrder, searchTerm]);
+  }, [recentFiles, sortKey, sortOrder, searchTerm]);
 
-  const totalItems = filteredAndSortedData.length;
+
+  const totalItems = filteredAndSortedData?.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleSort = (key: SortKey) => {
-    if (sortKey === key) {
+  const handleSort = (name: SortKey) => {
+    if (sortKey === name) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
-      setSortKey(key);
+      setSortKey(name);
       setSortOrder("asc");
     }
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-  const currentData = filteredAndSortedData.slice(startIndex, endIndex);
+  const currentData = filteredAndSortedData?.slice(startIndex, endIndex);
+
+  function statusMapper(status) {
+    switch (status) {
+      case "COMPLETED":
+        return "Success"
+      case "FAILED":
+        return "Failed"
+      case "IN_PROGRESS":
+        return "In Progress"
+    }
+  }
 
   return (
-    <>
+    <div>
       <Sidebar />
-      <div className="overflow-hidden bg-white dark:bg-white/[0.03] rounded-xl max-w-[1536px] mx-auto p-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6">
-        {/* <!-- Metric Item Start --> */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-          <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-            <Image className="text-gray-800 size-6 dark:text-white/90" src={GroupIcon} alt="group icon" />
-          </div>
-
-          <div className="flex items-end justify-between mt-5">
-            <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Customers
-            </span>
-              <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-                3,782
-              </h4>
-            </div>
-            <Badge color="success">
-              <Image src={ArrowUpIcon} alt="up icon" />
-              11.01%
-            </Badge>
-          </div>
-        </div>
-        {/* <!-- Metric Item End --> */}
-
-        {/* <!-- Metric Item Start --> */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-          <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-            <Image src={BoxIconLine} className="text-gray-800 dark:text-white/90" alt="box icon" />
-          </div>
-          <div className="flex items-end justify-between mt-5">
-            <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Orders
-            </span>
-              <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-                5,359
-              </h4>
-            </div>
-
-            <Badge color="error">
-              <Image src={ArrowDownIcon} className="text-error-500" alt="down icon" />
-              9.05%
-            </Badge>
-          </div>
-        </div>
-        {/* <!-- Metric Item End --> */}
-      </div>
+      <div className="overflow-hidden pl-0 lg:pl-[300px] 2xl:pl-[180px] 3xl:pl-0 bg-white dark:bg-white/[0.03] rounded-xl sm:max-w-[980px] lg:max-w-[1280px] mx-auto p-6">
         <div
           className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
@@ -391,14 +246,7 @@ export default function DataTableOne() {
             <Table>
               <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
-                  {[
-                    {key: "name", label: "User"},
-                    {key: "position", label: "Position"},
-                    {key: "location", label: "Office"},
-                    {key: "age", label: "Age"},
-                    {key: "date", label: "Start Date"},
-                    {key: "salary", label: "Salary"},
-                  ].map(({key, label}) => (
+                  {uploadedFilesColumns?.map(({key, name}) => (
                     <TableCell
                       key={key}
                       isHeader
@@ -406,10 +254,10 @@ export default function DataTableOne() {
                     >
                       <div
                         className="flex items-center justify-between cursor-pointer"
-                        onClick={() => handleSort(key as SortKey)}
+                        onClick={() => handleSort(name as SortKey)}
                       >
                         <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
-                          {label}
+                          {name}
                         </p>
                         <button className="flex flex-col gap-0.5">
                           <Image
@@ -437,7 +285,7 @@ export default function DataTableOne() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {currentData.map((item, i) => (
+                {currentData?.map((job, i) => (
                   <TableRow key={i + 1}>
                     <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
                       <div className="flex items-center gap-3">
@@ -445,36 +293,52 @@ export default function DataTableOne() {
                           <Image
                             width={40}
                             height={40}
-                            src={item.user.image || "/placeholder.svg"}
+                            src={job.thumbnail_url === "EXPIRED" ? ExpiredIcon : job.thumbnail_url}
                             alt="user"
                           />
-                        </div>
-                        <div>
-                          <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                            {item.user.name}
-                          </span>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {item.position}
+                      {job.input_file_id}
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {item.location}
+                      {job.input_file_name}
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {item.age}
+                      {new Date(job.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {item.date}
+                      {job.tools_used}
                     </TableCell>
                     <TableCell
-                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {item.salary}
+                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {job.credits}
+                    </TableCell>
+                    <TableCell
+                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      <Badge
+                        color={job.status === "SUCCESS" ? "success" : job.status === "IN_PROGRESS" ? "info" : "warning"}
+                      >
+                        {statusMapper(job.status)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell
+                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {job.is_multi_output ? job.output_file_ids?.map(id => (
+                          <div className="flex items-center gap-[6.75px]">
+                            <p
+                              className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}...</p>
+                          </div>
+                        ))
+                        : (
+                          <p
+                            className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{job.output_file_id.slice(0, 5)}...</p>
+                        )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -500,6 +364,6 @@ export default function DataTableOne() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

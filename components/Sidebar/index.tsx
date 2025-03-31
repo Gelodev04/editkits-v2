@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
-import {ChevronDownIcon, GridIcon, HorizontaLDots, DollarLineIcon, ListIcon, MailIcon} from "@/icons";
+import {ChevronDownIcon, GridIcon, HorizontaLDots, DollarLineIcon, ListIcon, MailIcon, HomeIcon} from "@/icons";
 
 import Logo from "@/public/assets/img/logo.svg"
 
@@ -26,6 +26,12 @@ const navItems: NavItem[] = [
     ],
   },
   {
+    icon: HomeIcon,
+    name: "Home",
+    path: "/home"
+
+  },
+  {
     icon: GridIcon,
     name: "Tools",
     path: "/tools"
@@ -38,7 +44,7 @@ const navItems: NavItem[] = [
   {
     icon: ListIcon,
     name: "Blogs",
-    path: "/blogs"
+    path: "/blog"
   },
   {
     icon: MailIcon,
@@ -276,7 +282,7 @@ const Sidebar: React.FC = () => {
               />
               <Image
                 className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
+                src={Logo}
                 alt="Logo"
                 width={150}
                 height={40}
@@ -284,10 +290,10 @@ const Sidebar: React.FC = () => {
             </>
           ) : (
             <Image
-              src="/images/logo/logo-icon.svg"
+              src={Logo}
               alt="Logo"
-              width={32}
-              height={32}
+              width={100}
+              height={100}
             />
           )}
         </Link>

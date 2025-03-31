@@ -4,9 +4,12 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {montserrat, roboto, opensans, workSans, lato, alexandria} from "@/lib/fonts";
 import {SidebarProvider} from "@/context/SidebarContext";
+import Sidebar from "@/components/Sidebar";
+import {useRouter} from "next/router";
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -16,15 +19,16 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
 
   return (
     <div
-      className={`${alexandria.variable} ${lato.variable} ${montserrat.variable} ${roboto.variable} ${opensans.variable} ${workSans.variable} flex flex-col min-h-screen`}>
-      <div className="flex-1">
-        <SidebarProvider>
-          <div className="border border-b-1">
+      className={`${alexandria.variable} ${lato.variable} ${montserrat.variable} ${roboto.variable} ${opensans.variable} ${workSans.variable}`}>
+      <SidebarProvider>
+        {(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && <Sidebar/>}
+        <div className="border border-b-1 flex-1">
+          <div className="flex-1">
             <Header/>
           </div>
           {children}
-        </SidebarProvider>
-      </div>
+        </div>
+      </SidebarProvider>
       <Footer/>
     </div>
   );

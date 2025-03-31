@@ -50,7 +50,8 @@ import MailIcon from "./mail-line.svg";
 import HorizontaLDots from "./horizontal-dots.svg";
 import ChatIcon from "./chat.svg";
 import MoreDotIcon from "./MoreDotIcon.svg";
-import ExpiredIcon from "./expired_icon.svg"
+import ExpiredIcon from "./expired_icon.svg";
+import HomeIcon from "./home.svg"
 
 export {
   DownloadIcon,
@@ -105,5 +106,6 @@ export {
   ChevronUpIcon,
   ChatIcon,
   MoreDotIcon,
-  ExpiredIcon
+  ExpiredIcon,
+  HomeIcon
 };

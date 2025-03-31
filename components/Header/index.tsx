@@ -3,9 +3,6 @@ import {useRouter} from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 
-import {FaAngleDown} from "react-icons/fa";
-import {Divider} from "@mui/material";
-
 import AuthModal from "@/components/modals/Auth";
 import PopUp from "@/components/modals/Popup";
 import Typography from "@/components/Typography";
@@ -13,11 +10,8 @@ import useLogout from "@/hooks/useLogout";
 import {useUserInfo} from "@/hooks/useUserInfo";
 import {useLogoutMutation} from "@/services/api/auth";
 
-import Logout from '@/public/icons/logout.svg'
 import Logo from "@/public/images/logo.svg"
-import Subscription from '@/public/icons/subscription.svg'
-import User from '@/public/icons/user.svg'
-import {ListIcon} from "@/icons";
+
 import {useSidebar} from "@/context/SidebarContext";
 import ButtonOld from "@/components/Button_Old";
 import {ThemeToggleButton} from "@/components/common/ThemeToggleButton";
@@ -30,7 +24,7 @@ export default function Header() {
   const [logout] = useLogoutMutation();
   const handleLogout = useLogout(router, logout);
 
-  const {setIsMobileOpen, isMobileOpen, toggleSidebar, toggleMobileSidebar, isExpanded, isHovered} = useSidebar();
+  const {isMobileOpen, toggleSidebar, toggleMobileSidebar, isExpanded, isHovered} = useSidebar();
 
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const [type, setType] = useState("");
@@ -78,7 +72,7 @@ export default function Header() {
       : "lg:ml-[90px]";
 
   return (
-    <div className={`transition-all duration-300 ease-in-out flex justify-between py-[22px] bg-white w-full mx-auto ${!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && "2xl:pl-[253px]"} 2xl:pr-[253px]`}>
+    <div className={`transition-all duration-300 ease-in-out flex justify-between py-[22px] bg-white dark:bg-gray-900 dark:border-gray-800 w-full mx-auto ${!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && "2xl:pl-[253px]"} 2xl:pr-[253px]`}>
       {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && (
         <>
           <Link href="/home">

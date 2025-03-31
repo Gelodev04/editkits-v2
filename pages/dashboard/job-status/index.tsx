@@ -111,7 +111,7 @@ export default function JobStatus() {
 
   return (
     <div
-      className={`${mainContentMargin} my-10 transition-all duration-300 ease-in-out overflow-hidden bg-white dark:bg-white/[0.03] rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
+      className={`${mainContentMargin} bg-white dark:bg-gray-900 my-10 transition-all duration-300 ease-in-out overflow-hidden bg-white dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6">
         <StatCard stat={stats}/>
       </div>

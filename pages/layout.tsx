@@ -25,7 +25,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
         <SidebarProvider>
           {(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") &&
           <Sidebar/>}
-          <div className="border border-b-1 flex-1">
+          <div className="border border-b-1 flex-1 bg-white dark:bg-gray-900 dark:border-gray-800">
             <div className="flex-1">
               <Header/>
             </div>

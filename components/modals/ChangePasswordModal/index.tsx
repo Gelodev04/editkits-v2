@@ -123,7 +123,7 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                   <Button
                     disabled={hasTyped && (!isCurrentPasswordValid || !isPasswordValid || props.newPassword !== props.confirmPassword) || props.isUpdatePasswordLoading}
                     onClick={props.handleUpdatePassword}
-                    label="Reset Password"
+                    children={<>Reset Password</>}
                     variant="popup"
                     filled
                     isLoading={props.isUpdatePasswordLoading}

@@ -145,7 +145,7 @@ export default function Home() {
         </div>
         <div className="flex justify-center pt-[42px]">
           <Button
-            label="More tools coming soon!"
+            children={<>More tools coming soon!</>}
             variant="secondary"
           />
         </div>

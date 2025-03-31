@@ -73,7 +73,7 @@ export default function Account() {
                 <div className="pt-10">
                   <Button
                     onClick={() => setUpdatePasswordModal(true)}
-                    label="Change Password"
+                    children={<>Change Password</>}
                     variant="secondary"
                   />
                 </div>

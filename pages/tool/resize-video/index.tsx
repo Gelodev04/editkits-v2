@@ -276,7 +276,7 @@ export default function ResizeVideo() {
       <div className="max-w-[171px] mx-auto py-16">
         <Button
           disabled={!settings.isColorValid || !file}
-          label="Proceed"
+          children={<>Proceed</>}
           variant="primary"
           filled
           rightIcon={<FaAngleRight/>}

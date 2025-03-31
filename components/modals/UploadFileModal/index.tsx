@@ -176,12 +176,12 @@ export default function UploadFileModal(props: UploadModalProps) {
                   <div className="flex gap-[27px] pt-[76px] pb-[32px] flex justify-center">
                     <Button
                       onClick={() => props.setUploadModal(false)}
-                      label="Cancel"
+                      children={<>Cancel</>}
                       variant="standard_sm"
                     />
                     <Button
                       onClick={() => props.setUploadModal(false)}
-                      label="Proceed"
+                      children={<>Proceed</>}
                       variant="standard_sm"
                       filled
                     />

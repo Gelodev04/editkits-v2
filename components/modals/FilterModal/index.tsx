@@ -63,12 +63,12 @@ export default function FilterModal(props: PopUpProps) {
               <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[34px]">
                 <Button
                   onClick={() => props.setOpen(false)}
-                  label="Dismiss"
+                  children={<>Dismiss</>}
                   variant="primary"
                 />
                 <Button
                   onClick={props.onClick}
-                  label="Apply"
+                  children={<>Apply</>}
                   variant="primary"
                   filled
                 />

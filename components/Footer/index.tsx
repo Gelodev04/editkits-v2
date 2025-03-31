@@ -1,13 +1,13 @@
+import React from "react";
 import Link from "next/link";
+
 import Typography from "@/components/Typography";
 import LanguageSelector from "@/components/LanguageSelector";
-import React from "react";
-
 
 export default function Footer() {
 
   return (
-    <div className="pt-10 bg-zinc-50 pb-5 px-8">
+    <div className="pt-10 bg-zinc-50 pb-5 px-8 z-[50]">
       <div className="flex space-x-6 justify-center pb-8 max-w-[1920px] mx-auto">
         <Link href="/home">
           <p className="font-roboto font-normal text-sm text-[#000000]">Home</p>

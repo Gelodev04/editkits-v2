@@ -45,7 +45,7 @@ export default function Verification(
       <div className="max-w-[446px] mx-auto">
         <Button
           onClick={() => handleConfirmRegister(email, codes, confirmRegister, props.setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
-          label="Verify"
+          children={<>Verify</>}
           variant="popup"
           filled
           disabled={hasTyped && (codes.length !== 6) || isConfirmRegisterLoading}

@@ -57,7 +57,7 @@ export default function Header() {
   }, []);
 
   return (
-    <div className="flex justify-between py-[22px] bg-white w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
+    <div className="flex justify-between py-[22px] w-full max-w-[1920px] mx-auto 2xl:px-[153px]">
       <button
         className="lg:hidden p-2 text-gray-700 dark:text-gray-300"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -97,7 +97,7 @@ export default function Header() {
             <Button
               onClick={() => setIsOpen(!isOpen)}
               variant="standard_sm"
-              label="Account"
+              children={<>Account</>}
               disabled
               filled
               rightIcon={<FaAngleDown size={16}
@@ -131,12 +131,12 @@ export default function Header() {
           <div className="flex gap-[23px]">
             <Button
               onClick={onSignup}
-              label="Signup"
+              children={<>Signup</>}
               variant="standard_sm"
             />
             <Button
               onClick={onLogin}
-              label="Login"
+              children={<>Login</>}
               variant="standard_sm"
               filled
             />

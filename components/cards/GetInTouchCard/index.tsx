@@ -132,7 +132,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
             !props.message ||
             props.isLoading
           }
-          label="Submit"
+          children={<>Submit</>}
           variant="popup"
           filled
           isLoading={props.isLoading}

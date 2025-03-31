@@ -46,7 +46,7 @@ export default function TableHeader(props: TableHeaderProps) {
       <div className="w-[134px]">
         <Button
           onClick={() => router.push("/tools")}
-          label={props.active === "Job status" ? "New Job" : "Upload Files"}
+          children={props.active === "Job status" ? <>New Job</> : <>Upload Files</>}
           rightIcon={<IoAdd size={20}/>}
           variant="standard_sm"
           filled

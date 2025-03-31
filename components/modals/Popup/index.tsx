@@ -37,7 +37,7 @@ export default function PopUp(props: PopUpProps) {
               <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[32px]">
                 <Button
                   onClick={() => props.setOpen(false)}
-                  label="Dismiss"
+                  children={<>Dismiss</>}
                   variant="secondary"
                 />
               </div>

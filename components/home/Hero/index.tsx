@@ -26,7 +26,7 @@ export default function Hero({setWaitlistModal}) {
             />
           </div>
           <Button
-            label="Join the Waitlist"
+            children={<>Join the Waitlist</>}
             variant="primary"
             filled
             onClick={() => setWaitlistModal(true)}

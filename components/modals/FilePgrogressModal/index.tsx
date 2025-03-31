@@ -104,7 +104,7 @@ export default function FileProgressModal(props) {
                     props.setProgressModal(false)
                     router.push("/dashboard/jobs-status")
                   }}
-                  label="Dashboard"
+                  children={<>Dashboard</>}
                   variant="secondary"
                 />
                 <Button
@@ -112,7 +112,7 @@ export default function FileProgressModal(props) {
                     props.setProgressModal(false)
                     router.push("/tools")
                   }}
-                  label="Explore All Tools"
+                  children={<>Explore All Tools</>}
                   variant="standard"
                   filled
                 />

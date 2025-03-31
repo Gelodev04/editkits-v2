@@ -94,7 +94,7 @@ export function VideoUpload(props: VideoUploadProps) {
       {!props.file && (
         <Button
           onClick={() => props.setUploadFileModal(true)}
-          label="Add File"
+          children={<>Add File</>}
           variant="standard_sm"
         />
       )}

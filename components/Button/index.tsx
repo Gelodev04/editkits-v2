@@ -1,51 +1,55 @@
-import React from "react";
-import Image from "next/image";
-import Spinner from "@/components/Spinner";
+import React, { ReactNode } from "react";
 
-type ButtonProps = {
-  label: string;
-  variant: 'popup' | 'popup_link' | 'primary' | 'secondary' | 'standard' | 'standard_sm';
-  filled?: boolean;
-  onClick?: () => void;
-  rightIcon?: React.ReactNode;
-  leftIcon?: React.ReactNode;
-  disabled?: boolean;
-  isLoading?: boolean
+interface ButtonProps {
+  children: ReactNode; // Button text or content
+  size?: "sm" | "md"; // Button size
+  variant?: "primary" | "outline"; // Button variant
+  startIcon?: ReactNode; // Icon before the text
+  endIcon?: ReactNode; // Icon after the text
+  onClick?: () => void; // Click handler
+  disabled?: boolean; // Disabled state
+  className?: string; // Disabled state
 }
 
-function ButtonStyle(variant: string, filled?: boolean, disabled?: boolean) {
-  switch (variant) {
-    case "popup":
-      return `w-[448px] h-[64px] rounded-[86px] outline-none ${disabled ? "bg-[#ebebeb] text-[#2c2c2c]" : "bg-[#148cfc]"} shadow-[rgba(201, 229, 255, 1)] font-lato font-bold text-lg leading-[20px]`;
-    case "popup_link":
-      return "font-openSans font-bold text-xs leading-[15px] text-[#148cfc]";
-    case "primary":
-      return `w-[209px] h-[48px] rounded-[37px] outline-none 
-        ${disabled ? "bg-[#ebebeb] text-[#2c2c2c]" : filled ? "bg-[#148cfc] text-white" : "text-[#2c2c2c] bg-white border border-[#2c2c2c]"} 
-        flex justify-center items-center gap-[27px] font-lato font-bold text-sm leading-[28px]`;
-    case "secondary":
-      return `w-[268px] h-[48px] rounded-[36px] outline-none text-[#4f4f4f] border-[1px] border-[#4f4f4f] font-montserrat font-bold text-sm leading-[28px]`;
-    case "standard_sm":
-      return `w-[140px] h-[47px] rounded-[36px] outline-none ${filled ? `${disabled ? "bg-[#ebebeb] text-[#2c2c2c]" : "bg-[#148cfc] text-white"}` : "bg-white border-[1px] text-[#2c2c2c]"} flex justify-center items-center gap-[4px] font-lato font-bold text-sm leading-[28px]`;
-    case "standard":
-      return `w-[226px] h-[64px] rounded-[30px] outline-none bg-[#148cfc] font-lato font-bold text-sm leading-[28px]`
-  }
-}
+const Button: React.FC<ButtonProps> = ({
+                                         children,
+                                         size = "md",
+                                         variant = "primary",
+                                         startIcon,
+                                         endIcon,
+                                         onClick,
+                                         className = "",
+                                         disabled = false,
+                                       }) => {
+  // Size Classes
+  const sizeClasses = {
+    sm: "px-4 py-3 text-sm",
+    md: "px-5 py-3.5 text-sm",
+  };
 
+  // Variant Classes
+  const variantClasses = {
+    primary:
+      "bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600 disabled:bg-brand-300",
+    outline:
+      "bg-white text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03] dark:hover:text-gray-300",
+  };
 
-export default function Button(props: ButtonProps) {
   return (
     <button
-      onClick={props.onClick}
-      // @ts-ignore
-      className={ButtonStyle(props.variant, props.filled, props.disabled)}
-      disabled={props.disabled && props.label !== "Account"}
+      className={`inline-flex items-center justify-center font-medium gap-2 rounded-lg transition ${className} ${
+        sizeClasses[size]
+      } ${variantClasses[variant]} ${
+        disabled ? "cursor-not-allowed opacity-50" : ""
+      }`}
+      onClick={onClick}
+      disabled={disabled}
     >
-      {/*@ts-ignore*/}
-      {props.leftIcon && <Image src={props.leftIcon} alt="Left Icon" priority/>}
-      {props.isLoading && <Spinner/>}
-      {props.label}
-      {props?.rightIcon}
+      {startIcon && <span className="flex items-center">{startIcon}</span>}
+      {children}
+      {endIcon && <span className="flex items-center">{endIcon}</span>}
     </button>
-  )
-}
+  );
+};
+
+export default Button;

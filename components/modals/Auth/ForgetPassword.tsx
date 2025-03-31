@@ -34,7 +34,7 @@ export default function ForgetPassword(
         <Button
           disabled={(hasTyped && !isEmailValid) || isRequestPasswordResetLoading}
           onClick={() => handleSendResetCode(email, requestPasswordReset, props.setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
-          label="Send reset code"
+          children={<>Send reset code</>}
           variant="popup"
           filled
           isLoading={isRequestPasswordResetLoading}

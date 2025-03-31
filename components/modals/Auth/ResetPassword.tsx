@@ -73,7 +73,7 @@ export default function ResetPassword(
         <Button
           disabled={hasTyped && (code?.length !== 6 || !isPasswordValid || password !== confirmPassword) || isConfirmPasswordResetLoading}
           onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
-          label="Reset Password"
+          children={<>Reset Password</>}
           variant="popup"
           filled
           isLoading={isConfirmPasswordResetLoading}

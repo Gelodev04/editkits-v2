@@ -32,7 +32,7 @@ export default function EmailNotConfirmedLogin(
         <Button
           disabled={hasTyped && (!isEmailValid)}
           onClick={handleSendResetCode}
-          label="Send Verification Code"
+          children={<>Send Verification Code</>}
           variant="popup"
           filled
         />

@@ -67,7 +67,7 @@ export default function Login(
         <Button
           disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
           onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, router)}
-          label="Login"
+          children={<>Login</>}
           variant="popup"
           filled
           isLoading={isLoginLoading}
@@ -77,7 +77,7 @@ export default function Login(
         <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Don&apos;t have an account?</p>
         <Button
           onClick={() => props.setType("Sign Up")}
-          label="Signup"
+          children={<>Signup</>}
           variant="popup_link"
           filled
         />

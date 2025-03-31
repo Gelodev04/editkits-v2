@@ -121,7 +121,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
         <Button
           variant="primary"
           filled
-          label="Apply"
+          children={<>Apply</>}
           onClick={toggle}
         />
       </div>

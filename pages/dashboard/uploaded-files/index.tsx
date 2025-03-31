@@ -16,12 +16,14 @@ import Image from "next/image";
 import PaginationWithIcon from "../PaginationWithIcon";
 import {uploadedFilesColumns} from "@/lib/constants";
 import {useGetRecentFilesQuery} from "@/services/api/file";
+import {useSidebar} from "@/context/SidebarContext";
 
 type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
   const {data: recentFiles} = useGetRecentFilesQuery({});
+  const {isMobileOpen, isExpanded, isHovered} = useSidebar();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -92,9 +94,16 @@ export default function JobStatus() {
     }
   }
 
+  const mainContentMargin = isMobileOpen
+    ? "ml-0"
+    : isExpanded || isHovered
+      ? "lg:ml-[330px]"
+      : "lg:ml-[90px]";
+
+
   return (
     <div
-      className="overflow-hidden pl-0 lg:pl-[300px] 2xl:pl-[180px] 3xl:pl-0 bg-white dark:bg-white/[0.03] rounded-xl sm:max-w-[980px] lg:max-w-[1280px] mx-auto p-6">
+      className={`${mainContentMargin} my-10 transition-all duration-300 ease-in-out overflow-hidden bg-white dark:bg-white/[0.03] rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
       <div
         className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">

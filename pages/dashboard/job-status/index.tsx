@@ -106,12 +106,12 @@ export default function JobStatus() {
   const mainContentMargin = isMobileOpen
     ? "ml-0"
     : isExpanded || isHovered
-      ? "lg:ml-[290px]"
+      ? "lg:ml-[330px]"
       : "lg:ml-[90px]";
 
   return (
     <div
-      className={`${mainContentMargin} transition-all duration-300 ease-in-out overflow-hidden bg-white dark:bg-white/[0.03] rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
+      className={`${mainContentMargin} my-10 transition-all duration-300 ease-in-out overflow-hidden bg-white dark:bg-white/[0.03] rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6">
         <StatCard stat={stats}/>
       </div>

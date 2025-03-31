@@ -5,7 +5,8 @@ import {lato, montserrat, opensans} from "@/lib/fonts";
 
 import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
-import Button from "@/components/Button";
+
+import ButtonOld from "@/components/Button_Old";
 
 
 type PopUpProps = {
@@ -61,14 +62,14 @@ export default function FilterModal(props: PopUpProps) {
                 ))}
               </div>
               <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[34px]">
-                <Button
+                <ButtonOld
                   onClick={() => props.setOpen(false)}
-                  children={<>Dismiss</>}
+                  label="Dismiss"
                   variant="primary"
                 />
-                <Button
+                <ButtonOld
                   onClick={props.onClick}
-                  children={<>Apply</>}
+                  label="Apply"
                   variant="primary"
                   filled
                 />

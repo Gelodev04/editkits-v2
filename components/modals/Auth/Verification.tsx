@@ -1,8 +1,9 @@
 import React from "react";
 import Typography from "@/components/Typography";
-import Button from "@/components/Button";
+
 import VerificationCodeInput from "../../VerificationCodeInput/index";
 import {AuthModalProps} from "@/components/modals/Auth/index";
+import ButtonOld from "@/components/Button_Old";
 
 //@ts-ignore
 export default function Verification(
@@ -43,9 +44,9 @@ export default function Verification(
         </div>
       </div>
       <div className="max-w-[446px] mx-auto">
-        <Button
+        <ButtonOld
           onClick={() => handleConfirmRegister(email, codes, confirmRegister, props.setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
-          children={<>Verify</>}
+          label="Verify"
           variant="popup"
           filled
           disabled={hasTyped && (codes.length !== 6) || isConfirmRegisterLoading}

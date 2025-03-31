@@ -7,7 +7,6 @@ import {FaAngleDown} from "react-icons/fa";
 import {Divider} from "@mui/material";
 
 import AuthModal from "@/components/modals/Auth";
-import Button from "@/components/Button";
 import PopUp from "@/components/modals/Popup";
 import Typography from "@/components/Typography";
 import useLogout from "@/hooks/useLogout";
@@ -20,6 +19,7 @@ import Subscription from '@/public/assets/icons/subscription.svg'
 import User from '@/public/assets/icons/user.svg'
 import {ListIcon} from "@/icons";
 import {useSidebar} from "@/context/SidebarContext";
+import ButtonOld from "@/components/Button_Old";
 
 export default function Header() {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function Header() {
   const [logout] = useLogoutMutation();
   const handleLogout = useLogout(router, logout);
 
-  const { setIsMobileOpen, isMobileOpen } = useSidebar();
+  const {setIsMobileOpen, isMobileOpen} = useSidebar();
 
   const [type, setType] = useState("");
   const [showAuthModal, setAuthModal] = useState(false);
@@ -49,8 +49,8 @@ export default function Header() {
   }
 
   useEffect(() => {
-    const { login } = router.query;
-    if(login) {
+    const {login} = router.query;
+    if (login) {
       setType("Log In");
       setAuthModal(true)
     }
@@ -62,43 +62,49 @@ export default function Header() {
         className="lg:hidden p-2 text-gray-700 dark:text-gray-300"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
       >
-        <Image src={ListIcon} alt="list icon" />
+        <Image src={ListIcon} alt="list icon"/>
       </button>
-      <Link href="/home">
-        {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && <Image src={Logo} className="w-[187px]" alt="Logo" priority/>}
-      </Link>
-      <div className="flex justify-center items-center">
-        {userInfo && (
-          <Link className="pr-[35px]" href="/dashboard/uploaded-files">
-            <Typography label="Dashboard" variant="link" bold={(router.pathname === "/dashboard/uploaded-files" || router.pathname === "/dashboard/job-status")}/>
+      {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && (
+        <>
+          <Link href="/home">
+            {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") &&
+            <Image src={Logo} className="w-[187px]" alt="Logo" priority/>}
           </Link>
-        )}
-        {!userInfo && (
-          <Link className="pr-[35px]" href="/home">
-            <Typography label="Home" variant="link" bold={router.pathname === "/home"}/>
-          </Link>
-        )}
-        <Link className="pr-[35px]" href="/tools">
-          <Typography label="Tools" variant="link" bold={router.pathname === "/tools"}/>
-        </Link>
-        <Link className="pr-[35px]" href="/pricing">
-          <Typography label="Pricing" variant="link" bold={router.pathname === "/pricing"}/>
-        </Link>
-        <Link className="pr-[35px]" href="/blog">
-          <Typography label="Blogs" variant="link" bold={router.pathname === "/blog"}/>
-        </Link>
-        <Link className="pr-[35px]" href="/contact-us">
-          <Typography label="Contact Us" variant="link" bold={router.pathname === "/contact-us"}/>
-        </Link>
-      </div>
+          <div className="flex justify-center items-center">
+            {userInfo && (
+              <Link className="pr-[35px]" href="/dashboard/uploaded-files">
+                <Typography label="Dashboard" variant="link"
+                            bold={(router.pathname === "/dashboard/uploaded-files" || router.pathname === "/dashboard/job-status")}/>
+              </Link>
+            )}
+            {!userInfo && (
+              <Link className="pr-[35px]" href="/home">
+                <Typography label="Home" variant="link" bold={router.pathname === "/home"}/>
+              </Link>
+            )}
+            <Link className="pr-[35px]" href="/tools">
+              <Typography label="Tools" variant="link" bold={router.pathname === "/tools"}/>
+            </Link>
+            <Link className="pr-[35px]" href="/pricing">
+              <Typography label="Pricing" variant="link" bold={router.pathname === "/pricing"}/>
+            </Link>
+            <Link className="pr-[35px]" href="/blog">
+              <Typography label="Blogs" variant="link" bold={router.pathname === "/blog"}/>
+            </Link>
+            <Link className="pr-[35px]" href="/contact-us">
+              <Typography label="Contact Us" variant="link" bold={router.pathname === "/contact-us"}/>
+            </Link>
+          </div>
+        </>
+      )}
+      <div />
       <div className="flex gap-[11px] justify-center items-center">
         {userInfo && (
           <div className="w-[160px] relative inline-block">
-            <Button
+            <ButtonOld
               onClick={() => setIsOpen(!isOpen)}
               variant="standard_sm"
-              children={<>Account</>}
-              disabled
+              label="Account"
               filled
               rightIcon={<FaAngleDown size={16}
               />
@@ -129,14 +135,14 @@ export default function Header() {
 
         {!userInfo && (
           <div className="flex gap-[23px]">
-            <Button
+            <ButtonOld
               onClick={onSignup}
-              children={<>Signup</>}
+              label="Signup"
               variant="standard_sm"
             />
-            <Button
+            <ButtonOld
               onClick={onLogin}
-              children={<>Login</>}
+              label="Login"
               variant="standard_sm"
               filled
             />

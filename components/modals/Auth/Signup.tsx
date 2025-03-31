@@ -1,12 +1,13 @@
 import React from 'react';
 
 import InputField from "@/components/InputField";
-import Button from "@/components/Button";
+
 import {validateEmail} from "@/lib/validateEmail";
 import {validatePassword} from "@/lib/validatePassword";
 import {PasswordValidation} from "@/components/PasswordValidtion";
 import {AuthModalProps} from "@/components/modals/Auth/index";
 import Toggle from "@/components/Toggle";
+import ButtonOld from "@/components/Button_Old";
 
 export default function Signup(
   props: AuthModalProps,
@@ -73,10 +74,10 @@ export default function Signup(
       </div>
       <PasswordValidation password={password}/>
       <div className="pt-[42px] pb-[12px] max-w-[446px] mx-auto">
-        <Button
+        <ButtonOld
           onClick={() => handleRegister(email, password, props.setType, register, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal)}
           disabled={hasTyped && (!isEmailValid || !isPasswordValid || password !== confirmPassword || isSignupLoading)}
-          children={<>Create account</>}
+          label="Create account"
           variant="popup"
           filled
           isLoading={isSignupLoading}
@@ -84,9 +85,9 @@ export default function Signup(
       </div>
       <div className="flex justify-center gap-4 items-center">
         <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Already have an account?</p>
-        <Button
+        <ButtonOld
           onClick={() => props.setType("Log In")}
-          children={<>Login</>}
+          label="Login"
           variant="popup_link"
           filled
         />

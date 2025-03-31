@@ -1,10 +1,11 @@
 import React from "react";
 
 import InputField from "@/components/InputField";
-import Button from "@/components/Button";
+
 import TextField from "@/components/TextField";
 import {validateEmail} from "@/lib/validateEmail";
 import Popup from "@/components/modals/Popup";
+import ButtonOld from "@/components/Button_Old";
 
 type GetInTouchCardProps = {
   user: any
@@ -119,7 +120,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
         />
       </div>
       <div className="pt-[20px] flex justify-center">
-        <Button
+        <ButtonOld
           onClick={props.handleContactUsSubmit}
           disabled={
             !props.isFirstNameValid ||
@@ -132,7 +133,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
             !props.message ||
             props.isLoading
           }
-          children={<>Submit</>}
+          label="Submit"
           variant="popup"
           filled
           isLoading={props.isLoading}

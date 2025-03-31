@@ -1,11 +1,12 @@
 import React from 'react';
 
 import InputField from "@/components/InputField";
-import Button from "@/components/Button";
+
 import {validatePassword} from "@/lib/validatePassword";
 import {PasswordValidation} from "@/components/PasswordValidtion";
 import {AuthModalProps} from "@/components/modals/Auth/index";
 import Toggle from "@/components/Toggle";
+import ButtonOld from "@/components/Button_Old";
 
 export default function ResetPassword(
   props: AuthModalProps,
@@ -70,10 +71,10 @@ export default function ResetPassword(
       </div>
       <PasswordValidation password={password}/>
       <div className="pt-[42px] max-w-[446px] mx-auto">
-        <Button
+        <ButtonOld
           disabled={hasTyped && (code?.length !== 6 || !isPasswordValid || password !== confirmPassword) || isConfirmPasswordResetLoading}
           onClick={() => handleResetPassword(email, code, password, confirmPasswordReset, setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
-          children={<>Reset Password</>}
+          label="Reset Password"
           variant="popup"
           filled
           isLoading={isConfirmPasswordResetLoading}

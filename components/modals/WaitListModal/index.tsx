@@ -4,11 +4,12 @@ import { TbXboxX } from "react-icons/tb";
 import { Fade, Modal } from "@mui/material";
 
 import InputField from "@/components/InputField";
-import Button from "@/components/Button";
+
 import TextField from "@/components/TextField";
 import Typography from "@/components/Typography";
 import { validateEmail } from "@/lib/validateEmail";
 import { lato, montserrat, opensans } from "@/lib/fonts";
+import ButtonOld from "@/components/Button_Old";
 
 type GetInTouchCardProps = {
   user: any
@@ -119,7 +120,7 @@ export default function WaitListModal(props: GetInTouchCardProps) {
                 </div>
 
                 <div className="flex justify-center items-center gap-[6px] pt-[32px] pb-[32px] max-w-[446px] mx-auto">
-                  <Button
+                  <ButtonOld
                     onClick={props.handleWaitlistSubmit}
                     disabled={
                       !props.isFirstNameValid ||

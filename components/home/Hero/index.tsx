@@ -1,9 +1,10 @@
 import Image from "next/image";
 
-import Button from "@/components/Button";
+
 import Typography from "@/components/Typography";
 
 import HeroImg from "@/public/assets/img/home_hero.png";
+import ButtonOld from "@/components/Button_Old";
 
 export default function Hero({setWaitlistModal}) {
   return (
@@ -25,8 +26,8 @@ export default function Hero({setWaitlistModal}) {
               variant="b2"
             />
           </div>
-          <Button
-            children={<>Join the Waitlist</>}
+          <ButtonOld
+            label="Join the Waitlist"
             variant="primary"
             filled
             onClick={() => setWaitlistModal(true)}

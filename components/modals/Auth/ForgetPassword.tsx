@@ -1,8 +1,9 @@
 import React from "react";
 
 import InputField from "@/components/InputField";
-import Button from "@/components/Button";
+
 import {validateEmail} from "@/lib/validateEmail";
+import ButtonOld from "@/components/Button_Old";
 
 export default function ForgetPassword(
   props: any,
@@ -31,10 +32,10 @@ export default function ForgetPassword(
         type="text"
       />
       <div className="pt-[42px] max-w-[446px] mx-auto">
-        <Button
+        <ButtonOld
           disabled={(hasTyped && !isEmailValid) || isRequestPasswordResetLoading}
           onClick={() => handleSendResetCode(email, requestPasswordReset, props.setType, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, props.setAuthModal)}
-          children={<>Send reset code</>}
+          label="Send reset code"
           variant="popup"
           filled
           isLoading={isRequestPasswordResetLoading}

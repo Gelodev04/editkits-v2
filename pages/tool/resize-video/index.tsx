@@ -3,7 +3,7 @@ import * as React from "react";
 import {FaAngleRight} from "react-icons/fa6";
 
 import Typography from "@/components/Typography";
-import Button from "@/components/Button";
+
 import UploadFileModal from "@/components/modals/UploadFileModal";
 import InputField from "@/components/InputField";
 import Select from "@/components/Select";
@@ -13,6 +13,7 @@ import {useEffect, useState} from "react";
 import {aspectRatio, outputQualityList, presets, videoType} from "@/lib/constants";
 import {VideoUpload} from "@/components/VideoUpload";
 import {useStatusQuery, useUploadMutation} from "@/services/api/file";
+import ButtonOld from "@/components/Button_Old";
 
 export default function ResizeVideo() {
   const  [fileId, setFileId] = useState(null);
@@ -274,9 +275,9 @@ export default function ResizeVideo() {
         </div>
       </div>
       <div className="max-w-[171px] mx-auto py-16">
-        <Button
+        <ButtonOld
           disabled={!settings.isColorValid || !file}
-          children={<>Proceed</>}
+          label="Proceed"
           variant="primary"
           filled
           rightIcon={<FaAngleRight/>}

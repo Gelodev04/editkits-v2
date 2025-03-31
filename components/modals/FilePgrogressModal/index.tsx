@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import {useRouter} from "next/router";
 
-import Button from "@/components/Button";
+
 import {Fade, Modal} from "@mui/material";
 
 import {lato, montserrat, opensans} from "@/lib/fonts";
@@ -14,6 +14,7 @@ import PlayIcon from "@/public/assets/icons/play_lg.svg";
 import PlaySm from "@/public/assets/icons/play_sm.svg";
 import Copy from "@/public/assets/icons/copy.svg";
 import Download from "@/public/assets/icons/download.svg";
+import ButtonOld from "@/components/Button_Old";
 
 export default function FileProgressModal(props) {
   const router = useRouter();
@@ -99,20 +100,20 @@ export default function FileProgressModal(props) {
               )}
 
               {props.data && (<div className="flex gap-[27px] justify-center pb-[34px]">
-                <Button
+                <ButtonOld
                   onClick={() => {
                     props.setProgressModal(false)
                     router.push("/dashboard/jobs-status")
                   }}
-                  children={<>Dashboard</>}
+                  label="Dashboard"
                   variant="secondary"
                 />
-                <Button
+                <ButtonOld
                   onClick={() => {
                     props.setProgressModal(false)
                     router.push("/tools")
                   }}
-                  children={<>Explore All Tools</>}
+                  label="Explore All Tools"
                   variant="standard"
                   filled
                 />

@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 
-import Button from "@/components/Button";
+
 import FeatureCard from "@/components/cards/FeatureCard";
 
 const PopUp = dynamic(() => import ("@/components/modals/Popup"), {
@@ -19,6 +19,7 @@ import {featureCards, videoTools} from "@/lib/constants";
 import {getUserInfo} from "@/services/api";
 import { useContactUsUserMutation} from "@/services/api/auth";
 import {useContactUsCommonMutation} from "@/services/api/public";
+import ButtonOld from "@/components/Button_Old";
 
 const Hero = dynamic(() => import("@/components/home/Hero"), {
   ssr: false,
@@ -144,8 +145,8 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-center pt-[42px]">
-          <Button
-            children={<>More tools coming soon!</>}
+          <ButtonOld
+            label="More tools coming soon!"
             variant="secondary"
           />
         </div>

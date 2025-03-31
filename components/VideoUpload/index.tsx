@@ -4,7 +4,7 @@ import PlayIcon from "@/public/assets/icons/play.png";
 import RetryIcon from "@/public/assets/icons/retry.svg";
 import UploadingIcon from "@/public/assets/icons/cloud.svg"
 
-import Button from "@/components/Button";
+import ButtonOld from "@/components/Button_Old";
 
 type VideoUploadProps = {
   file: any;
@@ -92,9 +92,9 @@ export function VideoUpload(props: VideoUploadProps) {
         </div>
       )}
       {!props.file && (
-        <Button
+        <ButtonOld
           onClick={() => props.setUploadFileModal(true)}
-          children={<>Add File</>}
+          label="Add File"
           variant="standard_sm"
         />
       )}

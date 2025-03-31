@@ -4,11 +4,12 @@ import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
 import InputField from "@/components/InputField";
 import {validatePassword} from "@/lib/validatePassword";
-import Button from "@/components/Button";
+
 import {useCountdownTimer} from "@/hooks/useCountdownTimer";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 import {PasswordValidation} from "@/components/PasswordValidtion";
 import Toggle from "@/components/Toggle";
+import ButtonOld from "@/components/Button_Old";
 
 export type AuthModalProps = {
   type: string;
@@ -120,10 +121,10 @@ export default function ChangePasswordModal(props: AuthModalProps) {
                   <PasswordValidation password={props.newPassword}/>
                 </div>
                 <div className="pt-[42px] max-w-[446px] mx-auto">
-                  <Button
+                  <ButtonOld
                     disabled={hasTyped && (!isCurrentPasswordValid || !isPasswordValid || props.newPassword !== props.confirmPassword) || props.isUpdatePasswordLoading}
                     onClick={props.handleUpdatePassword}
-                    children={<>Reset Password</>}
+                    label="Reset Password"
                     variant="popup"
                     filled
                     isLoading={props.isUpdatePasswordLoading}

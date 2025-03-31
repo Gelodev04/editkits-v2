@@ -2,11 +2,12 @@ import {SetStateAction} from "react";
 
 import {IoAdd} from "react-icons/io5";
 
-import Button from "@/components/Button";
+
 
 import {useRouter} from "next/router";
 import {RxCalendar} from "react-icons/rx";
 import {LuSettings2} from "react-icons/lu";
+import ButtonOld from "@/components/Button_Old";
 
 type TableHeaderProps = {
   setSearch: any;
@@ -44,9 +45,9 @@ export default function TableHeader(props: TableHeaderProps) {
         </div>
       </div>
       <div className="w-[134px]">
-        <Button
+        <ButtonOld
           onClick={() => router.push("/tools")}
-          children={props.active === "Job status" ? <>New Job</> : <>Upload Files</>}
+          label={props.active === "Job status" ? "New Job" : "Upload Files"}
           rightIcon={<IoAdd size={20}/>}
           variant="standard_sm"
           filled

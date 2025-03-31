@@ -5,13 +5,14 @@ import toast from "react-hot-toast";
 import {Fade, Modal} from "@mui/material";
 import {IoIosCloseCircleOutline} from "react-icons/io";
 
-import Button from "@/components/Button";
+
 import InputField from "@/components/InputField";
 import Typography from "@/components/Typography";
 import {fileUploader} from "@/lib/uploadFile";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 
 import Upload from "@/public/assets/icons/upload.svg"
+import ButtonOld from "@/components/Button_Old";
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -174,14 +175,14 @@ export default function UploadFileModal(props: UploadModalProps) {
                   {/*@ts-ignore*/}
                   <InputField label="File ID" placeholder="Add file ID" type="text" />
                   <div className="flex gap-[27px] pt-[76px] pb-[32px] flex justify-center">
-                    <Button
+                    <ButtonOld
                       onClick={() => props.setUploadModal(false)}
-                      children={<>Cancel</>}
+                      label="Cancel"
                       variant="standard_sm"
                     />
-                    <Button
+                    <ButtonOld
                       onClick={() => props.setUploadModal(false)}
-                      children={<>Proceed</>}
+                      label="Proceed"
                       variant="standard_sm"
                       filled
                     />

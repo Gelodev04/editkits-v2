@@ -1,8 +1,9 @@
 import InputField from "@/components/InputField";
-import Button from "@/components/Button";
+
 import React from "react";
 import {AuthModalProps} from "@/components/modals/Auth/index";
 import {validateEmail} from "@/lib/validateEmail";
+import ButtonOld from "@/components/Button_Old";
 
 export default function EmailNotConfirmedLogin(
   props: AuthModalProps,
@@ -29,10 +30,10 @@ export default function EmailNotConfirmedLogin(
         type="text"
       />
       <div className="pb-[38px] pt-[112px] max-w-[446px] mx-auto">
-        <Button
+        <ButtonOld
           disabled={hasTyped && (!isEmailValid)}
           onClick={handleSendResetCode}
-          children={<>Send Verification Code</>}
+          label="Send Verification Code"
           variant="popup"
           filled
         />

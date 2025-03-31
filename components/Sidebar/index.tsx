@@ -2,9 +2,10 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
+
 import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
-import {ChevronDownIcon, GridIcon, HorizontaLDots,} from "@/icons";
+import {ChevronDownIcon, GridIcon, HorizontaLDots, DollarLineIcon, ListIcon, MailIcon} from "@/icons";
 
 import Logo from "@/public/assets/img/logo.svg"
 
@@ -23,6 +24,26 @@ const navItems: NavItem[] = [
       { name: "Job Status", path: "/dashboard/job-status" },
       { name: "Uploaded Files", path: "/dashboard/uploaded-files" },
     ],
+  },
+  {
+    icon: GridIcon,
+    name: "Tools",
+    path: "/tools"
+  },
+  {
+    icon: DollarLineIcon,
+    name: "Pricing",
+    path: "/pricing"
+  },
+  {
+    icon: ListIcon,
+    name: "Blogs",
+    path: "/blogs"
+  },
+  {
+    icon: MailIcon,
+    name: "Contact Us",
+    path: "/contact-us"
   },
 ];
 

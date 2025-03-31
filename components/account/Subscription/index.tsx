@@ -1,8 +1,9 @@
 import Typography from "@/components/Typography";
 import Tag from "@/components/Tag";
 import BenefitCard from "@/components/cards/BenefitCard";
-import Button from "@/components/Button";
+
 import * as React from "react";
+import ButtonOld from "@/components/Button_Old";
 
 export function Subscription(props: any) {
   return (
@@ -31,7 +32,7 @@ export function Subscription(props: any) {
         </div>
       </div>
       <div className="col-span-2 pt-3 flex items-end justify-end">
-        <Button label="Change plan" variant="primary" filled/>
+        <ButtonOld label="Change plan" variant="primary" filled/>
       </div>
     </div>
   )

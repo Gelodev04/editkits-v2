@@ -5,7 +5,8 @@ import {lato, montserrat, opensans} from "@/lib/fonts";
 
 import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
-import Button from "@/components/Button";
+
+import ButtonOld from "@/components/Button_Old";
 
 type PopUpProps = {
   open: boolean;
@@ -35,9 +36,9 @@ export default function PopUp(props: PopUpProps) {
                 <Typography label={props.description} center variant="b3"/>
               </div>
               <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[32px]">
-                <Button
+                <ButtonOld
                   onClick={() => props.setOpen(false)}
-                  children={<>Dismiss</>}
+                  label="Dismiss"
                   variant="secondary"
                 />
               </div>

@@ -18,9 +18,11 @@ import Sidebar from "@/components/Sidebar";
 import {useGetJobsQuery} from "@/services/api/job";
 import {jobStatusColumns, stats} from "@/lib/constants";
 import StatCard from "@/components/cards/StatCard";
-import Button from "@/components/Button";
+
 import {router} from "next/client";
 import {IoMdRefresh} from "react-icons/io";
+import ButtonOld from "@/components/Button_Old";
+import Button from "@/components/Button";
 
 type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
@@ -37,7 +39,6 @@ export default function JobStatus() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
-  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredAndSortedData = useMemo(() => {
     return (jobs || [])
@@ -45,8 +46,7 @@ export default function JobStatus() {
       .filter((item) =>
         Object.values(item).some(
           (value) =>
-            typeof value === "string" &&
-            value?.toLowerCase().includes(searchTerm.toLowerCase())
+            typeof value === "string"
         )
       )
       .sort((a, b) => {
@@ -68,7 +68,7 @@ export default function JobStatus() {
           ? String(a[sortKey] || "").localeCompare(String(b[sortKey] || ""))
           : String(b[sortKey] || "").localeCompare(String(a[sortKey] || ""));
       });
-  }, [jobs, sortKey, sortOrder, searchTerm]);
+  }, [jobs, sortKey, sortOrder]);
 
 
   const totalItems = filteredAndSortedData?.length;
@@ -153,8 +153,10 @@ export default function JobStatus() {
           </div>
 
           <div className="relative flex items-center gap-5">
-            <Button variant="primary" children={<>New Job</>} onClick={() => router.push("/tools")}/>
-            <Button variant="outline" children={<IoMdRefresh size={20} onClick={() => refetchJobs()} />}/>
+            <ButtonOld variant="primary" label="New Job" onClick={() => router.push("/tools")}/>
+            <Button variant="outline">
+              <IoMdRefresh size={20} onClick={() => refetchJobs()} />
+            </Button>
           </div>
         </div>
 

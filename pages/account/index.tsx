@@ -3,7 +3,7 @@ import {useState} from "react";
 import toast from "react-hot-toast";
 
 import AccountType from "@/components/account/AccountType";
-import Button from "@/components/Button";
+
 import InputField from "@/components/InputField";
 import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
 import PopUp from "@/components/modals/Popup";
@@ -13,6 +13,7 @@ import {Subscription} from "@/components/account/Subscription";
 import {validateEmail} from "@/lib/validateEmail";
 import {useUserInfo} from "@/hooks/useUserInfo";
 import {useUpdatePasswordMutation} from "@/services/api/auth";
+import ButtonOld from "@/components/Button_Old";
 
 export default function Account() {
   const {userInfo} = useUserInfo();
@@ -71,9 +72,9 @@ export default function Account() {
                   disabled
                 />
                 <div className="pt-10">
-                  <Button
+                  <ButtonOld
                     onClick={() => setUpdatePasswordModal(true)}
-                    children={<>Change Password</>}
+                    label="Change Password"
                     variant="secondary"
                   />
                 </div>

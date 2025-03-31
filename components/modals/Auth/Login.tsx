@@ -1,11 +1,12 @@
 import InputField from "@/components/InputField";
 import Toggle from "@/components/Toggle";
-import Button from "@/components/Button";
+
 import React from "react";
 import {AuthModalProps} from "@/components/modals/Auth/index";
 import {validateEmail} from "@/lib/validateEmail";
 import {validatePassword} from "@/lib/validatePassword";
 import {useRouter} from "next/router";
+import ButtonOld from "@/components/Button_Old";
 
 export default function Login(
   props: AuthModalProps,
@@ -64,10 +65,10 @@ export default function Login(
           password?</p>
       </div>
       <div className="pt-[42px] max-w-[446px] mx-auto">
-        <Button
+        <ButtonOld
           disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
           onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, router)}
-          children={<>Login</>}
+          label="Login"
           variant="popup"
           filled
           isLoading={isLoginLoading}
@@ -75,9 +76,9 @@ export default function Login(
       </div>
       <div className="flex justify-center pt-[13px] gap-4">
         <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Don&apos;t have an account?</p>
-        <Button
+        <ButtonOld
           onClick={() => props.setType("Sign Up")}
-          children={<>Signup</>}
+          label="Signup"
           variant="popup_link"
           filled
         />

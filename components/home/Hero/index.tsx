@@ -3,12 +3,12 @@ import Image from "next/image";
 
 import Typography from "@/components/Typography";
 
-import HeroImg from "@/public/assets/img/home_hero.png";
+import HeroImg from "@/public/images/home_hero.png";
 import ButtonOld from "@/components/Button_Old";
 
 export default function Hero({setWaitlistModal}) {
   return (
-    <div className="bg-[url(../public/assets/img/hero_bg.png)] max-w-[1400px] mx-auto bg-center bg-cover">
+    <div className="bg-[url(../public/images/hero_bg.png)] max-w-[1400px] mx-auto bg-center bg-cover">
       <div
         className="pb-[159.5px] max-w-[1187px] sm:px-5 xl:px-0 grid grid-cols-12 mx-auto sm:items-center xl:items-end">
         <div className="sm:col-span-4 lg:col-span-6 pt-[134.5px]">
@@ -33,7 +33,7 @@ export default function Hero({setWaitlistModal}) {
             onClick={() => setWaitlistModal(true)}
           />
         </div>
-        <div className="sm:col-span-8 lg:col-span-6 bg-[url(../public/assets/img/hero_bg.svg)] bg-cover bg-left">
+        <div className="sm:col-span-8 lg:col-span-6 bg-[url(../public/images/hero_bg.svg)] bg-cover bg-left">
           <Image src={HeroImg} width={594} height={330} alt="hero image" className="animate-float"/>
         </div>
       </div>

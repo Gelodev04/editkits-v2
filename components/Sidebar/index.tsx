@@ -7,7 +7,7 @@ import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
 import {ChevronDownIcon, GridIcon, HorizontaLDots, DollarLineIcon, ListIcon, MailIcon, HomeIcon} from "@/icons";
 
-import Logo from "@/public/assets/img/logo.svg"
+import Logo from "@/public/images/logo.svg"
 
 type NavItem = {
   name: string;

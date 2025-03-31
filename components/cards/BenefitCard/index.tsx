@@ -1,5 +1,5 @@
-import Check from "@/public/assets/icons/check-circle.svg"
-import CheckHover from "@/public/assets/icons/check-circle-hover.svg"
+import Check from "@/public/icons/check-circle.svg"
+import CheckHover from "@/public/icons/check-circle-hover.svg"
 import Image from "next/image";
 
 export default function BenefitCard({label}: {label: string}) {

@@ -6,6 +6,7 @@ import {montserrat, roboto, opensans, workSans, lato, alexandria} from "@/lib/fo
 import {SidebarProvider} from "@/context/SidebarContext";
 import Sidebar from "@/components/Sidebar";
 import {useRouter} from "next/router";
+import {ThemeProvider} from "@/context/ThemeContext";
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -20,15 +21,18 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
     <div
       className={`${alexandria.variable} ${lato.variable} ${montserrat.variable} ${roboto.variable} ${opensans.variable} ${workSans.variable}`}>
-      <SidebarProvider>
-        {(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && <Sidebar/>}
-        <div className="border border-b-1 flex-1">
-          <div className="flex-1">
-            <Header/>
+      <ThemeProvider>
+        <SidebarProvider>
+          {(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") &&
+          <Sidebar/>}
+          <div className="border border-b-1 flex-1">
+            <div className="flex-1">
+              <Header/>
+            </div>
+            {children}
           </div>
-          {children}
-        </div>
-      </SidebarProvider>
+        </SidebarProvider>
+      </ThemeProvider>
       <Footer/>
     </div>
   );

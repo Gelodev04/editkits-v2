@@ -13,13 +13,16 @@ import useLogout from "@/hooks/useLogout";
 import {useUserInfo} from "@/hooks/useUserInfo";
 import {useLogoutMutation} from "@/services/api/auth";
 
-import Logout from '@/public/assets/icons/logout.svg'
-import Logo from "@/public/assets/img/logo.svg"
-import Subscription from '@/public/assets/icons/subscription.svg'
-import User from '@/public/assets/icons/user.svg'
+import Logout from '@/public/icons/logout.svg'
+import Logo from "@/public/images/logo.svg"
+import Subscription from '@/public/icons/subscription.svg'
+import User from '@/public/icons/user.svg'
 import {ListIcon} from "@/icons";
 import {useSidebar} from "@/context/SidebarContext";
 import ButtonOld from "@/components/Button_Old";
+import {ThemeToggleButton} from "@/components/common/ThemeToggleButton";
+import NotificationDropdown from "@/components/NotificationDropdown";
+import UserDropdown from "@/components/UserDropdown";
 
 export default function Header() {
   const router = useRouter();
@@ -29,6 +32,7 @@ export default function Header() {
 
   const {setIsMobileOpen, isMobileOpen, toggleSidebar, toggleMobileSidebar, isExpanded, isHovered} = useSidebar();
 
+  const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const [type, setType] = useState("");
   const [showAuthModal, setAuthModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -44,6 +48,10 @@ export default function Header() {
       toggleMobileSidebar();
     }
   }
+
+  const toggleApplicationMenu = () => {
+    setApplicationMenuOpen(!isApplicationMenuOpen);
+  };
 
 
   function onSignup() {
@@ -147,37 +155,53 @@ export default function Header() {
       )}
       <div className="flex gap-[11px] justify-center items-center">
         {userInfo && (
-          <div className="w-[160px] relative inline-block">
-            <ButtonOld
-              onClick={() => setIsOpen(!isOpen)}
-              variant="standard_sm"
-              label="Account"
-              filled
-              rightIcon={<FaAngleDown size={16}
-              />
-              }
-            />
-            {isOpen && (
-              <div
-                className="absolute w-[235px] right-[-40px] mt-4 bg-white rounded-lg shadow-xl py-4 flex items-start justify-start flex-col gap-y-4"
-                onMouseLeave={() => setIsOpen(false)}
-              >
-                <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
-                  <Image src={User} alt="user icon"/>
-                  <p className="font-inter font-normal text-sm text-[#4f4f4f]">Profile</p>
-                </Link>
-                <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
-                  <Image src={Subscription} alt="subscription icon"/>
-                  <p className="font-inter font-normal text-sm text-[#4f4f4f]">Subscription</p>
-                </Link>
-                <Divider orientation="horizontal" flexItem/>
-                <div onClick={handleLogout} className="flex gap-[8px] pl-[10px] items-center cursor-pointer">
-                  <Image src={Logout} alt="logout icon"/>
-                  <p className="font-inter font-normal text-sm text-[#4f4f4f]">Logout</p>
-                </div>
-              </div>
-            )}
+          <div
+            className={`${
+              isApplicationMenuOpen ? "flex" : "hidden"
+            } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
+          >
+            <div className="flex items-center gap-2 2xsm:gap-3">
+              {/* <!-- Dark Mode Toggler --> */}
+              <ThemeToggleButton />
+              {/* <!-- Dark Mode Toggler --> */}
+
+              <NotificationDropdown />
+              {/* <!-- Notification Menu Area --> */}
+            </div>
+            {/* <!-- User Area --> */}
+            <UserDropdown handleLogout={handleLogout} />
           </div>
+          // <div className="w-[160px] relative inline-block">
+          //   <ButtonOld
+          //     onClick={() => setIsOpen(!isOpen)}
+          //     variant="standard_sm"
+          //     label="Account"
+          //     filled
+          //     rightIcon={<FaAngleDown size={16}
+          //     />
+          //     }
+          //   />
+          //   {isOpen && (
+          //     <div
+          //       className="absolute w-[235px] right-[-40px] mt-4 bg-white rounded-lg shadow-xl py-4 flex items-start justify-start flex-col gap-y-4"
+          //       onMouseLeave={() => setIsOpen(false)}
+          //     >
+          //       <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
+          //         <Image src={User} alt="user icon"/>
+          //         <p className="font-inter font-normal text-sm text-[#4f4f4f]">Profile</p>
+          //       </Link>
+          //       <Link href="/account" className="flex gap-[8px] pl-[10px] items-center">
+          //         <Image src={Subscription} alt="subscription icon"/>
+          //         <p className="font-inter font-normal text-sm text-[#4f4f4f]">Subscription</p>
+          //       </Link>
+          //       <Divider orientation="horizontal" flexItem/>
+          //       <div onClick={handleLogout} className="flex gap-[8px] pl-[10px] items-center cursor-pointer">
+          //         <Image src={Logout} alt="logout icon"/>
+          //         <p className="font-inter font-normal text-sm text-[#4f4f4f]">Logout</p>
+          //       </div>
+          //     </div>
+          //   )}
+          // </div>
         )}
 
         {!userInfo && (

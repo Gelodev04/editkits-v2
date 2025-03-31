@@ -1,4 +1,4 @@
-import NotFoundImg from "@/public/assets/img/404.svg"
+import NotFoundImg from "@/public/images/404.svg"
 import Image from "next/image";
 import {lato, montserrat} from "@/lib/fonts";
 

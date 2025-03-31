@@ -10,7 +10,7 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {BsThreeDotsVertical} from "react-icons/bs";
 
-import CopyIcon from '@/public/assets/icons/copy.svg';
+import CopyIcon from '@/public/icons/copy.svg';
 import {uploadedFilesColumns} from "@/lib/constants";
 import ExpiredIcon from "@/icons/expired_icon.svg";
 import {PiPlayCircleLight} from "react-icons/pi";

@@ -1,8 +1,8 @@
 import * as React from "react";
 import Image from "next/image";
-import PlayIcon from "@/public/assets/icons/play.png";
-import RetryIcon from "@/public/assets/icons/retry.svg";
-import UploadingIcon from "@/public/assets/icons/cloud.svg"
+import PlayIcon from "@/public/icons/play.png";
+import RetryIcon from "@/public/icons/retry.svg";
+import UploadingIcon from "@/public/icons/cloud.svg"
 
 import ButtonOld from "@/components/Button_Old";
 

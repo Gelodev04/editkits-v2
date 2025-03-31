@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import CalendarIcon from "@/public/assets/icons/calendar_blog.svg";
+import CalendarIcon from "@/public/icons/calendar_blog.svg";
 import Link from "next/link";
 
 export default function BlogCard({img, title, date, slug, category}) {

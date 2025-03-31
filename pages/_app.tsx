@@ -50,7 +50,7 @@ function MyApp({Component, pageProps}: AppProps) {
     <>
       <Head>
         <title>{title}</title>
-        <link rel="icon" href="/assets/img/editkits.png"/>
+        <link rel="icon" href="/images/editkits.png"/>
         <link rel="canonical" href={"https://editkits.com" + router.pathname}/>
         {/*<meta name="viewport" content="width=1400, user-scalable=no"/>*/}
         <meta

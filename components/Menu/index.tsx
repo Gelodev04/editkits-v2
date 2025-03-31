@@ -7,7 +7,7 @@ import {BsThreeDotsVertical} from "react-icons/bs";
 import {PiPlayCircleLight} from "react-icons/pi";
 import {IoDownloadOutline} from "react-icons/io5";
 
-import CopyIcon from "@/public/assets/icons/copy.svg";
+import CopyIcon from "@/public/icons/copy.svg";
 
 type MenuProps = {
   handlePreview: any;

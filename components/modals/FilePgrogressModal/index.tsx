@@ -7,13 +7,13 @@ import {Fade, Modal} from "@mui/material";
 
 import {lato, montserrat, opensans} from "@/lib/fonts";
 
-import Rocket from "@/public/assets/img/rocket.gif"
-import CheckMark from "@/public/assets/icons/check-circle_success.svg"
-import Error from "@/public/assets/icons/error.svg"
-import PlayIcon from "@/public/assets/icons/play_lg.svg";
-import PlaySm from "@/public/assets/icons/play_sm.svg";
-import Copy from "@/public/assets/icons/copy.svg";
-import Download from "@/public/assets/icons/download.svg";
+import Rocket from "@/public/images/rocket.gif"
+import CheckMark from "@/public/icons/check-circle_success.svg"
+import Error from "@/public/icons/error.svg"
+import PlayIcon from "@/public/icons/play_lg.svg";
+import PlaySm from "@/public/icons/play_sm.svg";
+import Copy from "@/public/icons/copy.svg";
+import Download from "@/public/icons/download.svg";
 import ButtonOld from "@/components/Button_Old";
 
 export default function FileProgressModal(props) {

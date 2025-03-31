@@ -1,7 +1,7 @@
-import JobActiveSVG from "@/public/assets/img/job_white.svg";
-import JobInActiveSVG from "@/public/assets/img/job_black.svg";
-import UploadActiveSVG from "@/public/assets/img/upload_white.svg";
-import UploadInActiveSVG from "@/public/assets/img/upload_black.svg";
+import JobActiveSVG from "@/public/images/job_white.svg";
+import JobInActiveSVG from "@/public/images/job_black.svg";
+import UploadActiveSVG from "@/public/images/upload_white.svg";
+import UploadInActiveSVG from "@/public/images/upload_black.svg";
 import Image from "next/image";
 
 type TableTypeProps = {

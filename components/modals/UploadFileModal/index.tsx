@@ -11,7 +11,7 @@ import Typography from "@/components/Typography";
 import {fileUploader} from "@/lib/uploadFile";
 import {lato, montserrat, opensans} from "@/lib/fonts";
 
-import Upload from "@/public/assets/icons/upload.svg"
+import Upload from "@/public/icons/upload.svg"
 import ButtonOld from "@/components/Button_Old";
 
 export type UploadModalProps = {

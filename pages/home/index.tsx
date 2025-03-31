@@ -157,7 +157,7 @@ export default function Home() {
             className="max-w-[1555px] mx-auto pt-[139px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-7">
             <Typography label="Learn more about our features" variant="h2"/>
           </div>
-          <div className="w-full bg-[url(../public/assets/img/inclined_bg.svg)] bg-no-repeat bg-cover">
+          <div className="w-full bg-[url(../public/images/inclined_bg.svg)] bg-no-repeat bg-cover">
             <div
               className="max-w-[1536px] mx-auto grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-5">
               {featureCards.map((card) => (

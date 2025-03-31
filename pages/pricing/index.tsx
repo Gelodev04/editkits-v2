@@ -5,11 +5,11 @@ import ToggleSwitch from "@/components/ToggleSwitch";
 
 import {useGetPlansQuery} from "@/services/api/public";
 
-import Background from "@/public/assets/img/pricing-bg-circle.svg"
-import Blur from "@/public/assets/img/pricing-bg-blur.svg";
-import Wave1Mirrored from "@/public/assets/img/wave1_mirrored.svg"
-import Wave1 from "@/public/assets/img/wave1.svg"
-import Wave2 from "@/public/assets/img/wave2.svg"
+import Background from "@/public/images/pricing-bg-circle.svg"
+import Blur from "@/public/images/pricing-bg-blur.svg";
+import Wave1Mirrored from "@/public/images/wave1_mirrored.svg"
+import Wave1 from "@/public/images/wave1.svg"
+import Wave2 from "@/public/images/wave2.svg"
 import WhatCanYouDoPopup from "@/components/modals/WhatCanYouDoPopup";
 import Loading from "@/pages/pricing/laoding";
 import {Plan} from "@/interfaces/Plan";

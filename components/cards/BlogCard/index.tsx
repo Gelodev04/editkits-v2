@@ -43,5 +43,5 @@ export default function BlogCard({img, title, date, slug, category}) {
 }
 
 function BlogTag({category}) {
-  return <p className="font-alexandria absolute top-[36px] left-[10px] rounded-[2px] pt-[8px] pb-[8px] px-[19px] bg-[#148cfc] text-w text-[#fff]">{category}</p>
+  return <p className="font-alexandria absolute top-[36px] left-[10px] rounded-[2px] pt-[8px] pb-[8px] px-[19px] bg-[#465fff] text-w text-[#fff]">{category}</p>
 }

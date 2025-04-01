@@ -18,7 +18,7 @@ export default function Toggle(props: ToggleProps) {
           type="button"
           onClick={handleToggleChange}
           className={`relative inline-flex h-[18.5px] w-[42.32px] cursor-auto items-center rounded-full ${
-            enabled ? 'bg-[#273266]' : 'bg-gray-300'
+            enabled ? 'bg-[#1d2939]' : 'bg-gray-300'
           } transition-colors duration-300 focus:outline-none`}
         >
         <span

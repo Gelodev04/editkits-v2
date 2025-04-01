@@ -20,7 +20,6 @@ import StatCard from "@/components/cards/StatCard";
 
 import {router} from "next/client";
 import {IoMdRefresh} from "react-icons/io";
-import ButtonOld from "@/components/Button_Old";
 import Button from "@/components/Button";
 import {useSidebar} from "@/context/SidebarContext";
 
@@ -158,7 +157,9 @@ export default function JobStatus() {
         </div>
 
         <div className="relative flex items-center gap-5">
-          <Button variant="primary" children="New Job" onClick={() => router.push("/tools")}/>
+          <Button variant="primary" onClick={() => router.push("/tools")}>
+            <p>New Job</p>
+          </Button>
           <Button variant="outline">
             <IoMdRefresh size={20} onClick={() => refetchJobs()}/>
           </Button>

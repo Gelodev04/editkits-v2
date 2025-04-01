@@ -158,7 +158,7 @@ export default function JobStatus() {
         </div>
 
         <div className="relative flex items-center gap-5">
-          <ButtonOld variant="primary" label="New Job" onClick={() => router.push("/tools")}/>
+          <Button variant="primary" children="New Job" onClick={() => router.push("/tools")}/>
           <Button variant="outline">
             <IoMdRefresh size={20} onClick={() => refetchJobs()}/>
           </Button>

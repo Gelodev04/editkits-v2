@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 
 import Typography from "@/components/Typography";
-import LanguageSelector from "@/components/LanguageSelector";
 
 export default function Footer() {
 
@@ -20,10 +19,6 @@ export default function Footer() {
         </Link>
       </div>
       <div className="2xl:px-[32%] xl:px-[18%] lg:px-[12%]">
-        <p className="font-roboto font-normal text-[#2c2c2c] text-sm leading-[24px] text-center">
-          Lörem ipsum od ohet dilogi. Bell trabel, samuligt, ohöbel utom diska. Jinesade bel när feras redorade i
-          belogi. FAR paratyp i muvåning, och pesask vyfisat. Viktiga poddradio har un mad och inde.
-        </p>
         <Typography
           className="font-lato"
           center
@@ -37,7 +32,6 @@ export default function Footer() {
           <p className="font-openSans font-normal text-[13px] text-[#262628]">Privacy Policy</p>
           <p className="font-openSans font-normal text-[13px] text-[#262628]">Help</p>
         </div>
-        <LanguageSelector/>
       </div>
     </div>
   )

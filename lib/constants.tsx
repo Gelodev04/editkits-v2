@@ -33,8 +33,6 @@ import SearchIcon from "@/public/icons/search.svg";
 import ChatIcon from "@/public/icons/chat.svg";
 import SmileIcon from "@/public/icons/smile.svg";
 
-import {DollarLineIcon, ListIcon} from "@/icons";
-
 export const benefits = [
   "No Credit Card required",
   "Max 1 concurrent job",
@@ -175,7 +173,6 @@ export const featureCards = [
 export const stats = [
   {
     label: "Credits",
-    icon: DollarLineIcon,
     data: [
       {
         title: "Available",
@@ -193,7 +190,6 @@ export const stats = [
   },
   {
     label: "Job Status",
-    icon: ListIcon,
     data: [
       {
         title: "In progress",

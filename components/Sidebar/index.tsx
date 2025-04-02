@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
-import {ChevronDownIcon, GridIcon, HorizontaLDots, DollarLineIcon, ListIcon, MailIcon, HomeIcon} from "@/icons";
+import {ChevronDownIcon, GridIcon, HorizontaLDots, DollarLineIcon, ListIcon, MailIcon} from "@/icons";
 
 import Logo from "@/public/images/logo.svg"
 
@@ -24,12 +24,6 @@ const navItems: NavItem[] = [
       { name: "Job Status", path: "/dashboard/job-status" },
       { name: "Uploaded Files", path: "/dashboard/uploaded-files" },
     ],
-  },
-  {
-    icon: HomeIcon,
-    name: "Home",
-    path: "/home"
-
   },
   {
     icon: GridIcon,

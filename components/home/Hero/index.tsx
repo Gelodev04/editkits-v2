@@ -18,7 +18,7 @@ export default function Hero({setWaitlistModal}) {
             className="font-montserrat font-extrabold text-[40px] leading-[56px] tracking-[0.2px] text-[#2c2c2c]">Online
             Media Platform to</h1>
           <h1
-            className="font-montserrat font-extrabold text-[40px] leading-[56px] tracking-[0.2px] text-transparent bg-clip-text bg-gradient-to-r from-[#637EFF] to-[#465fff]">Edit,
+            className="font-montserrat font-extrabold text-[40px] leading-[56px] tracking-[0.2px] text-transparent bg-clip-text bg-gradient-to-r from-[#637EFF] to-[#148cfc]">Edit,
             Process & Automate</h1>
           <div className="w-[520px] pt-[3.5px] pb-[22px]">
             <Typography

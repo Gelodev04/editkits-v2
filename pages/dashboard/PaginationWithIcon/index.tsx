@@ -50,7 +50,7 @@ export default function PaginationWithIcon({
         onClick={() => handlePageChange(page)}
         className={`px-4 py-2 rounded ${
           currentPage === page
-            ? "bg-brand-500 text-white"
+            ? "bg-brand-500 dark:bg-[#273266] text-white"
             : "text-gray-700 dark:text-gray-400"
         } flex w-10 items-center justify-center h-10 rounded-lg text-sm font-medium hover:bg-blue-500/[0.08] hover:text-brand-500 dark:hover:text-brand-500`}
       >

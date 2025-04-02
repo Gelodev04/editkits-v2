@@ -58,7 +58,7 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
       </div>
       <div className="w-[281.26px]">
         <button
-          className="font-semibold pt-[13px] pb-[14px] font-lato text-[15px] w-full bg-[#e8f4ff] group-hover:text-white group-hover:bg-[#1d2939] text-[#465fff] rounded-full leading-[18px]">Choose
+          className="font-semibold pt-[13px] pb-[14px] font-lato text-[15px] w-full bg-[#e8f4ff] group-hover:text-white group-hover:bg-[#1d2939] text-[#148cfc] rounded-full leading-[18px]">Choose
           Plan
         </button>
       </div>

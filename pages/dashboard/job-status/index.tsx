@@ -11,6 +11,7 @@ import {
   AngleDownIcon,
   AngleUpIcon,
   ExpiredIcon,
+  WhiteExpiredIcon
 } from "@/icons";
 import Image from "next/image";
 import PaginationWithIcon from "../PaginationWithIcon";
@@ -110,11 +111,11 @@ export default function JobStatus() {
 
   return (
     <div
-      className={`${mainContentMargin} px-40 dark:bg-gray-900 my-10 transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
+      className={`${mainContentMargin} px-40 my-10 transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6">
         <StatCard stats={stats}/>
       </div>
-      <div className="bg-white rounded-xl p-5">
+      <div className="bg-white dark:bg-white/[0.03] rounded-xl p-5">
         <div
           className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
@@ -220,6 +221,13 @@ export default function JobStatus() {
                           height={40}
                           src={job.thumbnail_url === "EXPIRED" ? ExpiredIcon : job.thumbnail_url}
                           alt="user"
+                          className="dark:hidden"
+                        />
+                        <Image
+                          width={40}
+                          height={40}
+                          src={job.thumbnail_url === "EXPIRED" ? WhiteExpiredIcon : job.thumbnail_url}
+                          alt="user"
                         />
                       </div>
                     </div>
@@ -262,7 +270,7 @@ export default function JobStatus() {
                       ))
                       : (
                         <p
-                          className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{job.output_file_id.slice(0, 5)}...</p>
+                          className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">#{job.output_file_id.slice(0, 5)}...</p>
                       )}
                   </TableCell>
                 </TableRow>

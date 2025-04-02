@@ -51,6 +51,7 @@ import HorizontaLDots from "./horizontal-dots.svg";
 import ChatIcon from "./chat.svg";
 import MoreDotIcon from "./MoreDotIcon.svg";
 import ExpiredIcon from "./expired_icon.svg";
+import WhiteExpiredIcon from "./expired_icon_white.svg";
 import HomeIcon from "./home.svg"
 
 export {
@@ -107,5 +108,6 @@ export {
   ChatIcon,
   MoreDotIcon,
   ExpiredIcon,
-  HomeIcon
+  HomeIcon,
+  WhiteExpiredIcon
 };

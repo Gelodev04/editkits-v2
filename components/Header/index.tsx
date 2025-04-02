@@ -74,7 +74,7 @@ export default function Header() {
   return (
     <>
       <div
-        className={`transition-all duration-300 ease-in-out flex justify-between py-[22px] bg-white dark:bg-gray-900 dark:border-gray-800 w-full mx-auto ${!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && "2xl:pl-[253px]"} 2xl:pr-[24px]`}>
+        className={`transition-all duration-300 ease-in-out flex justify-between py-[22px] bg-white dark:bg-gray-900 dark:border-gray-800 w-full mx-auto ${!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && "2xl:pl-[253px]"} xsm:pr-[12px] lg:pr-[24px]`}>
         {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && (
           <>
             <Link href="/home">

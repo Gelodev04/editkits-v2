@@ -2,11 +2,19 @@ import React from "react";
 import Link from "next/link";
 
 import Typography from "@/components/Typography";
+import {useSidebar} from "@/context/SidebarContext";
 
 export default function Footer() {
+  const { isMobileOpen, isExpanded, isHovered } = useSidebar();
+  const mainContentMargin = isMobileOpen
+    ? "ml-0"
+    : isExpanded || isHovered
+      ? "lg:ml-[314px]"
+      : "lg:ml-[90px]";
+
 
   return (
-    <div className="bg-white dark:bg-gray-900 dark:border-gray-800 pt-10 bg-zinc-50 pb-5 px-8 z-[50]">
+    <div className={`${mainContentMargin} bg-white dark:bg-gray-900 dark:border-gray-800 pt-10 bg-zinc-50 pb-5 px-8 z-[50]`}>
       <div className="flex space-x-6 justify-center pb-8 max-w-[1920px] mx-auto">
         <Link href="/home">
           <p className="font-roboto font-normal text-sm text-[#000000]">Home</p>

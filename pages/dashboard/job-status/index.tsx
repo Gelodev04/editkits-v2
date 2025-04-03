@@ -198,7 +198,11 @@ export default function JobStatus() {
               <p>New Job</p>
             </Button>
             <Button variant="outline">
-              <IoMdRefresh size={20} onClick={() => refetchJobs()}/>
+              <IoMdRefresh size={20} onClick={() => {
+                refetchJobs()
+                setSelectedFilters([])
+                setDateRange({})
+              }}/>
             </Button>
           </div>
         </div>

@@ -27,6 +27,7 @@ import FilterModal from "@/components/modals/FilterModal";
 import DateFilterModal from "@/components/modals/DateFilterModal";
 import {RxCalendar} from "react-icons/rx";
 import {LuSettings2} from "react-icons/lu";
+import {AiOutlinePlus} from "react-icons/ai";
 
 type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
@@ -56,6 +57,7 @@ export default function JobStatus() {
     setFilters(selectedFilters)
     setFilterModal(false)
   }
+
 
   const filteredAndSortedData = useMemo(() => {
     return (jobs || [])
@@ -126,6 +128,9 @@ export default function JobStatus() {
       : "lg:ml-[90px]";
 
 
+  const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status))
+
+  console.log("filters", filters)
   return (
     <div
       className={`${mainContentMargin} px-40 my-10 transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
@@ -176,33 +181,27 @@ export default function JobStatus() {
           </div>
 
           <div className="relative flex items-center gap-5">
-            <div
-              onClick={() => setDateFilterModal(true)}
-              className={`flex justify-center items-center gap-2 ${(dateRange?.startDate || dateRange?.endDate) ? "bg-[#148cfc] text-white": "bg-white text-[#4f4f4f]"} border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 cursor-pointer`}>
-              <RxCalendar size={18} color={(dateRange?.startDate || dateRange?.endDate) ? "white": "#4f4f4f"} />
-
-              <p className="font-lato font-bold text-sm leading-[19.6px]">All Time</p>
-            </div>
-
-            <div
-              onClick={() => setFilterModal(true)}
-              className={`flex justify-center items-center gap-2 ${selectedFilters.length > 0 ? "bg-[#148cfc]": "bg-white text-[#4f4f4f]"} border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 cursor-pointer`}>
-              <LuSettings2
-                size={18}
-                color={selectedFilters.length > 0 ? "white": "#4f4f4f"}
-              />
-
-              <p className="font-lato font-bold text-sm leading-[19.6px]">Filters</p>
-            </div>
-            <Button variant="primary" onClick={() => router.push("/tools")}>
+            <Button variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
+                    onClick={() => setDateFilterModal(true)} children="All Time" startIcon={<RxCalendar size={18}
+                                                                                                        color={(dateRange?.startDate || dateRange?.endDate) ? "white" : "#4f4f4f"}/>}/>
+            <Button variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
+                    children="Filters"
+                    startIcon={<LuSettings2 size={18} color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>}/>
+            <Button startIcon={<AiOutlinePlus size={18}/>} variant="primary" onClick={() => router.push("/tools")}>
               <p>New Job</p>
             </Button>
-            <Button variant="outline">
-              <IoMdRefresh size={20} onClick={() => {
-                refetchJobs()
+            <Button
+              variant="outline"
+              onClick={() => {
                 setSelectedFilters([])
+                setFilters([])
+                refetchJobs()
                 setDateRange({})
-              }}/>
+              }}
+            >
+              <IoMdRefresh
+                size={20}
+              />
             </Button>
           </div>
         </div>
@@ -224,7 +223,8 @@ export default function JobStatus() {
                       <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                         {name}
                       </p>
-                      <button className={name === "Thumbnail" ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
+                      <button
+                        className={name === "Thumbnail" ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
                         <svg
                           width="8"
                           height="5"
@@ -256,7 +256,7 @@ export default function JobStatus() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {currentData?.map((job, i) => (
+              {data?.map((job, i) => (
                 <TableRow key={i + 1}>
                   <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
                     <div className="flex items-center gap-3">

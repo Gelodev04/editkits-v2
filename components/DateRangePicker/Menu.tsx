@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 import React from 'react';
-import { Divider, Grid, Paper, Typography } from '@mui/material';
+import { Divider, Grid, Typography } from '@mui/material';
 import {differenceInCalendarMonths, format} from 'date-fns';
 //@ts-ignore
 import {BsArrowRight} from "react-icons/bs";
@@ -14,7 +14,7 @@ import {
 } from './types';
 import { MARKERS } from './Markers';
 import {TbXboxX} from "react-icons/tb";
-import ButtonOld from "@/components/Button_Old";
+import Button from "@/components/Button";
 
 interface MenuProps {
   dateRange: DateRange;
@@ -66,11 +66,8 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
     dateRange, minDate, maxDate, helpers, handlers,
   };
   return (
-    <Paper elevation={5} square className="rounded-3xl pt-10 px-8 relative">
-      <div className="absolute right-[14px] top-[14px] cursor-pointer">
-        <TbXboxX size={30} color="#000" onClick={toggle} />
-      </div>
-      <Grid className="border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]" container direction="row" wrap="nowrap">
+    <div className="rounded-3xl pt-20 px-8 relative border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800">
+      <Grid className="border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800" container direction="row" wrap="nowrap">
         <Grid>
           <DefinedRanges
             selectedRange={dateRange}
@@ -80,17 +77,18 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
         </Grid>
         <Divider orientation="vertical" flexItem/>
         <Grid>
-          <Grid className="" container sx={{ padding: '20px 70px' }} alignItems="center">
+          <Grid container sx={{ padding: '20px 70px' }} alignItems="center">
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
-              <Typography variant="subtitle1">
+              <Typography variant="subtitle1" className="text-[#1d2939] dark:text-white">
                 {startDate ? format(startDate, 'dd MMMM yyyy', {locale}) : 'Start Date'}
               </Typography>
             </Grid>
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
-              <BsArrowRight color="action" />
+              <BsArrowRight className="" color="white" />
+              <BsArrowRight className="dark:hidden" color="#1d2939" />
             </Grid>
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
-              <Typography variant="subtitle1">
+              <Typography variant="subtitle1" className="text-[#1d2939] dark:text-white">
                 {endDate ? format(endDate, 'dd MMMM yyyy', {locale}) : 'End Date'}
               </Typography>
             </Grid>
@@ -118,14 +116,12 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
         </Grid>
       </Grid>
       <div className="flex justify-center py-[34px]">
-        <ButtonOld
-          variant="primary"
-          filled
-          label="Apply"
+        <Button
+          children="Apply"
           onClick={toggle}
         />
       </div>
-    </Paper>
+    </div>
   );
 };
 

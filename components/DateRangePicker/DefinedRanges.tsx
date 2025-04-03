@@ -40,6 +40,7 @@ const DefinedRanges: React.FunctionComponent<DefinedRangesProps> = ({
                   }]}
       >
         <ListItemText
+          className="text-[#1d2939] dark:text-white"
           primaryTypographyProps={{
             variant: 'body2',
             sx: {

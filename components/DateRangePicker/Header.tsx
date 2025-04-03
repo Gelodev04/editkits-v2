@@ -56,41 +56,84 @@ const Header: React.FunctionComponent<HeaderProps> = ({
           onClick={onClickPrevious}
           // size="large"
         >
-          <BiChevronLeft color={prevDisabled ? 'disabled' : 'action'} />
+          <BiChevronLeft color="white" />
+          <BiChevronLeft className="dark:hidden" color="#1d2939" />
         </IconButton>
       </Grid>
       <Grid item>
-        <FormControl variant="standard">
-          <Select
-            value={getMonth(date)}
-            onChange={handleMonthChange}
-            MenuProps={{disablePortal: true}}
-          >
-            {MONTHS.map((month, idx) => (
-              <MenuItem key={month} value={idx}>
-                {month}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <div className="dark:hidden">
+          <FormControl variant="standard">
+            <Select
+              disableUnderline
+              IconComponent={null}
+              value={getMonth(date)}
+              onChange={handleMonthChange}
+              MenuProps={{disablePortal: true}}
+            >
+              {MONTHS.map((month, idx) => (
+                <MenuItem key={month} value={idx}>
+                  {month}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+        <div className="hidden dark:block">
+          <FormControl variant="standard">
+            <Select
+              sx={{color: "white"}}
+              disableUnderline
+              IconComponent={null}
+              value={getMonth(date)}
+              onChange={handleMonthChange}
+              MenuProps={{disablePortal: true}}
+            >
+              {MONTHS.map((month, idx) => (
+                <MenuItem key={month} value={idx}>
+                  {month}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
       </Grid>
 
       <Grid item>
-        <FormControl variant="standard">
-          <Select
-            value={getYear(date)}
-            onChange={handleYearChange}
-            MenuProps={{ disablePortal: true }}
-          >
-            {generateYears(date, 30).map((year) => (
-              <MenuItem key={year} value={year}>
-                {year}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {/* <Typography>{format(date, "MMMM YYYY")}</Typography> */}
+        <div className="hidden dark:block">
+          <FormControl variant="standard">
+            <Select
+              sx={{color: "white"}}
+              disableUnderline
+              IconComponent={null}
+              value={getYear(date)}
+              onChange={handleYearChange}
+              MenuProps={{ disablePortal: true }}
+            >
+              {generateYears(date, 30).map((year) => (
+                <MenuItem key={year} value={year}>
+                  {year}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+        <div className="dark:hidden">
+          <FormControl variant="standard">
+            <Select
+              disableUnderline
+              IconComponent={null}
+              value={getYear(date)}
+              onChange={handleYearChange}
+              MenuProps={{ disablePortal: true }}
+            >
+              {generateYears(date, 30).map((year) => (
+                <MenuItem key={year} value={year}>
+                  {year}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
       </Grid>
       <Grid item sx={{ padding: '5px' }}>
         <IconButton
@@ -104,7 +147,8 @@ const Header: React.FunctionComponent<HeaderProps> = ({
           onClick={onClickNext}
           // size="large"
         >
-          <BiChevronRight color={nextDisabled ? 'disabled' : 'action'} />
+          <BiChevronRight color="white" />
+          <BiChevronRight  className="dark:hidden" color="#1d2939" />
         </IconButton>
       </Grid>
     </Grid>

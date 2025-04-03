@@ -1,10 +1,8 @@
 import {SetStateAction, useState} from "react";
-
-import {Fade, Modal} from "@mui/material";
-
+import {Fade} from "@mui/material";
 import {lato, montserrat, opensans} from "@/lib/fonts";
-
 import DateRangePicker from "@/components/DateRangePicker";
+import {Modal} from "@/components/Modal";
 
 type DateFilterModalProps = {
   open: boolean;
@@ -13,30 +11,24 @@ type DateFilterModalProps = {
 }
 
 export default function DateFilterModal(props: DateFilterModalProps) {
-  const [range, setRange] = useState()
+  const [range, setRange] = useState();
 
   return (
-    <Modal open={props.open} onClose={() => props.setOpen(false)}>
-      <Fade in={props.open}>
-        <div>
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
-          <div
-            className="fixed flex inset-0 z-10 w-screen overflow-y-auto flex min-h-full justify-center text-center items-center rounded-[8px]"
-          >
-            <DateRangePicker
-              //@ts-ignore
-              wrapperClassName={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden bg-white text-left shadow-xl transition-all`}
-              toggle={() => {
-                props.setOpen(false)
-                //@ts-ignore
-                props.setDateRange(range)
-              }}
-              open={props.open}
-              onChange={(range: any) => setRange(range)}
-            />
-          </div>
-        </div>
-      </Fade>
+    <Modal isOpen={props.open} onClose={() => props.setOpen(false)} className="max-w-[756px]">
+      <div
+        className="relative  flex inset-0 z-10 overflow-y-auto flex min-h-full justify-center text-center items-center rounded-[8px]"
+      >
+        <DateRangePicker
+          //@ts-ignore
+          toggle={() => {
+            props.setOpen(false);
+            //@ts-ignore
+            props.setDateRange(range);
+          }}
+          open={props.open}
+          onChange={(range: any) => setRange(range)}
+        />
+      </div>
     </Modal>
-  )
+  );
 }

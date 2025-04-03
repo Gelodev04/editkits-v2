@@ -15,7 +15,6 @@ import Logo from "@/public/images/logo.svg"
 import {useSidebar} from "@/context/SidebarContext";
 import ButtonOld from "@/components/Button_Old";
 import {ThemeToggleButton} from "@/components/common/ThemeToggleButton";
-import NotificationDropdown from "@/components/NotificationDropdown";
 import UserDropdown from "@/components/UserDropdown";
 
 export default function Header() {
@@ -156,8 +155,6 @@ export default function Header() {
             >
               <div className="flex items-center gap-2 2xsm:gap-3">
                 <ThemeToggleButton/>
-
-                <NotificationDropdown/>
               </div>
               <UserDropdown handleLogout={handleLogout}/>
             </div>
@@ -226,8 +223,6 @@ export default function Header() {
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
             <ThemeToggleButton/>
-
-            <NotificationDropdown/>
           </div>
           <UserDropdown handleLogout={handleLogout}/>
         </div>

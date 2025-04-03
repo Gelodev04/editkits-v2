@@ -70,7 +70,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
       <div className="absolute right-[14px] top-[14px] cursor-pointer">
         <TbXboxX size={30} color="#000" onClick={toggle} />
       </div>
-      <Grid container direction="row" wrap="nowrap">
+      <Grid className="border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]" container direction="row" wrap="nowrap">
         <Grid>
           <DefinedRanges
             selectedRange={dateRange}
@@ -80,7 +80,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
         </Grid>
         <Divider orientation="vertical" flexItem/>
         <Grid>
-          <Grid container sx={{ padding: '20px 70px' }} alignItems="center">
+          <Grid className="" container sx={{ padding: '20px 70px' }} alignItems="center">
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
               <Typography variant="subtitle1">
                 {startDate ? format(startDate, 'dd MMMM yyyy', {locale}) : 'Start Date'}

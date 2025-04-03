@@ -21,13 +21,19 @@ import {router} from "next/client";
 import {IoMdRefresh} from "react-icons/io";
 import Button from "@/components/Button";
 import {useSidebar} from "@/context/SidebarContext";
+import ComponentCard from "@/components/ComponentCard";
+import {truncateFileName} from "@/lib/utils";
+import FilterModal from "@/components/modals/FilterModal";
+import DateFilterModal from "@/components/modals/DateFilterModal";
+import {RxCalendar} from "react-icons/rx";
+import {LuSettings2} from "react-icons/lu";
 
 type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
   //@ts-ignore
-  const dateRange = {};
+  const [dateRange, setDateRange] = useState({})
   const {isMobileOpen, isHovered, isExpanded} = useSidebar()
   const {data: jobs, refetch: refetchJobs} = useGetJobsQuery({
     //@ts-ignore
@@ -38,6 +44,18 @@ export default function JobStatus() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+
+  const [dateFilterModal, setDateFilterModal] = useState(false);
+  const [filterModal, setFilterModal] = useState(false);
+
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filters, setFilters] = useState([]);
+
+
+  function applyFilter() {
+    setFilters(selectedFilters)
+    setFilterModal(false)
+  }
 
   const filteredAndSortedData = useMemo(() => {
     return (jobs || [])
@@ -107,15 +125,16 @@ export default function JobStatus() {
       ? "lg:ml-[330px]"
       : "lg:ml-[90px]";
 
+
   return (
     <div
       className={`${mainContentMargin} px-40 my-10 transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6">
         <StatCard stats={stats}/>
       </div>
-      <div className="bg-white dark:bg-white/[0.03] rounded-xl p-5">
+      <ComponentCard title="Job Status">
         <div
-          className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
+          className="flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <span className="text-gray-500 dark:text-gray-400"> Show </span>
             <div className="relative z-20 bg-transparent">
@@ -157,6 +176,24 @@ export default function JobStatus() {
           </div>
 
           <div className="relative flex items-center gap-5">
+            <div
+              onClick={() => setDateFilterModal(true)}
+              className={`flex justify-center items-center gap-2 ${(dateRange?.startDate || dateRange?.endDate) ? "bg-[#148cfc] text-white": "bg-white text-[#4f4f4f]"} border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 cursor-pointer`}>
+              <RxCalendar size={18} color={(dateRange?.startDate || dateRange?.endDate) ? "white": "#4f4f4f"} />
+
+              <p className="font-lato font-bold text-sm leading-[19.6px]">All Time</p>
+            </div>
+
+            <div
+              onClick={() => setFilterModal(true)}
+              className={`flex justify-center items-center gap-2 ${selectedFilters.length > 0 ? "bg-[#148cfc]": "bg-white text-[#4f4f4f]"} border border-1 border-[#e1e1e1] shadow-sm rounded-lg px-4 py-2 col-span-3 cursor-pointer`}>
+              <LuSettings2
+                size={18}
+                color={selectedFilters.length > 0 ? "white": "#4f4f4f"}
+              />
+
+              <p className="font-lato font-bold text-sm leading-[19.6px]">Filters</p>
+            </div>
             <Button variant="primary" onClick={() => router.push("/tools")}>
               <p>New Job</p>
             </Button>
@@ -168,7 +205,7 @@ export default function JobStatus() {
 
         <div className="max-w-full overflow-x-auto custom-scrollbar">
           <Table>
-            <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
+            <TableHeader className="border-gray-100 dark:border-white/[0.05]">
               <TableRow>
                 {jobStatusColumns?.map(({name}) => (
                   <TableCell
@@ -183,7 +220,7 @@ export default function JobStatus() {
                       <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                         {name}
                       </p>
-                      <button className={!name ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
+                      <button className={name === "Thumbnail" ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
                         <svg
                           width="8"
                           height="5"
@@ -238,11 +275,11 @@ export default function JobStatus() {
                   </TableCell>
                   <TableCell
                     className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                    {job.input_file_id}
+                    #{job.input_file_id}
                   </TableCell>
                   <TableCell
                     className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                    {job.input_file_name}
+                    {truncateFileName(job.input_file_name)}
                   </TableCell>
                   <TableCell
                     className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
@@ -282,9 +319,10 @@ export default function JobStatus() {
             </TableBody>
           </Table>
         </div>
-      </div>
+      </ComponentCard>
 
-      <div className="border bg-white dark:bg-white/[0.03] mt-5 p-2 rounded-xl border-t-0 rounded-b-xl border-gray-100 py-4 pl-[18px] pr-4 dark:border-white/[0.05]">
+      <div
+        className="border bg-white dark:bg-white/[0.03] mt-5 p-2 rounded-xl border-t-0 rounded-b-xl border-gray-100 py-4 pl-[18px] pr-4 dark:border-white/[0.05]">
         <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between">
           <div className="pb-3 xl:pb-0">
             <p
@@ -299,6 +337,21 @@ export default function JobStatus() {
           />
         </div>
       </div>
+      <DateFilterModal
+        open={dateFilterModal}
+        setOpen={setDateFilterModal}
+        setDateRange={setDateRange}
+      />
+      <FilterModal
+        open={filterModal}
+        setOpen={setFilterModal}
+        title="Filters"
+        description="Status"
+        selected={selectedFilters}
+        //@ts-ignore
+        setSelected={setSelectedFilters}
+        onClick={applyFilter}
+      />
     </div>
   );
 }

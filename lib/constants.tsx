@@ -208,7 +208,9 @@ export const stats = [
 ]
 
 export const jobStatusColumns: { name?: string }[] = [
-  {},
+  {
+    name: "Thumbnail"
+  },
   {
     name: "Input File(s)"
   },

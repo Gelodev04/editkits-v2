@@ -23,3 +23,15 @@ export async function refreshAccessToken(refreshToken, handleLogout) {
 export function convertToNoCookieUrl(url) {
   return url.replace("www.youtube.com/watch?v=", "www.youtube-nocookie.com/embed/");
 }
+
+export function truncateFileName(fileName) {
+  if (!fileName) return '';
+
+  const maxLength = 15;
+  const namePart = fileName.slice(0, maxLength);
+  const extension = fileName.split('.').pop();  // Safer way to extract file extension
+
+  return fileName.length > maxLength
+    ? `${namePart}...${extension}`
+    : namePart;
+};

@@ -27,6 +27,7 @@ const Day: React.FunctionComponent<DayProps> = ({
 
   return (
     <Box
+      className="bg-white dark:border-gray-800 dark:bg-white/[0.03]"
       sx={{
         display: 'flex',
         // eslint-disable-next-line no-nested-ternary
@@ -55,11 +56,12 @@ const Day: React.FunctionComponent<DayProps> = ({
         <Typography
           sx={{
             lineHeight: 1.6,
-            color: (theme) => !disabled
-              ? (filled ? theme.palette.primary.contrastText : theme.palette.text.primary)
-              : theme.palette.text.secondary,
+            // color: (theme) => !disabled
+            //   ? (filled ? theme.palette.primary.contrastText : theme.palette.text.primary)
+            //   : theme.palette.text.secondary,
           }}
           variant="body2"
+          className="dark:text-white/90"
         >
           {value}
         </Typography>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Grid, Typography } from "@mui/material";
+import {Grid, Typography } from "@mui/material";
 import {
   getDate, isSameMonth, isToday, format, isWithinInterval
 } from "date-fns";
@@ -56,8 +56,8 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
   const [back, forward] = props.navState;
 
   return (
-    <Paper square elevation={0} sx={{ width: 290 }}>
-      <Grid container>
+    <div style={{ width: 290 }}>
+      <div className="bg-white dark:border-gray-800 dark:bg-gray-800">
         <Header
           date={date}
           setDate={setDate}
@@ -80,18 +80,15 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
           }}
         >
           {WEEK_DAYS.map((day, index) => (
-            <Typography color="textSecondary" key={index} variant="caption">
+            <Typography className="text-[#1d2939] dark:text-white/90" key={index} variant="caption">
               {day}
             </Typography>
           ))}
         </Grid>
 
-        <Grid
-          item
-          container
-          direction="column"
-          justifyContent="space-between"
-          sx={{
+        <div
+          className="bg-white dark:border-gray-800 dark:bg-gray-800 flex flex-col items-center justify-center"
+          style={{
             paddingLeft: '15px',
             paddingRight: '15px',
             marginTop: '15px',
@@ -99,7 +96,7 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
           }}
         >
           {chunks(getDaysInMonth(date, locale), 7).map((week, idx) => (
-            <Grid key={idx} container direction="row" justifyContent="center">
+            <Grid className="bg-white dark:border-gray-800 dark:bg-gray-800" key={idx} container direction="row" justifyContent="center">
               {week.map((day) => {
                 const isStart = isStartOfRange(dateRange, day);
                 const isEnd = isEndOfRange(dateRange, day);
@@ -126,9 +123,9 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
               })}
             </Grid>
           ))}
-        </Grid>
-      </Grid>
-    </Paper>
+        </div>
+      </div>
+    </div>
   );
 };
 

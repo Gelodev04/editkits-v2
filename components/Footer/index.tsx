@@ -33,12 +33,12 @@ export default function Footer() {
         />
       </div>
       <div className="grid grid-cols-3 place-items-center w-full pt-10 max-w-[1920px] mx-auto">
-        <p className="font-openSans font-normal text-[13px] text-[#2c2c28] leading-[17px] dark:text-white">© 2025 Edikits. All rights
+        <p className="font-openSans font-normal text-[13px] text-[#2c2c28] leading-[17px] dark:text-white/90">© 2025 Edikits. All rights
           reserved</p>
         <div className="flex space-x-6 justify-center">
-          <p className="font-openSans font-normal text-[13px] text-[#262628] dark:text-white">Terms of Use</p>
-          <p className="font-openSans font-normal text-[13px] text-[#262628] dark:text-white">Privacy Policy</p>
-          <p className="font-openSans font-normal text-[13px] text-[#262628] dark:text-white">Help</p>
+          <p className="font-openSans font-normal text-[13px] text-[#262628] dark:text-white/90">Terms of Use</p>
+          <p className="font-openSans font-normal text-[13px] text-[#262628] dark:text-white/90">Privacy Policy</p>
+          <p className="font-openSans font-normal text-[13px] text-[#262628] dark:text-white/90">Help</p>
         </div>
       </div>
     </div>

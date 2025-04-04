@@ -5,9 +5,11 @@ import Image from "next/image";
 
 import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
-import {ChevronDownIcon, HorizontaLDots} from "@/icons";
+import {ChevronDownIcon, ChevronDownIconWhite} from "@/icons";
 
 import Logo from "@/public/images/logo.svg"
+import LogoWhite from "@/public/images/logo_white.svg"
+import {PiDotsThreeOutlineBold} from "react-icons/pi";
 
 type NavItem = {
   name: string;
@@ -141,16 +143,28 @@ const Sidebar: React.FC = () => {
                 <span className={`menu-item-text`}>{nav.name}</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
-                <Image
-                  src={ChevronDownIcon}
-                  className={`ml-auto w-5 h-5 transition-transform duration-200  ${
-                    openSubmenu?.type === menuType &&
-                    openSubmenu?.index === index
-                      ? "rotate-180 text-brand-500"
-                      : ""
-                  }`}
-                  alt="down icon"
-                />
+                <>
+                  <Image
+                    src={ChevronDownIcon}
+                    className={`dark:hidden ml-auto w-5 h-5 transition-transform duration-200  ${
+                      openSubmenu?.type === menuType &&
+                      openSubmenu?.index === index
+                        ? "rotate-180 text-brand-500"
+                        : ""
+                    }`}
+                    alt="down icon"
+                  />
+                  <Image
+                    src={ChevronDownIconWhite}
+                    className={`hidden dark:block ml-auto w-5 h-5 transition-transform duration-200  ${
+                      openSubmenu?.type === menuType &&
+                      openSubmenu?.index === index
+                        ? "rotate-180 text-brand-500"
+                        : ""
+                    }`}
+                    alt="down icon"
+                  />
+                </>
               )}
             </button>
           ) : (
@@ -168,9 +182,6 @@ const Sidebar: React.FC = () => {
                       : "menu-item-icon-inactive"
                   }`}
                 >
-                  {/*@ts-ignore*/}
-                  {/*<Image src={nav.icon} alt={nav.name}/>*/}
-                  {/*  <img src={nav.icon} alt=""/>*/}
                   {nav.icon}
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
@@ -334,19 +345,29 @@ const Sidebar: React.FC = () => {
               />
               <Image
                 className="hidden dark:block"
-                src={Logo}
+                src={LogoWhite}
                 alt="Logo"
                 width={150}
                 height={40}
               />
             </>
           ) : (
-            <Image
-              src={Logo}
-              alt="Logo"
-              width={100}
-              height={100}
-            />
+            <>
+              <Image
+                className="dark:hidden"
+                src={Logo}
+                alt="Logo"
+                width={100}
+                height={100}
+              />
+              <Image
+                className="hidden dark:block"
+                src={LogoWhite}
+                alt="Logo"
+                width={100}
+                height={100}
+              />
+            </>
           )}
         </Link>
       </div>
@@ -362,10 +383,9 @@ const Sidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
-                ) : (
-                  <Image src={HorizontaLDots} alt="dots icon"/>
-                )}
+                  <p className="dark:text-white/90">Menu</p>
+                ) :<PiDotsThreeOutlineBold />
+                }
               </h2>
               {renderMenuItems(navItems, "main")}
             </div>

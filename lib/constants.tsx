@@ -208,7 +208,9 @@ export const stats = [
 ]
 
 export const jobStatusColumns: { name?: string }[] = [
-  {},
+  {
+    name: "Thumbnail"
+  },
   {
     name: "Input File(s)"
   },
@@ -230,6 +232,7 @@ export const jobStatusColumns: { name?: string }[] = [
   {
     name: "Output File"
   },
+  {}
 ]
 export const uploadedFilesColumns = [
   {
@@ -252,9 +255,6 @@ export const uploadedFilesColumns = [
   },
   {
     name: "Expires At"
-  },
-  {
-    name: ""
   }]
 
 

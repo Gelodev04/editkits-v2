@@ -145,11 +145,11 @@ export default function JobStatus() {
   return (
     <>
       <div
-        className={`${mainContentMargin} min-h-[100vh] my-10 transition-all min-w-[1486px] duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6">
+        className={`${mainContentMargin} min-h-[100vh] my-10 transition-all  duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6 max-w-[1488px] mx-auto">
           <StatCard stats={stats}/>
         </div>
-        <ComponentCard title="Job Status">
+        <ComponentCard title="Job Status" className="max-w-[1488px] mx-auto">
           <div
             className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
@@ -379,7 +379,7 @@ export default function JobStatus() {
         </ComponentCard>
 
         <div
-          className="border bg-white dark:bg-white/[0.03] mt-5 p-2 rounded-xl border-t-0 rounded-b-xl border-gray-100 py-4 pl-[18px] pr-4 dark:border-white/[0.05]">
+          className="max-w-[1488px] mx-auto border bg-white dark:bg-white/[0.03] mt-5 p-2 rounded-xl border-t-0 rounded-b-xl border-gray-100 py-4 pl-[18px] pr-4 dark:border-white/[0.05]">
           <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between">
             <div className="pb-3 xl:pb-0">
               <p

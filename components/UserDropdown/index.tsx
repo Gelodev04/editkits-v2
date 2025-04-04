@@ -50,7 +50,7 @@ export default function UserDropdown(props) {
       >
         <div>
           <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-           {userInfo?.name}
+           {userInfo?.email}
           </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
             {userInfo?.email}

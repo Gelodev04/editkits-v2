@@ -145,11 +145,11 @@ const Sidebar: React.FC = () => {
               {(isExpanded || isHovered || isMobileOpen) && (
                 <>
                   <Image
-                    src={ChevronDownIcon}
+                    src={ChevronDownIconWhite}
                     className={`dark:hidden ml-auto w-5 h-5 transition-transform duration-200  ${
                       openSubmenu?.type === menuType &&
                       openSubmenu?.index === index
-                        ? "rotate-180 text-brand-500"
+                        ? "rotate-180 text-[#148cfc"
                         : ""
                     }`}
                     alt="down icon"
@@ -159,7 +159,7 @@ const Sidebar: React.FC = () => {
                     className={`hidden dark:block ml-auto w-5 h-5 transition-transform duration-200  ${
                       openSubmenu?.type === menuType &&
                       openSubmenu?.index === index
-                        ? "rotate-180 text-brand-500"
+                        ? "rotate-180 text-[#148cfc"
                         : ""
                     }`}
                     alt="down icon"

@@ -176,7 +176,7 @@ export default function JobStatus() {
                     <RxCalendar className="hidden dark:block" size={18}
                                 color="white"/>
                   </>
-                )}/>
+                )}>All Time</Button>
               <Button
                 variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
                 children="Filters"
@@ -186,7 +186,7 @@ export default function JobStatus() {
                     <LuSettings2 className="hidden dark:block" size={18} color={"white"}/>
                   </>
                 )}
-              />
+              >Filters</Button>
               <Button startIcon={<AiOutlinePlus size={18}/>} variant="primary" onClick={() => router.push("/tools")}>
                 <p>New Job</p>
               </Button>

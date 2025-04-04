@@ -13,7 +13,6 @@ import {
   NavigationAction,
 } from './types';
 import { MARKERS } from './Markers';
-import {TbXboxX} from "react-icons/tb";
 import Button from "@/components/Button";
 
 interface MenuProps {
@@ -117,9 +116,8 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
       </Grid>
       <div className="flex justify-center py-[34px]">
         <Button
-          children="Apply"
           onClick={toggle}
-        />
+        >Apply</Button>
       </div>
     </div>
   );

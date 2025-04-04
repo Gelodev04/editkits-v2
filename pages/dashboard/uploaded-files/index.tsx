@@ -15,18 +15,33 @@ import PaginationWithIcon from "../PaginationWithIcon";
 import {uploadedFilesColumns} from "@/lib/constants";
 import {useGetRecentFilesQuery} from "@/services/api/file";
 import {useSidebar} from "@/context/SidebarContext";
+import Button from "@/components/Button";
+import {RxCalendar} from "react-icons/rx";
+import {LuSettings2} from "react-icons/lu";
+import {AiOutlinePlus} from "react-icons/ai";
+import {router} from "next/client";
+import {IoMdRefresh} from "react-icons/io";
+import DateFilterModal from "@/components/modals/DateFilterModal";
+import FilterModal from "@/components/modals/FilterModal";
 
 type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
-  const {data: recentFiles} = useGetRecentFilesQuery({});
+  const {data: recentFiles, refetch: refetchRecentFiles} = useGetRecentFilesQuery({});
   const {isMobileOpen, isExpanded, isHovered} = useSidebar();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+
+  const [dateRange, setDateRange] = useState({})
+  const [dateFilterModal, setDateFilterModal] = useState(false);
+  const [filterModal, setFilterModal] = useState(false);
+
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filters, setFilters] = useState([]);
 
   const filteredAndSortedData = useMemo(() => {
     return (recentFiles || [])
@@ -79,6 +94,11 @@ export default function JobStatus() {
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
   const currentData = filteredAndSortedData?.slice(startIndex, endIndex);
 
+  function applyFilter() {
+    setFilters(selectedFilters)
+    setFilterModal(false)
+  }
+
   function statusMapper(status) {
     switch (status) {
       case "COMPLETED":
@@ -96,6 +116,7 @@ export default function JobStatus() {
       ? "lg:ml-[330px] lg:mr-10"
       : "lg:ml-[90px]";
 
+  const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
 
   return (
     <div className="flex justify-center">
@@ -142,6 +163,46 @@ export default function JobStatus() {
                 </span>
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
+            </div>
+            <div className="relative flex items-center gap-5">
+              <Button
+                variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
+                onClick={() => setDateFilterModal(true)}
+                children="All Time"
+                startIcon={(
+                  <>
+                    <RxCalendar className="dark:hidden" size={18}
+                                color={(dateRange?.startDate || dateRange?.endDate) ? "white" : "#4f4f4f"}/>
+                    <RxCalendar className="hidden dark:block" size={18}
+                                color="white"/>
+                  </>
+                )}/>
+              <Button
+                variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
+                children="Filters"
+                startIcon={(
+                  <>
+                    <LuSettings2 className="dark:hidden" size={18} color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>
+                    <LuSettings2 className="hidden dark:block" size={18} color={"white"}/>
+                  </>
+                )}
+              />
+              <Button startIcon={<AiOutlinePlus size={18}/>} variant="primary" onClick={() => router.push("/tools")}>
+                <p>New Job</p>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSelectedFilters([])
+                  setFilters([])
+                  refetchRecentFiles()
+                  setDateRange({})
+                }}
+              >
+                <IoMdRefresh
+                  size={20}
+                />
+              </Button>
             </div>
           </div>
           <div className="overflow-x-auto custom-scrollbar">
@@ -195,7 +256,7 @@ export default function JobStatus() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {currentData?.map((job, i) => (
+                  {data?.map((job, i) => (
                     <TableRow key={i + 1}>
                       <TableCell
                         className="px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
@@ -276,6 +337,21 @@ export default function JobStatus() {
           </div>
         </div>
       </div>
+      <DateFilterModal
+        open={dateFilterModal}
+        setOpen={setDateFilterModal}
+        setDateRange={setDateRange}
+      />
+      <FilterModal
+        open={filterModal}
+        setOpen={setFilterModal}
+        title="Filters"
+        description="Status"
+        selected={selectedFilters}
+        //@ts-ignore
+        setSelected={setSelectedFilters}
+        onClick={applyFilter}
+      />
     </div>
   );
 }

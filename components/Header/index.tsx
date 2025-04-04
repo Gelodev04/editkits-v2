@@ -73,7 +73,7 @@ export default function Header() {
   return (
     <>
       <div
-        className={`transition-all duration-300 ease-in-out flex justify-between py-[22px] bg-white dark:bg-gray-900 dark:border-gray-800 w-full mx-auto ${!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && "2xl:pl-[253px]"} xsm:pr-[12px] lg:pr-[24px]`}>
+        className={`transition-all items-center duration-300 ease-in-out py-[16px] flex justify-between bg-white dark:bg-gray-900 dark:border-gray-800 w-full mx-auto ${!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && "2xl:pl-[253px]"} xsm:pr-[12px] lg:pr-[24px]`}>
         {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && (
           <>
             <Link href="/home">
@@ -151,7 +151,7 @@ export default function Header() {
           {userInfo && (
             <div
               className={`${
-                isApplicationMenuOpen ? "flex" : "hidden" } xsm:hidden items-center justify-between gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
+                isApplicationMenuOpen ? "flex" : "hidden" } xsm:hidden items-center justify-between gap-4 px-5 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
             >
               <div className="flex items-center gap-2 2xsm:gap-3">
                 <ThemeToggleButton/>

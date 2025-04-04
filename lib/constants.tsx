@@ -232,6 +232,7 @@ export const jobStatusColumns: { name?: string }[] = [
   {
     name: "Output File"
   },
+  {}
 ]
 export const uploadedFilesColumns = [
   {

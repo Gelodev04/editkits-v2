@@ -1,4 +1,4 @@
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import {
   Table,
   TableBody,
@@ -8,9 +8,7 @@ import {
 } from "@/components/Table";
 import Badge from '@/components/Badge'
 import {
-  ExpiredIcon,
-  WhiteExpiredIcon
-} from "@/icons";
+  ExpiredIcon, WhiteExpiredIcon} from "@/icons";
 import Image from "next/image";
 import PaginationWithIcon from "../PaginationWithIcon";
 import {useGetJobsQuery} from "@/services/api/job";
@@ -19,6 +17,7 @@ import StatCard from "@/components/cards/StatCard";
 
 import {router} from "next/client";
 import {IoMdRefresh} from "react-icons/io";
+import { IoDownloadOutline } from "react-icons/io5";
 import Button from "@/components/Button";
 import {useSidebar} from "@/context/SidebarContext";
 import ComponentCard from "@/components/ComponentCard";
@@ -26,8 +25,11 @@ import {truncateFileName} from "@/lib/utils";
 import FilterModal from "@/components/modals/FilterModal";
 import DateFilterModal from "@/components/modals/DateFilterModal";
 import {RxCalendar} from "react-icons/rx";
-import {LuSettings2} from "react-icons/lu";
+import {LuCirclePlay, LuSettings2} from "react-icons/lu";
 import {AiOutlinePlus} from "react-icons/ai";
+import {IoCopyOutline} from "react-icons/io5";
+import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
+import {usePreviewVideoQuery} from "@/services/api/file";
 
 type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
@@ -41,6 +43,7 @@ export default function JobStatus() {
     from_ts: new Date(dateRange?.startDate / 1000).getTime(), to_ts: new Date(dateRange?.endDate / 1000).getTime()
   });
 
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
@@ -51,6 +54,16 @@ export default function JobStatus() {
 
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filters, setFilters] = useState([]);
+
+  const [fileId, setFileId] = useState(null);
+  const [videoPreviewModal, setVideoPreviewModal] = useState(null);
+  const [video, setVideo] = useState(null);
+  const {data: videoUrl} = usePreviewVideoQuery({fileId}, {skip: !fileId});
+
+  useEffect(() => {
+    // @ts-ignore
+    setVideo(videoUrl?.url)
+  }, [videoUrl])
 
 
   function applyFilter() {
@@ -129,8 +142,6 @@ export default function JobStatus() {
 
 
   const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status))
-
-  console.log("filters", filters)
   return (
     <div
       className={`${mainContentMargin} px-40 my-10 transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
@@ -183,8 +194,8 @@ export default function JobStatus() {
           <div className="relative flex items-center gap-5">
             <Button
               variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
-              onClick={() => setDateFilterModal(true)} c
-              hildren="All Time"
+              onClick={() => setDateFilterModal(true)}
+              children="All Time"
               startIcon={(
                 <>
                   <RxCalendar className="dark:hidden" size={18}
@@ -253,7 +264,6 @@ export default function JobStatus() {
                           />
                         </svg>
                         <svg
-
                           width="8"
                           height="5"
                           viewBox="0 0 8 5"
@@ -334,6 +344,23 @@ export default function JobStatus() {
                           className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">#{job.output_file_id.slice(0, 5)}...</p>
                       )}
                   </TableCell>
+                  <TableCell className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">
+                    <div className="flex items-center w-full gap-2">
+                      <button onClick={() => navigator.clipboard.writeText(job.output_file_id)} className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                        <IoCopyOutline size={17} />
+                      </button>
+                      <button onClick={() => {
+                        setFileId(job.output_file_id)
+                        setVideoPreviewModal(true)
+
+                      }} className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
+                        <LuCirclePlay size={17} />
+                      </button>
+                      <button className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
+                        <IoDownloadOutline size={17} />
+                      </button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -371,6 +398,11 @@ export default function JobStatus() {
         //@ts-ignore
         setSelected={setSelectedFilters}
         onClick={applyFilter}
+      />
+      <VideoPreviewModal
+        open={videoPreviewModal}
+        setOpen={setVideoPreviewModal}
+        video={video}
       />
     </div>
   );

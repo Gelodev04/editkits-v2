@@ -1,6 +1,4 @@
 import {SetStateAction, useState} from "react";
-import {Fade} from "@mui/material";
-import {lato, montserrat, opensans} from "@/lib/fonts";
 import DateRangePicker from "@/components/DateRangePicker";
 import {Modal} from "@/components/Modal";
 
@@ -16,7 +14,7 @@ export default function DateFilterModal(props: DateFilterModalProps) {
   return (
     <Modal isOpen={props.open} onClose={() => props.setOpen(false)} className="max-w-[756px]">
       <div
-        className="relative  flex inset-0 z-10 overflow-y-auto flex min-h-full justify-center text-center items-center rounded-[8px]"
+        className="relative flex inset-0 z-10 overflow-y-auto flex min-h-full justify-center text-center items-center rounded-[8px]"
       >
         <DateRangePicker
           //@ts-ignore

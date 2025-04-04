@@ -9,6 +9,7 @@ import {ChevronDownIcon, HorizontaLDots} from "@/icons";
 
 import Logo from "@/public/images/logo.svg"
 import LogoWhite from "@/public/images/logo_white.svg"
+import {PiDotsThreeOutlineBold} from "react-icons/pi";
 
 type NavItem = {
   name: string;
@@ -169,9 +170,6 @@ const Sidebar: React.FC = () => {
                       : "menu-item-icon-inactive"
                   }`}
                 >
-                  {/*@ts-ignore*/}
-                  {/*<Image src={nav.icon} alt={nav.name}/>*/}
-                  {/*  <img src={nav.icon} alt=""/>*/}
                   {nav.icon}
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
@@ -352,7 +350,7 @@ const Sidebar: React.FC = () => {
               />
               <Image
                 className="hidden dark:block"
-                src={Logo}
+                src={LogoWhite}
                 alt="Logo"
                 width={100}
                 height={100}
@@ -373,10 +371,9 @@ const Sidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
-                ) : (
-                  <Image src={HorizontaLDots} alt="dots icon"/>
-                )}
+                  <p className="dark:text-white/90">Menu</p>
+                ) :<PiDotsThreeOutlineBold />
+                }
               </h2>
               {renderMenuItems(navItems, "main")}
             </div>

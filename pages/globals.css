@@ -428,7 +428,7 @@ svg path[fill="currentColor"] {
   opacity: 1;
 }
 .fc .fc-day-other .fc-daygrid-day-top .fc-daygrid-day-number {
-  @apply text-gray-400 dark:text-white/90/30;
+  @apply text-gray-400 dark:text-white/30;
 }
 .event-fc-color {
   @apply rounded-lg py-2.5 pl-4 pr-3;

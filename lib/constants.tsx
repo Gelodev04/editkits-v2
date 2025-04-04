@@ -255,9 +255,6 @@ export const uploadedFilesColumns = [
   },
   {
     name: "Expires At"
-  },
-  {
-    name: ""
   }]
 
 

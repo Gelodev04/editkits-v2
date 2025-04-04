@@ -251,7 +251,7 @@ export default function JobStatus() {
                         {name}
                       </p>
                       <button
-                        className={name === "Thumbnail" ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
+                        className={(!name || name === "Thumbnail") ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
                         <svg
                           width="8"
                           height="5"

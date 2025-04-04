@@ -8,6 +8,7 @@ import {useSidebar} from "@/context/SidebarContext";
 import {ChevronDownIcon, HorizontaLDots} from "@/icons";
 
 import Logo from "@/public/images/logo.svg"
+import LogoWhite from "@/public/images/logo_white.svg"
 
 type NavItem = {
   name: string;
@@ -334,19 +335,29 @@ const Sidebar: React.FC = () => {
               />
               <Image
                 className="hidden dark:block"
-                src={Logo}
+                src={LogoWhite}
                 alt="Logo"
                 width={150}
                 height={40}
               />
             </>
           ) : (
-            <Image
-              src={Logo}
-              alt="Logo"
-              width={100}
-              height={100}
-            />
+            <>
+              <Image
+                className="dark:hidden"
+                src={Logo}
+                alt="Logo"
+                width={100}
+                height={100}
+              />
+              <Image
+                className="hidden dark:block"
+                src={Logo}
+                alt="Logo"
+                width={100}
+                height={100}
+              />
+            </>
           )}
         </Link>
       </div>

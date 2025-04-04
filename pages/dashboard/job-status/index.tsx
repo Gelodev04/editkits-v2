@@ -150,7 +150,7 @@ export default function JobStatus() {
       </div>
       <ComponentCard title="Job Status">
         <div
-          className="flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
+          className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <span className="text-gray-500 dark:text-gray-400"> Show </span>
             <div className="relative z-20 bg-transparent">
@@ -233,7 +233,7 @@ export default function JobStatus() {
           </div>
         </div>
 
-        <div className="max-w-full overflow-x-auto custom-scrollbar">
+        <div className="dark:bg-white/3 max-w-full overflow-x-auto custom-scrollbar">
           <Table>
             <TableHeader className="border-gray-100 dark:border-white/[0.05]">
               <TableRow>

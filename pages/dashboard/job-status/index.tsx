@@ -356,9 +356,15 @@ export default function JobStatus() {
                       }} className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
                         <LuCirclePlay size={17} />
                       </button>
-                      <button className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
-                        <IoDownloadOutline size={17} />
-                      </button>
+                      <div>
+                        <a onMouseOver={() => setFileId(job.output_file_id)} href={videoUrl?.url} download="video.mp4">
+                          <button onClick={async() => {
+                            await setFileId(job.output_file_id);
+                          }} className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
+                            <IoDownloadOutline size={17} />
+                          </button>
+                        </a>
+                      </div>
                     </div>
                   </TableCell>
                 </TableRow>

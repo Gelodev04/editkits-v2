@@ -113,15 +113,15 @@ export default function JobStatus() {
   const mainContentMargin = isMobileOpen
     ? "ml-0"
     : isExpanded || isHovered
-      ? "lg:ml-[330px] lg:mr-10"
+      ? "lg:ml-[330px] 2xl:ml-[330px] lg:pr-[70px]"
       : "lg:ml-[90px]";
 
   const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
 
   return (
-    <div className="flex justify-center">
+    <>
       <div
-        className={`${mainContentMargin} min-h-screen mt-10 transition-all duration-300 ease-in-out overflow-hidden dark:bg-white/[0.03] rounded-xl sm:w-[1280px] sm:mx-10 lg:mx-0 lg:w-[1536px] p-6`}>
+        className={`${mainContentMargin} min-h-[100vh] my-10 transition-all min-w-[1486px] duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
         <div className="bg-white dark:bg-white/[0.03] rounded-xl p-5">
           <div
             className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
@@ -352,6 +352,6 @@ export default function JobStatus() {
         setSelected={setSelectedFilters}
         onClick={applyFilter}
       />
-    </div>
+    </>
   );
 }

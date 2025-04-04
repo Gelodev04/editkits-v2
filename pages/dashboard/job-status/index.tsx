@@ -219,7 +219,7 @@ export default function JobStatus() {
                 <p>New Job</p>
               </Button>
               <Button
-                variant="outline"
+                variant="primary"
                 onClick={() => {
                   setSelectedFilters([])
                   setFilters([])

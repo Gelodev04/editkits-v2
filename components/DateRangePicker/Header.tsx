@@ -65,7 +65,6 @@ const Header: React.FunctionComponent<HeaderProps> = ({
           <FormControl variant="standard">
             <Select
               disableUnderline
-              IconComponent={null}
               value={getMonth(date)}
               onChange={handleMonthChange}
               MenuProps={{disablePortal: true}}
@@ -83,7 +82,6 @@ const Header: React.FunctionComponent<HeaderProps> = ({
             <Select
               sx={{color: "white"}}
               disableUnderline
-              IconComponent={null}
               value={getMonth(date)}
               onChange={handleMonthChange}
               MenuProps={{disablePortal: true}}
@@ -104,7 +102,6 @@ const Header: React.FunctionComponent<HeaderProps> = ({
             <Select
               sx={{color: "white"}}
               disableUnderline
-              IconComponent={null}
               value={getYear(date)}
               onChange={handleYearChange}
               MenuProps={{ disablePortal: true }}
@@ -121,7 +118,6 @@ const Header: React.FunctionComponent<HeaderProps> = ({
           <FormControl variant="standard">
             <Select
               disableUnderline
-              IconComponent={null}
               value={getYear(date)}
               onChange={handleYearChange}
               MenuProps={{ disablePortal: true }}

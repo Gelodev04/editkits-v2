@@ -56,7 +56,7 @@ export default function JobStatus() {
   const [filters, setFilters] = useState([]);
 
   const [fileId, setFileId] = useState(null);
-  const [videoPreviewModal, setVideoPreviewModal] = useState(null);
+  const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [video, setVideo] = useState(null);
   const {data: videoUrl} = usePreviewVideoQuery({fileId}, {skip: !fileId});
 
@@ -140,7 +140,7 @@ export default function JobStatus() {
       ? "lg:ml-[330px] 2xl:ml-[330px] lg:pr-[70px]"
       : "lg:ml-[90px]";
 
-
+  //@ts-ignore
   const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status))
   return (
     <>
@@ -194,11 +194,13 @@ export default function JobStatus() {
 
             <div className="relative flex items-center gap-5">
               <Button
+                //@ts-ignore
                 variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
                 onClick={() => setDateFilterModal(true)}
                 startIcon={(
                   <>
                     <RxCalendar className="dark:hidden" size={18}
+                                //@ts-ignore
                                 color={(dateRange?.startDate || dateRange?.endDate) ? "white" : "#4f4f4f"}/>
                     <RxCalendar className="hidden dark:block" size={18}
                                 color="white"/>
@@ -358,6 +360,7 @@ export default function JobStatus() {
                           <LuCirclePlay size={17} />
                         </button>
                         <div>
+                          {/*@ts-ignore*/}
                           <a onMouseOver={() => setFileId(job.output_file_id)} href={videoUrl?.url} download="video.mp4">
                             <button onClick={async() => {
                               await setFileId(job.output_file_id);

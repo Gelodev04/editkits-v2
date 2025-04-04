@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
-import {ChevronDownIcon, ChevronDownIconWhite, HorizontaLDots} from "@/icons";
+import {ChevronDownIcon, ChevronDownIconWhite} from "@/icons";
 
 import Logo from "@/public/images/logo.svg"
 import LogoWhite from "@/public/images/logo_white.svg"

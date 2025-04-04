@@ -116,6 +116,7 @@ export default function JobStatus() {
       ? "lg:ml-[330px] 2xl:ml-[330px] lg:pr-[70px]"
       : "lg:ml-[90px]";
 
+  //@ts-ignore
   const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
 
   return (
@@ -166,12 +167,13 @@ export default function JobStatus() {
             </div>
             <div className="relative flex items-center gap-5">
               <Button
+                //@ts-ignore
                 variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
                 onClick={() => setDateFilterModal(true)}
-                children="All Time"
                 startIcon={(
                   <>
                     <RxCalendar className="dark:hidden" size={18}
+                                //@ts-ignore
                                 color={(dateRange?.startDate || dateRange?.endDate) ? "white" : "#4f4f4f"}/>
                     <RxCalendar className="hidden dark:block" size={18}
                                 color="white"/>
@@ -179,7 +181,6 @@ export default function JobStatus() {
                 )}>All Time</Button>
               <Button
                 variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
-                children="Filters"
                 startIcon={(
                   <>
                     <LuSettings2 className="dark:hidden" size={18} color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>

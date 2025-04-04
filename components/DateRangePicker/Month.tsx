@@ -80,7 +80,7 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
           }}
         >
           {WEEK_DAYS.map((day, index) => (
-            <Typography className="text-[#1d2939] dark:text-white" key={index} variant="caption">
+            <Typography className="text-[#1d2939] dark:text-white/90" key={index} variant="caption">
               {day}
             </Typography>
           ))}

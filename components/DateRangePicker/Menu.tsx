@@ -79,7 +79,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
         <Grid>
           <Grid container sx={{ padding: '20px 70px' }} alignItems="center">
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
-              <Typography variant="subtitle1" className="text-[#1d2939] dark:text-white">
+              <Typography variant="subtitle1" className="text-[#1d2939] dark:text-white/90">
                 {startDate ? format(startDate, 'dd MMMM yyyy', {locale}) : 'Start Date'}
               </Typography>
             </Grid>
@@ -88,7 +88,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
               <BsArrowRight className="dark:hidden" color="#1d2939" />
             </Grid>
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
-              <Typography variant="subtitle1" className="text-[#1d2939] dark:text-white">
+              <Typography variant="subtitle1" className="text-[#1d2939] dark:text-white/90">
                 {endDate ? format(endDate, 'dd MMMM yyyy', {locale}) : 'End Date'}
               </Typography>
             </Grid>

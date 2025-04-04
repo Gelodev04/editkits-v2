@@ -61,7 +61,7 @@ const Day: React.FunctionComponent<DayProps> = ({
             //   : theme.palette.text.secondary,
           }}
           variant="body2"
-          className="dark:text-white"
+          className="dark:text-white/90"
         >
           {value}
         </Typography>

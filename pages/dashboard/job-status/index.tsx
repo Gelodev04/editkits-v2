@@ -181,12 +181,28 @@ export default function JobStatus() {
           </div>
 
           <div className="relative flex items-center gap-5">
-            <Button variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
-                    onClick={() => setDateFilterModal(true)} children="All Time" startIcon={<RxCalendar size={18}
-                                                                                                        color={(dateRange?.startDate || dateRange?.endDate) ? "white" : "#4f4f4f"}/>}/>
-            <Button variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
-                    children="Filters"
-                    startIcon={<LuSettings2 size={18} color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>}/>
+            <Button
+              variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
+              onClick={() => setDateFilterModal(true)} c
+              hildren="All Time"
+              startIcon={(
+                <>
+                  <RxCalendar className="dark:hidden" size={18}
+                              color={(dateRange?.startDate || dateRange?.endDate) ? "white" : "#4f4f4f"}/>
+                  <RxCalendar className="hidden dark:block" size={18}
+                              color="white"/>
+                </>
+              )}/>
+            <Button
+              variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
+              children="Filters"
+              startIcon={(
+                <>
+                  <LuSettings2 className="dark:hidden" size={18} color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>
+                  <LuSettings2 className="hidden dark:block" size={18} color={"white"}/>
+                </>
+              )}
+            />
             <Button startIcon={<AiOutlinePlus size={18}/>} variant="primary" onClick={() => router.push("/tools")}>
               <p>New Job</p>
             </Button>

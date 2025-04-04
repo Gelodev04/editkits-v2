@@ -24,15 +24,15 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
 
   return (
     <div
-      className="flex relative flex-col justify-between bg-white pt-[44px] pb-[25px] pl-[32px] border border-solid border-[#5243C2] group hover:text-white hover:bg-[#7D3DDE] w-[354px] rounded-2xl min-h-[552px] transition-all duration-300 shadow-lg">
+      className="flex relative flex-col justify-between bg-white pt-[44px] pb-[25px] pl-[32px] border border-solid border-[#5243C2] group hover:text-white/90 hover:bg-[#7D3DDE] w-[354px] rounded-2xl min-h-[552px] transition-all duration-300 shadow-lg">
       {props.plan.is_popular && props.plan.is_popular && (
         <div
-          className="absolute top-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1d2939] text-white text-[10px] font-montserrat font-semibold  leading-[12.19px] pt-[7px] pb-[8px] pl-[15.76px] pr-[16.97px] w-[146.3px] tracking-[0.8px] text-center rounded-full">
+          className="absolute top-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1d2939] text-white/90 text-[10px] font-montserrat font-semibold  leading-[12.19px] pt-[7px] pb-[8px] pl-[15.76px] pr-[16.97px] w-[146.3px] tracking-[0.8px] text-center rounded-full">
           MOST POPULAR
         </div>
       )}
       <div className="flex-grow">
-        {(props.plan.original_price !== props.plan.new_price) && <p className="group-hover:text-white font-lato font-semibold text-[20px] leading-[18px] text-[#2c2c2c] line-through">${props.plan.original_price}</p>}
+        {(props.plan.original_price !== props.plan.new_price) && <p className="group-hover:text-white/90 font-lato font-semibold text-[20px] leading-[18px] text-[#2c2c2c] line-through">${props.plan.original_price}</p>}
         <div className="flex justify-between items-center pr-[15px]">
           <div className="flex items-center">
             <p
@@ -58,7 +58,7 @@ export default function PricingPlanCard(props: PricingPlanCardProps) {
       </div>
       <div className="w-[281.26px]">
         <button
-          className="font-semibold pt-[13px] pb-[14px] font-lato text-[15px] w-full bg-[#e8f4ff] group-hover:text-white group-hover:bg-[#1d2939] text-[#148cfc] rounded-full leading-[18px]">Choose
+          className="font-semibold pt-[13px] pb-[14px] font-lato text-[15px] w-full bg-[#e8f4ff] group-hover:text-white/90 group-hover:bg-[#1d2939] text-[#148cfc] rounded-full leading-[18px]">Choose
           Plan
         </button>
       </div>

@@ -26,6 +26,7 @@ import PencilIcon from "./pencil.svg";
 import CheckLineIcon from "./check-line.svg";
 import CloseLineIcon from "./close-line.svg";
 import ChevronDownIcon from "./chevron-down.svg";
+import ChevronDownIconWhite from "./chevron-down-white.svg";
 import ChevronUpIcon from "./chevron-up.svg";
 import PaperPlaneIcon from "./paper-plane.svg";
 import LockIcon from "./lock.svg";
@@ -83,6 +84,7 @@ export {
   CheckLineIcon,
   CloseLineIcon,
   ChevronDownIcon,
+  ChevronDownIconWhite,
   PaperPlaneIcon,
   EnvelopeIcon,
   LockIcon,

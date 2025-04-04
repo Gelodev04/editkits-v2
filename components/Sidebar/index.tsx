@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
-import {ChevronDownIcon, HorizontaLDots} from "@/icons";
+import {ChevronDownIcon, ChevronDownIconWhite, HorizontaLDots} from "@/icons";
 
 import Logo from "@/public/images/logo.svg"
 import LogoWhite from "@/public/images/logo_white.svg"
@@ -143,16 +143,28 @@ const Sidebar: React.FC = () => {
                 <span className={`menu-item-text`}>{nav.name}</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
-                <Image
-                  src={ChevronDownIcon}
-                  className={`ml-auto w-5 h-5 transition-transform duration-200  ${
-                    openSubmenu?.type === menuType &&
-                    openSubmenu?.index === index
-                      ? "rotate-180 text-brand-500"
-                      : ""
-                  }`}
-                  alt="down icon"
-                />
+                <>
+                  <Image
+                    src={ChevronDownIcon}
+                    className={`dark:hidden ml-auto w-5 h-5 transition-transform duration-200  ${
+                      openSubmenu?.type === menuType &&
+                      openSubmenu?.index === index
+                        ? "rotate-180 text-brand-500"
+                        : ""
+                    }`}
+                    alt="down icon"
+                  />
+                  <Image
+                    src={ChevronDownIconWhite}
+                    className={`hidden dark:block ml-auto w-5 h-5 transition-transform duration-200  ${
+                      openSubmenu?.type === menuType &&
+                      openSubmenu?.index === index
+                        ? "rotate-180 text-brand-500"
+                        : ""
+                    }`}
+                    alt="down icon"
+                  />
+                </>
               )}
             </button>
           ) : (

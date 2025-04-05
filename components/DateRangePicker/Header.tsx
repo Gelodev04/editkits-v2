@@ -80,7 +80,12 @@ const Header: React.FunctionComponent<HeaderProps> = ({
         <div className="hidden dark:block">
           <FormControl variant="standard">
             <Select
-              sx={{color: "white"}}
+              sx={{
+                color: "white",
+                '& .MuiSelect-icon': {
+                  color: 'white',
+                },
+              }}
               disableUnderline
               value={getMonth(date)}
               onChange={handleMonthChange}
@@ -100,7 +105,12 @@ const Header: React.FunctionComponent<HeaderProps> = ({
         <div className="hidden dark:block">
           <FormControl variant="standard">
             <Select
-              sx={{color: "white"}}
+              sx={{
+                color: "white",
+                '& .MuiSelect-icon': {
+                  color: 'white',
+                },
+              }}
               disableUnderline
               value={getYear(date)}
               onChange={handleYearChange}

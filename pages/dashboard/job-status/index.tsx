@@ -339,12 +339,12 @@ export default function JobStatus() {
                       {job.is_multi_output ? job.output_file_ids?.map(id => (
                           <div className="flex items-center gap-[6.75px]">
                             <p
-                              className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}...</p>
+                              className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id?.slice(0, 5)}...</p>
                           </div>
                         ))
                         : (
                           <p
-                            className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">#{job.output_file_id.slice(0, 5)}...</p>
+                            className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">#{job.output_file_id?.slice(0, 5)}...</p>
                         )}
                     </TableCell>
                     <TableCell className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">

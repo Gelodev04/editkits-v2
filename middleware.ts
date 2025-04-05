@@ -13,5 +13,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/account", "/tool/trim-video", "/tool/resize-vide"],
+  matcher: ["/dashboard/job-status", "/dashboard/uploaded-files", "/account", "/tool/trim-video", "/tool/resize-vide"],
 };

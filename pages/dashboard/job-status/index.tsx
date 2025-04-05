@@ -84,8 +84,8 @@ export default function JobStatus() {
       .sort((a, b) => {
         if (sortKey === "input_file_name") {
           return sortOrder === "asc"
-            ? a.input_file_name.localeCompare(b.input_file_name)
-            : b.input_file_name.localeCompare(a.input_file_name);
+            ? a.input_file_name?.localeCompare(b.input_file_name)
+            : b.input_file_name?.localeCompare(a.input_file_name);
         }
         if (sortKey === "salary") {
           const salaryA = Number.parseInt(
@@ -97,8 +97,8 @@ export default function JobStatus() {
           return sortOrder === "asc" ? salaryA - salaryB : salaryB - salaryA;
         }
         return sortOrder === "asc"
-          ? String(a[sortKey] || "").localeCompare(String(b[sortKey] || ""))
-          : String(b[sortKey] || "").localeCompare(String(a[sortKey] || ""));
+          ? String(a[sortKey] || "")?.localeCompare(String(b[sortKey] || ""))
+          : String(b[sortKey] || "")?.localeCompare(String(a[sortKey] || ""));
       });
   }, [jobs, sortKey, sortOrder]);
 
@@ -192,7 +192,7 @@ export default function JobStatus() {
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
 
-            <div className="relative flex items-center gap-5">
+            <div className="grid 2xsm:grid-cols-2 md:grid-cols-4 grid-cols-4 relative flex items-center gap-5">
               <Button
                 //@ts-ignore
                 variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}

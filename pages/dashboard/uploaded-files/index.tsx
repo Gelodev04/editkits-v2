@@ -56,8 +56,8 @@ export default function JobStatus() {
       .sort((a, b) => {
         if (sortKey === "input_file_name") {
           return sortOrder === "asc"
-            ? a.input_file_name.localeCompare(b.input_file_name)
-            : b.input_file_name.localeCompare(a.input_file_name);
+            ? a.input_file_name?.localeCompare(b.input_file_name)
+            : b.input_file_name?.localeCompare(a.input_file_name);
         }
         if (sortKey === "salary") {
           const salaryA = Number.parseInt(
@@ -69,8 +69,8 @@ export default function JobStatus() {
           return sortOrder === "asc" ? salaryA - salaryB : salaryB - salaryA;
         }
         return sortOrder === "asc"
-          ? String(a[sortKey] || "").localeCompare(String(b[sortKey] || ""))
-          : String(b[sortKey] || "").localeCompare(String(a[sortKey] || ""));
+          ? String(a[sortKey] || "")?.localeCompare(String(b[sortKey] || ""))
+          : String(b[sortKey] || "")?.localeCompare(String(a[sortKey] || ""));
       });
   }, [recentFiles, sortKey, sortOrder]);
 

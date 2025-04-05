@@ -21,7 +21,7 @@ export default function UserDropdown(props) {
         onClick={toggleDropdown}
         className="flex items-center dropdown-toggle text-gray-700 dark:text-gray-400 dropdown-toggle"
       >
-        <span className="block mr-1 font-medium text-theme-sm">{userInfo?.name}</span>
+        <span className="block mr-1 font-medium text-theme-sm">{userInfo?.email}</span>
 
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
@@ -52,9 +52,6 @@ export default function UserDropdown(props) {
           <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
            {userInfo?.email}
           </span>
-          <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            {userInfo?.email}
-          </span>
         </div>
 
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
@@ -80,7 +77,7 @@ export default function UserDropdown(props) {
                   fill=""
                 />
               </svg>
-              Edit profile
+              Profile
             </DropdownItem>
           </li>
           <li>
@@ -90,20 +87,9 @@ export default function UserDropdown(props) {
               href="/account"
               className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
-              <svg
-                className="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M3.5 12C3.5 7.30558 7.30558 3.5 12 3.5C16.6944 3.5 20.5 7.30558 20.5 12C20.5 16.6944 16.6944 20.5 12 20.5C7.30558 20.5 3.5 16.6944 3.5 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM11.0991 7.52507C11.0991 8.02213 11.5021 8.42507 11.9991 8.42507H12.0001C12.4972 8.42507 12.9001 8.02213 12.9001 7.52507C12.9001 7.02802 12.4972 6.62507 12.0001 6.62507H11.9991C11.5021 6.62507 11.0991 7.02802 11.0991 7.52507ZM12.0001 17.3714C11.5859 17.3714 11.2501 17.0356 11.2501 16.6214V10.9449C11.2501 10.5307 11.5859 10.1949 12.0001 10.1949C12.4143 10.1949 12.7501 10.5307 12.7501 10.9449V16.6214C12.7501 17.0356 12.4143 17.3714 12.0001 17.3714Z"
-                  fill=""
-                />
+              <svg fillRule="evenodd" clipRule="evenodd" fill="currentColor" width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 8H11.1875V9.125H5V8ZM5 10.8125H12.3125V11.9375H5V10.8125Z" fill="currentColor" />
+                <path d="M15.75 2.25H2.25C1.95163 2.25 1.66548 2.36853 1.4545 2.5795C1.24353 2.79048 1.125 3.07663 1.125 3.375V14.625C1.125 14.9234 1.24353 15.2095 1.4545 15.4205C1.66548 15.6315 1.95163 15.75 2.25 15.75H15.75C16.0484 15.75 16.3345 15.6315 16.5455 15.4205C16.7565 15.2095 16.875 14.9234 16.875 14.625V3.375C16.875 3.07663 16.7565 2.79048 16.5455 2.5795C16.3345 2.36853 16.0484 2.25 15.75 2.25ZM15.75 3.375V4.5H2.25V3.375H15.75ZM2.25 14.625V5.625H15.75V14.625H2.25Z" fill="currentColor"/>
               </svg>
               Subscription
             </DropdownItem>

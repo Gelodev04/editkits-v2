@@ -1,5 +1,4 @@
 import React from "react";
-import {Fade, Modal} from "@mui/material";
 
 import {lato, montserrat, opensans} from "@/lib/fonts";
 
@@ -7,6 +6,8 @@ import {TbXboxX} from "react-icons/tb";
 import Typography from "@/components/Typography";
 
 import ButtonOld from "@/components/Button_Old";
+import {Modal} from "@/components/Modal";
+import Button from "@/components/Button";
 
 
 type PopUpProps = {
@@ -34,50 +35,34 @@ export default function FilterModal(props: PopUpProps) {
   }
 
   return (
-    <Modal open={props.open} onClose={() => props.setOpen(false)}>
-      <Fade in={props.open}>
-        {/*@ts-ignore*/}
-        <div>
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
-          <div
-            className="fixed inset-0 z-10 w-screen overflow-y-auto flex min-h-full justify-center text-center items-center sm:p-0">
-            <div
-              className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:w-[532px]`}>
-              <div className="absolute right-[14px] top-[14px] cursor-pointer">
-                <TbXboxX size={30} color="#000" onClick={() => props.setOpen(false)}/>
-              </div>
-              <div className="pb-[60px] pt-[32px]">
-                <Typography label={props.title} center variant="h4"/>
-              </div>
-              <p
-                className="font-lato font-bold text-[20px] leading-[30px] text-center text-[#2c2c2c]">{props.description}</p>
+    <Modal isOpen={props.open} onClose={() => props.setOpen(false)} className="max-w-[500px]">
+      <h4 className="pt-[40px] pb-[60px] font-semibold text-gray-800 mb-7 text-title-sm dark:text-white/90 text-center">
+        {props.title}
+      </h4>
+        <p
+          className="font-lato font-bold text-[20px] leading-[30px] text-center text-gray-800 mb-7 text-title-sm dark:text-white/90 text-center">{props.description}</p>
 
-              <div className="flex justify-center gap-[12px] pt-[24px]">
-                {filters.map((filter) => (
-                  <button
-                    onClick={() => handleFilterSelect(filter.value)}
-                    className={`px-[24px] py-[15px] rounded-[100px] border-[1px] border-[#d2d3d3] ${props.selected.includes(filter.value) ? "bg-[#4f4f4f] text-white" : "bg-white text-[#363939]"} font-lato font-medium text-sm leading-[17.5px]`}>
-                    {filter.label}
-                  </button>
-                ))}
-              </div>
-              <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[34px]">
-                <ButtonOld
-                  onClick={() => props.setOpen(false)}
-                  label="Dismiss"
-                  variant="primary"
-                />
-                <ButtonOld
-                  onClick={props.onClick}
-                  label="Apply"
-                  variant="primary"
-                  filled
-                />
-              </div>
-            </div>
-          </div>
+        <div className="flex justify-center gap-[12px] pt-[24px]">
+          {filters.map((filter) => (
+            <>
+              <Button onClick={() => handleFilterSelect(filter.value)} variant={props.selected.includes(filter.value) ? 'primary': 'outline'}>
+                {filter.label}
+              </Button>
+            </>
+          ))}
         </div>
-      </Fade>
+        <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[34px]">
+          <Button
+            onClick={() => props.setOpen(false)}
+            variant="outline"
+          >
+            Dismiss
+          </Button>
+          <Button
+            onClick={props.onClick}
+            variant="primary"
+          >Apply</Button>
+        </div>
     </Modal>
   )
 }

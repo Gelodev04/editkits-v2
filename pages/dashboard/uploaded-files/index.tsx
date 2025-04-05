@@ -123,7 +123,7 @@ export default function JobStatus() {
   return (
     <>
       <div
-        className={`${mainContentMargin} min-h-[100vh] my-10 transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
+        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
         <ComponentCard title="Uploaded Files" className="max-w-[1488px] mx-auto">
           <div
             className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
@@ -166,7 +166,7 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div className="relative flex items-center gap-5">
+            <div className="grid 2xsm:grid-cols-2 md:grid-cols-4 grid-cols-4 relative flex items-center gap-5">
               <Button
                 //@ts-ignore
                 variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}

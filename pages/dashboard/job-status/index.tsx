@@ -137,7 +137,7 @@ export default function JobStatus() {
   const mainContentMargin = isMobileOpen
     ? "ml-0"
     : isExpanded || isHovered
-      ? "lg:ml-[330px] 2xl:ml-[330px] lg:pr-[70px]"
+      ? "lg:ml-[290px] 2xl:ml-[330px] lg:pr-[70px]"
       : "lg:ml-[90px]";
 
   //@ts-ignore

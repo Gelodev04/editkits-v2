@@ -1,11 +1,5 @@
 import React from "react";
 
-import {lato, montserrat, opensans} from "@/lib/fonts";
-
-import {TbXboxX} from "react-icons/tb";
-import Typography from "@/components/Typography";
-
-import ButtonOld from "@/components/Button_Old";
 import {Modal} from "@/components/Modal";
 import Button from "@/components/Button";
 

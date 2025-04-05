@@ -80,22 +80,34 @@ const Header: React.FunctionComponent<HeaderProps> = ({
         <div className="hidden dark:block">
           <FormControl variant="standard">
             <Select
+              MenuProps={{
+                disablePortal: true,
+                PaperProps: {
+                  sx: {
+                    backgroundColor: 'rgb(55 65 81)',
+                    color: 'rgba(255,255,255,0.9)',
+                  },
+                },
+              }}
               sx={{
                 color: "white",
+                margin: 0,
                 '& .MuiSelect-icon': {
                   color: 'white',
+                },
+                '& .MuiList-root': {
+                  padding: 0,
                 },
               }}
               disableUnderline
               value={getMonth(date)}
               onChange={handleMonthChange}
-              MenuProps={{disablePortal: true}}
             >
-              {MONTHS.map((month, idx) => (
-                <MenuItem key={month} value={idx}>
-                  {month}
-                </MenuItem>
-              ))}
+                {MONTHS.map((month, idx) => (
+                  <MenuItem key={month} value={idx}>
+                    {month}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </div>
@@ -105,16 +117,29 @@ const Header: React.FunctionComponent<HeaderProps> = ({
         <div className="hidden dark:block">
           <FormControl variant="standard">
             <Select
-              sx={{
-                color: "white",
-                '& .MuiSelect-icon': {
-                  color: 'white',
-                },
-              }}
               disableUnderline
               value={getYear(date)}
               onChange={handleYearChange}
-              MenuProps={{ disablePortal: true }}
+              MenuProps={{
+                disablePortal: true,
+                PaperProps: {
+                  sx: {
+                    backgroundColor: 'rgb(55 65 81)',
+                    color: 'rgba(255,255,255,0.9)',
+                    overflow: "hidden"
+                  },
+                },
+              }}
+              sx={{
+                color: "white",
+                margin: 0,
+                '& .MuiSelect-icon': {
+                  color: 'white',
+                },
+                '& .MuiList-root': {
+                  padding: 0,
+                },
+              }}
             >
               {generateYears(date, 30).map((year) => (
                 <MenuItem key={year} value={year}>

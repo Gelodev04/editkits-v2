@@ -83,7 +83,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
               </Typography>
             </Grid>
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
-              <BsArrowRight className="" color="white" />
+              <BsArrowRight className="hidden dark:block" color="white" />
               <BsArrowRight className="dark:hidden" color="#1d2939" />
             </Grid>
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>

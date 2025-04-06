@@ -308,7 +308,7 @@ export default function JobStatus() {
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      #{job.input_file_id}
+                      {job.input_file_id && (job.input_file_id?.slice(0, 5) + "...")}
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
@@ -320,7 +320,7 @@ export default function JobStatus() {
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {job.tools_used}
+                      {job.tools_used.join(", ")}
                     </TableCell>
                     <TableCell
                       className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
@@ -329,7 +329,7 @@ export default function JobStatus() {
                     <TableCell
                       className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                       <Badge
-                        color={job.status === "SUCCESS" ? "success" : job.status === "IN_PROGRESS" ? "info" : "warning"}
+                        color={job.status === "COMPLETED" ? "success" : job.status === "IN_PROGRESS" ? "warning" : "error"}
                       >
                         {statusMapper(job.status)}
                       </Badge>
@@ -339,37 +339,52 @@ export default function JobStatus() {
                       {job.is_multi_output ? job.output_file_ids?.map(id => (
                           <div className="flex items-center gap-[6.75px]">
                             <p
-                              className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id?.slice(0, 5)}...</p>
+                              className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{id?.slice(0, 5)}...</p>
+                            <div>
+                              <button onClick={() => navigator.clipboard.writeText(job.output_file_id)} className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                                <IoCopyOutline size={17} />
+                              </button>
+                            </div>
                           </div>
                         ))
                         : (
-                          <p
-                            className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">#{job.output_file_id?.slice(0, 5)}...</p>
+                          <>
+                            {job.output_file_id && (
+                              <div className="flex items-center gap-2">
+                                <p
+                                  className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">{job.output_file_id?.slice(0, 5)}...</p>
+                                <div>
+                                  <button onClick={() => navigator.clipboard.writeText(job.output_file_id)} className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                                    <IoCopyOutline size={17} />
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
                         )}
                     </TableCell>
                     <TableCell className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">
-                      <div className="flex items-center w-full gap-2">
-                        <button onClick={() => navigator.clipboard.writeText(job.output_file_id)} className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
-                          <IoCopyOutline size={17} />
-                        </button>
-                        <button onClick={() => {
-                          setFileId(job.output_file_id)
-                          setVideoPreviewModal(true)
+                      {(job.output_file_id || job.output_file_ids) && (
+                        <div className="flex items-center w-full gap-2">
+                          <div>
+                            <button onClick={() => {
+                              setFileId(job.output_file_id)
+                              setVideoPreviewModal(true)
 
-                        }} className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
-                          <LuCirclePlay size={17} />
-                        </button>
-                        <div>
-                          {/*@ts-ignore*/}
-                          <a onMouseOver={() => setFileId(job.output_file_id)} href={videoUrl?.url} download="video.mp4">
-                            <button onClick={async() => {
-                              await setFileId(job.output_file_id);
                             }} className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
-                              <IoDownloadOutline size={17} />
+                              <LuCirclePlay size={17} />
                             </button>
-                          </a>
-                        </div>
-                      </div>
+                          </div>
+                            {/*@ts-ignore*/}
+                            <a onMouseOver={() => setFileId(job.output_file_id)} href={videoUrl?.url} download="video.mp4">
+                              <button onClick={async() => {
+                                await setFileId(job.output_file_id);
+                              }} className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
+                                <IoDownloadOutline size={17} />
+                              </button>
+                            </a>
+                          </div>
+                      ) }
                     </TableCell>
                   </TableRow>
                 ))}

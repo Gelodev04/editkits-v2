@@ -212,24 +212,31 @@ export const jobStatusColumns: { name?: string }[] = [
     name: "Thumbnail"
   },
   {
+    key: "input_file_id",
     name: "Input File(s)"
   },
   {
+    key: "input_file_name",
     name: "Input File Name"
   },
   {
+    key: "created_at",
     name: "Created At"
   },
   {
+    key: "tools_used",
     name: "Tools Used"
   },
   {
+    key: "credits_required",
     name: "Credits Required"
   },
   {
+    key: "status",
     name: "Status"
   },
   {
+    key: "output_file",
     name: "Output File"
   },
   {},
@@ -241,15 +248,19 @@ export const uploadedFilesColumns = [
     name: ""
   },
   {
+    key: "id",
     name: "File Id"
   },
   {
+    key: "name",
     name: "File Name"
   },
   {
+    key: "size_in_mb",
     name: "Size"
   },
   {
+    key: "created_at",
     name: "Created At"
   },
   {

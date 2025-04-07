@@ -24,10 +24,10 @@ import DateFilterModal from "@/components/modals/DateFilterModal";
 import FilterModal from "@/components/modals/FilterModal";
 import ComponentCard from "@/components/ComponentCard";
 import {truncateFileName} from "@/lib/utils";
-import Menu from "@/components/Menu";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
+import {BsThreeDotsVertical} from "react-icons/bs";
 
-type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
+type SortKey = "id" | "name" | "size_in_mb" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
@@ -56,28 +56,31 @@ export default function JobStatus() {
   }, [videoUrl])
 
   const filteredAndSortedData = useMemo(() => {
-    return (recentFiles || [])
-      //@ts-ignore
-      .filter((item) =>
-        Object.values(item).some(
-          (value) =>
-            typeof value === "string"
-        )
+    return recentFiles?.filter((item) =>
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string"
       )
+    )
       .sort((a, b) => {
-        if (sortKey === "input_file_name") {
+        if (sortKey === ("input_file_name" || "input_files" || "tools_used" || "status" || "output_file")) {
           return sortOrder === "asc"
-            ? a.input_file_name?.localeCompare(b.input_file_name)
-            : b.input_file_name?.localeCompare(a.input_file_name);
+            ? a[sortKey]?.localeCompare(b[sortKey])
+            : b[sortKey]?.localeCompare(a[sortKey]);
         }
-        if (sortKey === "salary") {
-          const salaryA = Number.parseInt(
-            String(a[sortKey] || "0").replace(/\$|,/g, "")
-          );
-          const salaryB = Number.parseInt(
-            String(b[sortKey] || "0").replace(/\$|,/g, "")
-          );
-          return sortOrder === "asc" ? salaryA - salaryB : salaryB - salaryA;
+        if (sortKey === "size") {
+          const getSizeValue = (val) => {
+            // Add console.log to debug
+            console.log("Raw size value:", val);
+            if (!val) return 0;
+            const parsed = parseInt(String(val).replace(/[^\d]/g, ""), 10);
+            return isNaN(parsed) ? 0 : parsed;
+          };
+
+          const sizeA = getSizeValue(a[sortKey]);
+          const sizeB = getSizeValue(b[sortKey]);
+
+          return sortOrder === "asc" ? sizeA - sizeB : sizeB - sizeA;
         }
         return sortOrder === "asc"
           ? String(a[sortKey] || "")?.localeCompare(String(b[sortKey] || ""))
@@ -93,11 +96,11 @@ export default function JobStatus() {
     setCurrentPage(page);
   };
 
-  const handleSort = (name: SortKey) => {
-    if (sortKey === name) {
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
-      setSortKey(name);
+      setSortKey(key);
       setSortOrder("asc");
     }
   };
@@ -119,8 +122,6 @@ export default function JobStatus() {
 
   //@ts-ignore
   const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
-
-  console.log(data)
 
   return (
     <>
@@ -214,15 +215,15 @@ export default function JobStatus() {
             <Table>
               <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
-                  {uploadedFilesColumns?.map(({name}) => (
+                  {uploadedFilesColumns?.map(({key, name}) => (
                     <TableCell
-                      key={name}
+                      key={key}
                       isHeader
                       className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
                     >
                       <div
                         className="flex items-center justify-between cursor-pointer"
-                        onClick={() => handleSort(name as SortKey)}
+                        onClick={() => handleSort(key as SortKey)}
                       >
                         <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                           {name}
@@ -293,16 +294,15 @@ export default function JobStatus() {
                     </TableCell>
                     <TableCell
                       className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      <Menu
-                        videoUrl={videoUrl}
-                        handleCopy={() => navigator.clipboard.writeText(job.output_file_id)}
-                        handleDownload={async () => {
-                          await setFileId(job.output_file_id)
-                        }}
-                        handlePreview={() => {
-                          setFileId(job.output_file_id)
-                          setVideoPreviewModal(true)
-                        }}
+                      <BsThreeDotsVertical
+                        id="basic-button"
+                        aria-controls={open ? 'basic-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        color="#4f4f4f"
+                        cursor="pointer"
+                        //@ts-ignore
+                        className="relative inline-block"
                       />
                     </TableCell>
                   </TableRow>

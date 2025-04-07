@@ -31,8 +31,9 @@ import {IoCopyOutline} from "react-icons/io5";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 import {usePreviewVideoQuery} from "@/services/api/file";
 import Menu from "@/components/Menu";
+import {sort} from "next/dist/build/webpack/loaders/css-loader/src/utils";
 
-type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
+type SortKey = "Input File Name" | "Input File(s)" | "Created At" | "Tools Used" | "Credits Required" | "Status" | "Output File";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
@@ -47,7 +48,7 @@ export default function JobStatus() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
+  const [sortKey, setSortKey] = useState<SortKey>("Input File Name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const [dateFilterModal, setDateFilterModal] = useState(false);
@@ -74,21 +75,19 @@ export default function JobStatus() {
 
 
   const filteredAndSortedData = useMemo(() => {
-    return (jobs || [])
-      //@ts-ignore
-      .filter((item) =>
+    return jobs?.filter((item) =>
         Object.values(item).some(
           (value) =>
             typeof value === "string"
         )
       )
       .sort((a, b) => {
-        if (sortKey === "input_file_name") {
+        if (sortKey === ("input_file_name" || "input_files" || "tools_used" || "status" || "output_file")) {
           return sortOrder === "asc"
-            ? a.input_file_name?.localeCompare(b.input_file_name)
-            : b.input_file_name?.localeCompare(a.input_file_name);
+            ? a[sortKey]?.localeCompare(b[sortKey])
+            : b[sortKey]?.localeCompare(a[sortKey]);
         }
-        if (sortKey === "salary") {
+        if (sortKey === "credits_used") {
           const salaryA = Number.parseInt(
             String(a[sortKey] || "0").replace(/\$|,/g, "")
           );
@@ -111,11 +110,11 @@ export default function JobStatus() {
     setCurrentPage(page);
   };
 
-  const handleSort = (name: SortKey) => {
-    if (sortKey === name) {
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
-      setSortKey(name);
+      setSortKey(key);
       setSortOrder("asc");
     }
   };
@@ -241,7 +240,7 @@ export default function JobStatus() {
             <Table>
               <TableHeader className="border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
-                  {jobStatusColumns?.map(({name}) => (
+                  {jobStatusColumns?.map(({key, name}) => (
                     <TableCell
                       key={name}
                       isHeader
@@ -249,7 +248,7 @@ export default function JobStatus() {
                     >
                       <div
                         className="flex items-center justify-between cursor-pointer"
-                        onClick={() => handleSort(name as SortKey)}
+                        onClick={() => handleSort(key as SortKey)}
                       >
                         <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                           {name}

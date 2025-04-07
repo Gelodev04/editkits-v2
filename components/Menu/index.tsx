@@ -1,18 +1,20 @@
-import { useState, MouseEvent } from "react";
+import {useState, MouseEvent} from "react";
 import Image from "next/image";
 
-import {Menu as MenuComponent, MenuItem} from '@mui/material';
+import {Menu as MenuComponent} from '@mui/material';
 
 import {BsThreeDotsVertical} from "react-icons/bs";
 import {PiPlayCircleLight} from "react-icons/pi";
 import {IoDownloadOutline} from "react-icons/io5";
 
 import CopyIcon from "@/public/icons/copy.svg";
+import {DropdownItem} from "@/components/dropdown/DropdownItem";
 
 type MenuProps = {
   handlePreview: any;
   handleCopy: any;
-  handleDownload
+  handleDownload;
+  videoUrl: any
 }
 
 export default function Menu(props: MenuProps) {
@@ -26,6 +28,10 @@ export default function Menu(props: MenuProps) {
     setAnchorEl(null);
   };
 
+  function closeDropdown() {
+    setAnchorEl(null);
+  }
+
   return (
     <div>
       <BsThreeDotsVertical
@@ -37,6 +43,7 @@ export default function Menu(props: MenuProps) {
         cursor="pointer"
         //@ts-ignore
         onClick={handleClick}
+        className="relative inline-block"
       />
       <MenuComponent
         id="basic-menu"
@@ -44,36 +51,55 @@ export default function Menu(props: MenuProps) {
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button',
+          sx: {padding: 0, margin: 0},
         }}
       >
-        <MenuItem onClick={() => {
-          props.handlePreview()
-          handleClose()
-        }}>
-          <div className="flex items-center gap-[12px] cursor-pointer pb-2">
-            <PiPlayCircleLight size={22}/>
-            <p className="font-lato font-normal text-sm">Play</p>
-          </div>
-        </MenuItem>
-        <MenuItem onClick={() => {
-          props.handleDownload();
-          handleClose();
-        }}>
-          <div className="flex items-center gap-[12px] cursor-pointer pb-2">
-            <IoDownloadOutline size={22}/>
-            <p className="font-lato font-normal text-sm">Download</p>
-          </div>
-        </MenuItem>
-        <MenuItem onClick={() => {
-          props.handleCopy();
-          handleClose();
-        }}>
-          <div className="flex items-center gap-[12px] cursor-pointer">
-            <Image src={CopyIcon} alt="copy icon" />
-            <p className="font-lato font-normal text-sm">Copy File ID</p>
-          </div>
-        </MenuItem>
+        <ul className="flex flex-col gap-1 z-40 border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-[#1E2635]">
+          <li>
+            <DropdownItem
+              onItemClick={() => {
+                closeDropdown()
+                props.handlePreview();
+              }}
+              className="flex rounded-lg px-3 py-2.5 text-sm font-medium
+                text-gray-700 hover:bg-gray-100 dark:text-gray-300
+                dark:hover:bg-white/5 items-center gap-[12px]"
+            >
+              <PiPlayCircleLight size={22}/>
+              Play
+            </DropdownItem>
+          </li>
+          <li>
+            <a href={props.videoUrl?.url} download="video.mp4">
+                <DropdownItem
+                  onItemClick={() => {
+                    closeDropdown();
+                  }}
+                  className="flex rounded-lg px-3 py-2.5 text-sm font-medium
+              text-gray-700 hover:bg-gray-100 dark:text-gray-300
+              dark:hover:bg-white/5 items-center gap-[12px]"
+                >
+                  <IoDownloadOutline size={22}/>
+                  Download
+                </DropdownItem>
+            </a>
+
+          </li>
+          <li>
+            <DropdownItem
+              onItemClick={() => {
+                closeDropdown();
+                props.handleCopy();
+              }}
+              className="flex rounded-lg px-3 py-2.5 text-sm font-medium
+              text-gray-700 hover:bg-gray-100 dark:text-gray-300
+              dark:hover:bg-white/5 items-center gap-[12px]"
+            >
+              <Image src={CopyIcon} alt="copy icon"/>
+              Copy File ID
+            </DropdownItem>
+          </li>
+        </ul>
       </MenuComponent>
     </div>
   );

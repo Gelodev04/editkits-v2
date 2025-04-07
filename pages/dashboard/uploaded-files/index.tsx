@@ -1,4 +1,4 @@
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import {
   Table,
   TableBody,
@@ -6,14 +6,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/Table";
-import Badge from '@/components/Badge'
 import {
   ExpiredIcon,
 } from "@/icons";
 import Image from "next/image";
 import PaginationWithIcon from "../PaginationWithIcon";
 import {uploadedFilesColumns} from "@/lib/constants";
-import {useGetRecentFilesQuery} from "@/services/api/file";
+import {useGetRecentFilesQuery, usePreviewVideoQuery} from "@/services/api/file";
 import {useSidebar} from "@/context/SidebarContext";
 import Button from "@/components/Button";
 import {RxCalendar} from "react-icons/rx";
@@ -24,12 +23,19 @@ import {IoMdRefresh} from "react-icons/io";
 import DateFilterModal from "@/components/modals/DateFilterModal";
 import FilterModal from "@/components/modals/FilterModal";
 import ComponentCard from "@/components/ComponentCard";
+import {truncateFileName} from "@/lib/utils";
+import Menu from "@/components/Menu";
+import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 
 type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
   const {data: recentFiles, refetch: refetchRecentFiles} = useGetRecentFilesQuery({});
+  const [fileId, setFileId] = useState(null);
+  const [videoPreviewModal, setVideoPreviewModal] = useState(false);
+  const [video, setVideo] = useState(null);
+  const {data: videoUrl} = usePreviewVideoQuery({fileId}, {skip: !fileId});
   const {isMobileOpen, isExpanded, isHovered} = useSidebar();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,6 +49,11 @@ export default function JobStatus() {
 
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filters, setFilters] = useState([]);
+
+  useEffect(() => {
+    // @ts-ignore
+    setVideo(videoUrl?.url)
+  }, [videoUrl])
 
   const filteredAndSortedData = useMemo(() => {
     return (recentFiles || [])
@@ -100,17 +111,6 @@ export default function JobStatus() {
     setFilterModal(false)
   }
 
-  function statusMapper(status) {
-    switch (status) {
-      case "COMPLETED":
-        return "Success"
-      case "FAILED":
-        return "Failed"
-      case "IN_PROGRESS":
-        return "In Progress"
-    }
-  }
-
   const mainContentMargin = isMobileOpen
     ? "ml-0"
     : isExpanded || isHovered
@@ -119,6 +119,8 @@ export default function JobStatus() {
 
   //@ts-ignore
   const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
+
+  console.log(data)
 
   return (
     <>
@@ -174,7 +176,7 @@ export default function JobStatus() {
                 startIcon={(
                   <>
                     <RxCalendar className="dark:hidden" size={18}
-                                //@ts-ignore
+                      //@ts-ignore
                                 color={(dateRange?.startDate || dateRange?.endDate) ? "white" : "#4f4f4f"}/>
                     <RxCalendar className="hidden dark:block" size={18}
                                 color="white"/>
@@ -184,7 +186,8 @@ export default function JobStatus() {
                 variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
                 startIcon={(
                   <>
-                    <LuSettings2 className="dark:hidden" size={18} color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>
+                    <LuSettings2 className="dark:hidden" size={18}
+                                 color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>
                     <LuSettings2 className="hidden dark:block" size={18} color={"white"}/>
                   </>
                 )}
@@ -207,118 +210,105 @@ export default function JobStatus() {
               </Button>
             </div>
           </div>
-          <div className="overflow-x-auto custom-scrollbar">
-            <div>
-              <Table>
-                <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
-                  <TableRow>
-                    {uploadedFilesColumns?.map(({name}) => (
-                      <TableCell
-                        key={name}
-                        isHeader
-                        className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
+          <div className="min-h-[100vh] overflow-x-auto custom-scrollbar">
+            <Table>
+              <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
+                <TableRow>
+                  {uploadedFilesColumns?.map(({name}) => (
+                    <TableCell
+                      key={name}
+                      isHeader
+                      className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
+                    >
+                      <div
+                        className="flex items-center justify-between cursor-pointer"
+                        onClick={() => handleSort(name as SortKey)}
                       >
-                        <div
-                          className="flex items-center justify-between cursor-pointer"
-                          onClick={() => handleSort(name as SortKey)}
-                        >
-                          <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
-                            {name}
-                          </p>
-                          <button
-                            className={!name ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
-                            <svg
-                              width="8"
-                              height="5"
-                              viewBox="0 0 8 5"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                            <svg
-
-                              width="8"
-                              height="5"
-                              viewBox="0 0 8 5"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data?.map((job, i) => (
-                    <TableRow key={i + 1}>
-                      <TableCell
-                        className="px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 overflow-hidden rounded-full">
-                            <Image
-                              width={40}
-                              height={40}
-                              src={job.thumbnail_url === "EXPIRED" ? ExpiredIcon : job.thumbnail_url}
-                              alt="user"
+                        <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
+                          {name}
+                        </p>
+                        <button
+                          className={!name ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
+                          <svg
+                            width="8"
+                            height="5"
+                            viewBox="0 0 8 5"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
+                              fill="currentColor"
                             />
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell
-                        className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {job.input_file_id}
-                      </TableCell>
-                      <TableCell
-                        className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {job.input_file_name}
-                      </TableCell>
-                      <TableCell
-                        className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {new Date(job.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
-                      </TableCell>
-                      <TableCell
-                        className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {job.tools_used}
-                      </TableCell>
-                      <TableCell
-                        className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {job.credits}
-                      </TableCell>
-                      <TableCell
-                        className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        <Badge
-                          color={job.status === "SUCCESS" ? "success" : job.status === "IN_PROGRESS" ? "info" : "warning"}
-                        >
-                          {statusMapper(job.status)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell
-                        className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {job.is_multi_output ? job.output_file_ids?.map(id => (
-                            <div className="flex items-center gap-[6.75px]">
-                              <p
-                                className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{id.slice(0, 5)}...</p>
-                            </div>
-                          ))
-                          : (
-                            <p
-                              className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">#{job.output_file_id.slice(0, 5)}...</p>
-                          )}
-                      </TableCell>
-                    </TableRow>
+                          </svg>
+                          <svg
+
+                            width="8"
+                            height="5"
+                            viewBox="0 0 8 5"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </TableCell>
                   ))}
-                </TableBody>
-              </Table>
-            </div>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data?.map((job, i) => (
+                  <TableRow key={i + 1}>
+                    <TableCell
+                      className="px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 overflow-hidden rounded-full">
+                          <Image
+                            width={40}
+                            height={40}
+                            src={job.thumbnail_url === "EXPIRED" ? ExpiredIcon : job.thumbnail_url}
+                            alt="user"
+                          />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell
+                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {job?.id}
+                    </TableCell>
+                    <TableCell
+                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {truncateFileName(job.name)}
+                    </TableCell>
+                    <TableCell
+                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {job.size_in_mb}
+                    </TableCell>
+                    <TableCell
+                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {new Date(job.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
+                    </TableCell>
+                    <TableCell
+                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      <Menu
+                        videoUrl={videoUrl}
+                        handleCopy={() => navigator.clipboard.writeText(job.output_file_id)}
+                        handleDownload={async () => {
+                          await setFileId(job.output_file_id)
+                        }}
+                        handlePreview={() => {
+                          setFileId(job.output_file_id)
+                          setVideoPreviewModal(true)
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
 
         </ComponentCard>
@@ -353,6 +343,11 @@ export default function JobStatus() {
         //@ts-ignore
         setSelected={setSelectedFilters}
         onClick={applyFilter}
+      />
+      <VideoPreviewModal
+        open={videoPreviewModal}
+        setOpen={setVideoPreviewModal}
+        video={video}
       />
     </>
   );

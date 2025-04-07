@@ -232,7 +232,9 @@ export const jobStatusColumns: { name?: string }[] = [
   {
     name: "Output File"
   },
-  {}
+  {},
+  {
+  }
 ]
 export const uploadedFilesColumns = [
   {
@@ -248,13 +250,9 @@ export const uploadedFilesColumns = [
     name: "Size"
   },
   {
-    name: "Type"
-  },
-  {
     name: "Created At"
   },
   {
-    name: "Expires At"
   }]
 
 

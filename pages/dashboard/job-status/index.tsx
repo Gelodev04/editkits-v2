@@ -30,6 +30,7 @@ import {AiOutlinePlus} from "react-icons/ai";
 import {IoCopyOutline} from "react-icons/io5";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 import {usePreviewVideoQuery} from "@/services/api/file";
+import Menu from "@/components/Menu";
 
 type SortKey = "input_file_name" | "position" | "location" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
@@ -137,7 +138,7 @@ export default function JobStatus() {
   const mainContentMargin = isMobileOpen
     ? "ml-0"
     : isExpanded || isHovered
-      ? "lg:ml-[290px] 2xl:ml-[330px] lg:pr-[70px]"
+      ? "lg:ml-[290px] 2xl:ml-[330px] lg:pr-[70px] 4xl:mx-auto"
       : "lg:ml-[90px]";
 
   //@ts-ignore
@@ -192,7 +193,7 @@ export default function JobStatus() {
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
 
-            <div className="grid 2xsm:grid-cols-2 md:grid-cols-4 grid-cols-4 relative flex items-center gap-5">
+            <div className="grid 2xsm:grid-cols-1 xsm:grid-cols-2 md:grid-cols-4 grid-cols-4 relative flex items-center gap-5">
               <Button
                 //@ts-ignore
                 variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
@@ -385,6 +386,20 @@ export default function JobStatus() {
                             </a>
                           </div>
                       ) }
+                    </TableCell>
+                    <TableCell
+                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      <Menu
+                        videoUrl={videoUrl}
+                        handleCopy={() => navigator.clipboard.writeText(job.output_file_id)}
+                        handleDownload={async () => {
+                          await setFileId(job.output_file_id)
+                        }}
+                        handlePreview={() => {
+                          setFileId(job.output_file_id)
+                          setVideoPreviewModal(true)
+                        }}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}

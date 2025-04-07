@@ -31,9 +31,8 @@ import {IoCopyOutline} from "react-icons/io5";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 import {usePreviewVideoQuery} from "@/services/api/file";
 import Menu from "@/components/Menu";
-import {sort} from "next/dist/build/webpack/loaders/css-loader/src/utils";
 
-type SortKey = "Input File Name" | "Input File(s)" | "Created At" | "Tools Used" | "Credits Required" | "Status" | "Output File";
+type SortKey = "input_file_name" | "input_file_id" | "createdAt" | "tools_used" | "credits" | "status" | "output_file_id";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
@@ -48,7 +47,7 @@ export default function JobStatus() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [sortKey, setSortKey] = useState<SortKey>("Input File Name");
+  const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const [dateFilterModal, setDateFilterModal] = useState(false);
@@ -75,6 +74,7 @@ export default function JobStatus() {
 
 
   const filteredAndSortedData = useMemo(() => {
+    //@ts-ignore
     return jobs?.filter((item) =>
         Object.values(item).some(
           (value) =>
@@ -82,12 +82,13 @@ export default function JobStatus() {
         )
       )
       .sort((a, b) => {
+        //@ts-ignore
         if (sortKey === ("input_file_name" || "input_files" || "tools_used" || "status" || "output_file")) {
           return sortOrder === "asc"
             ? a[sortKey]?.localeCompare(b[sortKey])
             : b[sortKey]?.localeCompare(a[sortKey]);
         }
-        if (sortKey === "credits_used") {
+        if (sortKey === "credits") {
           const salaryA = Number.parseInt(
             String(a[sortKey] || "0").replace(/\$|,/g, "")
           );

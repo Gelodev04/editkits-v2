@@ -207,7 +207,7 @@ export const stats = [
   }
 ]
 
-export const jobStatusColumns: { name?: string }[] = [
+export const jobStatusColumns: { key?: string, name?: string }[] = [
   {
     name: "Thumbnail"
   },

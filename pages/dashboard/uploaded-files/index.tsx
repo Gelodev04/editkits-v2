@@ -32,7 +32,7 @@ type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
   const {data: recentFiles, refetch: refetchRecentFiles} = useGetRecentFilesQuery({});
-  const [fileId, setFileId] = useState(null);
+  const [fileId, setFileId] = useState("");
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [video, setVideo] = useState(null);
   const {data: videoUrl} = usePreviewVideoQuery({fileId}, {skip: !fileId});
@@ -40,7 +40,7 @@ export default function JobStatus() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
+  const [sortKey, setSortKey] = useState<SortKey>("name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const [dateRange, setDateRange] = useState({})
@@ -53,9 +53,11 @@ export default function JobStatus() {
   useEffect(() => {
     // @ts-ignore
     setVideo(videoUrl?.url)
+    setFileId("")
   }, [videoUrl])
 
   const filteredAndSortedData = useMemo(() => {
+    //@ts-ignore
     return recentFiles?.filter((item) =>
       Object.values(item).some(
         (value) =>
@@ -63,15 +65,14 @@ export default function JobStatus() {
       )
     )
       .sort((a, b) => {
-        if (sortKey === ("input_file_name" || "input_files" || "tools_used" || "status" || "output_file")) {
+        //@ts-ignore
+        if (sortKey === ("name" || "input_files" || "tools_used" || "status" || "output_file")) {
           return sortOrder === "asc"
             ? a[sortKey]?.localeCompare(b[sortKey])
             : b[sortKey]?.localeCompare(a[sortKey]);
         }
-        if (sortKey === "size") {
+        if (sortKey === "size_in_mb") {
           const getSizeValue = (val) => {
-            // Add console.log to debug
-            console.log("Raw size value:", val);
             if (!val) return 0;
             const parsed = parseInt(String(val).replace(/[^\d]/g, ""), 10);
             return isNaN(parsed) ? 0 : parsed;
@@ -296,9 +297,7 @@ export default function JobStatus() {
                       className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                       <BsThreeDotsVertical
                         id="basic-button"
-                        aria-controls={open ? 'basic-menu' : undefined}
                         aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
                         color="#4f4f4f"
                         cursor="pointer"
                         //@ts-ignore

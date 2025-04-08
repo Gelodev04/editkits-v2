@@ -8,7 +8,8 @@ import {
 } from "@/components/Table";
 import Badge from '@/components/Badge'
 import {
-  ExpiredIcon, WhiteExpiredIcon} from "@/icons";
+  ExpiredIcon, WhiteExpiredIcon
+} from "@/icons";
 import Image from "next/image";
 import PaginationWithIcon from "../PaginationWithIcon";
 import {useGetJobsQuery} from "@/services/api/job";
@@ -17,7 +18,7 @@ import StatCard from "@/components/cards/StatCard";
 
 import {router} from "next/client";
 import {IoMdRefresh} from "react-icons/io";
-import { IoDownloadOutline } from "react-icons/io5";
+import {IoDownloadOutline} from "react-icons/io5";
 import Button from "@/components/Button";
 import {useSidebar} from "@/context/SidebarContext";
 import ComponentCard from "@/components/ComponentCard";
@@ -32,7 +33,14 @@ import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 import {usePreviewVideoQuery} from "@/services/api/file";
 import Menu from "@/components/Menu";
 
-type SortKey = "input_file_name" | "input_file_id" | "createdAt" | "tools_used" | "credits" | "status" | "output_file_id";
+type SortKey =
+  "input_file_name"
+  | "input_file_id"
+  | "createdAt"
+  | "tools_used"
+  | "credits"
+  | "status"
+  | "output_file_id";
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
@@ -48,7 +56,7 @@ export default function JobStatus() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
   const [dateFilterModal, setDateFilterModal] = useState(false);
   const [filterModal, setFilterModal] = useState(false);
@@ -76,17 +84,22 @@ export default function JobStatus() {
   const filteredAndSortedData = useMemo(() => {
     //@ts-ignore
     return jobs?.filter((item) =>
-        Object.values(item).some(
-          (value) =>
-            typeof value === "string"
-        )
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string"
       )
+    )
       .sort((a, b) => {
         //@ts-ignore
-        if (sortKey === ("input_file_name" || "input_files" || "tools_used" || "status" || "output_file")) {
+        if (sortKey === ("input_file_name" || "input_files" || "status" || "output_file")) {
           return sortOrder === "asc"
             ? a[sortKey]?.localeCompare(b[sortKey])
             : b[sortKey]?.localeCompare(a[sortKey]);
+        }
+        if (sortKey === "tools_used") {
+          return sortOrder === "asc"
+            ? a.tools_used[0]?.localeCompare(b.tools_used[0])
+            : b.tools_used[0]?.localeCompare(a.tools_used[0]);
         }
         if (sortKey === "credits") {
           const salaryA = Number.parseInt(
@@ -154,7 +167,7 @@ export default function JobStatus() {
           <div
             className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-gray-500 dark:text-gray-400"> Show </span>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400"> Show </span>
               <div className="relative z-20 bg-transparent">
                 <select
                   className="w-full py-2 pl-3 pr-8 text-sm text-gray-800 bg-transparent border border-gray-300 rounded-lg appearance-none dark:bg-dark-900 h-9 bg-none shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
@@ -193,7 +206,8 @@ export default function JobStatus() {
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
 
-            <div className="grid 2xsm:grid-cols-1 xsm:grid-cols-2 md:grid-cols-4 grid-cols-4 relative flex items-center gap-5">
+            <div
+              className={`grid grid-cols-1 2xsm:grid-cols-2 ${isExpanded ? "lg:grid-cols-2 xl:grid-cols-4" : "lg:grid-cols-4"} relative flex items-center gap-5`}>
               <Button
                 //@ts-ignore
                 variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
@@ -201,7 +215,7 @@ export default function JobStatus() {
                 startIcon={(
                   <>
                     <RxCalendar className="dark:hidden" size={18}
-                                //@ts-ignore
+                      //@ts-ignore
                                 color={(dateRange?.startDate || dateRange?.endDate) ? "white" : "#4f4f4f"}/>
                     <RxCalendar className="hidden dark:block" size={18}
                                 color="white"/>
@@ -213,7 +227,8 @@ export default function JobStatus() {
                 variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
                 startIcon={(
                   <>
-                    <LuSettings2 className="dark:hidden" size={18} color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>
+                    <LuSettings2 className="dark:hidden" size={18}
+                                 color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>
                     <LuSettings2 className="hidden dark:block" size={18} color={"white"}/>
                   </>
                 )}
@@ -309,7 +324,13 @@ export default function JobStatus() {
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {job.input_file_id && (job.input_file_id?.slice(0, 5) + "...")}
+                      <div className="flex items-center gap-[6.75px]">
+                        {job.input_file_id?.slice(0, 5)}...
+                        <button onClick={() => navigator.clipboard.writeText(job.input_file_id)}
+                                className="text-gray-500 dark:text-gray-400 dark:hover:text-white/90">
+                          <IoCopyOutline size={17}/>
+                        </button>
+                      </div>
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
@@ -342,8 +363,9 @@ export default function JobStatus() {
                             <p
                               className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{id?.slice(0, 5)}...</p>
                             <div>
-                              <button onClick={() => navigator.clipboard.writeText(job.output_file_id)} className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
-                                <IoCopyOutline size={17} />
+                              <button onClick={() => navigator.clipboard.writeText(job.output_file_id)}
+                                      className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                                <IoCopyOutline size={17}/>
                               </button>
                             </div>
                           </div>
@@ -355,8 +377,9 @@ export default function JobStatus() {
                                 <p
                                   className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">{job.output_file_id?.slice(0, 5)}...</p>
                                 <div>
-                                  <button onClick={() => navigator.clipboard.writeText(job.output_file_id)} className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
-                                    <IoCopyOutline size={17} />
+                                  <button onClick={() => navigator.clipboard.writeText(job.output_file_id)}
+                                          className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                                    <IoCopyOutline size={17}/>
                                   </button>
                                 </div>
                               </div>
@@ -364,7 +387,8 @@ export default function JobStatus() {
                           </>
                         )}
                     </TableCell>
-                    <TableCell className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">
+                    <TableCell
+                      className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">
                       {(job.output_file_id || job.output_file_ids) && (
                         <div className="flex items-center w-full gap-2">
                           <div>
@@ -372,20 +396,23 @@ export default function JobStatus() {
                               setFileId(job.output_file_id)
                               setVideoPreviewModal(true)
 
-                            }} className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
-                              <LuCirclePlay size={17} />
+                            }}
+                                    className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
+                              <LuCirclePlay size={17}/>
                             </button>
                           </div>
-                            {/*@ts-ignore*/}
-                            <a onMouseOver={() => setFileId(job.output_file_id)} href={videoUrl?.url} download="video.mp4">
-                              <button onClick={async() => {
-                                await setFileId(job.output_file_id);
-                              }} className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
-                                <IoDownloadOutline size={17} />
-                              </button>
-                            </a>
-                          </div>
-                      ) }
+                          {/*@ts-ignore*/}
+                          <a onMouseOver={() => setFileId(job.output_file_id)} href={videoUrl?.url}
+                             download="video.mp4">
+                            <button onClick={async () => {
+                              await setFileId(job.output_file_id);
+                            }}
+                                    className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
+                              <IoDownloadOutline size={17}/>
+                            </button>
+                          </a>
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell
                       className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">

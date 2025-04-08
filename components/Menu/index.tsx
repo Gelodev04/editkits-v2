@@ -8,6 +8,7 @@ import {PiPlayCircleLight} from "react-icons/pi";
 import {IoDownloadOutline} from "react-icons/io5";
 
 import CopyIcon from "@/public/icons/copy.svg";
+import CopyIconWhite from "@/public/icons/copy_white.svg";
 import {DropdownItem} from "@/components/dropdown/DropdownItem";
 
 type MenuProps = {
@@ -95,7 +96,8 @@ export default function Menu(props: MenuProps) {
               text-gray-700 hover:bg-gray-100 dark:text-gray-300
               dark:hover:bg-white/5 items-center gap-[12px]"
             >
-              <Image src={CopyIcon} alt="copy icon"/>
+              <Image className="dark:hidden" src={CopyIcon} alt="copy icon"/>
+              <Image className="hidden dark:block" src={CopyIconWhite} alt="copy icon"/>
               Copy File ID
             </DropdownItem>
           </li>

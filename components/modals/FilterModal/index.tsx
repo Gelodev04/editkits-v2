@@ -30,7 +30,7 @@ export default function FilterModal(props: PopUpProps) {
 
   return (
     <Modal isOpen={props.open} onClose={() => props.setOpen(false)} className="max-w-[500px]">
-      <h4 className="pt-[40px] pb-[60px] font-semibold text-gray-800 mb-7 text-title-sm dark:text-white/90 text-center">
+      <h4 className="pt-[40px] font-semibold text-gray-800 mb-7 text-title-sm dark:text-white/90 text-center">
         {props.title}
       </h4>
         <p

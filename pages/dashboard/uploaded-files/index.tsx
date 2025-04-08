@@ -16,7 +16,6 @@ import {useGetRecentFilesQuery, usePreviewVideoQuery} from "@/services/api/file"
 import {useSidebar} from "@/context/SidebarContext";
 import Button from "@/components/Button";
 import {RxCalendar} from "react-icons/rx";
-import {LuSettings2} from "react-icons/lu";
 import {AiOutlinePlus} from "react-icons/ai";
 import {router} from "next/client";
 import {IoMdRefresh} from "react-icons/io";
@@ -26,6 +25,7 @@ import ComponentCard from "@/components/ComponentCard";
 import {truncateFileName} from "@/lib/utils";
 import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
 import {BsThreeDotsVertical} from "react-icons/bs";
+import {IoCopyOutline} from "react-icons/io5";
 
 type SortKey = "id" | "name" | "size_in_mb" | "age" | "date" | "salary";
 type SortOrder = "asc" | "desc";
@@ -41,7 +41,7 @@ export default function JobStatus() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>("name");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
   const [dateRange, setDateRange] = useState({})
   const [dateFilterModal, setDateFilterModal] = useState(false);
@@ -118,7 +118,7 @@ export default function JobStatus() {
   const mainContentMargin = isMobileOpen
     ? "ml-0"
     : isExpanded || isHovered
-      ? "lg:ml-[290px] 2xl:ml-[330px] lg:pr-[70px]"
+      ? "lg:ml-[290px] 2xl:ml-[330px] lg:pr-[70px] 4xl:mx-auto"
       : "lg:ml-[90px]";
 
   //@ts-ignore
@@ -132,7 +132,7 @@ export default function JobStatus() {
           <div
             className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-gray-500 dark:text-gray-400"> Show </span>
+              <span className="hidden 2xsm:block text-gray-500 dark:text-gray-400"> Show </span>
               <div className="relative z-20 bg-transparent">
                 <select
                   className="w-full py-2 pl-3 pr-8 text-sm text-gray-800 bg-transparent border border-gray-300 rounded-lg appearance-none dark:bg-dark-900 h-9 bg-none shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
@@ -170,7 +170,7 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div className="grid 2xsm:grid-cols-2 md:grid-cols-4 grid-cols-4 relative flex items-center gap-5">
+            <div className={`grid grid-cols-1 2xsm:grid-cols-2 ${isExpanded ? "lg:grid-cols-2 xl:grid-cols-3": "lg:grid-cols-3"} relative flex items-center gap-5`}>
               <Button
                 //@ts-ignore
                 variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
@@ -184,16 +184,6 @@ export default function JobStatus() {
                                 color="white"/>
                   </>
                 )}>All Time</Button>
-              <Button
-                variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
-                startIcon={(
-                  <>
-                    <LuSettings2 className="dark:hidden" size={18}
-                                 color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>
-                    <LuSettings2 className="hidden dark:block" size={18} color={"white"}/>
-                  </>
-                )}
-              >Filters</Button>
               <Button startIcon={<AiOutlinePlus size={18}/>} variant="primary" onClick={() => router.push("/tools")}>
                 <p>New Job</p>
               </Button>
@@ -279,7 +269,13 @@ export default function JobStatus() {
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {job?.id}
+                      <div className="flex items-center gap-[6.75px]">
+                        {job.id?.slice(0, 5)}...
+                        <button onClick={() => navigator.clipboard.writeText(job.id)}
+                                className="text-gray-500 dark:text-gray-400 dark:hover:text-white/90">
+                          <IoCopyOutline size={17}/>
+                        </button>
+                      </div>
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
@@ -287,7 +283,7 @@ export default function JobStatus() {
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {job.size_in_mb}
+                      {job.size_in_mb.toFixed(1)} MB
                     </TableCell>
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">

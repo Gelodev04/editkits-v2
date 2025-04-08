@@ -14,7 +14,7 @@ export default function Footer() {
 
 
   return (
-    <div className={`${mainContentMargin} bg-white dark:bg-gray-900 dark:border-gray-800 pt-10 bg-zinc-50 pb-5 px-8 z-[50]`}>
+    <div className={`${mainContentMargin} bg-white dark:bg-gray-900 dark:border-gray-800 pt-10 bg-zinc-50 pb-5 px-2 sm:px-8 z-[50]`}>
       <div className="flex space-x-6 justify-center pb-8 max-w-[1920px] mx-auto">
         <Link href="/home">
           <p className="font-roboto font-normal text-sm text-[#000000] dark:text-white/90">Home</p>
@@ -32,7 +32,7 @@ export default function Footer() {
           center
         />
       </div>
-      <div className="grid grid-cols-3 place-items-center w-full pt-10 max-w-[1920px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 place-items-center w-full pt-10 max-w-[1920px] mx-auto">
         <p className="font-openSans font-normal text-[13px] text-[#2c2c28] leading-[17px] dark:text-white/90">© 2025 Edikits. All rights
           reserved</p>
         <div className="flex space-x-6 justify-center">

@@ -245,7 +245,7 @@ export const jobStatusColumns: { key?: string, name?: string }[] = [
 ]
 export const uploadedFilesColumns = [
   {
-    name: ""
+    name: "Thumbnail"
   },
   {
     key: "id",

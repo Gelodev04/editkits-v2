@@ -205,9 +205,7 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-
-            <div
-              className={`grid grid-cols-1 2xsm:grid-cols-2 ${isExpanded ? "lg:grid-cols-2 xl:grid-cols-4" : "lg:grid-cols-4"} relative flex items-center gap-5`}>
+            <div className={`grid grid-cols-1 2xsm:grid-cols-2 ${isExpanded ? "lg:grid-cols-2 xl:grid-cols-4" : "lg:grid-cols-4"} relative flex items-center gap-5`}>
               <Button
                 //@ts-ignore
                 variant={(dateRange?.startDate || dateRange?.endDate) ? "primary" : "outline"}
@@ -251,7 +249,6 @@ export default function JobStatus() {
               </Button>
             </div>
           </div>
-
           <div className="dark:bg-white/3 max-w-full overflow-x-auto custom-scrollbar">
             <Table>
               <TableHeader className="border-gray-100 dark:border-white/[0.05]">
@@ -303,7 +300,7 @@ export default function JobStatus() {
               <TableBody>
                 {data?.map((job, i) => (
                   <TableRow key={i + 1}>
-                    <TableCell className="w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
+                    <TableCell className="min-w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
                       <div className="flex justify-center items-center gap-3">
                         {job.thumbnail_url === "EXPIRED" ? (
                           <div className="w-10 h-10 rounded-full">
@@ -335,7 +332,6 @@ export default function JobStatus() {
                         )}
                       </div>
                     </TableCell>
-
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                       <div className="flex items-center gap-[6.75px]">

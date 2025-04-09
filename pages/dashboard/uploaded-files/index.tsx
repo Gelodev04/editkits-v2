@@ -130,9 +130,9 @@ export default function JobStatus() {
         className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
         <ComponentCard title="Uploaded Files" className="max-w-[1488px] mx-auto">
           <div
-            className="dark:bg-white/3 flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
+            className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <span className="hidden 2xsm:block text-gray-500 dark:text-gray-400"> Show </span>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400"> Show </span>
               <div className="relative z-20 bg-transparent">
                 <select
                   className="w-full py-2 pl-3 pr-8 text-sm text-gray-800 bg-transparent border border-gray-300 rounded-lg appearance-none dark:bg-dark-900 h-9 bg-none shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
@@ -202,9 +202,9 @@ export default function JobStatus() {
               </Button>
             </div>
           </div>
-          <div className="min-h-[20vh] overflow-x-auto custom-scrollbar">
+          <div className="min-h-[20vh] dark:bg-white/3 max-w-full overflow-x-auto custom-scrollbar">
             <Table>
-              <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
+              <TableHeader className="border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
                   {uploadedFilesColumns?.map(({key, name}) => (
                     <TableCell
@@ -233,7 +233,6 @@ export default function JobStatus() {
                             />
                           </svg>
                           <svg
-
                             width="8"
                             height="5"
                             viewBox="0 0 8 5"

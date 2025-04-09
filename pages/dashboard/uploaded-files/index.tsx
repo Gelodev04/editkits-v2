@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/Table";
 import {
-  ExpiredIcon,
+  ExpiredIcon, WhiteExpiredIcon,
 } from "@/icons";
 import Image from "next/image";
 import PaginationWithIcon from "../PaginationWithIcon";
@@ -130,7 +130,7 @@ export default function JobStatus() {
         className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
         <ComponentCard title="Uploaded Files" className="max-w-[1488px] mx-auto">
           <div
-            className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
+            className="dark:bg-white/3 flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <span className="hidden 2xsm:block text-gray-500 dark:text-gray-400"> Show </span>
               <div className="relative z-20 bg-transparent">
@@ -202,7 +202,7 @@ export default function JobStatus() {
               </Button>
             </div>
           </div>
-          <div className="min-h-[100vh] overflow-x-auto custom-scrollbar">
+          <div className="min-h-[20vh] overflow-x-auto custom-scrollbar">
             <Table>
               <TableHeader className="border-t border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
@@ -254,17 +254,36 @@ export default function JobStatus() {
               <TableBody>
                 {data?.map((job, i) => (
                   <TableRow key={i + 1}>
-                    <TableCell
-                      className="px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
+                    <TableCell className="w-[135px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 overflow-hidden rounded-full">
-                          <Image
-                            width={40}
-                            height={40}
-                            src={job.thumbnail_url === "EXPIRED" ? ExpiredIcon : job.thumbnail_url}
-                            alt="user"
-                          />
-                        </div>
+                        {job.thumbnail_url === "EXPIRED" ? (
+                          <div className="w-10 h-10 rounded-full">
+                            <Image
+                              width={40}
+                              height={40}
+                              src={ExpiredIcon}
+                              alt="expired"
+                              className="dark:hidden"
+                            />
+                            <Image
+                              width={40}
+                              height={40}
+                              src={WhiteExpiredIcon}
+                              alt="expired"
+                              className="hidden dark:block"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <Image
+                              width={135}
+                              height={40}
+                              src={job.thumbnail_url}
+                              alt="thumbnail"
+                              className="object-fit w-full h-[40px] rounded-md"
+                            />
+                          </div>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell

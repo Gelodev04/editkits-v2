@@ -224,11 +224,11 @@ export default function JobStatus() {
                 All Time
               </Button>
               <Button
-                variant={selectedFilters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
+                variant={filters.length > 0 ? "primary" : "outline"} onClick={() => setFilterModal(true)}
                 startIcon={(
                   <>
                     <LuSettings2 className="dark:hidden" size={18}
-                                 color={selectedFilters.length > 0 ? "white" : "#4f4f4f"}/>
+                                 color={filters.length > 0 ? "white" : "#4f4f4f"}/>
                     <LuSettings2 className="hidden dark:block" size={18} color={"white"}/>
                   </>
                 )}
@@ -305,23 +305,37 @@ export default function JobStatus() {
                   <TableRow key={i + 1}>
                     <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 overflow-hidden rounded-full">
-                          <Image
-                            width={40}
-                            height={40}
-                            src={job.thumbnail_url === "EXPIRED" ? ExpiredIcon : job.thumbnail_url}
-                            alt="user"
-                            className="dark:hidden"
-                          />
-                          <Image
-                            width={40}
-                            height={40}
-                            src={job.thumbnail_url === "EXPIRED" ? WhiteExpiredIcon : job.thumbnail_url}
-                            alt="user"
-                          />
-                        </div>
+                        {job.thumbnail_url === "EXPIRED" ? (
+                          <div className="w-10 h-10 rounded-full">
+                            <Image
+                              width={40}
+                              height={40}
+                              src={ExpiredIcon}
+                              alt="expired"
+                              className="dark:hidden"
+                            />
+                            <Image
+                              width={40}
+                              height={40}
+                              src={WhiteExpiredIcon}
+                              alt="expired"
+                              className="hidden dark:block"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <Image
+                              width={135}
+                              height={40}
+                              src={job.thumbnail_url}
+                              alt="thumbnail"
+                              className="object-fit w-full h-[40px] rounded-md"
+                            />
+                          </div>
+                        )}
                       </div>
                     </TableCell>
+
                     <TableCell
                       className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                       <div className="flex items-center gap-[6.75px]">
@@ -465,6 +479,7 @@ export default function JobStatus() {
           //@ts-ignore
           setSelected={setSelectedFilters}
           onClick={applyFilter}
+          filters={filters}
         />
         <VideoPreviewModal
           open={videoPreviewModal}

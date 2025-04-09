@@ -12,6 +12,7 @@ type PopUpProps = {
   selected: any;
   setSelected: (e: React.SetStateAction<string[]>) => void;
   onClick: any
+  filters: any
 }
 
 const filters = [
@@ -47,7 +48,10 @@ export default function FilterModal(props: PopUpProps) {
         </div>
         <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[34px]">
           <Button
-            onClick={() => props.setOpen(false)}
+            onClick={() => {
+              props.setOpen(false);
+              props.setSelected([...props.filters])
+            }}
             variant="outline"
           >
             Dismiss

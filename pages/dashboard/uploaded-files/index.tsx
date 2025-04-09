@@ -253,8 +253,8 @@ export default function JobStatus() {
               <TableBody>
                 {data?.map((job, i) => (
                   <TableRow key={i + 1}>
-                    <TableCell className="w-[135px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
-                      <div className="flex items-center gap-3">
+                    <TableCell className="w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
+                      <div className="flex justify-center items-center gap-3">
                         {job.thumbnail_url === "EXPIRED" ? (
                           <div className="w-10 h-10 rounded-full">
                             <Image
@@ -273,7 +273,7 @@ export default function JobStatus() {
                             />
                           </div>
                         ) : (
-                          <div className="w-full">
+                          <div className="flex justify-center">
                             <Image
                               width={135}
                               height={40}

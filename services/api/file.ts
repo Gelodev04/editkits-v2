@@ -1,22 +1,25 @@
-import { api } from './index';
-import { getAccessToken } from './index';
+import { api, getAccessToken } from './index';
+
+interface RecentFile {
+  id: string;
+  name: string;
+  thumbnail_url: string;
+  size_in_mb: number;
+  type: string;
+  created_at: number;
+  expires_at: number;
+}
 
 export const fileApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getRecentFiles: builder.query({
-      queryFn: async (_, _api, _extraOptions, baseQuery) => {
-        let token = getAccessToken();
-
-        while (!token) {
-          await new Promise((resolve) => setTimeout(resolve));
-          token = getAccessToken();
-        }
-
-        return baseQuery({
-          url: '/files/recent?offset=0&limit=12',
+    getRecentFiles: builder.query<RecentFile[], { offset?: number; limit?: number }>({
+      query: ({ offset = 0, limit = 10 }) => {
+        const token = getAccessToken();
+        return {
+          url: `/files/recent?offset=${offset}&limit=${limit}`,
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
-        });
+        };
       },
     }),
     upload: builder.mutation({

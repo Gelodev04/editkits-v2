@@ -1,37 +1,36 @@
-import {useState, useMemo, useEffect} from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "@/components/Table";
-import Badge from '@/components/Badge'
-import {
-  ExpiredIcon, WhiteExpiredIcon
-} from "@/icons";
-import Image from "next/image";
-import PaginationWithIcon from "../PaginationWithIcon";
-import {useGetJobsQuery} from "@/services/api/job";
-import {jobStatusColumns, stats} from "@/lib/constants";
+import Badge from '@/components/Badge';
 import StatCard from "@/components/cards/StatCard";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHeader,
+	TableRow,
+} from "@/components/Table";
+import {
+	ExpiredIcon, WhiteExpiredIcon
+} from "@/icons";
+import { jobStatusColumns, stats } from "@/lib/constants";
+import { useGetJobsQuery } from "@/services/api/job";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import PaginationWithIcon from "../PaginationWithIcon";
 
-import {router} from "next/client";
-import {IoMdRefresh} from "react-icons/io";
-import {IoDownloadOutline} from "react-icons/io5";
 import Button from "@/components/Button";
-import {useSidebar} from "@/context/SidebarContext";
 import ComponentCard from "@/components/ComponentCard";
-import {truncateFileName} from "@/lib/utils";
-import FilterModal from "@/components/modals/FilterModal";
-import DateFilterModal from "@/components/modals/DateFilterModal";
-import {RxCalendar} from "react-icons/rx";
-import {LuCirclePlay, LuSettings2} from "react-icons/lu";
-import {AiOutlinePlus} from "react-icons/ai";
-import {IoCopyOutline} from "react-icons/io5";
-import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
-import {usePreviewVideoQuery} from "@/services/api/file";
 import Menu from "@/components/Menu";
+import DateFilterModal from "@/components/modals/DateFilterModal";
+import FilterModal from "@/components/modals/FilterModal";
+import VideoPreviewModal from "@/components/modals/VideoPreviewModal";
+import { useSidebar } from "@/context/SidebarContext";
+import { truncateFileName } from "@/lib/utils";
+import { usePreviewVideoQuery } from "@/services/api/file";
+import { router } from "next/client";
+import { AiOutlinePlus } from "react-icons/ai";
+import { IoMdRefresh } from "react-icons/io";
+import { IoCopyOutline, IoDownloadOutline } from "react-icons/io5";
+import { LuCirclePlay, LuSettings2 } from "react-icons/lu";
+import { RxCalendar } from "react-icons/rx";
 
 type SortKey =
   "input_file_name"
@@ -44,29 +43,30 @@ type SortKey =
 type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
-  //@ts-ignore
-  const [dateRange, setDateRange] = useState({})
-  const {isMobileOpen, isHovered, isExpanded} = useSidebar()
-  const {data: jobs, refetch: refetchJobs} = useGetJobsQuery({
-    //@ts-ignore
-    from_ts: new Date(dateRange?.startDate / 1000).getTime(), to_ts: new Date(dateRange?.endDate / 1000).getTime()
-  });
-
-
+  const [dateRange, setDateRange] = useState({});
+  const {isMobileOpen, isHovered, isExpanded} = useSidebar();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
-
   const [dateFilterModal, setDateFilterModal] = useState(false);
   const [filterModal, setFilterModal] = useState(false);
-
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filters, setFilters] = useState([]);
-
-  const [fileId, setFileId] = useState(null);
+  const [fileId, setFileId] = useState<string | null>(null);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [video, setVideo] = useState(null);
+
+  const {data: jobs = [], refetch: refetchJobs} = useGetJobsQuery({
+    //@ts-ignore
+    from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
+    //@ts-ignore
+    to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
+    offset: (currentPage - 1) * itemsPerPage,
+    limit: itemsPerPage,
+    status: filters.length > 0 ? filters[0] : undefined
+  });
+
   const {data: videoUrl} = usePreviewVideoQuery({fileId}, {skip: !fileId});
 
   useEffect(() => {
@@ -74,51 +74,15 @@ export default function JobStatus() {
     setVideo(videoUrl?.url)
   }, [videoUrl])
 
-
   function applyFilter() {
     setFilters(selectedFilters)
     setFilterModal(false)
+    setCurrentPage(1) // Reset to first page when applying filters
   }
 
-
-  const filteredAndSortedData = useMemo(() => {
-    //@ts-ignore
-    return jobs?.filter((item) =>
-      Object.values(item).some(
-        (value) =>
-          typeof value === "string"
-      )
-    )
-      .sort((a, b) => {
-        //@ts-ignore
-        if (sortKey === ("input_file_name" || "input_files" || "status" || "output_file")) {
-          return sortOrder === "asc"
-            ? a[sortKey]?.localeCompare(b[sortKey])
-            : b[sortKey]?.localeCompare(a[sortKey]);
-        }
-        if (sortKey === "tools_used") {
-          return sortOrder === "asc"
-            ? a.tools_used[0]?.localeCompare(b.tools_used[0])
-            : b.tools_used[0]?.localeCompare(a.tools_used[0]);
-        }
-        if (sortKey === "credits") {
-          const salaryA = Number.parseInt(
-            String(a[sortKey] || "0").replace(/\$|,/g, "")
-          );
-          const salaryB = Number.parseInt(
-            String(b[sortKey] || "0").replace(/\$|,/g, "")
-          );
-          return sortOrder === "asc" ? salaryA - salaryB : salaryB - salaryA;
-        }
-        return sortOrder === "asc"
-          ? String(a[sortKey] || "")?.localeCompare(String(b[sortKey] || ""))
-          : String(b[sortKey] || "")?.localeCompare(String(a[sortKey] || ""));
-      });
-  }, [jobs, sortKey, sortOrder]);
-
-
-  const totalItems = filteredAndSortedData?.length;
+  const totalItems = jobs.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const currentData = jobs;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -132,10 +96,6 @@ export default function JobStatus() {
       setSortOrder("asc");
     }
   };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-  const currentData = filteredAndSortedData?.slice(startIndex, endIndex);
 
   function statusMapper(status) {
     switch (status) {
@@ -155,7 +115,7 @@ export default function JobStatus() {
       : "lg:ml-[90px]";
 
   //@ts-ignore
-  const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status))
+  const data = currentData;
   return (
     <>
       <div
@@ -368,54 +328,62 @@ export default function JobStatus() {
                     </TableCell>
                     <TableCell
                       className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {job.is_multi_output ? job.output_file_ids?.map(id => (
-                          <div className="flex items-center gap-[6.75px]">
-                            <p
-                              className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">{id?.slice(0, 5)}...</p>
-                            <div>
-                              <button onClick={() => navigator.clipboard.writeText(job.output_file_id)}
-                                      className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
-                                <IoCopyOutline size={17}/>
-                              </button>
-                            </div>
-                          </div>
-                        ))
-                        : (
-                          <>
-                            {job.output_file_id && (
-                              <div className="flex items-center gap-2">
-                                <p
-                                  className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">{job.output_file_id?.slice(0, 5)}...</p>
-                                <div>
-                                  <button onClick={() => navigator.clipboard.writeText(job.output_file_id)}
-                                          className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
-                                    <IoCopyOutline size={17}/>
-                                  </button>
-                                </div>
+                      {job.is_multi_output ? (
+                        <div className="flex flex-col gap-2">
+                          {job.output_file_id.split(',').map(id => (
+                            <div key={id} className="flex items-center gap-[6.75px]">
+                              <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">
+                                {id.slice(0, 5)}...
+                              </p>
+                              <div>
+                                <button onClick={() => navigator.clipboard.writeText(id)}
+                                        className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                                  <IoCopyOutline size={17}/>
+                                </button>
                               </div>
-                            )}
-                          </>
-                        )}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <>
+                          {job.output_file_id && (
+                            <div className="flex items-center gap-2">
+                              <p className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">
+                                {job.output_file_id.slice(0, 5)}...
+                              </p>
+                              <div>
+                                <button onClick={() => navigator.clipboard.writeText(job.output_file_id)}
+                                        className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                                  <IoCopyOutline size={17}/>
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
                     </TableCell>
                     <TableCell
                       className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">
-                      {(job.output_file_id || job.output_file_ids) && (
+                      {(job.output_file_id) && (
                         <div className="flex items-center w-full gap-2">
                           <div>
                             <button onClick={() => {
-                              setFileId(job.output_file_id)
-                              setVideoPreviewModal(true)
-
+                              if (job.output_file_id) {
+                                setFileId(job.output_file_id);
+                                setVideoPreviewModal(true);
+                              }
                             }}
                                     className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
                               <LuCirclePlay size={17}/>
                             </button>
                           </div>
                           {/*@ts-ignore*/}
-                          <a onMouseOver={() => setFileId(job.output_file_id)} href={videoUrl?.url}
+                          <a onMouseOver={() => job.output_file_id && setFileId(job.output_file_id)} href={videoUrl?.url}
                              download="video.mp4">
                             <button onClick={async () => {
-                              await setFileId(job.output_file_id);
+                              if (job.output_file_id) {
+                                setFileId(job.output_file_id);
+                              }
                             }}
                                     className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
                               <IoDownloadOutline size={17}/>
@@ -428,13 +396,17 @@ export default function JobStatus() {
                       className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                       <Menu
                         videoUrl={videoUrl}
-                        handleCopy={() => navigator.clipboard.writeText(job.output_file_id)}
+                        handleCopy={() => job.output_file_id && navigator.clipboard.writeText(job.output_file_id)}
                         handleDownload={async () => {
-                          await setFileId(job.output_file_id)
+                          if (job.output_file_id) {
+                            setFileId(job.output_file_id);
+                          }
                         }}
                         handlePreview={() => {
-                          setFileId(job.output_file_id)
-                          setVideoPreviewModal(true)
+                          if (job.output_file_id) {
+                            setFileId(job.output_file_id);
+                            setVideoPreviewModal(true);
+                          }
                         }}
                       />
                     </TableCell>
@@ -451,7 +423,7 @@ export default function JobStatus() {
             <div className="pb-3 xl:pb-0">
               <p
                 className="pb-3 text-sm font-medium text-center text-gray-500 border-b border-gray-100 dark:border-gray-800 dark:text-gray-400 xl:border-b-0 xl:pb-0 xl:text-left">
-                Showing {startIndex + 1} to {endIndex} of {totalItems} entries
+                Showing {currentPage * itemsPerPage - itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} entries
               </p>
             </div>
             <PaginationWithIcon

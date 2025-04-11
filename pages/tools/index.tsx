@@ -1,11 +1,11 @@
 import React from 'react';
 
-import {Divider} from "@mui/material";
+import { Divider } from "@mui/material";
 
-import Typography from "@/components/Typography";
-import Search from "@/components/Search";
-import {videoTools} from "@/lib/constants";
 import ToolCard from "@/components/cards/ToolCard";
+import Search from "@/components/Search";
+import Typography from "@/components/Typography";
+import { videoTools } from "@/lib/constants";
 
 export default function Tools() {
   const [filterBy, setFilterBy] = React.useState("");
@@ -82,9 +82,9 @@ export default function Tools() {
       >
         <p className="font-lato font-bold text-[32px] leading-[48px] text-[#4f4f4f] pb-[41px]">Audio Tools</p>
         <div className="grid grid-cols-5  gap-y-10 gap-x-4 px-6">
-          {videoTools.filter(tool => tool.name.includes(filterBy)).map(tool => (
+          {videoTools.filter(tool => tool.name.includes(filterBy)).map((tool, index) => (
             <ToolCard
-              key={tool.name}
+              key={`${tool.name}-${index}`}
               name={tool.name}
               description={tool.description}
               icon={tool.icon}

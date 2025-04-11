@@ -1,26 +1,26 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import {FaAngleRight} from "react-icons/fa6";
+import { FaAngleRight } from "react-icons/fa6";
 
 import Typography from "@/components/Typography";
 
-import UploadFileModal from "@/components/modals/UploadFileModal";
 import InputField from "@/components/InputField";
+import UploadFileModal from "@/components/modals/UploadFileModal";
 import Select from "@/components/Select";
 
-import {outputQualityList, videoType} from "@/lib/constants";
-import {VideoUpload} from "@/components/VideoUpload";
+import { VideoUpload } from "@/components/VideoUpload";
+import { outputQualityList, videoType } from "@/lib/constants";
 import {
-  useCommitJobMutation,
-  useInitJobMutation,
-  useJobStatusQuery,
+	useCommitJobMutation,
+	useInitJobMutation,
+	useJobStatusQuery,
 } from "@/services/api/job";
 
-import {useStatusQuery, useUploadMutation} from "@/services/api/file";
-import toast from "react-hot-toast";
+import ButtonOld from "@/components/Button_Old";
 import FileProgressModal from "@/components/modals/FilePgrogressModal";
 import PopUp from "@/components/modals/Popup";
-import ButtonOld from "@/components/Button_Old";
+import { useStatusQuery, useUploadMutation } from "@/services/api/file";
+import toast from "react-hot-toast";
 
 export default function TrimVideo() {
   const [fileId, setFileId] = useState(null);

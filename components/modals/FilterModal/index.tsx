@@ -1,7 +1,7 @@
 import React from "react";
 
-import {Modal} from "@/components/Modal";
 import Button from "@/components/Button";
+import { Modal } from "@/components/Modal";
 
 
 type PopUpProps = {
@@ -38,12 +38,14 @@ export default function FilterModal(props: PopUpProps) {
           className="font-lato font-bold text-[20px] leading-[30px] text-center text-gray-800 mb-7 text-title-sm dark:text-white/90 text-center">{props.description}</p>
 
         <div className="flex justify-center gap-[12px] pt-[24px]">
-          {filters.map((filter) => (
-            <>
-              <Button onClick={() => handleFilterSelect(filter.value)} variant={props.selected.includes(filter.value) ? 'primary': 'outline'}>
-                {filter.label}
-              </Button>
-            </>
+          {filters.map((filter, i) => (
+            <Button 
+              key={`filter-${filter.value}-${i}`} 
+              onClick={() => handleFilterSelect(filter.value)} 
+              variant={props.selected.includes(filter.value) ? 'primary': 'outline'}
+            >
+              {filter.label}
+            </Button>
           ))}
         </div>
         <div className="flex justify-center items-center gap-[6px] pt-[52px] pb-[34px]">

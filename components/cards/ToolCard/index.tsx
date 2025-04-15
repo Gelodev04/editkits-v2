@@ -1,6 +1,5 @@
-import React from "react";
-import Image, {StaticImageData} from "next/image";
-import {Divider} from "@mui/material";
+import { Divider } from "@mui/material";
+import Image, { StaticImageData } from "next/image";
 
 type ToolCardProps = {
     name: string;
@@ -51,7 +50,7 @@ function ForHomePage({icon, name, icon_hover}) {
   return (
     <div
       key={name}
-      className="group hover:text-white/90 text-[#262628] w-[208px] h-[121px] px-4 flex flex-col items-center border-solid border-[1px] border-[#9f9f9f] py-6 rounded-md justify-center cursor-pointer hover:scale-105 hover:bg-[#1d2939] transition-transform transition-colors duration-500 relative"
+      className="group hover:text-white/90 text-[#262628] w-full max-w-xl xl:w-[208px] xl:h-[121px] px-4 flex flex-col items-center border-solid border-[1px] border-[#9f9f9f] py-6 rounded-md justify-center cursor-pointer hover:scale-105 hover:bg-[#1d2939] transition-transform transition-colors duration-500 relative"
     >
       <Image
         src={icon}

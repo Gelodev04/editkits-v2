@@ -1,4 +1,3 @@
-import React from "react";
 
 type TextFieldProps = {
   label: string;
@@ -21,7 +20,7 @@ export default function TextField(props: TextFieldProps) {
   return (
     <>
 
-      <p className="font-lato font-bold text-sm leading-[21px] text-[#2c2c2c] pb-[4px]">{props.label}</p>
+      <p className="font-lato font-bold text-sm leading-[21px] text-[#2c2c2c] pb-[4px] dark:text-white">{props.label}</p>
       <div>
         <textarea
           value={props.value}
@@ -30,7 +29,7 @@ export default function TextField(props: TextFieldProps) {
           id=""
           rows={10}
           placeholder={props.placeholder}
-          className={`w-full font-lato pt-[9px] px-[12px] font-normal text-sm text-[#6f6c90] shadow-none rounded-[8px] border ${props.error ? 'border-red-300' : 'border-[#9f9f9f]'} leading-[18px] font-normal outline-none`}
+          className={`w-full font-lato pt-[9px] px-[12px] font-normal text-sm text-[#6f6c90] shadow-none rounded-[8px] border ${props.error ? 'border-red-300' : 'border-[#9f9f9f]'} leading-[18px] font-normal outline-none dark:text-white`}
         />
 
       </div>

@@ -15,7 +15,7 @@ type InputFieldProps = {
 export default function InputField(props: InputFieldProps) {
   return (
     <>
-      <p className="font-lato font-medium text-base leading-[20px] text-[#2c2c2c] pb-[17px]">{props.label}</p>
+      <p className="font-lato font-medium text-base leading-[20px] text-[#2c2c2c] pb-[17px] dark:text-white">{props.label}</p>
       <div>
         {props.type === "password" && (
           <PasswordInput

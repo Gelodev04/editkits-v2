@@ -1,15 +1,15 @@
 import React from "react";
 
-import { TbXboxX } from "react-icons/tb";
 import { Fade, Modal } from "@mui/material";
+import { TbXboxX } from "react-icons/tb";
 
 import InputField from "@/components/InputField";
 
+import ButtonOld from "@/components/Button_Old";
 import TextField from "@/components/TextField";
 import Typography from "@/components/Typography";
-import { validateEmail } from "@/lib/validateEmail";
 import { lato, montserrat, opensans } from "@/lib/fonts";
-import ButtonOld from "@/components/Button_Old";
+import { validateEmail } from "@/lib/validateEmail";
 
 type GetInTouchCardProps = {
   user: any
@@ -46,11 +46,11 @@ export default function WaitListModal(props: GetInTouchCardProps) {
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
               <div
-                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:w-[532px]`}>
+                className={`${montserrat.variable} ${lato.variable} ${opensans.variable} relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:w-[532px] dark:bg-[#2c2c2c]`}>
                 <div className="absolute right-[14px] top-[14px] cursor-pointer">
                   <TbXboxX size={30} color="#000" onClick={() => props.setOpen(false)}/>
                 </div>
-                <div className="bg-white pt-[32px]">
+                <div className="bg-white pt-[32px] dark:bg-[#2c2c2c]">
                   <div className="pb-[8px]">
                     <Typography label="Join the Waitlist" center variant="h4"/>
                   </div>

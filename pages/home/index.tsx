@@ -1,25 +1,25 @@
-import {useEffect, useState} from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 
 
 import FeatureCard from "@/components/cards/FeatureCard";
+import ToolCard from "@/components/cards/ToolCard";
+import Typography from "@/components/Typography";
 
 const PopUp = dynamic(() => import ("@/components/modals/Popup"), {
   ssr: false
 })
-import Typography from "@/components/Typography";
-import ToolCard from "@/components/cards/ToolCard";
 
 const WaitListModal = dynamic(() => import("@/components/modals/WaitListModal"), {
   ssr: false
 })
 
-import {featureCards, videoTools} from "@/lib/constants";
-import {getUserInfo} from "@/services/api";
-import { useContactUsUserMutation} from "@/services/api/auth";
-import {useContactUsCommonMutation} from "@/services/api/public";
 import ButtonOld from "@/components/Button_Old";
+import { featureCards, videoTools } from "@/lib/constants";
+import { getUserInfo } from "@/services/api";
+import { useContactUsUserMutation } from "@/services/api/auth";
+import { useContactUsCommonMutation } from "@/services/api/public";
 
 const Hero = dynamic(() => import("@/components/home/Hero"), {
   ssr: false,
@@ -115,13 +115,13 @@ export default function Home() {
         <div className="pb-[12px]">
           <Typography
             label="Quick Access"
-            variant="h4"
+            variant="h4-dark"
             center
           />
         </div>
-        <Typography variant="b2" label="Video Tools" center/>
+        <Typography variant="b2-dark" label="Video Tools" center/>
         <div className="place-items-center max-w-[1184px] mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 pt-[40px] pb-[32px] gap-x-[35px]">
+          <div className="flex flex-col gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-5 pt-[40px] pb-[32px] gap-x-[35px]">
             {videoTools.slice(0, 5).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -133,7 +133,7 @@ export default function Home() {
           </div>
 
           <div
-            className="grid sm:grid-cols-2 lg:grid-cols-4 col-span-full gap-x-[35px] max-w-[1920px]">
+            className="flex flex-col gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-4 col-span-full gap-x-[35px] max-w-[1920px]">
             {videoTools.slice(5, 9).map((tool) => (
               <ToolCard
                 key={tool.name}
@@ -152,14 +152,14 @@ export default function Home() {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        <div className="w-full">
+        <div className="w-full px-8 lg:px-0">
           <div
-            className="max-w-[1555px] mx-auto pt-[139px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-7">
+            className="lg:max-w-[1555px] mx-auto pt-[139px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-7">
             <Typography label="Learn more about our features" variant="h2"/>
           </div>
-          <div className="w-full bg-[url(../public/images/inclined_bg.svg)] bg-no-repeat bg-cover">
+          <div className="w-full">
             <div
-              className="max-w-[1536px] mx-auto grid sm:grid-cols-3 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] sm:pl-[60px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-5">
+              className="lg:max-w-[1536px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 lg:gap-x-0 2xl:grid-cols-4 gap-y-[40px] pt-[72px] pb-[116px] 2lg:pl-[80px] xl:pl-[100px] mxl:pl-[120px] 2xl:pl-5">
               {featureCards.map((card) => (
                 <FeatureCard key={card.name} name={card.name} icon={card.image} description={card.description}/>
               ))}

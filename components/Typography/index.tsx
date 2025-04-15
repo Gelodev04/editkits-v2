@@ -26,6 +26,8 @@ function TypographyStyle(props: TypographyProps) {
       return `dark:text-white/90 text-3xl font-montserrat text-[#2c2c2c] font-bold ${props.center && "text-center"}`;
     case "h4":
       return `dark:text-white/90 font-montserrat font-bold text-[32px] text-[#2c2c2c] ${props.center && "text-center"} leading-[40px] whitespace-pre-line`;
+	case "h4-dark":
+		return `dark:text-[#2c2c2c] font-montserrat font-bold text-[32px] text-[#2c2c2c] ${props.center && "text-center"} leading-[40px] whitespace-pre-line`;
     case "hb4":
       return `dark:text-white/90 text-base font-bold font-lato text-[#333333] ${props.center && "text-center"}`;
     case "h6":
@@ -34,7 +36,9 @@ function TypographyStyle(props: TypographyProps) {
       return `dark:text-white/90 ${props.className} text-xl font-lato font-bold text-[#0b0d0e]`;
     case "b2":
       return `dark:text-white/90 group-hover:text-white/90 font-lato text-base text-[#4f4f4f] font-normal ${props.center && "text-center"} leading-[24px]`
-    case "bb2":
+	case "b2-dark":
+		return `dark:text-[#4f4f4f] group-hover:text-white/90 font-lato text-base text-[#4f4f4f] font-normal ${props.center && "text-center"} leading-[24px]`
+	  case "bb2":
       return `dark:text-white/90 group-hover:text-white/90 font-lato text-base text-[#4f4f4f] font-bold ${props.center && "text-center"} leading-[24px]`
     case "b3":
       return `dark:text-white/90 font-lato font-normal text-sm leading-[21px] text-[#4f4f4f] ${props.center && "text-center"} ${props.button && "cursor-pointer"}`;

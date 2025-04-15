@@ -33,7 +33,7 @@ type SortOrder = "asc" | "desc";
 
 export default function JobStatus() {
 	const [currentPage, setCurrentPage] = useState(1);
-	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [itemsPerPage, setItemsPerPage] = useState(3);
 	const [sortKey, setSortKey] = useState<SortKey>("name");
 	const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 	const [dateRange, setDateRange] = useState({});
@@ -46,12 +46,11 @@ export default function JobStatus() {
 	const [video, setVideo] = useState(null);
 
 	const {data: recentFiles = [], refetch: refetchRecentFiles} = useGetRecentFilesQuery({
-		offset: (currentPage - 1) * itemsPerPage,
-		limit: itemsPerPage
+		offset: 0,
+		limit: 100 // Pedimos todos los archivos por ahora
 	});
 	const {data: videoUrl} = usePreviewVideoQuery({fileId}, {skip: !fileId});
 	const {isMobileOpen, isExpanded, isHovered} = useSidebar();
-
 	useEffect(() => {
 		// @ts-ignore
 		setVideo(videoUrl?.url)
@@ -60,7 +59,29 @@ export default function JobStatus() {
 
 	const totalItems = recentFiles.length;
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
-	const currentData = recentFiles;
+	
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	
+	// Ordenar los datos según sortKey y sortOrder
+	const sortedFiles = [...recentFiles].sort((a, b) => {
+		if (a[sortKey] === undefined || b[sortKey] === undefined) return 0;
+		
+		// Manejar diferentes tipos de datos para ordenamiento
+		if (typeof a[sortKey] === 'string') {
+			return sortOrder === 'asc' 
+				? a[sortKey].localeCompare(b[sortKey]) 
+				: b[sortKey].localeCompare(a[sortKey]);
+		} else if (typeof a[sortKey] === 'number') {
+			return sortOrder === 'asc' 
+				? a[sortKey] - b[sortKey] 
+				: b[sortKey] - a[sortKey];
+		}
+		return 0;
+	});
+	
+	// Aplicar paginación a los datos ordenados
+	const currentData = sortedFiles.slice(startIndex, endIndex);
 
 	//@ts-ignore
 	const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
@@ -102,9 +123,13 @@ export default function JobStatus() {
 								<select
 									className="w-full py-2 pl-3 pr-8 text-sm text-gray-800 bg-transparent border border-gray-300 rounded-lg appearance-none dark:bg-dark-900 h-9 bg-none shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
 									value={itemsPerPage}
-									onChange={(e) => setItemsPerPage(Number(e.target.value))}
+									onChange={(e) => {
+										setItemsPerPage(Number(e.target.value));
+										setCurrentPage(1); // Resetear a la primera página
+										refetchRecentFiles();
+									}}
 								>
-									{[5, 8, 10].map((value) => (
+									{[3, 6, 9, 12].map((value) => (
 										<option
 											key={value}
 											value={value}

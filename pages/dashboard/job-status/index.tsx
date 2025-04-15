@@ -46,7 +46,7 @@ export default function JobStatus() {
   const [dateRange, setDateRange] = useState({});
   const {isMobileOpen, isHovered, isExpanded} = useSidebar();
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
   const [sortKey, setSortKey] = useState<SortKey>("input_file_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [dateFilterModal, setDateFilterModal] = useState(false);
@@ -57,17 +57,23 @@ export default function JobStatus() {
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [video, setVideo] = useState(null);
 
-  const {data: jobs = [], refetch: refetchJobs} = useGetJobsQuery({
+  const {data: jobs = [], isError: isJobsError, error: jobsError, refetch: refetchJobs} = useGetJobsQuery({
     //@ts-ignore
     from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
     //@ts-ignore
     to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
-    offset: (currentPage - 1) * itemsPerPage,
-    limit: itemsPerPage,
+    offset: 0,
+    limit: 30, // Reducido de 100 a 30 para evitar error 500
     status: filters.length > 0 ? filters[0] : undefined
   });
 
   const {data: videoUrl} = usePreviewVideoQuery({fileId}, {skip: !fileId});
+
+  useEffect(() => {
+    if (isJobsError) {
+      console.error('Error al obtener jobs:', jobsError);
+    }
+  }, [isJobsError, jobsError, jobs]);
 
   useEffect(() => {
     // @ts-ignore
@@ -82,7 +88,38 @@ export default function JobStatus() {
 
   const totalItems = jobs.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const currentData = jobs;
+  
+  // Hacemos la paginación en el frontend
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  
+  // Ordenar los datos según sortKey y sortOrder
+  const sortedJobs = [...jobs].sort((a, b) => {
+    if (a[sortKey] === undefined || b[sortKey] === undefined) return 0;
+    
+    // Manejar diferentes tipos de datos para ordenamiento
+    if (typeof a[sortKey] === 'string') {
+      return sortOrder === 'asc' 
+        ? a[sortKey].localeCompare(b[sortKey]) 
+        : b[sortKey].localeCompare(a[sortKey]);
+    } else if (typeof a[sortKey] === 'number') {
+      return sortOrder === 'asc' 
+        ? a[sortKey] - b[sortKey] 
+        : b[sortKey] - a[sortKey];
+    } else if (Array.isArray(a[sortKey])) {
+      // Para arrays (como tools_used), comparar su longitud
+      return sortOrder === 'asc' 
+        ? a[sortKey].length - b[sortKey].length 
+        : b[sortKey].length - a[sortKey].length;
+    }
+    return 0;
+  });
+  
+  // Aplicar paginación a los datos ordenados
+  const currentData = sortedJobs.slice(startIndex, endIndex);
+
+  //@ts-ignore
+  const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -95,6 +132,10 @@ export default function JobStatus() {
       setSortKey(key);
       setSortOrder("asc");
     }
+    
+    // No es necesario resetear la página actual aquí
+    // ya que estamos ordenando todos los datos primero,
+    // y luego aplicando la paginación
   };
 
   function statusMapper(status) {
@@ -114,8 +155,6 @@ export default function JobStatus() {
       ? "lg:ml-[290px] 2xl:ml-[300px] lg:pr-[24px] 4xl:mx-auto"
       : "lg:ml-[90px]";
 
-  //@ts-ignore
-  const data = currentData;
   return (
     <>
       <div
@@ -132,9 +171,13 @@ export default function JobStatus() {
                 <select
                   className="w-full py-2 pl-3 pr-8 text-sm text-gray-800 bg-transparent border border-gray-300 rounded-lg appearance-none dark:bg-dark-900 h-9 bg-none shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                   value={itemsPerPage}
-                  onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1); // Resetear a la primera página
+                    refetchJobs();
+                  }}
                 >
-                  {[5, 8, 10].map((value) => (
+                  {[3, 6, 9, 12].map((value) => (
                     <option
                       key={value}
                       value={value}
@@ -210,210 +253,233 @@ export default function JobStatus() {
             </div>
           </div>
           <div className="dark:bg-white/3 max-w-full overflow-x-auto custom-scrollbar">
-            <Table>
-              <TableHeader className="border-gray-100 dark:border-white/[0.05]">
-                <TableRow>
-                  {jobStatusColumns?.map(({key, name}) => (
-                    <TableCell
-                      key={name}
-                      isHeader
-                      className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
-                    >
-                      <div
-                        className="flex items-center justify-between cursor-pointer"
-                        onClick={() => handleSort(key as SortKey)}
+            {isJobsError ? (
+              <div className="p-6 text-center">
+                <p className="text-red-500 dark:text-red-400 mb-2">Hubo un problema al cargar los datos.</p>
+                <button 
+                  onClick={() => refetchJobs()}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                  Intentar de nuevo
+                </button>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader className="border-gray-100 dark:border-white/[0.05]">
+                  <TableRow>
+                    {jobStatusColumns?.map(({key, name}, index) => (
+                      <TableCell
+                        key={`${key}-${index}`}
+                        isHeader
+                        className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
                       >
-                        <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
-                          {name}
-                        </p>
-                        <button
-                          className={(!name || name === "Thumbnail") ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
-                          <svg
-                            width="8"
-                            height="5"
-                            viewBox="0 0 8 5"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                          <svg
-                            width="8"
-                            height="5"
-                            viewBox="0 0 8 5"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.map((job, i) => (
-                  <TableRow key={i + 1}>
-                    <TableCell className="min-w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
-                      <div className="flex justify-center items-center gap-3">
-                        {job.thumbnail_url === "EXPIRED" ? (
-                          <div className="w-10 h-10 rounded-full">
-                            <Image
-                              width={40}
-                              height={40}
-                              src={ExpiredIcon}
-                              alt="expired"
-                              className="dark:hidden"
-                            />
-                            <Image
-                              width={40}
-                              height={40}
-                              src={WhiteExpiredIcon}
-                              alt="expired"
-                              className="hidden dark:block"
-                            />
-                          </div>
-                        ) : (
-                          <div className="flex justify-center">
-                            <Image
-                              width={135}
-                              height={40}
-                              src={job.thumbnail_url}
-                              alt="thumbnail"
-                              className="object-fit w-full h-[40px] rounded-md"
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell
-                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      <div className="flex items-center gap-[6.75px]">
-                        {job.input_file_id?.slice(0, 5)}...
-                        <button onClick={() => navigator.clipboard.writeText(job.input_file_id)}
-                                className="text-gray-500 dark:text-gray-400 dark:hover:text-white/90">
-                          <IoCopyOutline size={17}/>
-                        </button>
-                      </div>
-                    </TableCell>
-                    <TableCell
-                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {truncateFileName(job.input_file_name)}
-                    </TableCell>
-                    <TableCell
-                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {new Date(job.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
-                    </TableCell>
-                    <TableCell
-                      className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {job.tools_used.join(", ")}
-                    </TableCell>
-                    <TableCell
-                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {job.credits}
-                    </TableCell>
-                    <TableCell
-                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      <Badge
-                        color={job.status === "COMPLETED" ? "success" : job.status === "IN_PROGRESS" ? "warning" : "error"}
-                      >
-                        {statusMapper(job.status)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell
-                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {job.is_multi_output ? (
-                        <div className="flex flex-col gap-2">
-                          {job.output_file_id.split(',').map(id => (
-                            <div key={id} className="flex items-center gap-[6.75px]">
-                              <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">
-                                {id.slice(0, 5)}...
-                              </p>
-                              <div>
-                                <button onClick={() => navigator.clipboard.writeText(id)}
-                                        className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
-                                  <IoCopyOutline size={17}/>
-                                </button>
-                              </div>
-                            </div>
-                          ))}
+                        <div
+                          className="flex items-center justify-between cursor-pointer"
+                          onClick={() => handleSort(key as SortKey)}
+                        >
+                          <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
+                            {name}
+                          </p>
+                          <button
+                            className={(!name || name === "Thumbnail") ? "hidden" : "flex flex-col gap-0.5 text-gray-800 dark:text-gray-700"}>
+                            <svg
+                              width="8"
+                              height="5"
+                              viewBox="0 0 8 5"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            <svg
+                              width="8"
+                              height="5"
+                              viewBox="0 0 8 5"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </button>
                         </div>
-                      ) : (
-                        <>
-                          {job.output_file_id && (
-                            <div className="flex items-center gap-2">
-                              <p className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">
-                                {job.output_file_id.slice(0, 5)}...
-                              </p>
-                              <div>
-                                <button onClick={() => navigator.clipboard.writeText(job.output_file_id)}
-                                        className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
-                                  <IoCopyOutline size={17}/>
-                                </button>
-                              </div>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data?.map((job, i) => (
+                    <TableRow key={job.id || `job-${i}`}>
+                      <TableCell className="min-w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
+                        <div className="flex justify-center items-center gap-3">
+                          {!job.thumbnail_url || job.thumbnail_url === "EXPIRED" ? (
+                            <div className="w-10 h-10 rounded-full">
+                              <Image
+                                width={40}
+                                height={40}
+                                src={ExpiredIcon}
+                                alt="expired"
+                                className="dark:hidden"
+                              />
+                              <Image
+                                width={40}
+                                height={40}
+                                src={WhiteExpiredIcon}
+                                alt="expired"
+                                className="hidden dark:block"
+                              />
+                            </div>
+                          ) : (
+                            <div className="flex justify-center">
+                              <Image
+                                width={135}
+                                height={40}
+                                src={job.thumbnail_url}
+                                alt="thumbnail"
+                                className="object-fit w-full h-[40px] rounded-md"
+                                onError={(e) => {
+                                  // En caso de error al cargar la imagen, mostrar ícono de expirado
+                                  e.currentTarget.onerror = null;
+                                  e.currentTarget.src = ExpiredIcon.src;
+                                }}
+                              />
                             </div>
                           )}
-                        </>
-                      )}
-                    </TableCell>
-                    <TableCell
-                      className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">
-                      {(job.output_file_id) && (
-                        <div className="flex items-center w-full gap-2">
-                          <div>
-                            <button onClick={() => {
-                              if (job.output_file_id) {
-                                setFileId(job.output_file_id);
-                                setVideoPreviewModal(true);
-                              }
-                            }}
-                                    className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
-                              <LuCirclePlay size={17}/>
-                            </button>
-                          </div>
-                          {/*@ts-ignore*/}
-                          <a onMouseOver={() => job.output_file_id && setFileId(job.output_file_id)} href={videoUrl?.url}
-                             download="video.mp4">
-                            <button onClick={async () => {
-                              if (job.output_file_id) {
-                                setFileId(job.output_file_id);
-                              }
-                            }}
-                                    className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
-                              <IoDownloadOutline size={17}/>
-                            </button>
-                          </a>
                         </div>
-                      )}
-                    </TableCell>
-                    <TableCell
-                      className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      <Menu
-                        videoUrl={videoUrl}
-                        handleCopy={() => job.output_file_id && navigator.clipboard.writeText(job.output_file_id)}
-                        handleDownload={async () => {
-                          if (job.output_file_id) {
-                            setFileId(job.output_file_id);
-                          }
-                        }}
-                        handlePreview={() => {
-                          if (job.output_file_id) {
-                            setFileId(job.output_file_id);
-                            setVideoPreviewModal(true);
-                          }
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                      </TableCell>
+                      <TableCell
+                        className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        <div className="flex items-center gap-[6.75px]">
+                          {job.input_file_id?.slice(0, 5)}...
+                          <button onClick={() => navigator.clipboard.writeText(job.input_file_id)}
+                                  className="text-gray-500 dark:text-gray-400 dark:hover:text-white/90">
+                            <IoCopyOutline size={17}/>
+                          </button>
+                        </div>
+                      </TableCell>
+                      <TableCell
+                        className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        {truncateFileName(job.input_file_name)}
+                      </TableCell>
+                      <TableCell
+                        className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        {new Date(job.created_at * 1000).toLocaleDateString('en-GB') + " " + new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
+                      </TableCell>
+                      <TableCell
+                        className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        {job.tools_used.join(", ")}
+                      </TableCell>
+                      <TableCell
+                        className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        {job.credits}
+                      </TableCell>
+                      <TableCell
+                        className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        <Badge
+                          color={job.status === "COMPLETED" ? "success" : job.status === "IN_PROGRESS" ? "warning" : "error"}
+                        >
+                          {statusMapper(job.status)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell
+                        className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        {job.is_multi_output ? (
+                          <div className="flex flex-col gap-2">
+                            {job.output_file_id.split(',').map(id => (
+                              <div key={id} className="flex items-center gap-[6.75px]">
+                                <p className="font-lato text-sm font-normal text-[#4f4f4f] leading-[19.6px]">
+                                  {id.slice(0, 5)}...
+                                </p>
+                                <div>
+                                  <button onClick={() => navigator.clipboard.writeText(id)}
+                                          className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                                    <IoCopyOutline size={17}/>
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <>
+                            {job.output_file_id && (
+                              <div className="flex items-center gap-2">
+                                <p className="font-lato text-sm font-normal text-[#4f4f4f] dark:text-gray-400/90 leading-[19.6px]">
+                                  {job.output_file_id.slice(0, 5)}...
+                                </p>
+                                <div>
+                                  <button onClick={() => navigator.clipboard.writeText(job.output_file_id)}
+                                          className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90">
+                                    <IoCopyOutline size={17}/>
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">
+                        {(job.output_file_id) && (
+                          <div className="flex items-center w-full gap-2">
+                            <div>
+                              <button onClick={() => {
+                                if (job.output_file_id) {
+                                  setFileId(job.output_file_id);
+                                  setVideoPreviewModal(true);
+                                }
+                              }}
+                                      className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
+                                <LuCirclePlay size={17}/>
+                              </button>
+                            </div>
+                            {/*@ts-ignore*/}
+                            <a onClick={(e) => {
+                              // @ts-ignore
+                              if (!videoUrl?.url) {
+                                e.preventDefault();
+                                if (job.output_file_id) {
+                                  setFileId(job.output_file_id);
+                                }
+                              }
+                            }} 
+                            onMouseOver={() => job.output_file_id && setFileId(job.output_file_id)} 
+                            // @ts-ignore
+                            href={videoUrl?.url} 
+                            download="video.mp4">
+                              <button className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
+                                <IoDownloadOutline size={17}/>
+                              </button>
+                            </a>
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        <Menu
+                          videoUrl={videoUrl}
+                          handleCopy={() => job.output_file_id && navigator.clipboard.writeText(job.output_file_id)}
+                          handleDownload={async () => {
+                            if (job.output_file_id) {
+                              setFileId(job.output_file_id);
+                            }
+                          }}
+                          handlePreview={() => {
+                            if (job.output_file_id) {
+                              setFileId(job.output_file_id);
+                              setVideoPreviewModal(true);
+                            }
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </div>
         </ComponentCard>
 

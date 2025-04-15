@@ -10,10 +10,15 @@ interface RecentFile {
   expires_at: number;
 }
 
+interface RecentFilesResponse {
+  files: RecentFile[];
+  total: number;
+}
+
 export const fileApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getRecentFiles: builder.query<RecentFile[], { offset?: number; limit?: number }>({
-      query: ({ offset = 0, limit = 10 }) => {
+      query: ({ offset = 0, limit }) => {
         const token = getAccessToken();
         return {
           url: `/files/recent?offset=${offset}&limit=${limit}`,

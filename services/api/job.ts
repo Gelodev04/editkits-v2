@@ -32,16 +32,20 @@ export const jobApi = api.injectEndpoints({
       to_ts?: number;
       status?: string;
     }>({
-      query: ({ offset = 0, limit = 10, from_ts, to_ts, status }) => {
+      query: ({ offset = 0, limit, from_ts, to_ts, status }) => {
         const token = getAccessToken();
         const params = new URLSearchParams();
         
         params.append('offset', offset.toString());
-        params.append('limit', limit.toString());
+        if (limit !== undefined) {
+          params.append('limit', limit.toString());
+        }
         
         if (from_ts) params.append('from_ts', from_ts.toString());
         if (to_ts) params.append('to_ts', to_ts.toString());
         if (status) params.append('status', status);
+
+		const url = `/jobs?${params.toString()}`;
 
         return {
           url: `/jobs?${params.toString()}`,

@@ -12,7 +12,7 @@ export default function StatCard({stats}:{stats:Stat[]} ) {
   return (
     <>
       {/*@ts-ignore*/}
-      {stats.map(((s) => <Stat label={s.label} data={s.data}/>))}
+      {stats.map(((s) => <Stat label={s.label} data={s.data} key={s.label}/>))}
     </>
   )
 }
@@ -33,7 +33,7 @@ function Stat({label, data}: { label: string; data: any }) {
           className="grid rounded-2xl border border-gray-200 bg-white sm:grid-cols-2 xl:grid-cols-3 dark:border-gray-800 dark:bg-gray-900">
           {data.map(((s: { title: string; value: number }) => (
 
-            <div className="border-b border-gray-200 px-6 py-5 sm:border-r xl:border-b-0 dark:border-gray-800">
+            <div className="border-b border-gray-200 px-6 py-5 sm:border-r xl:border-b-0 dark:border-gray-800" key={s.title}>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 {s.title}
               </span>

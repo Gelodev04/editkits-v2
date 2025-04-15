@@ -10,6 +10,8 @@ type InputProps = {
   height?: number;
   borderRadius?: number;
   bgColor?: string;
+  min?: number;
+  step?: number;
 }
 
 export default function Input(props: InputProps) {
@@ -31,6 +33,8 @@ export default function Input(props: InputProps) {
       onChange={props.onChange}
       style={{height: props.height, backgroundColor: props.bgColor}}
       value={props.value ?? ""}
+      min={props.min}
+      step={props.step}
     />
   )
 }

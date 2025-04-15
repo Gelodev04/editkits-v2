@@ -10,10 +10,11 @@ import {
 import {
 	ExpiredIcon, WhiteExpiredIcon
 } from "@/icons";
-import { jobStatusColumns, stats } from "@/lib/constants";
+import { jobStatusColumns } from "@/lib/constants";
 import { useGetJobsQuery } from "@/services/api/job";
+import { useGetStatsQuery } from "@/services/api/stats";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PaginationWithIcon from "../PaginationWithIcon";
 
 import Button from "@/components/Button";
@@ -57,6 +58,78 @@ export default function JobStatus() {
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [video, setVideo] = useState(null);
 
+  const { data: statsData, isLoading: isStatsLoading, error: statsError, isError: isStatsError, refetch: refetchStats } = useGetStatsQuery();
+
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      refetchStats();
+    }, 30000);
+    
+    return () => clearInterval(refreshInterval);
+  }, [refetchStats]);
+
+  const realTimeStats = useMemo(() => {
+    if (!statsData) {
+      return [
+        {
+          label: "Credits",
+          data: [
+            { title: "Available", value: 0 },
+            { title: "In use", value: 0 },
+            { title: "Used", value: 0 }
+          ]
+        },
+        {
+          label: "Job Status",
+          data: [
+            { title: "In progress", value: 0 },
+            { title: "Success", value: 0 },
+            { title: "Failed", value: 0 }
+          ]
+        }
+      ];
+    }
+    
+    const stats = [
+      {
+        label: "Credits",
+        data: [
+          {
+            title: "Available",
+            value: statsData.credits.available
+          },
+          {
+            title: "In use",
+            value: statsData.credits.inUse
+          },
+          {
+            title: "Used",
+            value: statsData.credits.used
+          }
+        ]
+      },
+      {
+        label: "Job Status",
+        data: [
+          {
+            title: "In progress",
+            value: statsData.jobStatus.inProgress
+          },
+          {
+            title: "Success",
+            value: statsData.jobStatus.success
+          },
+          {
+            title: "Failed",
+            value: statsData.jobStatus.failed
+          }
+        ]
+      }
+    ];
+    
+    return stats;
+  }, [statsData]);
+
   const {data: jobs = [], isError: isJobsError, error: jobsError, refetch: refetchJobs} = useGetJobsQuery({
     //@ts-ignore
     from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
@@ -68,12 +141,6 @@ export default function JobStatus() {
   });
 
   const {data: videoUrl} = usePreviewVideoQuery({fileId}, {skip: !fileId});
-
-  useEffect(() => {
-    if (isJobsError) {
-      console.error('Error al obtener jobs:', jobsError);
-    }
-  }, [isJobsError, jobsError, jobs]);
 
   useEffect(() => {
     // @ts-ignore
@@ -132,10 +199,6 @@ export default function JobStatus() {
       setSortKey(key);
       setSortOrder("asc");
     }
-    
-    // No es necesario resetear la página actual aquí
-    // ya que estamos ordenando todos los datos primero,
-    // y luego aplicando la paginación
   };
 
   function statusMapper(status) {
@@ -160,7 +223,17 @@ export default function JobStatus() {
       <div
         className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6 max-w-[1488px] mx-auto">
-          <StatCard stats={stats}/>
+          {isStatsLoading ? (
+            <div className="col-span-2 h-32 flex items-center justify-center">
+              <p className="text-gray-500 dark:text-gray-400">Loading statistics...</p>
+            </div>
+          ) : !realTimeStats || realTimeStats.length === 0 ? (
+            <div className="col-span-2 h-32 flex items-center justify-center">
+              <p className="text-gray-500 dark:text-gray-400">No statistics available</p>
+            </div>
+          ) : (
+            <StatCard stats={realTimeStats} />
+          )}
         </div>
         <ComponentCard title="Job Status" className="max-w-[1488px] mx-auto">
           <div
@@ -173,7 +246,7 @@ export default function JobStatus() {
                   value={itemsPerPage}
                   onChange={(e) => {
                     setItemsPerPage(Number(e.target.value));
-                    setCurrentPage(1); // Resetear a la primera página
+                    setCurrentPage(1); 
                     refetchJobs();
                   }}
                 >
@@ -255,12 +328,12 @@ export default function JobStatus() {
           <div className="dark:bg-white/3 max-w-full overflow-x-auto custom-scrollbar">
             {isJobsError ? (
               <div className="p-6 text-center">
-                <p className="text-red-500 dark:text-red-400 mb-2">Hubo un problema al cargar los datos.</p>
+                <p className="text-red-500 dark:text-red-400 mb-2">There was an error loading the data.</p>
                 <button 
                   onClick={() => refetchJobs()}
                   className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
-                  Intentar de nuevo
+                  Try again
                 </button>
               </div>
             ) : (
@@ -342,7 +415,6 @@ export default function JobStatus() {
                                 alt="thumbnail"
                                 className="object-fit w-full h-[40px] rounded-md"
                                 onError={(e) => {
-                                  // En caso de error al cargar la imagen, mostrar ícono de expirado
                                   e.currentTarget.onerror = null;
                                   e.currentTarget.src = ExpiredIcon.src;
                                 }}

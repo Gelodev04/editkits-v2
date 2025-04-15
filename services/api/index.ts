@@ -27,6 +27,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API as string,
   }),
+  tagTypes: ['Stats', 'Files', 'Jobs'],
   endpoints: () => ({}),
 });
 

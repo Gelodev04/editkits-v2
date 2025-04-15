@@ -33,7 +33,6 @@ export const jobApi = api.injectEndpoints({
       status?: string;
     }>({
       query: ({ offset = 0, limit, from_ts, to_ts, status }) => {
-        const token = getAccessToken();
         const params = new URLSearchParams();
         
         params.append('offset', offset.toString());
@@ -45,46 +44,35 @@ export const jobApi = api.injectEndpoints({
         if (to_ts) params.append('to_ts', to_ts.toString());
         if (status) params.append('status', status);
 
-		const url = `/jobs?${params.toString()}`;
-
         return {
           url: `/jobs?${params.toString()}`,
           method: 'GET',
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${getAccessToken()}` },
         };
       },
     }),
     initJob: builder.mutation({
-      query: (body) => {
-        const access_token = getAccessToken();
-        return {
-          url: '/job/init',
-          method: 'POST',
-          body,
-          headers: { Authorization: `Bearer ${access_token}` },
-        };
-      },
+      query: (body) => ({
+        url: '/job/init',
+        method: 'POST',
+        body,
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }),
     }),
     commitJob: builder.mutation({
-      query: ({ job_id }) => {
-        const access_token = getAccessToken();
-        return {
-          url: '/job/commit',
-          method: 'POST',
-          body: { job_id },
-          headers: { Authorization: `Bearer ${access_token}` },
-        };
-      },
+      query: ({ job_id }) => ({
+        url: '/job/commit',
+        method: 'POST',
+        body: { job_id },
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }),
     }),
     jobStatus: builder.query({
-      query: ({ job_id }) => {
-        const access_token = getAccessToken();
-        return {
-          url: `/job/status?job_id=${job_id}`,
-          method: 'GET',
-          headers: { Authorization: `Bearer ${access_token}` },
-        };
-      },
+      query: ({ job_id }) => ({
+        url: `/job/status?job_id=${job_id}`,
+        method: 'GET',
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }),
     }),
   }),
 });

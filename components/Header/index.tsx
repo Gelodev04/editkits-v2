@@ -74,8 +74,8 @@ export default function Header() {
   return (
     <>
       {/* Desktop Header */}
-      <div className={`hidden lg:flex transition-all items-center duration-300 ease-in-out py-[16px] justify-between bg-white dark:bg-gray-900 border-b border-gray-200 z-99999 dark:border-gray-800 w-full mx-auto ${!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") ? "2xl:pl-[253px]" : ""} xsm:pr-[12px] lg:pr-[24px]`}>
-        {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && (
+      <div className={`hidden lg:flex transition-all items-center duration-300 ease-in-out py-[16px] justify-between bg-white dark:bg-gray-900 border-b border-gray-200 z-99999 dark:border-gray-800 w-full mx-auto ${!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files" || router.pathname === "/account") ? "2xl:pl-[253px]" : ""} xsm:pr-[12px] lg:pr-[24px]`}>
+        {!(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files" || router.pathname === "/account") && (
           <>
             <Link href="/home">
               <Image src={Logo} className="w-[187px] dark:invert" alt="Logo" priority/>
@@ -108,7 +108,7 @@ export default function Header() {
           </>
         )}
 
-        {(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files") && (
+        {(router.pathname === "/dashboard/job-status" || router.pathname === "/dashboard/uploaded-files" || router.pathname === "/account") && (
           <button
             className={`${mainContentMargin} ml-9 flex items-center justify-center w-10 h-10 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 dark:text-gray-400 lg:h-11 lg:w-11 lg:border`}
             onClick={handleToggle}

@@ -1,0 +1,34 @@
+# Dependencias
+node_modules
+.pnp
+.pnp.js
+
+# Build
+.next/
+out/
+build
+dist
+
+# Caches
+.cache/
+.vercel
+.eslintcache
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorar archivos de ambiente
+.env
+.env.*
+!.env.example
+
+# Otros
+.DS_Store
+*.pem
+coverage
+
+# Typescript
+*.tsbuildinfo
+next-env.d.ts 

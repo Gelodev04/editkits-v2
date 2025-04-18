@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-import CompressionPlugin from 'compression-webpack-plugin'
+import CompressionPlugin from 'compression-webpack-plugin';
 
 const nextConfig = {
   webpack(config) {

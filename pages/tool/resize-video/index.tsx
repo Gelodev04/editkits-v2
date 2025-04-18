@@ -1,42 +1,42 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {FaAngleRight} from "react-icons/fa6";
+import { FaAngleRight } from 'react-icons/fa6';
 
-import Typography from "@/components/Typography";
+import Typography from '@/components/Typography';
 
-import UploadFileModal from "@/components/modals/UploadFileModal";
-import InputField from "@/components/InputField";
-import Select from "@/components/Select";
+import InputField from '@/components/InputField';
+import UploadFileModal from '@/components/modals/UploadFileModal';
+import Select from '@/components/Select';
 
-import ColorPicker from "@/components/ColorPicker";
-import {useEffect, useState} from "react";
-import {aspectRatio, outputQualityList, presets, videoType} from "@/lib/constants";
-import {VideoUpload} from "@/components/VideoUpload";
-import {useStatusQuery, useUploadMutation} from "@/services/api/file";
-import ButtonOld from "@/components/Button_Old";
+import ButtonOld from '@/components/Button_Old';
+import ColorPicker from '@/components/ColorPicker';
+import { VideoUpload } from '@/components/VideoUpload';
+import { aspectRatio, outputQualityList, presets, videoType } from '@/lib/constants';
+import { useStatusQuery, useUploadMutation } from '@/services/api/file';
+import { useEffect, useState } from 'react';
 
 export default function ResizeVideo() {
-  const  [fileId, setFileId] = useState(null);
+  const [fileId, setFileId] = useState(null);
   const [upload] = useUploadMutation();
-  const { data, refetch } = useStatusQuery({ fileId }, {skip: !fileId});
+  const { data, refetch } = useStatusQuery({ fileId }, { skip: !fileId });
 
   const [settings, setSettings] = useState({
     width: undefined,
     height: undefined,
     aspectX: 1,
     aspectY: 1,
-    color: "#000000",
+    color: '#000000',
     isColorValid: true,
     framerate: undefined,
-    audioSampleRate: undefined
-  })
+    audioSampleRate: undefined,
+  });
 
-  const [fetchedData, setFetchedData] = React.useState(null)
+  const [fetchedData, setFetchedData] = React.useState<any>(null);
   const [presetWidth, setPresetWidth] = React.useState<any>(undefined);
-  const [presetHeight, setPresetHeight] = React.useState<any>(undefined)
+  const [presetHeight, setPresetHeight] = React.useState<any>(undefined);
   const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
   const [file, setFile] = React.useState<any>(null);
-  const [activeInput, setActiveInput] = React.useState<any>("");
+  const [activeInput, setActiveInput] = React.useState<any>('');
   const [isCustom, setIsCustom] = React.useState<any>(true);
   const [progress, setProgress] = React.useState(0);
   const [isUploading, setIsUploading] = useState(false);
@@ -46,99 +46,98 @@ export default function ResizeVideo() {
   const calculateWidth = (height, aspectX, aspectY) => Math.floor(height * (aspectX / aspectY));
 
   const updateSettings = (key, value) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+    setSettings(prev => ({ ...prev, [key]: value }));
   };
 
   useEffect(() => {
     //@ts-ignore
-    updateSettings("width", fetchedData?.metadata?.width)
+    updateSettings('width', fetchedData?.metadata?.width);
     //@ts-ignore
-    updateSettings("height", fetchedData?.metadata?.height)
-  }, [data])
+    updateSettings('height', fetchedData?.metadata?.height);
+  }, [fetchedData?.metadata?.width, fetchedData?.metadata?.height]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       //@ts-ignore
-      if(data?.status !== "COMMITTED" && data?.status !== "ERROR" && fileId) {
+      if (data?.status !== 'COMMITTED' && data?.status !== 'ERROR' && fileId) {
         refetch();
       }
       //@ts-ignore
-      setFetchedData(data)
+      setFetchedData(data);
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [data]);
+  }, [data, fileId, refetch]);
 
   useEffect(() => {
     if (!isCustom) {
       //@ts-ignore
-      if (activeInput === "width" && settings?.width > 0) {
-        updateSettings("height", calculateHeight(settings.width,  settings.aspectX, settings.aspectY))
-      //  @ts-ignore
-      } else if (activeInput === "height" && settings?.height > 0) {
-        updateSettings("width", calculateWidth(settings.width,  settings.aspectX, settings.aspectY))
+      if (activeInput === 'width' && settings?.width > 0) {
+        updateSettings(
+          'height',
+          calculateHeight(settings.width, settings.aspectX, settings.aspectY)
+        );
+        //  @ts-ignore
+      } else if (activeInput === 'height' && settings?.height > 0) {
+        updateSettings('width', calculateWidth(settings.width, settings.aspectX, settings.aspectY));
       }
     }
   }, [settings.width, settings.height, settings.aspectX, settings.aspectY, activeInput, isCustom]);
 
   useEffect(() => {
-    updateSettings("height", presetHeight * settings.aspectY)
-  }, [settings.aspectY])
+    updateSettings('height', presetHeight * settings.aspectY);
+  }, [settings.aspectY, presetHeight]);
 
   useEffect(() => {
-    updateSettings("width", presetWidth * settings.aspectX)
-  }, [(presetWidth && settings.aspectX)])
+    updateSettings('width', presetWidth * settings.aspectX);
+  }, [presetWidth, settings.aspectX]);
 
   const handleColorChange = (e: any) => {
     const newColor = e.target.value;
-    updateSettings("color", newColor)
-    updateSettings("isColorValid", /^#[0-9A-Fa-f]{6}$/.test(newColor))
+    updateSettings('color', newColor);
+    updateSettings('isColorValid', /^#[0-9A-Fa-f]{6}$/.test(newColor));
   };
 
   return (
     <div className="max-w-[768px] px-12 lg:px-0 mx-auto">
       <div className="pt-16 flex flex-col gap-4">
-        <Typography
-          label="Resize Video"
-          variant="h2"
-          center
-        />
+        <Typography label="Resize Video" variant="h2" center />
         <Typography
           variant="b3"
           label="Easily change the dimensions of your video to fit any platform"
           center
         />
-        <Typography
-          label="Input Properties"
-          variant="bb1"
-          className="text-[#2c2c2c] pt-16"
-        />
+        <Typography label="Input Properties" variant="bb1" className="text-[#2c2c2c] pt-16" />
       </div>
-      <div className="w-full border-b-2 pt-4 border-[#D9D9D9]"/>
-      <VideoUpload videoRef={videoRef} setUploadFileModal={setUploadFileModal} file={file} uploadedData={data} progress={progress} fetchedData={fetchedData} isUploading={isUploading} />
+      <div className="w-full border-b-2 pt-4 border-[#D9D9D9]" />
+      <VideoUpload
+        videoRef={videoRef}
+        setUploadFileModal={setUploadFileModal}
+        file={file}
+        uploadedData={data}
+        progress={progress}
+        fetchedData={fetchedData}
+        isUploading={isUploading}
+      />
       <div className="pt-14">
-        <Typography
-          label="Tools Properties"
-          variant="bb1"
-          className="text-[#2c2c2c]"
-        />
+        <Typography label="Tools Properties" variant="bb1" className="text-[#2c2c2c]" />
       </div>
       <div className="flex justify-between gap-6 pt-8">
         <div className="w-[360px]">
           <Select
-            onChange={(e) => {
+            onChange={e => {
               setIsCustom(false);
-              if (e.target.value === "None") {
+              if (e.target.value === 'None') {
                 return;
               }
-              const [, , resolution] = e.target.value?.split(",") || [];
-              const [presetWidth, presetHeight] = resolution.split("x").map(Number);
+              const [, , resolution] = e.target.value?.split(',') || [];
+              const [presetWidth, presetHeight] = resolution.split('x').map(Number);
 
-              updateSettings("width", presetWidth)
-              setPresetWidth(presetWidth)
-              updateSettings("height", presetHeight)
-              setPresetHeight(presetHeight)
-              setActiveInput("preset");
+              updateSettings('width', presetWidth);
+              setPresetWidth(presetWidth);
+              updateSettings('height', presetHeight);
+              setPresetHeight(presetHeight);
+              setActiveInput('preset');
             }}
             variant="t2"
             label="Preset Options"
@@ -148,9 +147,9 @@ export default function ResizeVideo() {
         </div>
       </div>
       <div className="inline-flex items-center justify-center w-full">
-        <hr className="w-full h-[1px] my-8 bg-gray-200 border-0 rounded bg-gray-400"/>
+        <hr className="w-full h-[1px] my-8 bg-gray-200 border-0 rounded bg-gray-400" />
         <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 ">
-          <Typography label="OR" variant="b4"/>
+          <Typography label="OR" variant="b4" />
         </div>
       </div>
       <div className="flex justify-between gap-6 py-4">
@@ -158,17 +157,17 @@ export default function ResizeVideo() {
           <Select
             variant="t2"
             label="Aspect Ratio"
-            onChange={(e) => {
+            onChange={e => {
               const field = e.target.value;
-              if (field !== "Custom") {
-                setIsCustom(false)
-                const aspect = field.split(":")
+              if (field !== 'Custom') {
+                setIsCustom(false);
+                const aspect = field.split(':');
                 const x = aspect[0];
                 const y = aspect[1];
-                updateSettings("aspectX", Number(x))
-                updateSettings("aspectY", Number(y))
+                updateSettings('aspectX', Number(x));
+                updateSettings('aspectY', Number(y));
               } else {
-                setIsCustom(true)
+                setIsCustom(true);
               }
             }}
             options={aspectRatio}
@@ -185,9 +184,9 @@ export default function ResizeVideo() {
             placeholder="1920"
             label="Width"
             value={settings.width}
-            onChange={(e) => {
-              setActiveInput("width")
-              updateSettings("width", e.target.value)
+            onChange={e => {
+              setActiveInput('width');
+              updateSettings('width', e.target.value);
             }}
           />
         </div>
@@ -198,10 +197,11 @@ export default function ResizeVideo() {
             placeholder="1080"
             label="Height"
             value={settings.height}
-            onChange={(e) => {
-              setActiveInput("height")
-              updateSettings("height", e.target.value)
-            }}/>
+            onChange={e => {
+              setActiveInput('height');
+              updateSettings('height', e.target.value);
+            }}
+          />
         </div>
       </div>
       <div className="flex justify-between gap-6 py-8">
@@ -219,21 +219,17 @@ export default function ResizeVideo() {
             variant="t2"
             label="Stretch Strategy"
             options={[
-              {label: "Fit", value: "Fit"},
-              {label: "Fill", value: "Fill"}
+              { label: 'Fit', value: 'Fit' },
+              { label: 'Fill', value: 'Fill' },
             ]}
             disabled={!file}
           />
         </div>
       </div>
       <div className="pt-14">
-        <Typography
-          label="Output Properties"
-          variant="bb1"
-          className="text-[#2c2c2c]"
-        />
+        <Typography label="Output Properties" variant="bb1" className="text-[#2c2c2c]" />
       </div>
-      <div className="w-full border-b-2 pt-4 border-[#D9D9D9]"/>
+      <div className="w-full border-b-2 pt-4 border-[#D9D9D9]" />
       <div className="flex justify-between gap-6 py-8">
         <div className="w-full">
           <Select
@@ -244,12 +240,7 @@ export default function ResizeVideo() {
           />
         </div>
         <div className="w-full">
-          <Select
-            variant="t2"
-            label="Video Container"
-            options={videoType}
-            disabled={!file}
-          />
+          <Select variant="t2" label="Video Container" options={videoType} disabled={!file} />
         </div>
       </div>
       <div className="flex justify-between gap-6">
@@ -260,7 +251,7 @@ export default function ResizeVideo() {
             placeholder="30"
             label="Framerate"
             value={settings.framerate}
-            onChange={e => updateSettings("framerate", e.target.value)}
+            onChange={e => updateSettings('framerate', e.target.value)}
           />
         </div>
         <div className="w-full">
@@ -270,7 +261,7 @@ export default function ResizeVideo() {
             placeholder="480000"
             label="Audio Sample Rate"
             value={settings.audioSampleRate}
-            onChange={(e) => updateSettings("audioSampleRate", e.target.value)}
+            onChange={e => updateSettings('audioSampleRate', e.target.value)}
           />
         </div>
       </div>
@@ -280,7 +271,7 @@ export default function ResizeVideo() {
           label="Proceed"
           variant="primary"
           filled
-          rightIcon={<FaAngleRight/>}
+          rightIcon={<FaAngleRight />}
         />
       </div>
       <UploadFileModal
@@ -296,5 +287,5 @@ export default function ResizeVideo() {
         setProgress={setProgress}
       />
     </div>
-  )
+  );
 }

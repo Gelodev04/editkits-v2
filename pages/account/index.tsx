@@ -1,112 +1,42 @@
-import {useState} from "react";
-
-import toast from "react-hot-toast";
-
-import AccountType from "@/components/account/AccountType";
-
-import InputField from "@/components/InputField";
-import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
-import PopUp from "@/components/modals/Popup";
-
-import {benefits} from "@/lib/constants";
-import {Subscription} from "@/components/account/Subscription";
-import {validateEmail} from "@/lib/validateEmail";
-import {useUserInfo} from "@/hooks/useUserInfo";
-import {useUpdatePasswordMutation} from "@/services/api/auth";
-import ButtonOld from "@/components/Button_Old";
+import { Subscription } from '@/components/account/Subscription';
+import UserInfoCard from '@/components/account/UserProfile/UserInfoCard';
+import { useSidebar } from '@/context/SidebarContext';
+import { useUserInfo } from '@/hooks/useUserInfo';
+import { benefits } from '@/lib/constants';
 
 export default function Account() {
-  const {userInfo} = useUserInfo();
-  const [updatePassword, {isLoading: isUpdatePasswordLoading}] = useUpdatePasswordMutation();
+  const { userInfo } = useUserInfo();
+  const { isMobileOpen, isExpanded, isHovered, activeAccountTab } = useSidebar();
 
-  const [active, setActive] = useState("email");
-  const [email, setEmail] = useState("")
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isEmailValid, setEmailValid] = useState("");
-  const [updatePasswordModal, setUpdatePasswordModal] = useState(false);
-
-  const [changePasswordConfirmationModal, setChangePasswordConfirmationModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("")
-  const [modalMessage, setModalMessage] = useState("")
-
-  async function handleUpdatePassword() {
-    const response = await updatePassword({current_password: currentPassword, new_password: newPassword});
-
-    if (response.error) {
-      setModalTitle("Uh-oh! Something's Off");
-      //@ts-ignore
-      setModalMessage(response.error.data.errorMsg);
-      setUpdatePasswordModal(false);
-      setChangePasswordConfirmationModal(true);
-      return;
-    }
-
-    //@ts-ignore
-    toast.success(response.data.message);
-    setUpdatePasswordModal(false);
-  }
+  const mainContentMargin = isMobileOpen
+    ? 'ml-0'
+    : isExpanded || isHovered
+    ? 'lg:ml-[290px] 2xl:ml-[300px] lg:pr-[24px] 4xl:mx-auto'
+    : 'lg:ml-[90px]';
 
   return (
-    <div className="bg-[#fafbfc] min-h-[100vh]">
-      <div className="max-w-[1920px] mx-auto p-6">
-        <div className="grid grid-cols-12 w-full gap-4 mx-auto">
-          <div className="col-span-2 xl:col-span-2 2xl:col-span-2">
-            <AccountType active={active} setActive={setActive}/>
-          </div>
-          <div className="col-span-10 bg-white min-h-[780px] px-10 py-6 w-[1121px]">
-            {active === "email" && (
-              <div className="pt-4 max-w-[412px]">
-                <InputField
-                  label="Email"
-                  placeholder={userInfo?.email}
-                  type="email"
-                  error={!isEmailValid}
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    // @ts-ignore
-                    setEmailValid(validateEmail(e.target.value))
-                  }}
-                  disabled
-                />
-                <div className="pt-10">
-                  <ButtonOld
-                    onClick={() => setUpdatePasswordModal(true)}
-                    label="Change Password"
-                    variant="secondary"
-                  />
-                </div>
-              </div>
-            )}
-            {active === "subscription" && <Subscription benefits={benefits}/>}
+    <div
+      className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}
+    >
+      {activeAccountTab === 'profile' && (
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
+          <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
+            Profile Information
+          </h3>
+          <div className="space-y-6">
+            <UserInfoCard email={userInfo?.email || ''} />
           </div>
         </div>
-      </div>
-      <ChangePasswordModal
-        type="Change Password"
-        handleUpdatePassword={handleUpdatePassword}
-        updatePasswordModal={updatePasswordModal}
-        setUpdatePasswordModal={setUpdatePasswordModal}
-        // @ts-ignore
-        setType={undefined}
-        // @ts-ignore
-        description={<>We have sent the reset code to <span className="font-bold">abc@editkits.com</span></>}
-        currentPassword={currentPassword}
-        setCurrentPassword={setCurrentPassword}
-        newPassword={newPassword}
-        setNewPassword={setNewPassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
-        isUpdatePasswordLoading={isUpdatePasswordLoading}
-      />
-      <PopUp
-        open={changePasswordConfirmationModal}
-        description={modalMessage}
-        setOpen={setChangePasswordConfirmationModal}
-        title={modalTitle}
-      />
+      )}
+
+      {activeAccountTab === 'subscription' && (
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
+          <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
+            Subscription Details
+          </h3>
+          <Subscription benefits={benefits} />
+        </div>
+      )}
     </div>
-  )
+  );
 }

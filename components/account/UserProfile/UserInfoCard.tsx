@@ -1,6 +1,11 @@
-import ChangePasswordModal from '@/components/modals/ChangePasswordModal';
+import Input from '@/components/form/input/InputField';
+import Label from '@/components/form/Label';
+import { Modal } from '@/components/Modal';
 import PopUp from '@/components/modals/Popup';
+import { PasswordValidation } from '@/components/PasswordValidtion';
+import Button from '@/components/ui/button/Button';
 import { useModal } from '@/hooks/useModal';
+import { validatePassword } from '@/lib/validatePassword';
 import { useUpdatePasswordMutation } from '@/services/api/auth';
 import { useState } from 'react';
 
@@ -18,7 +23,23 @@ export default function UserInfoCard({ email }: UserInfoCardProps) {
   const [modalMessage, setModalMessage] = useState('');
   const [changePasswordConfirmationModal, setChangePasswordConfirmationModal] = useState(false);
 
+  const [isPasswordValid, setPasswordValid] = useState(false);
+  const [isCurrentPasswordValid, setCurrentPasswordValid] = useState(false);
+  const [hasTyped, setHasTyped] = useState(false);
+  const [formKey, setFormKey] = useState(0);
+
   const handleUpdatePassword = async () => {
+    setHasTyped(true);
+    const isCurrentValid = validatePassword(currentPassword);
+    const isNewValid = validatePassword(newPassword);
+    setCurrentPasswordValid(isCurrentValid);
+    setPasswordValid(isNewValid);
+
+    if (!isCurrentValid || !isNewValid || newPassword !== confirmPassword) {
+      console.error('Validation failed');
+      return;
+    }
+
     const response = await updatePassword({
       current_password: currentPassword,
       new_password: newPassword,
@@ -32,6 +53,24 @@ export default function UserInfoCard({ email }: UserInfoCardProps) {
       return;
     }
 
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setHasTyped(false);
+    setCurrentPasswordValid(false);
+    setPasswordValid(false);
+    setFormKey(prevKey => prevKey + 1);
+    closeModal();
+  };
+
+  const handleCloseModal = () => {
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setHasTyped(false);
+    setCurrentPasswordValid(false);
+    setPasswordValid(false);
+    setFormKey(prevKey => prevKey + 1);
     closeModal();
   };
 
@@ -54,7 +93,10 @@ export default function UserInfoCard({ email }: UserInfoCardProps) {
         </div>
 
         <button
-          onClick={openModal}
+          onClick={() => {
+            setFormKey(prevKey => prevKey + 1);
+            openModal();
+          }}
           className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
         >
           <svg
@@ -76,27 +118,95 @@ export default function UserInfoCard({ email }: UserInfoCardProps) {
         </button>
       </div>
 
-      <ChangePasswordModal
-        type="Change Password"
-        handleUpdatePassword={handleUpdatePassword}
-        updatePasswordModal={isOpen}
-        setUpdatePasswordModal={closeModal}
-        // @ts-ignore
-        setType={undefined}
-        // @ts-ignore
-        description={
-          <>
-            We have sent the reset code to <span className="font-bold">abc@editkits.com</span>
-          </>
-        }
-        currentPassword={currentPassword}
-        setCurrentPassword={setCurrentPassword}
-        newPassword={newPassword}
-        setNewPassword={setNewPassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
-        isUpdatePasswordLoading={isUpdatePasswordLoading}
-      />
+      <Modal isOpen={isOpen} onClose={handleCloseModal} className="max-w-[700px] m-4">
+        <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
+          <div className="px-2 pr-14">
+            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+              Change Password
+            </h4>
+            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+              Enter your current password and set a new one.
+            </p>
+          </div>
+          <div key={formKey} className="flex flex-col">
+            <div className="custom-scrollbar overflow-y-auto px-2 pb-3">
+              <div className="grid grid-cols-1 gap-y-5">
+                <div>
+                  <Label>Current Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="*********"
+                    onChange={e => {
+                      const currentPass = e.target.value;
+                      if (!hasTyped) setHasTyped(true);
+                      setCurrentPassword(currentPass);
+                      setCurrentPasswordValid(validatePassword(currentPass));
+                    }}
+                    error={hasTyped && !isCurrentPasswordValid}
+                  />
+                  {hasTyped && !isCurrentPasswordValid && (
+                    <p className="mt-1 text-xs text-red-500">Invalid password format.</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label>New Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="*********"
+                    onChange={e => {
+                      const newPass = e.target.value;
+                      if (!hasTyped) setHasTyped(true);
+                      setNewPassword(newPass);
+                      setPasswordValid(validatePassword(newPass));
+                    }}
+                    error={hasTyped && !isPasswordValid}
+                  />
+                </div>
+
+                <div>
+                  <Label>Confirm New Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="*********"
+                    onChange={e => {
+                      if (!hasTyped) setHasTyped(true);
+                      setConfirmPassword(e.target.value);
+                    }}
+                    error={hasTyped && newPassword !== confirmPassword}
+                  />
+                  {hasTyped && newPassword !== confirmPassword && (
+                    <p className="mt-1 text-xs text-red-500">Passwords do not match.</p>
+                  )}
+                </div>
+                <PasswordValidation password={newPassword} />
+              </div>
+            </div>
+            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
+              <Button size="sm" variant="outline" onClick={handleCloseModal}>
+                Close
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleUpdatePassword}
+                disabled={
+                  (hasTyped &&
+                    (!isCurrentPasswordValid ||
+                      !isPasswordValid ||
+                      newPassword !== confirmPassword)) ||
+                  isUpdatePasswordLoading ||
+                  !currentPassword ||
+                  !newPassword ||
+                  !confirmPassword
+                }
+              >
+                Update Password
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
       <PopUp
         open={changePasswordConfirmationModal}
         description={modalMessage}

@@ -303,7 +303,7 @@ const Sidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex  ${
+        className={`hidden lg:flex py-8 ${
           !isExpanded && !isHovered ? 'lg:justify-center' : 'justify-start'
         }`}
       >

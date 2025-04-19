@@ -19,6 +19,7 @@ import { PiDotsThreeOutlineBold } from 'react-icons/pi';
 
 import SubscriptionIcon from '@/public/icons/subscription_black.svg';
 import UserIcon from '@/public/icons/user_black.svg';
+import { useRouter } from 'next/router';
 
 type NavItem = {
   name: string;
@@ -60,6 +61,7 @@ const mainNavItems: NavItem[] = [
 ];
 
 const Sidebar: React.FC = () => {
+  const router = useRouter();
   const {
     isExpanded,
     isMobileOpen,
@@ -71,14 +73,6 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
 
   const accountNavItems: NavItem[] = [
-    {
-      name: 'Dashboard',
-      icon: <GridIcon />,
-      subItems: [
-        { name: 'Job Status', path: '/dashboard/job-status' },
-        { name: 'Uploaded Files', path: '/dashboard/uploaded-files' },
-      ],
-    },
     {
       name: 'Profile',
       icon: <Image src={UserIcon} alt="Profile" width={24} height={24} className="dark:invert" />,
@@ -307,7 +301,7 @@ const Sidebar: React.FC = () => {
           !isExpanded && !isHovered ? 'lg:justify-center' : 'justify-start'
         }`}
       >
-        <Link href="/home">
+        <Link href={router.pathname === '/account' ? '/dashboard/uploaded-files' : '/home'}>
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <Image className="dark:hidden" src={Logo} alt="Logo" width={150} height={40} />

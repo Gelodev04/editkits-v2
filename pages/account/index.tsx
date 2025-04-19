@@ -1,7 +1,8 @@
-import PriceTableOne from '@/components/account/Subscription/PriceTableOne';
+import { Subscription } from '@/components/account/Subscription';
 import UserInfoCard from '@/components/account/UserProfile/UserInfoCard';
 import { useSidebar } from '@/context/SidebarContext';
 import { useUserInfo } from '@/hooks/useUserInfo';
+import { benefits } from '@/lib/constants';
 
 export default function Account() {
   const { userInfo } = useUserInfo();
@@ -33,7 +34,7 @@ export default function Account() {
           <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
             Subscription Details
           </h3>
-          <PriceTableOne />
+          <Subscription benefits={benefits} />
         </div>
       )}
     </div>

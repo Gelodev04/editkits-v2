@@ -352,6 +352,7 @@ export default function JobStatus() {
                     setFilters([]);
                     setDateRange({});
                     await refetchJobs();
+                    await refetchStats();
                   } catch (error) {
                     console.error('Error during refresh:', error);
                   } finally {
@@ -370,7 +371,10 @@ export default function JobStatus() {
                   There was an error loading the data.
                 </p>
                 <button
-                  onClick={() => refetchJobs()}
+                  onClick={() => {
+                    refetchJobs();
+                    refetchStats();
+                  }}
                   className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
                   Try again

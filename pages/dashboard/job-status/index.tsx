@@ -16,7 +16,7 @@ import DateFilterModal from '@/components/modals/DateFilterModal';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
 import { useSidebar } from '@/context/SidebarContext';
-import { truncateFileName } from '@/lib/utils';
+import { downloadFile, truncateFileName } from '@/lib/utils';
 import { usePreviewVideoQuery } from '@/services/api/file';
 import { router } from 'next/client';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -48,17 +48,29 @@ export default function JobStatus() {
   const [filters, setFilters] = useState<string[]>([]);
   const [fileId, setFileId] = useState<string | null>(null);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
-  const [video, setVideo] = useState(null);
+  const [video, setVideo] = useState<string | null>(null);
 
   const { data: statsData, isLoading: isStatsLoading, refetch: refetchStats } = useGetStatsQuery();
 
-  useEffect(() => {
-    const refreshInterval = setInterval(() => {
-      refetchStats();
-    }, 30000);
+  const {
+    data: jobs = [],
+    isError: isJobsError,
+    refetch: refetchJobs,
+  } = useGetJobsQuery({
+    //@ts-ignore
+    from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
+    //@ts-ignore
+    to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
+    offset: 0,
+    limit: 30, // Reducido de 100 a 30 para evitar error 500
+    status: filters.length > 0 ? filters[0] : undefined,
+  });
 
-    return () => clearInterval(refreshInterval);
-  }, [refetchStats]);
+  const {
+    data: videoData,
+    refetch: refetchVideoUrl,
+    isFetching: isPreviewFetching,
+  } = usePreviewVideoQuery({ fileId }, { skip: !fileId });
 
   const realTimeStats = useMemo(() => {
     if (!statsData) {
@@ -122,26 +134,18 @@ export default function JobStatus() {
     return stats;
   }, [statsData]);
 
-  const {
-    data: jobs = [],
-    isError: isJobsError,
-    refetch: refetchJobs,
-  } = useGetJobsQuery({
-    //@ts-ignore
-    from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
-    //@ts-ignore
-    to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
-    offset: 0,
-    limit: 100, // Reducido de 100 a 30 para evitar error 500
-    status: filters.length > 0 ? filters[0] : undefined,
-  });
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      refetchStats();
+    }, 30000);
 
-  const { data: videoUrl } = usePreviewVideoQuery({ fileId }, { skip: !fileId });
+    return () => clearInterval(refreshInterval);
+  }, [refetchStats]);
 
   useEffect(() => {
-    // @ts-ignore
-    setVideo(videoUrl?.url);
-  }, [videoUrl]);
+    // @ts-ignore - Use type assertion here if needed, or check videoData directly
+    setVideo((videoData as { url: string } | undefined)?.url);
+  }, [videoData]);
 
   function applyFilter() {
     setFilters(selectedFilters);
@@ -524,10 +528,18 @@ export default function JobStatus() {
                           <div className="flex items-center w-full gap-2">
                             <div>
                               <button
-                                onClick={() => {
+                                onClick={async () => {
                                   if (job.output_file_id) {
-                                    setFileId(job.output_file_id);
-                                    setVideoPreviewModal(true);
+                                    await setFileId(job.output_file_id);
+                                    const result = await refetchVideoUrl();
+                                    // Add type assertion here
+                                    const resultData = result.data as { url: string } | undefined;
+                                    if (resultData?.url) {
+                                      setVideo(resultData.url);
+                                      setVideoPreviewModal(true);
+                                    } else {
+                                      console.error('Failed to get video preview URL');
+                                    }
                                   }
                                 }}
                                 className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90"
@@ -535,23 +547,26 @@ export default function JobStatus() {
                                 <LuCirclePlay size={17} />
                               </button>
                             </div>
-                            {/*@ts-ignore*/}
                             <a
-                              onClick={e => {
-                                // @ts-ignore
-                                if (!videoUrl?.url) {
-                                  e.preventDefault();
-                                  if (job.output_file_id) {
-                                    setFileId(job.output_file_id);
+                              href="#"
+                              onClick={async e => {
+                                e.preventDefault();
+                                if (job.output_file_id) {
+                                  try {
+                                    await setFileId(job.output_file_id);
+                                    const result = await refetchVideoUrl();
+                                    const resultData = result.data as { url: string } | undefined;
+                                    const url = resultData?.url;
+                                    if (url) {
+                                      downloadFile(url, 'video.mp4');
+                                    } else {
+                                      console.error('Failed to get video download URL');
+                                    }
+                                  } catch (error) {
+                                    console.error('Error fetching video URL:', error);
                                   }
                                 }
                               }}
-                              onMouseOver={() =>
-                                job.output_file_id && setFileId(job.output_file_id)
-                              }
-                              // @ts-ignore
-                              href={videoUrl?.url}
-                              download="video.mp4"
                             >
                               <button className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
                                 <IoDownloadOutline size={17} />
@@ -562,19 +577,32 @@ export default function JobStatus() {
                       </TableCell>
                       <TableCell className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                         <Menu
-                          videoUrl={videoUrl}
+                          outputFileId={job.output_file_id}
                           handleCopy={() =>
                             job.output_file_id && navigator.clipboard.writeText(job.output_file_id)
                           }
-                          handleDownload={async () => {
-                            if (job.output_file_id) {
-                              setFileId(job.output_file_id);
+                          handleDownload={async (outputFileId: string) => {
+                            if (outputFileId) {
+                              await setFileId(outputFileId);
+                              const result = await refetchVideoUrl();
+                              // Add type assertion here
+                              const resultData = result.data as { url: string } | undefined;
+                              return resultData?.url;
                             }
+                            return undefined;
                           }}
-                          handlePreview={() => {
+                          handlePreview={async () => {
                             if (job.output_file_id) {
-                              setFileId(job.output_file_id);
-                              setVideoPreviewModal(true);
+                              await setFileId(job.output_file_id);
+                              const result = await refetchVideoUrl();
+                              // Add type assertion here
+                              const resultData = result.data as { url: string } | undefined;
+                              if (resultData?.url) {
+                                setVideo(resultData.url);
+                                setVideoPreviewModal(true);
+                              } else {
+                                console.error('Failed to get video preview URL');
+                              }
                             }
                           }}
                         />

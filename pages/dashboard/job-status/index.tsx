@@ -84,11 +84,10 @@ export default function JobStatus() {
     status: filters.length > 0 ? filters[0] : undefined,
   });
 
-  const {
-    data: videoData,
-    refetch: refetchVideoUrl,
-    isFetching: isPreviewFetching,
-  } = usePreviewVideoQuery({ fileId }, { skip: !fileId });
+  const { data: videoData, refetch: refetchVideoUrl } = usePreviewVideoQuery(
+    { fileId },
+    { skip: !fileId }
+  );
 
   const realTimeStats = useMemo(() => {
     if (!statsData) {

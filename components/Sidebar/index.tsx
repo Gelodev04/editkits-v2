@@ -69,14 +69,24 @@ const Sidebar: React.FC = () => {
     setIsHovered,
     activeAccountTab,
     setActiveAccountTab,
+    setIsMobileOpen,
   } = useSidebar();
   const pathname = usePathname();
+
+  const handleCloseSidebar = () => {
+    if (isMobileOpen) {
+      setIsMobileOpen(false);
+    }
+  };
 
   const accountNavItems: NavItem[] = [
     {
       name: 'Profile',
       icon: <Image src={UserIcon} alt="Profile" width={24} height={24} className="dark:invert" />,
-      onClick: () => setActiveAccountTab('profile'),
+      onClick: () => {
+        setActiveAccountTab('profile');
+        handleCloseSidebar();
+      },
     },
     {
       name: 'Subscription',
@@ -89,7 +99,10 @@ const Sidebar: React.FC = () => {
           className="dark:invert"
         />
       ),
-      onClick: () => setActiveAccountTab('subscription'),
+      onClick: () => {
+        setActiveAccountTab('subscription');
+        handleCloseSidebar();
+      },
     },
   ];
 
@@ -126,6 +139,7 @@ const Sidebar: React.FC = () => {
           ) : nav.path ? (
             <Link
               href={nav.path}
+              onClick={handleCloseSidebar}
               className={`menu-item group ${
                 isActive(nav.path) ? 'menu-item-active' : 'menu-item-inactive'
               }`}
@@ -195,6 +209,7 @@ const Sidebar: React.FC = () => {
                   <li key={subItem.name}>
                     <Link
                       href={subItem.path}
+                      onClick={handleCloseSidebar}
                       className={`menu-dropdown-item ${
                         isActive(subItem.path)
                           ? 'menu-dropdown-item-active'

@@ -8,8 +8,8 @@ export default function Tag(props: TagProps) {
     <div
       className={`group-hover:border-white group-hover:bg-white border border-[#7d3dde] flex justify-center items-center  ${
         props.variant === 'md'
-          ? 'py-1 rounded-lg h-[32px] my-auto leading-[36px] lg:px-2'
-          : 'rounded-lg h-[27px] px-[4px]'
+          ? 'py-1 rounded-lg h-auto my-auto leading-none lg:px-2 text-center'
+          : 'rounded-lg h-auto px-[4px] leading-none text-center'
       }`}
     >
       <p

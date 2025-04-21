@@ -63,8 +63,8 @@ export default function JobStatus() {
     from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
     //@ts-ignore
     to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
-    offset: 0,
-    limit: 30, // Reducido de 100 a 30 para evitar error 500
+    offset: (currentPage - 1) * itemsPerPage,
+    limit: itemsPerPage,
     status: filters.length > 0 ? filters[0] : undefined,
   });
 
@@ -136,30 +136,22 @@ export default function JobStatus() {
   }, [statsData]);
 
   useEffect(() => {
-    const refreshInterval = setInterval(() => {
-      refetchStats();
-    }, 30000);
-
-    return () => clearInterval(refreshInterval);
-  }, [refetchStats]);
-
-  useEffect(() => {
     // @ts-ignore - Use type assertion here if needed, or check videoData directly
     setVideo((videoData as { url: string } | undefined)?.url);
   }, [videoData]);
 
+  useEffect(() => {
+    refetchJobs(); // Forzar refetch cuando cambie la página
+  }, [currentPage, refetchJobs]);
+
   function applyFilter() {
     setFilters(selectedFilters);
     setFilterModal(false);
-    setCurrentPage(1); // Reset to first page when applying filters
+    setCurrentPage(1);
   }
 
-  const totalItems = jobs.length;
+  const totalItems = 100;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  // Hacemos la paginación en el frontend
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
 
   // Ordenar los datos según sortKey y sortOrder
   const sortedJobs = [...jobs].sort((a, b) => {
@@ -181,12 +173,9 @@ export default function JobStatus() {
     return 0;
   });
 
-  // Aplicar paginación a los datos ordenados
-  const currentData = sortedJobs.slice(startIndex, endIndex);
-
-  //@ts-ignore
-  const data =
-    filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
+  // Aplicar filtros de estado a los datos ya paginados y ordenados
+  const dataToDisplay =
+    filters.length === 0 ? sortedJobs : sortedJobs.filter(item => filters.includes(item.status));
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -420,7 +409,7 @@ export default function JobStatus() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data?.map((job, i) => (
+                  {dataToDisplay?.map((job, i) => (
                     <TableRow key={job.id || `job-${i}`}>
                       <TableCell className="min-w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
                         <div className="flex justify-center items-center gap-3">

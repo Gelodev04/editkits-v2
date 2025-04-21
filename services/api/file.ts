@@ -16,12 +16,29 @@ interface RecentFilesResponse {
 }
 
 export const fileApi = api.injectEndpoints({
-  endpoints: (builder) => ({
-    getRecentFiles: builder.query<RecentFile[], { offset?: number; limit?: number }>({
-      query: ({ offset = 0, limit }) => {
+  endpoints: builder => ({
+    getRecentFiles: builder.query<
+      RecentFilesResponse,
+      {
+        offset?: number;
+        limit?: number;
+        from_ts?: number;
+        to_ts?: number;
+      }
+    >({
+      query: ({ offset = 0, limit, from_ts, to_ts }) => {
         const token = getAccessToken();
+        const params = new URLSearchParams();
+
+        params.append('offset', offset.toString());
+        if (limit !== undefined) {
+          params.append('limit', limit.toString());
+        }
+        if (from_ts) params.append('from_ts', from_ts.toString());
+        if (to_ts) params.append('to_ts', to_ts.toString());
+
         return {
-          url: `/files/recent?offset=${offset}&limit=${limit}`,
+          url: `/files/recent?${params.toString()}`,
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
         };
@@ -54,12 +71,13 @@ export const fileApi = api.injectEndpoints({
         return {
           url: `/file/preview?file_id=${fileId}`,
           method: 'GET',
-          headers: { Authorization: `Bearer ${access_token}`}
-        }
+          headers: { Authorization: `Bearer ${access_token}` },
+        };
       },
-      transformResponse: response => response
-    })
+      transformResponse: response => response,
+    }),
   }),
 });
 
-export const { useUploadMutation, useStatusQuery, useGetRecentFilesQuery, usePreviewVideoQuery } = fileApi;
+export const { useUploadMutation, useStatusQuery, useGetRecentFilesQuery, usePreviewVideoQuery } =
+  fileApi;

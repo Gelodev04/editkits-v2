@@ -4,6 +4,7 @@ import Menu from '@/components/Menu';
 import DateFilterModal from '@/components/modals/DateFilterModal';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
+import Spinner from '@/components/Spinner';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/Table';
 import { useSidebar } from '@/context/SidebarContext';
 import { ExpiredIcon, WhiteExpiredIcon } from '@/icons';
@@ -34,10 +35,15 @@ export default function JobStatus() {
   const [fileId, setFileId] = useState('');
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [video, setVideo] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { data: recentFiles = [], refetch: refetchRecentFiles } = useGetRecentFilesQuery({
-    offset: 0,
-    limit: 100, // Pedimos todos los archivos por ahora
+  const { data, refetch: refetchRecentFiles } = useGetRecentFilesQuery({
+    //@ts-ignore
+    from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
+    //@ts-ignore
+    to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
+    offset: (currentPage - 1) * itemsPerPage,
+    limit: itemsPerPage,
   });
   const { data: videoUrl, refetch: refetchVideoUrl } = usePreviewVideoQuery(
     { fileId },
@@ -50,13 +56,11 @@ export default function JobStatus() {
     // setFileId("") // Removing this reset might be desired depending on UX
   }, [videoUrl]);
 
-  const totalItems = recentFiles.length;
+  const recentFiles = data?.files ?? [];
+  const totalItems = data?.total ?? 0;
+
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  // Ordenar los datos según sortKey y sortOrder
   const sortedFiles = [...recentFiles].sort((a, b) => {
     if (a[sortKey] === undefined || b[sortKey] === undefined) return 0;
 
@@ -71,12 +75,7 @@ export default function JobStatus() {
     return 0;
   });
 
-  // Aplicar paginación a los datos ordenados
-  const currentData = sortedFiles.slice(startIndex, endIndex);
-
-  //@ts-ignore - Remove filter logic as RecentFile doesn't have status
-  // const data = filters.length === 0 ? currentData : currentData.filter(item => filters.includes(item.status));
-  const data = currentData; // Assign directly
+  const dataToDisplay = sortedFiles;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -93,8 +92,8 @@ export default function JobStatus() {
 
   function applyFilter() {
     setFilterModal(false);
+    setCurrentPage(1); // Reset to first page when applying filters
   }
-
   const mainContentMargin = isMobileOpen
     ? 'ml-0'
     : isExpanded || isHovered
@@ -181,16 +180,27 @@ export default function JobStatus() {
               >
                 <p>New Job</p>
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setSelectedFilters([]);
-                  refetchRecentFiles();
-                  setDateRange({});
-                }}
-              >
-                <IoMdRefresh size={20} />
-              </Button>
+              {isRefreshing ? (
+                <Spinner />
+              ) : (
+                <Button
+                  variant="primary"
+                  onClick={async () => {
+                    setIsRefreshing(true);
+                    try {
+                      setSelectedFilters([]);
+                      setDateRange({});
+                      await refetchRecentFiles();
+                    } catch (error) {
+                      console.error('Error during refresh:', error);
+                    } finally {
+                      setIsRefreshing(false);
+                    }
+                  }}
+                >
+                  <IoMdRefresh size={20} />
+                </Button>
+              )}
             </div>
           </div>
           <div className="min-h-[20vh] dark:bg-white/3 max-w-full overflow-x-auto custom-scrollbar">
@@ -247,7 +257,7 @@ export default function JobStatus() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data?.map((job, i) => (
+                {dataToDisplay?.map((job, i) => (
                   <TableRow key={i + 1}>
                     <TableCell className="min-w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
                       <div className="flex justify-center items-center gap-3">

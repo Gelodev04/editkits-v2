@@ -40,7 +40,7 @@ export default function JobStatus() {
   const [dateRange, setDateRange] = useState({});
   const { isMobileOpen, isHovered, isExpanded } = useSidebar();
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>('input_file_name');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [dateFilterModal, setDateFilterModal] = useState(false);
@@ -239,7 +239,7 @@ export default function JobStatus() {
                     refetchJobs();
                   }}
                 >
-                  {[3, 6, 9, 12].map(value => (
+                  {[5, 10, 15].map(value => (
                     <option
                       key={value}
                       value={value}

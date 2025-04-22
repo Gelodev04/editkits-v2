@@ -94,7 +94,7 @@ export default function Header() {
             </Link>
             <div className="flex justify-center items-center">
               {userInfo && (
-                <Link className="pr-[35px]" href="/dashboard/uploaded-files">
+                <Link className="pr-[35px]" href="/dashboard/job-status">
                   <Typography
                     label="Dashboard"
                     variant="link"

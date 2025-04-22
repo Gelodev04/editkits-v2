@@ -285,7 +285,6 @@ export default function JobStatus() {
                       className="dark:hidden"
                       size={18}
                       //@ts-ignore
-                      color={dateRange?.startDate || dateRange?.endDate ? 'white' : '#4f4f4f'}
                     />
                     <RxCalendar className="hidden dark:block" size={18} color="white" />
                   </>
@@ -298,11 +297,7 @@ export default function JobStatus() {
                 onClick={() => setFilterModal(true)}
                 startIcon={
                   <>
-                    <LuSettings2
-                      className="dark:hidden"
-                      size={18}
-                      color={filters.length > 0 ? 'white' : '#4f4f4f'}
-                    />
+                    <LuSettings2 className="dark:hidden" size={18} />
                     <LuSettings2 className="hidden dark:block" size={18} color={'white'} />
                   </>
                 }

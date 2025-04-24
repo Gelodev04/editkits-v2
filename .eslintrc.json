@@ -8,6 +8,7 @@
         "ts-ignore": false // Allow the use of @ts-ignore
       }
     ],
-    "react/jsx-key": "off"
+    "react/jsx-key": "off",
+    "react/no-unescaped-entities": "off"
   }
 }

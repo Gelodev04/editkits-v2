@@ -13,19 +13,21 @@ import { truncateFileName } from '@/lib/utils';
 import { useGetRecentFilesQuery, usePreviewVideoQuery } from '@/services/api/file';
 import { router } from 'next/client';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IoMdRefresh } from 'react-icons/io';
 import { IoCopyOutline } from 'react-icons/io5';
 import { RxCalendar } from 'react-icons/rx';
 import PaginationWithIcon from '../PaginationWithIcon';
 
-type SortKey = 'id' | 'name' | 'size_in_mb' | 'age' | 'date' | 'salary';
+type PreviewFileType = 'VIDEO' | 'IMAGE' | null;
+
+type SortKey = 'id' | 'name' | 'size_in_mb' | 'age' | 'date' | 'salary' | 'type';
 type SortOrder = 'asc' | 'desc';
 
 export default function JobStatus() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [dateRange, setDateRange] = useState({});
@@ -34,50 +36,72 @@ export default function JobStatus() {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [fileId, setFileId] = useState('');
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
-  const [video, setVideo] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewFileType, setPreviewFileType] = useState<PreviewFileType>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { data, refetch: refetchRecentFiles } = useGetRecentFilesQuery({
+  const { data: queryData, refetch: refetchRecentFiles } = useGetRecentFilesQuery({
     //@ts-ignore
     from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
     //@ts-ignore
     to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
-    offset: (currentPage - 1) * itemsPerPage,
+    offset: currentPage > 1 ? currentPage - 1 : 0,
     limit: itemsPerPage,
   });
+
+  useEffect(() => {
+    refetchRecentFiles();
+  }, [currentPage, refetchRecentFiles]);
+
   const { data: videoUrl, refetch: refetchVideoUrl } = usePreviewVideoQuery(
     { fileId },
     { skip: !fileId }
   );
   const { isMobileOpen, isExpanded, isHovered } = useSidebar();
 
-  const recentFiles = Array.isArray(data) ? data : [];
+  const recentFiles = useMemo(() => {
+    return (queryData as any)?.files ?? [];
+  }, [queryData]);
 
-  const totalItems = data?.total ?? recentFiles.length;
-
+  const totalItems = (queryData as any)?.metadata?.total ?? recentFiles.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  const sortedFiles = [...recentFiles].sort((a, b) => {
-    if (a[sortKey] === undefined || b[sortKey] === undefined) return 0;
-
-    if (typeof a[sortKey] === 'string') {
-      return sortOrder === 'asc'
-        ? a[sortKey].localeCompare(b[sortKey])
-        : b[sortKey].localeCompare(a[sortKey]);
-    } else if (typeof a[sortKey] === 'number') {
-      return sortOrder === 'asc' ? a[sortKey] - b[sortKey] : b[sortKey] - a[sortKey];
-    }
-    return 0;
-  });
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const dataToDisplay = sortedFiles.slice(startIndex, endIndex);
 
   useEffect(() => {
     // @ts-ignore
-    setVideo((videoUrl as { url: string } | undefined)?.url);
+    const url = (videoUrl as { url: string } | undefined)?.url;
+    if (url) {
+      setPreviewUrl(url);
+    } else {
+      setPreviewUrl(null);
+    }
   }, [videoUrl]);
+
+  const handlePreviewClick = async (jobId: string, jobTypeRaw: string) => {
+    const jobType = jobTypeRaw.toUpperCase();
+    if (!jobId) return;
+
+    await setFileId(jobId);
+    setPreviewFileType(null);
+    setPreviewUrl(null);
+
+    const result = await refetchVideoUrl();
+    const resultData = result.data as { url: string } | undefined;
+
+    if (resultData?.url) {
+      setPreviewUrl(resultData.url);
+      if (jobType === 'VIDEO') {
+        setPreviewFileType('VIDEO');
+      } else if (jobType === 'IMAGE' || jobType === 'PNG' || jobType === 'JPG') {
+        setPreviewFileType('IMAGE');
+      } else {
+        console.warn('File type not supported:', jobType);
+        return;
+      }
+      setVideoPreviewModal(true);
+    } else {
+      console.error('Failed to get preview URL for:', jobId, 'Type:', jobType);
+    }
+  };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -258,97 +282,83 @@ export default function JobStatus() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {dataToDisplay?.map((job, i) => {
-                  return (
-                    <TableRow key={i + 1}>
-                      <TableCell className="min-w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
-                        <div className="flex justify-center items-center gap-3">
-                          {job.thumbnail_url === 'EXPIRED' ? (
-                            <div className="w-10 h-10 rounded-full">
-                              <Image
-                                width={40}
-                                height={40}
-                                src={ExpiredIcon}
-                                alt="expired"
-                                className="dark:hidden"
-                              />
-                              <Image
-                                width={40}
-                                height={40}
-                                src={WhiteExpiredIcon}
-                                alt="expired"
-                                className="hidden dark:block"
-                              />
-                            </div>
-                          ) : (
-                            <div className="flex max-w-[67px] justify-center">
-                              <Image
-                                width={135}
-                                height={40}
-                                src={job.thumbnail_url}
-                                alt="thumbnail"
-                                className="object-fit w-full h-[40px] rounded-md"
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        <div className="flex items-center gap-[6.75px]">
-                          {job.id?.slice(0, 5)}...
-                          <button
-                            onClick={() => navigator.clipboard.writeText(job.id)}
-                            className="text-gray-500 dark:text-gray-400 dark:hover:text-white/90"
-                          >
-                            <IoCopyOutline size={17} />
-                          </button>
-                        </div>
-                      </TableCell>
-                      <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {truncateFileName(job.name)}
-                      </TableCell>
-                      <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {Number(job.size_in_mb).toFixed(1)} MB
-                      </TableCell>
-                      <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {job.type.charAt(0).toUpperCase() + job.type.slice(1).toLowerCase()}
-                      </TableCell>
-                      <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {new Date(job.created_at * 1000).toLocaleDateString('en-GB') +
-                          ' ' +
-                          new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
-                      </TableCell>
-                      <TableCell className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        <Menu
-                          outputFileId={job.id}
-                          handleCopy={() => navigator.clipboard.writeText(job.id)}
-                          handleDownload={async (outputFileId: string) => {
-                            if (outputFileId) {
-                              await setFileId(outputFileId);
-                              const result = await refetchVideoUrl();
-                              const resultData = result.data as { url: string } | undefined;
-                              return resultData?.url;
-                            }
-                            return undefined;
-                          }}
-                          handlePreview={async () => {
-                            if (job.id) {
-                              await setFileId(job.id);
-                              const result = await refetchVideoUrl();
-                              const resultData = result.data as { url: string } | undefined;
-                              if (resultData?.url) {
-                                setVideo(resultData.url);
-                                setVideoPreviewModal(true);
-                              } else {
-                                console.error('Failed to get video preview URL');
-                              }
-                            }
-                          }}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                {recentFiles.map((job, i) => (
+                  <TableRow key={i + 1}>
+                    <TableCell className="min-w-[100px] px-4 py-3 border border-gray-100 dark:border-white/[0.05] whitespace-nowrap">
+                      <div className="flex justify-center items-center gap-3">
+                        {job.thumbnail_url === 'EXPIRED' ? (
+                          <div className="w-10 h-10 rounded-full">
+                            <Image
+                              width={40}
+                              height={40}
+                              src={ExpiredIcon}
+                              alt="expired"
+                              className="dark:hidden"
+                            />
+                            <Image
+                              width={40}
+                              height={40}
+                              src={WhiteExpiredIcon}
+                              alt="expired"
+                              className="hidden dark:block"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex max-w-[67px] justify-center">
+                            <Image
+                              width={135}
+                              height={40}
+                              src={job.thumbnail_url}
+                              alt="thumbnail"
+                              className="object-fit w-full h-[40px] rounded-md"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      <div className="flex items-center gap-[6.75px]">
+                        {job.id?.slice(0, 5)}...
+                        <button
+                          onClick={() => navigator.clipboard.writeText(job.id)}
+                          className="text-gray-500 dark:text-gray-400 dark:hover:text-white/90"
+                        >
+                          <IoCopyOutline size={17} />
+                        </button>
+                      </div>
+                    </TableCell>
+                    <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {truncateFileName(job.name)}
+                    </TableCell>
+                    <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {Number(job.size_in_mb).toFixed(1)} MB
+                    </TableCell>
+                    <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {job.type.charAt(0).toUpperCase() + job.type.slice(1).toLowerCase()}
+                    </TableCell>
+                    <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {new Date(job.created_at * 1000).toLocaleDateString('en-GB') +
+                        ' ' +
+                        new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
+                    </TableCell>
+                    <TableCell className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      <Menu
+                        outputFileId={job.id}
+                        handleCopy={() => navigator.clipboard.writeText(job.id)}
+                        handleDownload={async (outputFileId: string) => {
+                          if (outputFileId) {
+                            await setFileId(outputFileId);
+                            const result = await refetchVideoUrl();
+                            const resultData = result.data as { url: string } | undefined;
+                            return resultData?.url;
+                          }
+                          return undefined;
+                        }}
+                        handlePreview={() => handlePreviewClick(job.id, job.type)}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>
@@ -384,7 +394,12 @@ export default function JobStatus() {
         setSelected={setSelectedFilters}
         onClick={applyFilter}
       />
-      <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} video={video} />
+      <VideoPreviewModal
+        open={videoPreviewModal}
+        setOpen={setVideoPreviewModal}
+        url={previewUrl}
+        fileType={previewFileType}
+      />
     </>
   );
 }

@@ -55,7 +55,7 @@ export default function JobStatus() {
   const { data: statsData, isLoading: isStatsLoading, refetch: refetchStats } = useGetStatsQuery();
 
   const {
-    data: jobs = [],
+    data: queryData,
     isError: isJobsError,
     refetch: refetchJobs,
   } = useGetJobsQuery({
@@ -63,7 +63,7 @@ export default function JobStatus() {
     from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
     //@ts-ignore
     to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
-    offset: (currentPage - 1) * itemsPerPage,
+    offset: currentPage > 1 ? currentPage - 1 : 0,
     limit: itemsPerPage,
     status: filters.length > 0 ? filters[0] : undefined,
   });
@@ -135,13 +135,15 @@ export default function JobStatus() {
     return stats;
   }, [statsData]);
 
+  const jobsArray = (queryData as any)?.jobs ?? [];
+
   useEffect(() => {
     // @ts-ignore - Use type assertion here if needed, or check videoData directly
     setVideo((videoData as { url: string } | undefined)?.url);
   }, [videoData]);
 
   useEffect(() => {
-    refetchJobs(); // Forzar refetch cuando cambie la página
+    refetchJobs();
   }, [currentPage, refetchJobs]);
 
   function applyFilter() {
@@ -150,30 +152,26 @@ export default function JobStatus() {
     setCurrentPage(1);
   }
 
-  const totalItems = 100;
+  const totalItems = (queryData as any)?.metadata?.total;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Ordenar los datos según sortKey y sortOrder
-  const sortedJobs = [...jobs].sort((a, b) => {
-    if (a[sortKey] === undefined || b[sortKey] === undefined) return 0;
+  const sortedJobs = [...jobsArray].sort((a, b) => {
+    const aValue = a[sortKey];
+    const bValue = b[sortKey];
 
-    // Manejar diferentes tipos de datos para ordenamiento
-    if (typeof a[sortKey] === 'string') {
-      return sortOrder === 'asc'
-        ? a[sortKey].localeCompare(b[sortKey])
-        : b[sortKey].localeCompare(a[sortKey]);
-    } else if (typeof a[sortKey] === 'number') {
-      return sortOrder === 'asc' ? a[sortKey] - b[sortKey] : b[sortKey] - a[sortKey];
-    } else if (Array.isArray(a[sortKey])) {
-      // Para arrays (como tools_used), comparar su longitud
-      return sortOrder === 'asc'
-        ? a[sortKey].length - b[sortKey].length
-        : b[sortKey].length - a[sortKey].length;
+    if (aValue === null || aValue === undefined) return 1;
+    if (bValue === null || bValue === undefined) return -1;
+
+    if (typeof aValue === 'string') {
+      return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    } else if (typeof aValue === 'number') {
+      return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+    } else if (Array.isArray(aValue)) {
+      return sortOrder === 'asc' ? aValue.length - bValue.length : bValue.length - aValue.length;
     }
     return 0;
   });
 
-  // Aplicar filtros de estado a los datos ya paginados y ordenados
   const dataToDisplay =
     filters.length === 0 ? sortedJobs : sortedJobs.filter(item => filters.includes(item.status));
 
@@ -640,7 +638,7 @@ export default function JobStatus() {
           onClick={applyFilter}
           filters={filters}
         />
-        <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} video={video} />
+        <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} url={video} />
       </div>
     </>
   );

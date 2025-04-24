@@ -2,7 +2,7 @@ export default function SpinnerFour() {
   return (
     <button
       type="button"
-      className="flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 py-3.5 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"
+      className="flex items-center justify-center gap-2 rounded-lg bg-[#1F75E6] px-5 py-3.5 text-sm font-medium text-white shadow-theme-xs hover:bg-[#1F75E6]"
     >
       <span className="animate-spin">
         <svg

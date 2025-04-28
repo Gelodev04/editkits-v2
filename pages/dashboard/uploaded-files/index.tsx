@@ -1,11 +1,11 @@
-import Button from '@/components/Button';
 import ComponentCard from '@/components/ComponentCard';
 import Menu from '@/components/Menu';
-import DateFilterModal from '@/components/modals/DateFilterModal';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
 import Spinner from '@/components/Spinner';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/Table';
+import Button from '@/components/ui/button/Button';
+import { DatePickerWithRange } from '@/components/ui/DateRangePicker';
 import { useSidebar } from '@/context/SidebarContext';
 import { ExpiredIcon, WhiteExpiredIcon } from '@/icons';
 import { uploadedFilesColumns } from '@/lib/constants';
@@ -14,10 +14,10 @@ import { useGetRecentFilesQuery, usePreviewVideoQuery } from '@/services/api/fil
 import { router } from 'next/client';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IoMdRefresh } from 'react-icons/io';
 import { IoCopyOutline } from 'react-icons/io5';
-import { RxCalendar } from 'react-icons/rx';
 import PaginationWithIcon from '../PaginationWithIcon';
 
 type PreviewFileType = 'VIDEO' | 'IMAGE' | null;
@@ -27,11 +27,10 @@ type SortOrder = 'asc' | 'desc';
 
 export default function JobStatus() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
-  const [dateRange, setDateRange] = useState({});
-  const [dateFilterModal, setDateFilterModal] = useState(false);
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined);
   const [filterModal, setFilterModal] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [fileId, setFileId] = useState('');
@@ -42,9 +41,10 @@ export default function JobStatus() {
 
   const { data: queryData, refetch: refetchRecentFiles } = useGetRecentFilesQuery({
     //@ts-ignore
-    from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
-    //@ts-ignore
-    to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
+    from_ts: selectedDateRange?.from
+      ? Math.floor(selectedDateRange.from.getTime() / 1000)
+      : undefined,
+    to_ts: selectedDateRange?.to ? Math.floor(selectedDateRange.to.getTime() / 1000) : undefined,
     offset: currentPage > 1 ? currentPage - 1 : 0,
     limit: itemsPerPage,
   });
@@ -129,7 +129,7 @@ export default function JobStatus() {
   return (
     <>
       <div
-        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}
+        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] lg:p-6`}
       >
         <ComponentCard title="Uploaded Files" className="max-w-[1488px] mx-auto">
           <div className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
@@ -176,28 +176,9 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div
-              className={`grid grid-cols-1 2xsm:grid-cols-2 ${
-                isExpanded ? 'lg:grid-cols-2 xl:grid-cols-3' : 'lg:grid-cols-3'
-              } relative flex items-center gap-5`}
-            >
-              <Button
-                //@ts-ignore
-                variant={dateRange?.startDate || dateRange?.endDate ? 'primary' : 'outline'}
-                onClick={() => setDateFilterModal(true)}
-                startIcon={
-                  <>
-                    <RxCalendar
-                      className="dark:hidden"
-                      size={18}
-                      //@ts-ignore
-                    />
-                    <RxCalendar className="hidden dark:block" size={18} color="white" />
-                  </>
-                }
-              >
-                All Time
-              </Button>
+            <div className="flex flex-col lg:flex-row gap-5">
+              <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
+
               <Button
                 startIcon={<AiOutlinePlus size={18} />}
                 variant="primary"
@@ -214,7 +195,7 @@ export default function JobStatus() {
                     setIsRefreshing(true);
                     try {
                       setSelectedFilters([]);
-                      setDateRange({});
+                      setSelectedDateRange(undefined);
                       await refetchRecentFiles();
                     } catch (error) {
                       console.error('Error during refresh:', error);
@@ -379,11 +360,6 @@ export default function JobStatus() {
           </div>
         </div>
       </div>
-      <DateFilterModal
-        open={dateFilterModal}
-        setOpen={setDateFilterModal}
-        setDateRange={setDateRange}
-      />
       <FilterModal
         open={filterModal}
         setOpen={setFilterModal}

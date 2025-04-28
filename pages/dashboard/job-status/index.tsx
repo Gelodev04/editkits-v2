@@ -7,15 +7,16 @@ import { useGetJobsQuery } from '@/services/api/job';
 import { useGetStatsQuery } from '@/services/api/stats';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import PaginationWithIcon from '../PaginationWithIcon';
 
-import Button from '@/components/Button';
 import ComponentCard from '@/components/ComponentCard';
 import Menu from '@/components/Menu';
-import DateFilterModal from '@/components/modals/DateFilterModal';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
 import Spinner from '@/components/Spinner';
+import Button from '@/components/ui/button/Button';
+import { DatePickerWithRange } from '@/components/ui/DateRangePicker';
 import { useSidebar } from '@/context/SidebarContext';
 import { downloadFile, truncateFileName } from '@/lib/utils';
 import { usePreviewVideoQuery } from '@/services/api/file';
@@ -24,7 +25,6 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { IoMdRefresh } from 'react-icons/io';
 import { IoCopyOutline, IoDownloadOutline } from 'react-icons/io5';
 import { LuCirclePlay, LuSettings2 } from 'react-icons/lu';
-import { RxCalendar } from 'react-icons/rx';
 
 type SortKey =
   | 'input_file_name'
@@ -37,13 +37,12 @@ type SortKey =
 type SortOrder = 'asc' | 'desc';
 
 export default function JobStatus() {
-  const [dateRange, setDateRange] = useState({});
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined);
   const { isMobileOpen, isHovered, isExpanded } = useSidebar();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortKey, setSortKey] = useState<SortKey>('input_file_name');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
-  const [dateFilterModal, setDateFilterModal] = useState(false);
   const [filterModal, setFilterModal] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
@@ -60,9 +59,10 @@ export default function JobStatus() {
     refetch: refetchJobs,
   } = useGetJobsQuery({
     //@ts-ignore
-    from_ts: dateRange?.startDate ? new Date(dateRange.startDate).getTime() / 1000 : undefined,
-    //@ts-ignore
-    to_ts: dateRange?.endDate ? new Date(dateRange.endDate).getTime() / 1000 : undefined,
+    from_ts: selectedDateRange?.from
+      ? Math.floor(selectedDateRange.from.getTime() / 1000)
+      : undefined,
+    to_ts: selectedDateRange?.to ? Math.floor(selectedDateRange.to.getTime() / 1000) : undefined,
     offset: currentPage > 1 ? currentPage - 1 : 0,
     limit: itemsPerPage,
     status: filters.length > 0 ? filters[0] : undefined,
@@ -208,7 +208,7 @@ export default function JobStatus() {
   return (
     <>
       <div
-        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}
+        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] lg:p-6`}
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6 max-w-[1488px] mx-auto">
           {isStatsLoading ? (
@@ -268,28 +268,9 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div
-              className={`grid grid-cols-1 2xsm:grid-cols-2 ${
-                isExpanded ? 'lg:grid-cols-2 xl:grid-cols-4' : 'lg:grid-cols-4'
-              } relative flex items-center gap-5`}
-            >
-              <Button
-                //@ts-ignore
-                variant={dateRange?.startDate || dateRange?.endDate ? 'primary' : 'outline'}
-                onClick={() => setDateFilterModal(true)}
-                startIcon={
-                  <>
-                    <RxCalendar
-                      className="dark:hidden"
-                      size={18}
-                      //@ts-ignore
-                    />
-                    <RxCalendar className="hidden dark:block" size={18} color="white" />
-                  </>
-                }
-              >
-                All Time
-              </Button>
+            <div className="flex flex-col lg:flex-row gap-5">
+              <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
+
               <Button
                 variant={filters.length > 0 ? 'primary' : 'outline'}
                 onClick={() => setFilterModal(true)}
@@ -320,7 +301,7 @@ export default function JobStatus() {
                     try {
                       setSelectedFilters([]);
                       setFilters([]);
-                      setDateRange({});
+                      setSelectedDateRange(undefined);
                       await refetchJobs();
                       await refetchStats();
                     } catch (error) {
@@ -623,11 +604,6 @@ export default function JobStatus() {
             />
           </div>
         </div>
-        <DateFilterModal
-          open={dateFilterModal}
-          setOpen={setDateFilterModal}
-          setDateRange={setDateRange}
-        />
         <FilterModal
           open={filterModal}
           setOpen={setFilterModal}

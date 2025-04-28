@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Button from '@/components/Button';
 import { Modal } from '@/components/Modal';
+import Button from '@/components/ui/button/Button';
 import ButtonGroup from '@/components/ui/button/ButtonGroup';
 
 type PopUpProps = {

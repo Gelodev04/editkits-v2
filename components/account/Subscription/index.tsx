@@ -2,7 +2,7 @@ import Tag from '@/components/Tag';
 import Typography from '@/components/Typography';
 import BenefitCard from '@/components/cards/BenefitCard';
 
-import Button from '@/components/Button';
+import Button from '@/components/ui/button/Button';
 
 export function Subscription(props: any) {
   return (

@@ -1,19 +1,14 @@
 /* eslint-disable object-curly-newline */
-import React from 'react';
 import { Divider, Grid, Typography } from '@mui/material';
-import {differenceInCalendarMonths, format} from 'date-fns';
+import { differenceInCalendarMonths, format } from 'date-fns';
+import React from 'react';
 //@ts-ignore
-import {BsArrowRight} from "react-icons/bs";
-import Month from './Month';
+import Button from '@/components/ui/button/Button';
+import { BsArrowRight } from 'react-icons/bs';
 import DefinedRanges from './DefinedRanges';
-import {
-  DateRange,
-  DefinedRange,
-  Setter,
-  NavigationAction,
-} from './types';
 import { MARKERS } from './Markers';
-import Button from "@/components/Button";
+import Month from './Month';
+import { DateRange, DefinedRange, NavigationAction, Setter } from './types';
 
 interface MenuProps {
   dateRange: DateRange;
@@ -38,7 +33,7 @@ interface MenuProps {
     onMonthNavigate: (marker: symbol, action: NavigationAction) => void;
   };
   locale?: Locale;
-  toggle: any
+  toggle: any;
 }
 
 const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
@@ -55,31 +50,35 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
     helpers,
     handlers,
     locale,
-    toggle
-
+    toggle,
   } = props;
 
   const { startDate, endDate } = dateRange;
   const canNavigateCloser = differenceInCalendarMonths(secondMonth, firstMonth) >= 2;
   const commonProps = {
-    dateRange, minDate, maxDate, helpers, handlers,
+    dateRange,
+    minDate,
+    maxDate,
+    helpers,
+    handlers,
   };
   return (
     <div className="rounded-3xl pt-20 px-8 relative border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800">
-      <Grid className="border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800" container direction="row" wrap="nowrap">
+      <Grid
+        className="border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800"
+        container
+        direction="row"
+        wrap="nowrap"
+      >
         <Grid>
-          <DefinedRanges
-            selectedRange={dateRange}
-            ranges={ranges}
-            setRange={setDateRange}
-          />
+          <DefinedRanges selectedRange={dateRange} ranges={ranges} setRange={setDateRange} />
         </Grid>
-        <Divider orientation="vertical" flexItem/>
+        <Divider orientation="vertical" flexItem />
         <Grid>
           <Grid container sx={{ padding: '20px 70px' }} alignItems="center">
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
               <Typography variant="subtitle1" className="text-[#1d2939] dark:text-white/90">
-                {startDate ? format(startDate, 'dd MMMM yyyy', {locale}) : 'Start Date'}
+                {startDate ? format(startDate, 'dd MMMM yyyy', { locale }) : 'Start Date'}
               </Typography>
             </Grid>
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
@@ -88,7 +87,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
             </Grid>
             <Grid item sx={{ flex: 1, textAlign: 'center' }}>
               <Typography variant="subtitle1" className="text-[#1d2939] dark:text-white/90">
-                {endDate ? format(endDate, 'dd MMMM yyyy', {locale}) : 'End Date'}
+                {endDate ? format(endDate, 'dd MMMM yyyy', { locale }) : 'End Date'}
               </Typography>
             </Grid>
           </Grid>
@@ -102,7 +101,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
               marker={MARKERS.FIRST_MONTH}
               locale={locale}
             />
-            <Divider orientation="vertical" flexItem/>
+            <Divider orientation="vertical" flexItem />
             <Month
               {...commonProps}
               value={secondMonth}
@@ -115,9 +114,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
         </Grid>
       </Grid>
       <div className="flex justify-center py-[34px]">
-        <Button
-          onClick={toggle}
-        >Apply</Button>
+        <Button onClick={toggle}>Apply</Button>
       </div>
     </div>
   );

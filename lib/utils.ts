@@ -1,4 +1,10 @@
+import { clsx, type ClassValue } from 'clsx';
 import toast from 'react-hot-toast';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 import { IRefreshAccessTokenResponse } from '@/interfaces/api/auth';
 import { getUserInfo, setAccessToken } from '@/services/api';

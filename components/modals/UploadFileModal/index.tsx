@@ -1,7 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Fade, Modal, Box } from '@mui/material';
 import { TbXboxX } from 'react-icons/tb';
-import Typography from '@/components/Typography';
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import toast from 'react-hot-toast';
 import { fileUploader } from '@/lib/uploadFile';

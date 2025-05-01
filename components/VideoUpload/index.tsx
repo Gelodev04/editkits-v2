@@ -1,14 +1,11 @@
 import * as React from 'react';
 import Image from 'next/image';
-import PlayIcon from '@/assets/img/icons/play.png';
-import RetryIcon from '@/assets/img/icons/retry.svg';
 import {
   HiOutlineCloudUpload,
   HiOutlineRefresh,
   HiPlay,
   HiOutlineVideoCamera,
 } from 'react-icons/hi';
-import Button from '@/components/Button_Old';
 
 type VideoUploadProps = {
   file: any;

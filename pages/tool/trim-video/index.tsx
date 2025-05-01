@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { FaAngleRight, FaPlay, FaScissors } from 'react-icons/fa6';
+import { FaPlay, FaScissors } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
-import Typography from '@/components/Typography';
-import Button from '@/components/Button_Old';
+// // import Typography from '@/components/Typography';
+// import Button from '@/components/Button_Old';
 import UploadFileModal from '@/components/modals/UploadFileModal';
-import TextField from '@/components/TextField';
-import Select from '@/components/Select';
+// import TextField from '@/components/TextField';
+// import Select from '@/components/Select';
 import { outputQualityList, videoType } from '@/lib/constants';
 import { VideoUpload } from '@/components/VideoUpload';
 import { useEffect } from 'react';
-import { CalendarIcon, ClockIcon, UploadIcon } from '@/components/Icons';
+// import { CalendarIcon, ClockIcon, UploadIcon } from '@/components/Icons';
 import {
   HiOutlineClock,
   HiOutlineVideoCamera,
   HiOutlineAdjustments,
-  HiOutlinePhotograph,
+  // HiOutlinePhotograph,
   HiOutlineCheck,
 } from 'react-icons/hi';
 
@@ -36,8 +36,8 @@ export default function TrimVideo() {
     { job_id: jobId },
     { skip: !jobId }
   );
-  const [initJob, { isLoading: isInitLoading }] = useInitJobMutation();
-  const [commitJob, { isLoading: isCommitLoading }] = useCommitJobMutation();
+  const [initJob] = useInitJobMutation();
+  const [commitJob] = useCommitJobMutation();
 
   const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
   const [progressModal, setProgressModal] = React.useState<any>(false);
@@ -49,12 +49,12 @@ export default function TrimVideo() {
   const [fetchedData, setFetchedData] = useState(null);
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
-  const [outputQuality, setOutputQuality] = useState('LOW');
-  const [videoContainer, setVideoContainer] = useState('mp4');
+  const [outputQuality] = useState('LOW');
+  const [videoContainer] = useState('mp4');
 
-  const [uploadedModal, setUploadedModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalMessage, setModalMessage] = useState('');
+  // const [uploadedModal, setUploadedModal] = useState(false);
+  // const [modalTitle, setModalTitle] = useState('');
+  // const [modalMessage, setModalMessage] = useState('');
 
   useEffect(() => {
     const interval = setInterval(() => {

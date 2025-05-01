@@ -17,9 +17,6 @@ import { lato, montserrat, opensans } from '@/lib/fonts';
 import Typography from '@/components/Typography';
 
 import Rocket from '@/public/images/rocket.gif';
-import CheckMark from '@/public/icons/check-circle_success.svg';
-import Error from '@/public/icons/error.svg';
-import ButtonOld from '@/components/Button_Old';
 
 export default function FileProgressModal(props) {
   const router = useRouter();

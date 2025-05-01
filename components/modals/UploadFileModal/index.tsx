@@ -1,18 +1,12 @@
-import Image from "next/image";
-import React  from "react";
-
-import toast from "react-hot-toast";
-import {Fade, Modal} from "@mui/material";
-import {IoIosCloseCircleOutline} from "react-icons/io";
-
-
-import InputField from "@/components/InputField";
-import Typography from "@/components/Typography";
-import {fileUploader} from "@/lib/uploadFile";
-import {lato, montserrat, opensans} from "@/lib/fonts";
-
-import Upload from "@/public/icons/upload.svg"
-import ButtonOld from "@/components/Button_Old";
+import React, { useState, useRef, useCallback } from 'react';
+import { Fade, Modal, Box } from '@mui/material';
+import { TbXboxX } from 'react-icons/tb';
+import Typography from '@/components/Typography';
+import { lato, montserrat, opensans } from '@/lib/fonts';
+import toast from 'react-hot-toast';
+import { fileUploader } from '@/lib/uploadFile';
+import DropzoneComponent from '@/components/DropZone.tsx';
+import { HiLink, HiFingerPrint, HiOutlineDeviceMobile } from 'react-icons/hi';
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -23,176 +17,505 @@ export type UploadModalProps = {
   setFileId?: (e: React.SetStateAction<any>) => void;
   upload?: any;
   isUploading?: boolean;
-  setIsUploading?: any
+  setIsUploading?: any;
   setProgress?: (e: React.SetStateAction<number>) => void;
-  uploadedModal?: boolean;
-  setUploadedModal?: (e: React.SetStateAction<boolean>) => void;
-  modalTitle?: string;
-  setModalTitle?: (e: React.SetStateAction<string>) => void;
-  modalMessage?: string;
-  setModalMessage?: (e: React.SetStateAction<string>) => void;
-}
+  progress?: number;
+};
 
 const style = {
-  position: 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
-  width: 400,
+  transform: 'translate(-50%, -50%)',
+  width: 580,
+  maxWidth: '95vw',
   bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
+  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)' as any,
+  borderRadius: '16px',
+  zIndex: 1500,
+  p: 0,
+  overflow: 'hidden',
 };
 
 export default function UploadFileModal(props: UploadModalProps) {
-  const fileInputRef = React.useRef(null);
-  const [isDragging, setIsDragging] = React.useState(false);
+  const [activeTab, setActiveTab] = useState<'device' | 'url' | 'fileId'>('device');
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [fileSelected, setFileSelected] = useState(false);
+  const urlInputRef = useRef<HTMLInputElement>(null);
+  const fileIdInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDivClick = () => {
-    //@ts-ignore
-    fileInputRef.current.click();
-  };
+  // Create a ref to track if a file upload is in progress
+  const isUploadingRef = useRef(false);
 
-  async function handleFileUpload(file) {
-    const file_name = file.name.split(".")[0]
+  async function handleFileUpload(file: File) {
+    if (!props.setIsUploading || !props.upload || isProcessing || isUploadingRef.current) return;
 
-    props.setIsUploading(true)
-    const response = await props.upload({
-      file_name,
-      mime_type: file.type,
-      ext: file.name.split('.').pop(),
-      content_length: file.size
-    });
+    try {
+      // Set the ref to indicate uploading is in progress
+      isUploadingRef.current = true;
+      setIsProcessing(true);
+      setUploadedFileName(file.name);
+      props.setIsUploading(true);
 
-    if (response.error) {
-      //@ts-ignore
-      props.setModalTitle("Uh-oh! Something's Off");
-      //@ts-ignore
-      props.setModalMessage(response.error.data.errorMsg);
-      props.setUploadModal(false);
-      //@ts-ignore
-      props.setUploadedModal(true)
-      return;
+      const response = await props.upload({
+        file_name: file.name,
+        mime_type: file.type,
+        ext: file.name.split('.').pop(),
+        content_length: file.size,
+      });
+
+      if (response?.error) {
+        toast.error(response.error.data.errorMsg);
+        isUploadingRef.current = false;
+        setIsProcessing(false);
+        return;
+      }
+
+      await fileUploader(
+        response.data.presigned_url,
+        file,
+        props.setUploadModal,
+        props.setIsUploading,
+        props.setProgress
+      );
+
+      if (props.setFileId) {
+        props.setFileId(response.data.file_id);
+      }
+
+      toast.success('File uploaded successfully!');
+
+      // Close the modal after a delay
+      setTimeout(() => {
+        props.setUploadModal(false);
+        setIsProcessing(false);
+        setUploadedFileName(null);
+        // Reset the uploading flag only after the modal is closed
+        isUploadingRef.current = false;
+      }, 500);
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error('An error occurred during upload');
+      setIsProcessing(false);
+      setUploadedFileName(null);
+      props.setIsUploading(false);
+      isUploadingRef.current = false;
     }
-
-
-    await fileUploader(response.data.presigned_url, file, props.setUploadModal, props.setIsUploading, props.setProgress)
-    if (props.setFileId) {
-      props.setFileId(response.data.file_id);
-    }
-    toast.success("File uploaded");
-    props.setUploadModal(false);
   }
 
-  const handleFileChange = async (event: any) => {
-    const file = event.target.files[0];
-    if (file) {
-      if (file.type.startsWith("video/")) {
-        // @ts-ignore
-        props.setFile(file);
-        await handleFileUpload(file)
-        // @ts-ignore
-        if (props.videoRef.current) {
-          // @ts-ignore
-          props.videoRef.current.load();
+  // Use useCallback to prevent recreating this function on each render
+  const handleFileChange = useCallback(
+    async (acceptedFiles: File[]) => {
+      // Prevent handling if already processing or no files
+      if (
+        !props.setFile ||
+        !acceptedFiles.length ||
+        isProcessing ||
+        isUploadingRef.current ||
+        fileSelected
+      )
+        return;
+
+      // Set fileSelected to true to prevent multiple calls
+      setFileSelected(true);
+
+      const file = acceptedFiles[0];
+      if (file) {
+        if (file.type.startsWith('video/')) {
+          props.setFile(file);
+          await handleFileUpload(file);
+
+          if (
+            props.videoRef &&
+            typeof props.videoRef === 'object' &&
+            'current' in props.videoRef &&
+            props.videoRef.current
+          ) {
+            // @ts-ignore - Safer approach but TypeScript might still complain
+            props.videoRef.current.load();
+          }
+        } else {
+          toast.error('Please upload a valid video file.');
+          setFileSelected(false);
+          isUploadingRef.current = false;
         }
       } else {
-        alert("Please upload a valid video file.");
+        setFileSelected(false);
       }
-    }
-  };
+    },
+    [props, isProcessing, fileSelected]
+  );
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragging(true);
-  };
+  const handleUrlUpload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isProcessing || !urlInputRef.current?.value) return;
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragging(false);
+    // Implement URL upload logic
+    setIsProcessing(true);
+    isUploadingRef.current = true;
+    toast.success('URL upload functionality will be implemented');
 
-    const file = event.dataTransfer.files[0];
-    if (file && file.type.startsWith("video/")) {
-      // @ts-ignore
-      props.setFile(file);
+    setTimeout(() => {
       props.setUploadModal(false);
-    } else {
-      alert("Please upload a valid video file.");
-    }
+      setIsProcessing(false);
+      isUploadingRef.current = false;
+    }, 500);
   };
 
-  const handleDragLeave = () => {
-    setIsDragging(false);
+  const handleFileIdUpload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isProcessing || !fileIdInputRef.current?.value) return;
+
+    // Implement File ID upload logic
+    setIsProcessing(true);
+    isUploadingRef.current = true;
+    toast.success('File ID upload functionality will be implemented');
+
+    setTimeout(() => {
+      props.setUploadModal(false);
+      setIsProcessing(false);
+      isUploadingRef.current = false;
+    }, 500);
   };
+
+  const videoFileTypes = {
+    'video/mp4': [],
+    'video/quicktime': [],
+    'video/x-msvideo': [],
+    'video/webm': [],
+    'video/mpeg': [],
+    'video/x-matroska': [],
+  };
+
+  const handleManualUpload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isProcessing || isUploadingRef.current) return;
+    props.setUploadModal(false);
+  };
+
+  // Reset the fileSelected state when the modal opens or closes
+  React.useEffect(() => {
+    if (!props.uploadModal) {
+      // Small delay to ensure the modal is fully closed
+      setTimeout(() => {
+        setFileSelected(false);
+        isUploadingRef.current = false;
+      }, 100);
+    }
+  }, [props.uploadModal]);
 
   return (
-    <Modal open={props.uploadModal} onClose={() => props.setUploadModal(false)}>
+    <Modal
+      open={props.uploadModal}
+      onClose={() => {
+        // Only close if not processing
+        if (!isProcessing && !isUploadingRef.current) {
+          props.setUploadModal(false);
+        }
+      }}
+      aria-labelledby="upload-modal-title"
+      closeAfterTransition
+      disableAutoFocus={true}
+      disableEnforceFocus={true}
+      BackdropProps={{
+        timeout: 500,
+        style: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
+      }}
+    >
       <Fade in={props.uploadModal}>
-        {/*@ts-ignore*/}
-        <div className={`${montserrat.variable} ${lato.variable} ${opensans.variable}`} style={style}>
-          <input
-            type="file"
-            style={{display: "none"}}
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            accept="video/"
-          />
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"/>
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <div
-                className="relative transform rounded-[23px] bg-white text-left shadow-xl transition-all w-[540px] h-[583px] ">
-                <div className="absolute right-[24.14px] top-[22.22px]">
-                  <IoIosCloseCircleOutline size={24} color="#000" onClick={() => props.setUploadModal(false)}/>
-                </div>
-                <div className="pt-[35px] pb-[6px]">
-                  <Typography label="Choose file" center variant="h3"/>
-                </div>
-                <div className="w-[445px] mx-auto">
-                  <div
-                    className={`h-[202px] mx-auto border border-dashed border-1 border-[#17abdb] rounded rounded-md ${isDragging ? "bg-blue-100 border-blue-500" : "border-[#17abdb]"}`}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    onDragLeave={handleDragLeave}
-                  >
-                    <div className="flex justify-center pt-[30px] pb-[20.14px]">
-                      <Image src={Upload} alt="Upload"/>
-                    </div>
-                    <div className="flex justify-center gap-2 pb-[5px]">
-                      <p className="font-lato font-bold text-base leading-[24px] text-[#333333]">Drag & drop files or</p>
-                      <div onClick={handleDivClick} className="cursor-pointer">
-                        <p className="font-lato font-bold text-base leading-[24px] text-[#17ABDB] underline">Browse</p>
+        <Box
+          sx={style}
+          className={`${montserrat.variable} ${lato.variable} ${opensans.variable}`}
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-6 text-white relative">
+            <button
+              onClick={e => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
+              }}
+              disabled={isProcessing || isUploadingRef.current}
+              className={`absolute right-6 top-6 text-white/80 hover:text-white transition-colors ${
+                isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              aria-label="Close modal"
+            >
+              <TbXboxX size={24} />
+            </button>
+            <h3 className="text-2xl font-bold">Upload Media</h3>
+            <p className="mt-1 text-white/80 text-sm">Select a video file to upload and edit</p>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex border-b border-gray-200">
+            <button
+              onClick={e => {
+                e.preventDefault();
+                if (!isProcessing && !isUploadingRef.current) setActiveTab('device');
+              }}
+              disabled={isProcessing || isUploadingRef.current}
+              className={`flex items-center justify-center py-4 px-6 text-sm font-medium focus:outline-none ${
+                isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
+              } ${
+                activeTab === 'device'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <HiOutlineDeviceMobile className="mr-2" size={18} />
+              Device
+            </button>
+            <button
+              onClick={e => {
+                e.preventDefault();
+                if (!isProcessing && !isUploadingRef.current) setActiveTab('url');
+              }}
+              disabled={isProcessing || isUploadingRef.current}
+              className={`flex items-center justify-center py-4 px-6 text-sm font-medium focus:outline-none ${
+                isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
+              } ${
+                activeTab === 'url'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <HiLink className="mr-2" size={18} />
+              URL
+            </button>
+            <button
+              onClick={e => {
+                e.preventDefault();
+                if (!isProcessing && !isUploadingRef.current) setActiveTab('fileId');
+              }}
+              disabled={isProcessing || isUploadingRef.current}
+              className={`flex items-center justify-center py-4 px-6 text-sm font-medium focus:outline-none ${
+                isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
+              } ${
+                activeTab === 'fileId'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <HiFingerPrint className="mr-2" size={18} />
+              File ID
+            </button>
+          </div>
+
+          <div className="p-8">
+            {/* Device Upload */}
+            {activeTab === 'device' && (
+              <div>
+                <h4 className="text-gray-700 font-medium mb-3 flex items-center">
+                  <span className="bg-blue-100 text-blue-600 p-1 rounded-md mr-2">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10C17 10.5523 16.5523 11 16 11H8C7.44772 11 7 10.5523 7 10V8Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      />
+                      <path
+                        d="M12 14V16"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                      <rect
+                        x="4"
+                        y="11"
+                        width="16"
+                        height="10"
+                        rx="2"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </span>
+                  Upload from your device
+                </h4>
+
+                {isProcessing || isUploadingRef.current ? (
+                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                    <div className="animate-pulse flex flex-col items-center justify-center">
+                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                        <svg
+                          className="animate-spin w-8 h-8 text-blue-600"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                      </div>
+                      <h3 className="text-lg font-medium text-gray-700 mb-1">Processing</h3>
+                      <p className="text-sm text-gray-500 mb-2">Uploading {uploadedFileName}</p>
+                      <div className="w-full max-w-xs bg-gray-200 rounded-full h-2.5 mt-2">
+                        <div
+                          className="bg-gradient-to-r from-blue-500 to-purple-500 h-2.5 rounded-full"
+                          style={{ width: `${props.progress || 0}%` }}
+                        ></div>
                       </div>
                     </div>
-                    <p className="font-lato font-normal text-xs leading-[18px] text-[#676767] text-center">Supported
-                      formats: JPEG, PNG, GIF, MP4, AVI, MOV, MKV, WEBM, FLV</p>
                   </div>
-                  <div className="inline-flex items-center justify-center w-full ">
-                    <hr className="w-full h-[1px] my-8 bg-gray-200 border-0 rounded bg-[#e7e7e7]"/>
-                    <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2">
-                      <p className="font-lato font-normal text-xs leading-[18px] text-center text-[#6d6d6d]">OR</p>
+                ) : (
+                  <>
+                    <DropzoneComponent
+                      showCard={false}
+                      onFileSelect={handleFileChange}
+                      acceptTypes={videoFileTypes}
+                      title=""
+                      className="border-gray-300 hover:border-blue-500 focus:border-blue-500 transition-all duration-200"
+                    />
+                    <div className="mt-2 mb-2 text-center">
+                      <p className="text-xs text-gray-500">
+                        Supported formats: MP4, MOV, AVI, WEBM, FLV
+                      </p>
                     </div>
-                  </div>
-                  {/*@ts-ignore*/}
-                  <InputField label="File ID" placeholder="Add file ID" type="text" />
-                  <div className="flex gap-[27px] pt-[76px] pb-[32px] flex justify-center">
-                    <ButtonOld
-                      onClick={() => props.setUploadModal(false)}
-                      label="Cancel"
-                      variant="standard_sm"
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* URL Upload */}
+            {activeTab === 'url' && (
+              <div>
+                <h4 className="text-gray-700 font-medium mb-3 flex items-center">
+                  <span className="bg-blue-100 text-blue-600 p-1 rounded-md mr-2">
+                    <HiLink size={18} />
+                  </span>
+                  Upload from URL
+                </h4>
+
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-medium mb-2">Video URL</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-gray-500">
+                      <HiLink size={18} />
+                    </span>
+                    <input
+                      ref={urlInputRef}
+                      type="text"
+                      placeholder="https://example.com/video.mp4"
+                      disabled={isProcessing || isUploadingRef.current}
+                      className={`w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
+                        isProcessing || isUploadingRef.current
+                          ? 'bg-gray-100 cursor-not-allowed'
+                          : ''
+                      }`}
                     />
-                    <ButtonOld
-                      onClick={() => props.setUploadModal(false)}
-                      label="Proceed"
-                      variant="standard_sm"
-                      filled
-                    />
                   </div>
+                  <p className="text-xs text-gray-500 mt-1">Enter a direct link to a video file</p>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    onClick={handleUrlUpload}
+                    disabled={isProcessing || isUploadingRef.current}
+                    className={`w-full py-3 px-6 text-white font-medium bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg ${
+                      isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {isProcessing || isUploadingRef.current ? 'Processing...' : 'Upload from URL'}
+                  </button>
                 </div>
               </div>
+            )}
+
+            {/* File ID Upload */}
+            {activeTab === 'fileId' && (
+              <div>
+                <h4 className="text-gray-700 font-medium mb-3 flex items-center">
+                  <span className="bg-blue-100 text-blue-600 p-1 rounded-md mr-2">
+                    <HiFingerPrint size={18} />
+                  </span>
+                  Upload by File ID
+                </h4>
+
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-medium mb-2">
+                    Video File ID
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-gray-500">
+                      <HiFingerPrint size={18} />
+                    </span>
+                    <input
+                      ref={fileIdInputRef}
+                      type="text"
+                      placeholder="Enter file ID"
+                      disabled={isProcessing || isUploadingRef.current}
+                      className={`w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
+                        isProcessing || isUploadingRef.current
+                          ? 'bg-gray-100 cursor-not-allowed'
+                          : ''
+                      }`}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Enter previously uploaded file ID</p>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    onClick={handleFileIdUpload}
+                    disabled={isProcessing || isUploadingRef.current}
+                    className={`w-full py-3 px-6 text-white font-medium bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg ${
+                      isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {isProcessing || isUploadingRef.current ? 'Processing...' : 'Use File ID'}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 mt-8">
+              <button
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
+                }}
+                disabled={isProcessing || isUploadingRef.current}
+                className={`flex-1 py-3 px-6 text-gray-700 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${
+                  isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
+                Cancel
+              </button>
+              {activeTab === 'device' && !isProcessing && !isUploadingRef.current && (
+                <button
+                  onClick={handleManualUpload}
+                  className="flex-1 py-3 px-6 text-white font-medium bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+                >
+                  Upload
+                </button>
+              )}
             </div>
           </div>
-        </div>
+        </Box>
       </Fade>
     </Modal>
-  )
+  );
 }

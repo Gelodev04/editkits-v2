@@ -1,10 +1,14 @@
-import * as React from "react";
-import Image from "next/image";
-import PlayIcon from "@/public/icons/play.png";
-import RetryIcon from "@/public/icons/retry.svg";
-import UploadingIcon from "@/public/icons/cloud.svg"
-
-import ButtonOld from "@/components/Button_Old";
+import * as React from 'react';
+import Image from 'next/image';
+import PlayIcon from '@/assets/img/icons/play.png';
+import RetryIcon from '@/assets/img/icons/retry.svg';
+import {
+  HiOutlineCloudUpload,
+  HiOutlineRefresh,
+  HiPlay,
+  HiOutlineVideoCamera,
+} from 'react-icons/hi';
+import Button from '@/components/Button_Old';
 
 type VideoUploadProps = {
   file: any;
@@ -13,91 +17,130 @@ type VideoUploadProps = {
   progress: number;
   uploadedData: any;
   fetchedData: any;
-  isUploading?: boolean
-}
+  isUploading?: boolean;
+};
 
 export function VideoUpload(props: VideoUploadProps) {
   return (
-    <div className="pt-4">
-      {props.file && (
-        <div className="mt-4 grid grid-cols-12">
-          {props.uploadedData?.status === "COMMITTED" && !props.isUploading && (
-            <div className="relative bg-[#000000] w-[138%] rounded-md p-1">
-              <div className="col-span-1 min-w-[80px] min-h-[45px] max-w-[80px] max-h-[45px]">
-                {props.fetchedData?.metadata?.thumbnail_url && (
-                  <Image
-                    src={props.fetchedData?.metadata?.thumbnail_url}
-                    className="object-contain h-[45px] w-[80px]"
-                    width={80}
-                    height={45}
-                    alt="uploaded_file"
-                    priority
-                    quality={75}
-                  />
+    <div className="pt-2">
+      {props.file ? (
+        <div className="mt-4 bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="flex flex-col sm:flex-row">
+            {/* Video Thumbnail/Preview */}
+            {props.uploadedData?.status === 'COMMITTED' && !props.isUploading && (
+              <div className="relative bg-gray-800 w-full sm:w-48 h-36 flex items-center justify-center overflow-hidden">
+                {props.fetchedData?.metadata?.thumbnail_url ? (
+                  <>
+                    <Image
+                      src={props.fetchedData?.metadata?.thumbnail_url}
+                      className="w-full h-full object-cover"
+                      width={192}
+                      height={144}
+                      alt="Video thumbnail"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                      <div className="w-12 h-12 bg-white bg-opacity-30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-opacity-40 transition-all cursor-pointer">
+                        <HiPlay className="text-white text-xl ml-1" />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col items-center justify-center">
+                    <HiOutlineVideoCamera className="text-gray-400 text-4xl mb-2" />
+                    <span className="text-gray-400 text-xs">No preview</span>
+                  </div>
                 )}
               </div>
-              <Image priority className="absolute inset-0 bottom-1 m-auto object-contain" src={PlayIcon} alt="Play icon"/>
-            </div>
-          )}
-          {props.isUploading && (
-            <div className="relative w-[138%] rounded-md p-1">
-              <Image priority className=" inset-0 bottom-1 m-auto object-contain" src={UploadingIcon} alt="Play icon"/>
-              <p
-                className="font-lato font-bold text-[10px] leading-[15px] text-[#7D3CDE]">Uploading... {props.progress}%</p>
-            </div>)}
-          <div className="pl-8 col-span-10">
-            <p className="text-base font-lato font-bold text-[#2c2c2c] leading-[24px]">
-              {(() => {
-                const fileName = props.file.name;
-                const extIndex = fileName.lastIndexOf(".");
+            )}
 
-                if (extIndex !== -1) {
-                  const namePart = fileName.slice(0, 20);
-                  const extPart = fileName.slice(extIndex);
-                  return `${namePart}...${extPart}`;
-                }
+            {/* Upload Progress Indicator */}
+            {props.isUploading && (
+              <div className="relative bg-gray-50 w-full sm:w-48 h-36 flex flex-col items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-blue-50 mb-3 flex items-center justify-center">
+                  <HiOutlineCloudUpload className="text-blue-500 text-2xl" />
+                </div>
+                <div className="w-32">
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 h-2.5 rounded-full transition-all duration-300"
+                      style={{ width: `${props.progress}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-600 text-center mt-1">
+                    Uploading: {props.progress}%
+                  </p>
+                </div>
+              </div>
+            )}
 
-                return fileName.length > 15 ? `${fileName.slice(0, 15)}...` : fileName;
-              })()}
-            </p>
-            <div className="flex gap-3">
-              <div className="flex items-end gap-1">
-                <p className="text-sm font-lato font-bold text-[#A0AEC0] leading-[21px]">Duration: </p>
-                <p
-                  className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{Math.floor(props.fetchedData?.metadata?.duration ?? 0)} seconds, </p>
+            {/* File Details */}
+            <div className="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                {/* Filename & Delete/Replace */}
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-gray-900 font-semibold text-lg truncate pr-4">
+                    {props.file.name}
+                  </h3>
+                  <button
+                    onClick={() => props.setUploadFileModal(true)}
+                    className="p-2 rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center text-gray-500 hover:text-gray-700"
+                    aria-label="Replace video"
+                  >
+                    <HiOutlineRefresh className="text-lg" />
+                  </button>
+                </div>
+
+                {/* Video Metadata */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1">
+                  <div className="flex items-center text-gray-500 text-sm">
+                    <span className="mr-1.5 font-medium">Duration:</span>
+                    <span>{Math.floor(props.fetchedData?.metadata?.duration ?? 0)} seconds</span>
+                  </div>
+
+                  <div className="flex items-center text-gray-500 text-sm">
+                    <span className="mr-1.5 font-medium">Resolution:</span>
+                    <span>
+                      {props.fetchedData?.metadata?.width ?? 0} ×{' '}
+                      {props.fetchedData?.metadata?.height ?? 0}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center text-gray-500 text-sm">
+                    <span className="mr-1.5 font-medium">Size:</span>
+                    <span>
+                      {((props.fetchedData?.metadata?.size ?? 0) / (1024 * 1024)).toFixed(1)} MB
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-end gap-1">
-                <p className="text-sm font-lato font-bold text-[#A0AEC0] leading-[21px]">Resolution: </p>
-                <p
-                  className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{props.fetchedData?.metadata?.width ?? 0} x {props.fetchedData?.metadata?.height ?? 0} </p>
-              </div>
-              <div className="flex items-end gap-1">
-                <p className="text-sm font-lato font-bold text-[#A0AEC0] leading-[21px]">Size: </p>
-                <p
-                  className="text-sm font-lato font-normal text-[#A0AEC0] leading-[21px]">{Math.floor((props.fetchedData?.metadata?.size ?? 0) / (1024 * 1024)).toFixed(1)} MB </p>
+
+              {/* Status Indicator */}
+              <div className="mt-3">
+                <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5"></span>
+                  Ready to process
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-span-1 place-items-end">
-            <Image
-              onClick={() => {
-                props.setUploadFileModal(true)
-              }}
-              src={RetryIcon}
-              alt="Retry icon"
-              className="cursor-pointer"
-              priority
-            />
           </div>
         </div>
-      )}
-      {!props.file && (
-        <ButtonOld
-          onClick={() => props.setUploadFileModal(true)}
-          label="Add File"
-          variant="standard_sm"
-        />
+      ) : (
+        <div className="mt-2 flex flex-col items-center justify-center px-6 py-8 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 transition-colors bg-gray-50">
+          <div className="mb-4 w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
+            <HiOutlineVideoCamera className="text-blue-500 text-3xl" />
+          </div>
+          <h3 className="text-gray-700 font-medium text-lg mb-2">No video selected</h3>
+          <p className="text-gray-500 text-sm mb-6 text-center">
+            Upload a video file to start editing
+          </p>
+          <button
+            onClick={() => props.setUploadFileModal(true)}
+            className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all"
+          >
+            Select Video
+          </button>
+        </div>
       )}
     </div>
-  )
+  );
 }

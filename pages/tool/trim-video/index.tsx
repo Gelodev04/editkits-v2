@@ -172,14 +172,14 @@ export default function TrimVideo() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-white rounded-2xl shadow-xl border border-gray-100 relative overflow-hidden"
+        className="bg-white dark:bg-white/[0.03] rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 relative overflow-hidden"
       >
         {/* Background decorative elements */}
         {/* <div className="absolute top-0 right-0 w-56 h-56 bg-gradient-to-br from-blue-50/60 to-purple-50/60 rounded-full -mr-28 -mt-28 z-0" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-purple-50/60 to-blue-50/60 rounded-full -ml-28 -mb-28 z-0" /> */}
 
         {/* Header */}
-        <div className="relative z-10 pt-8 pb-4 px-8 border-b border-gray-100">
+        <div className="relative z-10 pt-8 pb-4 px-8 border-b border-gray-100 dark:border-gray-800">
           <GradientHeading
             text="Trim Video"
             subtext="Quickly cut unwanted sections from your video to enhance its flow and impact"
@@ -193,10 +193,12 @@ export default function TrimVideo() {
           {/* Input Section */}
           <div className="mb-10">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 mr-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
                 <HiOutlineVideoCamera size={20} />
               </div>
-              <h2 className="text-xl font-semibold text-gray-800">Input Video</h2>
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
+                Input Video
+              </h2>
             </div>
 
             <motion.div whileHover={{ scale: 1.005 }} transition={{ duration: 0.2 }}>
@@ -215,23 +217,25 @@ export default function TrimVideo() {
           {/* Timeline Section */}
           <div className="mb-10">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 mr-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
                 <HiOutlineClock size={20} />
               </div>
-              <h2 className="text-xl font-semibold text-gray-800">Edit Timeline</h2>
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
+                Edit Timeline
+              </h2>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="w-full">
                   <label
                     htmlFor="start-time"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
                     Start Time (seconds)
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 dark:text-gray-400">
                       <HiOutlineClock size={18} />
                     </div>
                     <input
@@ -241,7 +245,7 @@ export default function TrimVideo() {
                       onChange={e => setStartTime(e.target.value)}
                       disabled={!file}
                       placeholder="0"
-                      className="pl-10 text-black pr-4 py-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                      className="pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     />
                   </div>
                 </div>
@@ -249,12 +253,12 @@ export default function TrimVideo() {
                 <div className="w-full">
                   <label
                     htmlFor="end-time"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
                     End Time (seconds)
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 dark:text-gray-400">
                       <HiOutlineClock size={18} />
                     </div>
                     <input
@@ -264,7 +268,7 @@ export default function TrimVideo() {
                       onChange={e => setEndTime(e.target.value)}
                       disabled={!file}
                       placeholder="10"
-                      className="pl-10 text-black pr-4 py-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                      className="pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     />
                   </div>
                 </div>
@@ -274,9 +278,9 @@ export default function TrimVideo() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 p-4 rounded-lg bg-blue-50 text-blue-700 flex items-center"
+                  className="mt-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 flex items-center"
                 >
-                  <div className="rounded-full bg-blue-100 p-2 mr-3 flex-shrink-0">
+                  <div className="rounded-full bg-blue-100 dark:bg-blue-800/50 p-2 mr-3 flex-shrink-0">
                     <FaPlay size={12} />
                   </div>
                   <p className="text-sm">
@@ -291,16 +295,21 @@ export default function TrimVideo() {
           {/* Output Section */}
           <div className="mb-10">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 mr-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
                 <HiOutlineAdjustments size={20} />
               </div>
-              <h2 className="text-xl font-semibold text-gray-800">Output Settings</h2>
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
+                Output Settings
+              </h2>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                 <div className="w-full">
-                  <label htmlFor="quality" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="quality"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Output Quality
                   </label>
                   <div className="relative">
@@ -309,7 +318,7 @@ export default function TrimVideo() {
                       disabled={!file}
                       value={outputQuality}
                       onChange={e => setOutputQuality(e.target.value)}
-                      className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
                       <option value="">Select quality</option>
                       {outputQualityList.map(opt => (
@@ -318,7 +327,7 @@ export default function TrimVideo() {
                         </option>
                       ))}
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -338,7 +347,10 @@ export default function TrimVideo() {
                 </div>
 
                 <div className="w-full">
-                  <label htmlFor="format" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="format"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Video Format
                   </label>
                   <div className="relative">
@@ -347,7 +359,7 @@ export default function TrimVideo() {
                       disabled={!file}
                       value={videoContainer}
                       onChange={e => setVideoContainer(e.target.value)}
-                      className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
                       <option value="">Select format</option>
                       {videoType.map(opt => (
@@ -356,7 +368,7 @@ export default function TrimVideo() {
                         </option>
                       ))}
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -385,8 +397,8 @@ export default function TrimVideo() {
               onClick={handleTrimVideo}
               className={`px-10 py-4 rounded-xl font-medium text-white flex items-center shadow-lg transition-all ${
                 !file || !startTime || !endTime
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-500 hover:bg-blue-600'
+                  ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
+                  : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
               }`}
             >
               Process Video

@@ -212,10 +212,10 @@ export default function ResizeVideo() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-white rounded-2xl shadow-xl border border-gray-100 relative overflow-hidden"
+        className="bg-white dark:bg-white/[0.03] rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 relative overflow-hidden"
       >
         {/* Header */}
-        <div className="relative z-10 pt-8 pb-4 px-8 border-b border-gray-100">
+        <div className="relative z-10 pt-8 pb-4 px-8 border-b border-gray-100 dark:border-gray-800">
           <GradientHeading
             text="Resize Video"
             subtext="Easily change the dimensions of your video to fit any platform"
@@ -229,10 +229,12 @@ export default function ResizeVideo() {
           {/* Input Section */}
           <div className="mb-10">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 mr-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
                 <HiOutlineVideoCamera size={20} />
               </div>
-              <h2 className="text-xl font-semibold text-gray-800">Input Video</h2>
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
+                Input Video
+              </h2>
             </div>
 
             <motion.div whileHover={{ scale: 1.005 }} transition={{ duration: 0.2 }}>
@@ -251,15 +253,18 @@ export default function ResizeVideo() {
           {/* Dimensions Section */}
           <div className="mb-10">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 mr-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
                 <HiOutlineTemplate size={20} />
               </div>
-              <h2 className="text-xl font-semibold text-gray-800">Dimensions</h2>
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Dimensions</h2>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
               <div className="mb-6">
-                <label htmlFor="preset" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="preset"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   Preset Options
                 </label>
                 <div className="relative">
@@ -280,7 +285,7 @@ export default function ResizeVideo() {
                       setActiveInput('preset');
                     }}
                     disabled={!file}
-                    className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                   >
                     <option value="">Select preset</option>
                     {presets.map(opt => (
@@ -289,7 +294,7 @@ export default function ResizeVideo() {
                       </option>
                     ))}
                   </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -309,15 +314,15 @@ export default function ResizeVideo() {
               </div>
 
               <div className="relative flex items-center my-6">
-                <div className="flex-grow border-t border-gray-300"></div>
-                <span className="flex-shrink mx-4 text-gray-600">OR</span>
-                <div className="flex-grow border-t border-gray-300"></div>
+                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+                <span className="flex-shrink mx-4 text-gray-600 dark:text-gray-400">OR</span>
+                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
               </div>
 
               <div className="mb-6">
                 <label
                   htmlFor="aspectRatio"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
                   Aspect Ratio
                 </label>
@@ -338,7 +343,7 @@ export default function ResizeVideo() {
                       }
                     }}
                     disabled={!file}
-                    className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                   >
                     <option value="">Select aspect ratio</option>
                     {aspectRatio.map(opt => (
@@ -347,7 +352,7 @@ export default function ResizeVideo() {
                       </option>
                     ))}
                   </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -368,7 +373,10 @@ export default function ResizeVideo() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                 <div className="w-full">
-                  <label htmlFor="width" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="width"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Width
                   </label>
                   <input
@@ -381,12 +389,15 @@ export default function ResizeVideo() {
                       setActiveInput('width');
                       updateSettings('width', e.target.value);
                     }}
-                    className="w-full text-black pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                   />
                 </div>
 
                 <div className="w-full">
-                  <label htmlFor="height" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="height"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Height
                   </label>
                   <input
@@ -399,14 +410,17 @@ export default function ResizeVideo() {
                       setActiveInput('height');
                       updateSettings('height', e.target.value);
                     }}
-                    className="w-full text-black pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="w-full">
-                  <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="color"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Padding Color
                   </label>
                   <div className="relative">
@@ -417,15 +431,15 @@ export default function ResizeVideo() {
                       placeholder="#000000"
                       value={settings.color}
                       onChange={handleColorChange}
-                      className={`pl-10 text-black pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none ${
+                      className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
                         settings.isColorValid
-                          ? 'border-gray-300 focus:ring-blue-500'
+                          ? 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
                           : 'border-red-500 focus:ring-red-500'
                       }`}
                     />
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <div
-                        className="w-4 h-4 rounded-sm border border-gray-300"
+                        className="w-4 h-4 rounded-sm border border-gray-300 dark:border-gray-700"
                         style={{ backgroundColor: settings.isColorValid ? settings.color : 'red' }}
                       ></div>
                     </div>
@@ -435,7 +449,7 @@ export default function ResizeVideo() {
                 <div className="w-full">
                   <label
                     htmlFor="stretchStrategy"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
                     Stretch Strategy
                   </label>
@@ -445,12 +459,12 @@ export default function ResizeVideo() {
                       value={settings.stretchStrategy}
                       onChange={e => updateSettings('stretchStrategy', e.target.value)}
                       disabled={!file}
-                      className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
                       <option value="Fit">Fit</option>
                       <option value="Fill">Fill</option>
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -475,16 +489,21 @@ export default function ResizeVideo() {
           {/* Output Settings */}
           <div className="mb-10">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 mr-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
                 <HiOutlineAdjustments size={20} />
               </div>
-              <h2 className="text-xl font-semibold text-gray-800">Output Settings</h2>
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
+                Output Settings
+              </h2>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                 <div className="w-full">
-                  <label htmlFor="quality" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="quality"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Output Quality
                   </label>
                   <div className="relative">
@@ -493,7 +512,7 @@ export default function ResizeVideo() {
                       disabled={!file}
                       value={outputQuality}
                       onChange={e => setOutputQuality(e.target.value)}
-                      className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
                       <option value="">Select quality</option>
                       {outputQualityList.map(opt => (
@@ -502,7 +521,7 @@ export default function ResizeVideo() {
                         </option>
                       ))}
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -522,7 +541,10 @@ export default function ResizeVideo() {
                 </div>
 
                 <div className="w-full">
-                  <label htmlFor="format" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="format"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Video Format
                   </label>
                   <div className="relative">
@@ -531,7 +553,7 @@ export default function ResizeVideo() {
                       disabled={!file}
                       value={videoContainer}
                       onChange={e => setVideoContainer(e.target.value)}
-                      className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
                       <option value="">Select format</option>
                       {videoType.map(opt => (
@@ -540,7 +562,7 @@ export default function ResizeVideo() {
                         </option>
                       ))}
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -564,7 +586,7 @@ export default function ResizeVideo() {
                 <div className="w-full">
                   <label
                     htmlFor="framerate"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
                     Framerate
                   </label>
@@ -575,14 +597,14 @@ export default function ResizeVideo() {
                     placeholder="30"
                     value={settings.framerate || ''}
                     onChange={e => updateSettings('framerate', e.target.value)}
-                    className="w-full text-black pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                   />
                 </div>
 
                 <div className="w-full">
                   <label
                     htmlFor="audioSampleRate"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
                     Audio Sample Rate
                   </label>
@@ -593,7 +615,7 @@ export default function ResizeVideo() {
                     placeholder="48000"
                     value={settings.audioSampleRate || ''}
                     onChange={e => updateSettings('audioSampleRate', e.target.value)}
-                    className="w-full text-black pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                   />
                 </div>
               </div>
@@ -607,8 +629,8 @@ export default function ResizeVideo() {
               onClick={handleResizeVideo}
               className={`px-10 py-4 rounded-xl font-medium text-white flex items-center shadow-lg transition-all ${
                 !file || !settings.width || !settings.height || !settings.isColorValid
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-500 hover:bg-blue-600'
+                  ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
+                  : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
               }`}
             >
               Process Video

@@ -27,7 +27,7 @@ export default function FileProgressModal(props) {
         {/*@ts-ignore*/}
         <div className={`${montserrat.variable} ${lato.variable} ${opensans.variable}`}>
           <div
-            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-80 transition-opacity"
             aria-hidden="true"
           />
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
@@ -35,19 +35,19 @@ export default function FileProgressModal(props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-[540px] sm:max-w-[540px]"
+              className="relative transform overflow-hidden rounded-2xl bg-white dark:bg-gray-900 text-left shadow-xl transition-all sm:my-8 sm:w-[540px] sm:max-w-[540px]"
             >
               {/* Close button */}
               <button
                 onClick={() => props.setProgressModal(false)}
-                className="absolute top-4 right-4 z-20 p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
+                className="absolute top-4 right-4 z-20 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors"
               >
                 <HiX className="w-5 h-5" />
               </button>
 
               {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-50/60 to-purple-50/60 rounded-full -mr-24 -mt-24 z-0" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-50/60 to-blue-50/60 rounded-full -ml-24 -mb-24 z-0" />
+              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-50/60 to-purple-50/60 dark:from-blue-900/10 dark:to-purple-900/10 rounded-full -mr-24 -mt-24 z-0" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-50/60 to-blue-50/60 dark:from-purple-900/10 dark:to-blue-900/10 rounded-full -ml-24 -mb-24 z-0" />
 
               <div className="relative z-10 px-6 py-6">
                 {(props.data?.status === 'PENDING' || props.data?.status === 'IN_PROGRESS') && (
@@ -60,7 +60,7 @@ export default function FileProgressModal(props) {
                       <Image src={Rocket} width={120} alt="Processing" className="rounded-lg" />
                     </div>
 
-                    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2 dark:bg-gray-700">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-2">
                       <motion.div
                         className="bg-gradient-to-r from-blue-600 to-purple-600 h-2.5 rounded-full"
                         style={{ width: `${props.data?.progress ?? 0}%` }}
@@ -72,13 +72,13 @@ export default function FileProgressModal(props) {
 
                     <Typography
                       variant="body1"
-                      className="font-semibold text-gray-900"
+                      className="font-semibold text-gray-900 dark:text-white/90"
                       label={`Processing... ${(props.data?.progress ?? 0).toFixed(2)}%`}
                     />
 
                     <Typography
                       variant="body2"
-                      className="text-center text-gray-600 mt-4 max-w-md"
+                      className="text-center text-gray-600 dark:text-gray-400 mt-4 max-w-md"
                       label="Your job is being processed in the background. Feel free to continue exploring while we handle the rest!"
                     />
                   </motion.div>
@@ -91,14 +91,14 @@ export default function FileProgressModal(props) {
                     className="flex flex-col items-center"
                   >
                     <div className="flex justify-center py-4">
-                      <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                        <HiOutlineCheck className="w-8 h-8 text-green-600" />
+                      <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                        <HiOutlineCheck className="w-8 h-8 text-green-600 dark:text-green-400" />
                       </div>
                     </div>
 
                     <Typography
                       variant="h3"
-                      className="font-semibold text-gray-900 mb-4"
+                      className="font-semibold text-gray-900 dark:text-white/90 mb-4"
                       label="Processing Complete!"
                     />
 
@@ -113,23 +113,23 @@ export default function FileProgressModal(props) {
                           priority
                           quality={90}
                         />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity">
-                          <div className="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center">
-                            <HiOutlinePlay className="w-6 h-6 text-gray-900" />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 dark:bg-black dark:bg-opacity-30 opacity-0 hover:opacity-100 transition-opacity">
+                          <div className="w-12 h-12 rounded-full bg-white/80 dark:bg-black/60 flex items-center justify-center">
+                            <HiOutlinePlay className="w-6 h-6 text-gray-900 dark:text-white" />
                           </div>
                         </div>
                       </div>
                     )}
 
-                    <div className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg mb-4">
-                      <span className="text-sm font-medium text-gray-500">
+                    <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         #{props.data?.id.slice(0, 5)}
                       </span>
 
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700"
+                        className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
                       >
                         <HiOutlineClipboardCopy className="w-4 h-4" />
                       </motion.button>
@@ -137,7 +137,7 @@ export default function FileProgressModal(props) {
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700"
+                        className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
                       >
                         <HiOutlinePlay className="w-4 h-4" />
                       </motion.button>
@@ -145,7 +145,7 @@ export default function FileProgressModal(props) {
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700"
+                        className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-800/40 text-blue-700 dark:text-blue-300"
                       >
                         <HiOutlineDownload className="w-4 h-4" />
                       </motion.button>
@@ -159,19 +159,19 @@ export default function FileProgressModal(props) {
                     animate={{ opacity: 1 }}
                     className="flex flex-col items-center py-6"
                   >
-                    <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-4">
-                      <HiOutlineX className="w-8 h-8 text-red-600" />
+                    <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
+                      <HiOutlineX className="w-8 h-8 text-red-600 dark:text-red-400" />
                     </div>
 
                     <Typography
                       variant="h3"
-                      className="font-semibold text-gray-900 mb-4"
+                      className="font-semibold text-gray-900 dark:text-white/90 mb-4"
                       label="Processing Failed"
                     />
 
                     <Typography
                       variant="body2"
-                      className="text-center text-gray-600 mb-6 max-w-md"
+                      className="text-center text-gray-600 dark:text-gray-400 mb-6 max-w-md"
                       label="An error occurred while processing your job. Please try again, and if the issue persists, contact support for assistance."
                     />
                   </motion.div>
@@ -186,7 +186,7 @@ export default function FileProgressModal(props) {
                         props.setProgressModal(false);
                         router.push('/dashboard/jobs-status');
                       }}
-                      className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium transition-all"
+                      className="px-5 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-lg font-medium transition-all"
                     >
                       Dashboard
                     </motion.button>

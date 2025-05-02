@@ -29,7 +29,6 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 580,
   maxWidth: '95vw',
-  bgcolor: 'background.paper',
   boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)' as any,
   borderRadius: '16px',
   zIndex: 1500,
@@ -163,8 +162,7 @@ export default function UploadFileModal(props: UploadModalProps) {
     }, 500);
   };
 
-  const handleFileIdUpload = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleFileIdUpload = () => {
     if (isProcessing || !fileIdInputRef.current?.value) return;
 
     // Implement File ID upload logic
@@ -189,8 +187,6 @@ export default function UploadFileModal(props: UploadModalProps) {
   };
 
   const handleManualUpload = () => {
-    // e.preventDefault();
-    // e.stopPropagation();
     if (isProcessing || isUploadingRef.current) return;
     props.setUploadModal(false);
   };
@@ -227,11 +223,11 @@ export default function UploadFileModal(props: UploadModalProps) {
       <Fade in={props.uploadModal}>
         <Box
           sx={style}
-          className={`${montserrat.variable} ${lato.variable} ${opensans.variable}`}
+          className={`${montserrat.variable} ${lato.variable} ${opensans.variable} bg-white dark:bg-gray-900`}
           onClick={e => e.stopPropagation()}
         >
           {/* Header */}
-          <div className=" px-8 py-6 text-white relative">
+          <div className="px-8 py-6 relative border-b border-gray-100 dark:border-gray-800">
             <button
               onClick={e => {
                 e.preventDefault();
@@ -239,7 +235,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                 if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
               }}
               disabled={isProcessing || isUploadingRef.current}
-              className={`absolute right-6 top-6 text-gray-700 hover:text-white transition-colors ${
+              className={`absolute right-6 top-6 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ${
                 isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               aria-label="Close modal"
@@ -259,12 +255,14 @@ export default function UploadFileModal(props: UploadModalProps) {
                 />
               </svg>
             </button>
-            <h3 className="text-2xl text-black font-bold">Upload Media</h3>
-            <p className="mt-1 text-gray-700 text-sm">Select a video file to upload and edit</p>
+            <h3 className="text-2xl text-gray-900 dark:text-white/90 font-bold">Upload Media</h3>
+            <p className="mt-1 text-gray-700 dark:text-gray-400 text-sm">
+              Select a video file to upload and edit
+            </p>
           </div>
 
           {/* Tabs */}
-          <div className="flex border border-gray-200">
+          <div className="flex border-b border-gray-200 dark:border-gray-800">
             <button
               onClick={e => {
                 e.preventDefault();
@@ -275,30 +273,13 @@ export default function UploadFileModal(props: UploadModalProps) {
                 isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
               } ${
                 activeTab === 'device'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
               <HiOutlineDeviceMobile className="mr-2" size={18} />
               Device
             </button>
-            {/* <button
-              onClick={e => {
-                e.preventDefault();
-                if (!isProcessing && !isUploadingRef.current) setActiveTab('url');
-              }}
-              disabled={isProcessing || isUploadingRef.current}
-              className={`flex items-center justify-center py-4 px-6 text-sm font-medium focus:outline-none ${
-                isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
-              } ${
-                activeTab === 'url'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <HiLink className="mr-2" size={18} />
-              URL
-            </button> */}
             <button
               onClick={e => {
                 e.preventDefault();
@@ -309,8 +290,8 @@ export default function UploadFileModal(props: UploadModalProps) {
                 isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
               } ${
                 activeTab === 'fileId'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
               <HiFingerPrint className="mr-2" size={18} />
@@ -322,8 +303,8 @@ export default function UploadFileModal(props: UploadModalProps) {
             {/* Device Upload */}
             {activeTab === 'device' && (
               <div>
-                <h4 className="text-gray-700 font-medium mb-3 flex items-center">
-                  <span className="bg-blue-100 text-blue-600 p-1 rounded-md mr-2">
+                <h4 className="text-gray-700 dark:text-gray-300 font-medium mb-3 flex items-center">
+                  <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-1 rounded-md mr-2">
                     <svg
                       width="18"
                       height="18"
@@ -357,11 +338,11 @@ export default function UploadFileModal(props: UploadModalProps) {
                 </h4>
 
                 {isProcessing || isUploadingRef.current ? (
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                  <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-8 text-center">
                     <div className="animate-pulse flex flex-col items-center justify-center">
-                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                      <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4">
                         <svg
-                          className="animate-spin w-8 h-8 text-blue-600"
+                          className="animate-spin w-8 h-8 text-blue-600 dark:text-blue-400"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -381,9 +362,13 @@ export default function UploadFileModal(props: UploadModalProps) {
                           ></path>
                         </svg>
                       </div>
-                      <h3 className="text-lg font-medium text-gray-700 mb-1">Processing</h3>
-                      <p className="text-sm text-gray-500 mb-2">Uploading {uploadedFileName}</p>
-                      <div className="w-full max-w-xs bg-gray-200 rounded-full h-2.5 mt-2">
+                      <h3 className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Processing
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                        Uploading {uploadedFileName}
+                      </p>
+                      <div className="w-full max-w-xs bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-2">
                         <div
                           className="bg-gradient-to-r from-blue-500 to-purple-500 h-2.5 rounded-full"
                           style={{ width: `${props.progress || 0}%` }}
@@ -398,10 +383,10 @@ export default function UploadFileModal(props: UploadModalProps) {
                       onFileSelect={handleFileChange}
                       acceptTypes={videoFileTypes}
                       title=""
-                      className="border-gray-300 hover:border-blue-500 focus:border-blue-500 transition-all duration-200"
+                      className="border-gray-300 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 focus:border-blue-500 dark:focus:border-blue-500 transition-all duration-200"
                     />
                     <div className="mt-2 mb-2 text-center">
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Supported formats: MP4, MOV, AVI, WEBM, FLV and many more.
                       </p>
                     </div>
@@ -410,67 +395,22 @@ export default function UploadFileModal(props: UploadModalProps) {
               </div>
             )}
 
-            {/* URL Upload */}
-            {/* {activeTab === 'url' && (
-              <div>
-                <h4 className="text-gray-700 font-medium mb-3 flex items-center">
-                  <span className="bg-blue-100 text-blue-600 p-1 rounded-md mr-2">
-                    <HiLink size={18} />
-                  </span>
-                  Upload from URL
-                </h4>
-
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-medium mb-2">Video URL</label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-4 flex items-center text-gray-500">
-                      <HiLink size={18} />
-                    </span>
-                    <input
-                      ref={urlInputRef}
-                      type="text"
-                      placeholder="https://example.com/video.mp4"
-                      disabled={isProcessing || isUploadingRef.current}
-                      className={`w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                        isProcessing || isUploadingRef.current
-                          ? 'bg-gray-100 cursor-not-allowed'
-                          : ''
-                      }`}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">Enter a direct link to a video file</p>
-                </div>
-
-                <div className="mt-6">
-                  <button
-                    onClick={handleUrlUpload}
-                    disabled={isProcessing || isUploadingRef.current}
-                    className={`w-full py-3 px-6 text-white font-medium bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg ${
-                      isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
-                    }`}
-                  >
-                    {isProcessing || isUploadingRef.current ? 'Processing...' : 'Upload from URL'}
-                  </button>
-                </div>
-              </div>
-            )} */}
-
             {/* File ID Upload */}
             {activeTab === 'fileId' && (
               <div>
-                <h4 className="text-gray-700 font-medium mb-3 flex items-center">
-                  <span className="bg-blue-100 text-blue-600 p-1 rounded-md mr-2">
+                <h4 className="text-gray-700 dark:text-gray-300 font-medium mb-3 flex items-center">
+                  <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-1 rounded-md mr-2">
                     <HiFingerPrint size={18} />
                   </span>
                   Upload by File ID
                 </h4>
 
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-medium mb-2">
+                <div className="mb-1">
+                  <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
                     Video File ID
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-4 flex items-center text-gray-500">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-gray-500 dark:text-gray-400">
                       <HiFingerPrint size={18} />
                     </span>
                     <input
@@ -478,52 +418,48 @@ export default function UploadFileModal(props: UploadModalProps) {
                       type="text"
                       placeholder="Enter file ID"
                       disabled={isProcessing || isUploadingRef.current}
-                      className={`w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
+                      className={`w-full pl-11 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition-all ${
                         isProcessing || isUploadingRef.current
-                          ? 'bg-gray-100 cursor-not-allowed'
+                          ? 'bg-gray-100 dark:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 cursor-not-allowed'
                           : ''
                       }`}
                     />
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Enter previously uploaded file ID</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Enter previously uploaded file ID
+                  </p>
                 </div>
 
-                <div className="mt-6">
-                  <button
+                <div className="flex justify-end mt-6">
+                  <Button
                     onClick={handleFileIdUpload}
                     disabled={isProcessing || isUploadingRef.current}
-                    className={`w-full py-3 px-6 text-white font-medium bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg ${
+                    className={` ${
                       isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
                     }`}
                   >
                     {isProcessing || isUploadingRef.current ? 'Processing...' : 'Use File ID'}
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-4 mt-8">
-              <Button
+            <div className="flex justify-end">
+              {/* <Button
                 onClick={() => {
-                  // e.preventDefault();
-                  // e.stopPropagation();
                   if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
                 }}
                 disabled={isProcessing || isUploadingRef.current}
-                // className={`flex-1 py-3 px-6 text-gray-700 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${
-                //   isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
-                // }`}
+                variant="outline"
+                className={
+                  isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
+                }
               >
                 Cancel
-              </Button>
+              </Button> */}
               {activeTab === 'device' && !isProcessing && !isUploadingRef.current && (
-                <Button
-                  onClick={handleManualUpload}
-                  // className="flex-1 py-3 px-6 text-white font-medium bg-blue-500 rounded-lg hover:bg-blue-600 transition-all shadow-md hover:shadow-lg"
-                >
-                  Upload
-                </Button>
+                <Button onClick={handleManualUpload}>Upload</Button>
               )}
             </div>
           </div>

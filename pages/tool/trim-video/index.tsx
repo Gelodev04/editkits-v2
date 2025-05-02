@@ -26,6 +26,7 @@ import { useStatusQuery, useUploadMutation } from '@/services/api/file';
 import GradientHeading from '@/components/Typography/GradientHeading';
 import { useCommitJobMutation, useInitJobMutation, useJobStatusQuery } from '@/services/api/job';
 import FileProgressModal from '@/components/modals/FilePgrogressModal';
+import Button from '@/components/ui/button/Button';
 
 export default function TrimVideo() {
   const [fileId, setFileId] = React.useState(null);
@@ -49,8 +50,8 @@ export default function TrimVideo() {
   const [fetchedData, setFetchedData] = useState(null);
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
-  const [outputQuality] = useState('LOW');
-  const [videoContainer] = useState('mp4');
+  const [outputQuality, setOutputQuality] = useState('Medium');
+  const [videoContainer, setVideoContainer] = useState('mp4');
 
   // const [uploadedModal, setUploadedModal] = useState(false);
   // const [modalTitle, setModalTitle] = useState('');
@@ -64,6 +65,7 @@ export default function TrimVideo() {
       }
       // @ts-ignore
       setFetchedData(data);
+      console.log('data', data);
     }, 2000);
 
     return () => clearInterval(interval);
@@ -166,13 +168,13 @@ export default function TrimVideo() {
         className="bg-white rounded-2xl shadow-xl border border-gray-100 relative overflow-hidden"
       >
         {/* Background decorative elements */}
-        <div className="absolute top-0 right-0 w-56 h-56 bg-gradient-to-br from-blue-50/60 to-purple-50/60 rounded-full -mr-28 -mt-28 z-0" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-purple-50/60 to-blue-50/60 rounded-full -ml-28 -mb-28 z-0" />
+        {/* <div className="absolute top-0 right-0 w-56 h-56 bg-gradient-to-br from-blue-50/60 to-purple-50/60 rounded-full -mr-28 -mt-28 z-0" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-purple-50/60 to-blue-50/60 rounded-full -ml-28 -mb-28 z-0" /> */}
 
         {/* Header */}
         <div className="relative z-10 pt-8 pb-4 px-8 border-b border-gray-100">
           <GradientHeading
-            text="Video Trim Tool"
+            text="Trim Video"
             subtext="Quickly cut unwanted sections from your video to enhance its flow and impact"
             icon={<FaScissors size={18} />}
             fromColor="blue-600"
@@ -298,6 +300,8 @@ export default function TrimVideo() {
                     <select
                       id="quality"
                       disabled={!file}
+                      value={outputQuality}
+                      onChange={e => setOutputQuality(e.target.value)}
                       className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
                     >
                       <option value="">Select quality</option>
@@ -334,6 +338,8 @@ export default function TrimVideo() {
                     <select
                       id="format"
                       disabled={!file}
+                      value={videoContainer}
+                      onChange={e => setVideoContainer(e.target.value)}
                       className="w-full text-black pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500 transition-all outline-none"
                     >
                       <option value="">Select format</option>
@@ -367,20 +373,18 @@ export default function TrimVideo() {
 
           {/* Submit Button */}
           <div className="flex justify-center">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              disabled={!file}
+            <Button
+              disabled={!file || !startTime || !endTime}
               onClick={handleTrimVideo}
               className={`px-10 py-4 rounded-xl font-medium text-white flex items-center shadow-lg transition-all ${
-                !file
+                !file || !startTime || !endTime
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl'
+                  : 'bg-blue-500 hover:bg-blue-600'
               }`}
             >
               Process Video
-              <HiOutlineCheck className="ml-2" size={20} />
-            </motion.button>
+              {/* <HiOutlineCheck className="ml-2" size={20} /> */}
+            </Button>
           </div>
         </div>
       </motion.div>

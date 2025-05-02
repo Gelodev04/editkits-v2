@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { fileUploader } from '@/lib/uploadFile';
 import DropzoneComponent from '@/components/DropZone.tsx';
 import { HiLink, HiFingerPrint, HiOutlineDeviceMobile } from 'react-icons/hi';
+import Button from '@/components/ui/button/Button';
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -72,7 +73,7 @@ export default function UploadFileModal(props: UploadModalProps) {
       }
 
       await fileUploader(
-        response.data.presigned_url,
+        response.data.url,
         file,
         props.setUploadModal,
         props.setIsUploading,
@@ -187,9 +188,9 @@ export default function UploadFileModal(props: UploadModalProps) {
     'video/x-matroska': [],
   };
 
-  const handleManualUpload = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleManualUpload = () => {
+    // e.preventDefault();
+    // e.stopPropagation();
     if (isProcessing || isUploadingRef.current) return;
     props.setUploadModal(false);
   };
@@ -230,7 +231,7 @@ export default function UploadFileModal(props: UploadModalProps) {
           onClick={e => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-6 text-white relative">
+          <div className="bg-blue-500 px-8 py-6 text-white relative">
             <button
               onClick={e => {
                 e.preventDefault();
@@ -489,27 +490,27 @@ export default function UploadFileModal(props: UploadModalProps) {
             )}
 
             {/* Action Buttons */}
-            <div className="flex gap-4 mt-8">
-              <button
-                onClick={e => {
-                  e.preventDefault();
-                  e.stopPropagation();
+            <div className="flex justify-end gap-4 mt-8">
+              <Button
+                onClick={() => {
+                  // e.preventDefault();
+                  // e.stopPropagation();
                   if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
                 }}
                 disabled={isProcessing || isUploadingRef.current}
-                className={`flex-1 py-3 px-6 text-gray-700 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${
-                  isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+                // className={`flex-1 py-3 px-6 text-gray-700 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${
+                //   isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
+                // }`}
               >
                 Cancel
-              </button>
+              </Button>
               {activeTab === 'device' && !isProcessing && !isUploadingRef.current && (
-                <button
+                <Button
                   onClick={handleManualUpload}
-                  className="flex-1 py-3 px-6 text-white font-medium bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+                  // className="flex-1 py-3 px-6 text-white font-medium bg-blue-500 rounded-lg hover:bg-blue-600 transition-all shadow-md hover:shadow-lg"
                 >
                   Upload
-                </button>
+                </Button>
               )}
             </div>
           </div>

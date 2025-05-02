@@ -80,4 +80,4 @@ export const fileApi = api.injectEndpoints({
 });
 
 export const { useUploadMutation, useStatusQuery, useGetRecentFilesQuery, usePreviewVideoQuery } =
-  fileApi;
+  fileApi;  

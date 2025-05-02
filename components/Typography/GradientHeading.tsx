@@ -30,10 +30,7 @@ const GradientHeading = ({
         className="flex items-center gap-3 mb-2 justify-center"
       >
         <div
-          className={`w-10 h-10 rounded-lg bg-gradient-to-br from-${fromColor.replace(
-            '600',
-            '500'
-          )} to-${toColor.replace('700', '600')} flex items-center justify-center text-white`}
+          className={`w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white`}
         >
           {icon}
         </div>

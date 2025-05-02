@@ -6,6 +6,7 @@ import {
   HiPlay,
   HiOutlineVideoCamera,
 } from 'react-icons/hi';
+import Button from '../ui/button/Button';
 
 type VideoUploadProps = {
   file: any;
@@ -126,16 +127,16 @@ export function VideoUpload(props: VideoUploadProps) {
           <div className="mb-4 w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
             <HiOutlineVideoCamera className="text-blue-500 text-3xl" />
           </div>
-          <h3 className="text-gray-700 font-medium text-lg mb-2">No video selected</h3>
-          <p className="text-gray-500 text-sm mb-6 text-center">
+          <h3 className="text-gray-800 font-medium text-lg mb-2">No video selected</h3>
+          <p className="text-gray-700 text-sm mb-6 text-center">
             Upload a video file to start editing
           </p>
-          <button
+          <Button
             onClick={() => props.setUploadFileModal(true)}
-            className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all"
+            className="px-6 py-2.5 bg-blue-500 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all"
           >
             Select Video
-          </button>
+          </Button>
         </div>
       )}
     </div>

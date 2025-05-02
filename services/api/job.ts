@@ -12,7 +12,7 @@ interface Job {
   tools_used: string[]; // Tools used in the job
   status: string; // Status of the job
   is_multi_output: boolean; // Whether the job has multiple output files
-  output_file_id: string; // ID of the output files
+  output_: string; // ID of the output files
   created_at: number; // Created at
   finished_at: number; // Finished at
 }

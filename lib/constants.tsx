@@ -292,15 +292,13 @@ export const aspectRatio = [
 ];
 
 export const outputQualityList = [
-  { label: 'Low', value: 'Low' },
-  { label: 'Medium', value: 'Medium' },
-  { label: 'High', value: 'High' },
-  { label: 'Best', value: 'Best' },
+  { label: 'Low', value: 'LOW' },
+  { label: 'Medium', value: 'MEDIUM' },
+  { label: 'High', value: 'HIGH' },
+  { label: 'Best', value: 'BEST' },
 ];
 
-export const videoType = [
-  { label: 'mp4', value: 'mp4' },
-];
+export const videoType = [{ label: 'mp4', value: 'mp4' }];
 
 export const presets = [
   { label: 'None', value: 'None' },

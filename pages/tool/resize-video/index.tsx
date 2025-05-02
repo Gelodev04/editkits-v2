@@ -14,6 +14,16 @@ import { HiOutlineVideoCamera, HiOutlineAdjustments, HiOutlineTemplate } from 'r
 
 import toast from 'react-hot-toast';
 
+// Define interface for metadata
+interface FileMetadata {
+  metadata?: {
+    width?: number;
+    height?: number;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export default function ResizeVideo() {
   const [fileId, setFileId] = useState(null);
   const [jobId, setJobId] = useState(null);
@@ -35,12 +45,12 @@ export default function ResizeVideo() {
     isColorValid: true,
     framerate: undefined,
     audioSampleRate: undefined,
-    stretchStrategy: 'Fit',
+    stretchStrategy: 'fit',
   });
 
-  const [fetchedData, setFetchedData] = useState(null);
-  const [presetWidth, setPresetWidth] = useState(undefined);
-  const [presetHeight, setPresetHeight] = useState(undefined);
+  const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
+  const [presetWidth, setPresetWidth] = useState<number | undefined>(undefined);
+  const [presetHeight, setPresetHeight] = useState<number | undefined>(undefined);
   const [uploadFileModal, setUploadFileModal] = useState(false);
   const [progressModal, setProgressModal] = useState(false);
   const [file, setFile] = useState(null);
@@ -60,19 +70,19 @@ export default function ResizeVideo() {
   };
 
   useEffect(() => {
-    //@ts-ignore
-    updateSettings('width', fetchedData?.metadata?.width);
-    //@ts-ignore
-    updateSettings('height', fetchedData?.metadata?.height);
-  }, [fetchedData?.metadata?.width, fetchedData?.metadata?.height]);
+    if (fetchedData && fetchedData.metadata) {
+      updateSettings('width', fetchedData.metadata.width);
+      updateSettings('height', fetchedData.metadata.height);
+    }
+  }, [fetchedData?.metadata]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      //@ts-ignore
+      //@ts-ignore // Ignore type issues with the API response
       if (data?.status !== 'COMMITTED' && data?.status !== 'ERROR' && fileId) {
         refetch();
       }
-      //@ts-ignore
+      //@ts-ignore // Ignore type issues with the API response
       setFetchedData(data);
       console.log('data', data);
     }, 2000);
@@ -99,11 +109,15 @@ export default function ResizeVideo() {
   }, [settings.width, settings.height, settings.aspectX, settings.aspectY, activeInput, isCustom]);
 
   useEffect(() => {
-    updateSettings('height', presetHeight * settings.aspectY);
+    if (presetHeight !== undefined) {
+      updateSettings('height', presetHeight * settings.aspectY);
+    }
   }, [settings.aspectY, presetHeight]);
 
   useEffect(() => {
-    updateSettings('width', presetWidth * settings.aspectX);
+    if (presetWidth !== undefined) {
+      updateSettings('width', presetWidth * settings.aspectX);
+    }
   }, [presetWidth, settings.aspectX]);
 
   useEffect(() => {
@@ -146,13 +160,13 @@ export default function ResizeVideo() {
             tool_id: 'VIDEO_RESIZE',
             properties: {
               input: fileId,
-              width: parseInt(settings.width),
-              height: parseInt(settings.height),
+              width: settings.width ? parseInt(String(settings.width)) : undefined,
+              height: settings.height ? parseInt(String(settings.height)) : undefined,
               padding_color: settings.color,
               stretch_strategy: settings.stretchStrategy,
-              framerate: settings.framerate ? parseInt(settings.framerate) : undefined,
+              framerate: settings.framerate ? parseInt(String(settings.framerate)) : undefined,
               audio_sample_rate: settings.audioSampleRate
-                ? parseInt(settings.audioSampleRate)
+                ? parseInt(String(settings.audioSampleRate))
                 : undefined,
             },
           },
@@ -278,10 +292,10 @@ export default function ResizeVideo() {
                       const [, , resolution] = e.target.value?.split(',') || [];
                       const [presetWidth, presetHeight] = resolution.split('x').map(Number);
 
-                      updateSettings('width', presetWidth);
-                      setPresetWidth(presetWidth);
-                      updateSettings('height', presetHeight);
-                      setPresetHeight(presetHeight);
+                      updateSettings('width', presetWidth || undefined);
+                      setPresetWidth(presetWidth || undefined);
+                      updateSettings('height', presetHeight || undefined);
+                      setPresetHeight(presetHeight || undefined);
                       setActiveInput('preset');
                     }}
                     disabled={!file}
@@ -461,8 +475,8 @@ export default function ResizeVideo() {
                       disabled={!file}
                       className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
-                      <option value="Fit">Fit</option>
-                      <option value="Fill">Fill</option>
+                      <option value="fit">Fit</option>
+                      <option value="fill">Fill</option>
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
                       <svg

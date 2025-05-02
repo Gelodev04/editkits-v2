@@ -50,7 +50,7 @@ export default function TrimVideo() {
   const [fetchedData, setFetchedData] = useState(null);
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
-  const [outputQuality, setOutputQuality] = useState('Medium');
+  const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
 
   // const [uploadedModal, setUploadedModal] = useState(false);

@@ -99,6 +99,7 @@ export default function TrimVideo() {
 
   async function handleTrimVideo() {
     try {
+      console.log('startTime', startTime);
       const response = await initJob({
         pipeline: [
           {

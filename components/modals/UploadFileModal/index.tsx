@@ -72,6 +72,8 @@ export default function UploadFileModal(props: UploadModalProps) {
         return;
       }
 
+      console.log('data: ', response.data);
+
       await fileUploader(
         response.data.url,
         file,

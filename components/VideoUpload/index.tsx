@@ -19,7 +19,6 @@ type VideoUploadProps = {
 };
 
 export function VideoUpload(props: VideoUploadProps) {
-  console.log('props: ', props);
   return (
     <div className="pt-2">
       {props.file ? (
@@ -27,44 +26,33 @@ export function VideoUpload(props: VideoUploadProps) {
           <div className="flex flex-col sm:flex-row">
             {/* Video Thumbnail/Preview */}
             <div className="relative bg-gray-800 w-full sm:w-48 h-36 flex items-center justify-center overflow-hidden">
-              {props.uploadedData?.status === 'COMMITTED' &&
-              !props.isUploading &&
-              props.fetchedData?.metadata?.thumbnail_url ? (
-                <>
-                  <Image
-                    src={props.fetchedData?.metadata?.thumbnail_url}
-                    className="w-full h-full object-cover"
-                    width={200}
-                    height={150}
-                    alt="Video thumbnail"
-                    style={{ objectFit: 'cover', width: 'fit', height: 'fit' }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 bg-white bg-opacity-30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-opacity-40 transition-all cursor-pointer">
-                      <HiPlay className="text-white text-xl ml-1" />
-                    </div>
-                  </div>
-                </>
+              {props.fetchedData?.metadata?.thumbnail_url ? (
+                <Image
+                  src={props.fetchedData?.metadata?.thumbnail_url}
+                  className="w-full h-full object-cover"
+                  width={192}
+                  height={144}
+                  alt="Video thumbnail"
+                />
               ) : (
-                <div className="relative bg-gray-50 w-full h-full flex flex-col items-center justify-center">
+                <div className="relative bg-gray-50 w-full h-36 flex flex-col items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-blue-50 mb-3 flex items-center justify-center">
-                    <HiOutlineCloudUpload className="text-blue-500 text-2xl" />
+                    <HiOutlineCloudUpload className="text-blue-500 text-2xl animate-pulse" />
                   </div>
                   <div className="w-32">
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div
-                        className="bg-gradient-to-r from-blue-500 to-purple-500 h-2.5 rounded-full transition-all duration-300"
-                        style={{ width: `${props.isUploading ? props.progress : 100}%` }}
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full transition-all duration-300 animate-pulse"
+                        style={{ width: '100%' }}
                       ></div>
                     </div>
-                    <p className="text-xs text-gray-600 text-center mt-1">
-                      {props.isUploading ? `Uploading: ${props.progress}%` : 'Processing video...'}
-                    </p>
+                    <p className="text-xs text-gray-600 text-center mt-1">Processing...</p>
                   </div>
                 </div>
               )}
             </div>
 
+            {/* File Details */}
             <div className="p-4 flex-1 flex flex-col justify-between">
               <div>
                 {/* Filename & Delete/Replace */}
@@ -106,16 +94,14 @@ export function VideoUpload(props: VideoUploadProps) {
               </div>
 
               {/* Status Indicator */}
-              {props.uploadedData?.status === 'COMMITTED' &&
-                !props.isUploading &&
-                props.fetchedData?.metadata?.thumbnail_url && (
-                  <div className="mt-3">
-                    <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5"></span>
-                      Ready to process
-                    </div>
+              <div className="mt-3">
+                {props.fetchedData?.metadata?.thumbnail_url && (
+                  <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5"></span>
+                    Ready to process
                   </div>
                 )}
+              </div>
             </div>
           </div>
         </div>

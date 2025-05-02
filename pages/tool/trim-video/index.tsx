@@ -40,8 +40,8 @@ export default function TrimVideo() {
   const [initJob] = useInitJobMutation();
   const [commitJob] = useCommitJobMutation();
 
-  const [uploadFileModal, setUploadFileModal] = React.useState<any>(false);
-  const [progressModal, setProgressModal] = React.useState<any>(false);
+  const [uploadFileModal, setUploadFileModal] = React.useState<boolean>(false);
+  const [progressModal, setProgressModal] = React.useState<boolean>(false);
   const [file, setFile] = React.useState<any>(null);
   const [startTime, setStartTime] = React.useState<any>(null);
   const [endTime, setEndTime] = useState<any>(null);
@@ -99,7 +99,6 @@ export default function TrimVideo() {
 
   async function handleTrimVideo() {
     try {
-      console.log('startTime', startTime);
       const response = await initJob({
         pipeline: [
           {
@@ -125,6 +124,13 @@ export default function TrimVideo() {
 
       toast.success('Job initialized successfully');
       setProgressModal(true);
+      setUploadFileModal(false);
+      setFile(null);
+      setFileId(null);
+      setStartTime(null);
+      setEndTime(null);
+      setOutputQuality('Medium');
+      setVideoContainer('mp4');
 
       const { job_id }: any = response.data;
       setJobId(job_id);

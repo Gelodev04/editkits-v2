@@ -38,7 +38,7 @@ const style = {
 };
 
 export default function UploadFileModal(props: UploadModalProps) {
-  const [activeTab, setActiveTab] = useState<'device' | 'url' | 'fileId'>('device');
+  const [activeTab, setActiveTab] = useState<'device' | 'fileId'>('device');
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [fileSelected, setFileSelected] = useState(false);
@@ -71,8 +71,6 @@ export default function UploadFileModal(props: UploadModalProps) {
         setIsProcessing(false);
         return;
       }
-
-      console.log('data: ', response.data);
 
       await fileUploader(
         response.data.url,
@@ -233,7 +231,7 @@ export default function UploadFileModal(props: UploadModalProps) {
           onClick={e => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-blue-500 px-8 py-6 text-white relative">
+          <div className=" px-8 py-6 text-white relative">
             <button
               onClick={e => {
                 e.preventDefault();
@@ -241,19 +239,32 @@ export default function UploadFileModal(props: UploadModalProps) {
                 if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
               }}
               disabled={isProcessing || isUploadingRef.current}
-              className={`absolute right-6 top-6 text-white/80 hover:text-white transition-colors ${
+              className={`absolute right-6 top-6 text-gray-700 hover:text-white transition-colors ${
                 isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               aria-label="Close modal"
             >
-              <TbXboxX size={24} />
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M6.04289 16.5413C5.65237 16.9318 5.65237 17.565 6.04289 17.9555C6.43342 18.346 7.06658 18.346 7.45711 17.9555L11.9987 13.4139L16.5408 17.956C16.9313 18.3466 17.5645 18.3466 17.955 17.956C18.3455 17.5655 18.3455 16.9323 17.955 16.5418L13.4129 11.9997L17.955 7.4576C18.3455 7.06707 18.3455 6.43391 17.955 6.04338C17.5645 5.65286 16.9313 5.65286 16.5408 6.04338L11.9987 10.5855L7.45711 6.0439C7.06658 5.65338 6.43342 5.65338 6.04289 6.0439C5.65237 6.43442 5.65237 7.06759 6.04289 7.45811L10.5845 11.9997L6.04289 16.5413Z"
+                  fill="currentColor"
+                />
+              </svg>
             </button>
-            <h3 className="text-2xl font-bold">Upload Media</h3>
-            <p className="mt-1 text-white/80 text-sm">Select a video file to upload and edit</p>
+            <h3 className="text-2xl text-black font-bold">Upload Media</h3>
+            <p className="mt-1 text-gray-700 text-sm">Select a video file to upload and edit</p>
           </div>
 
           {/* Tabs */}
-          <div className="flex border-b border-gray-200">
+          <div className="flex border border-gray-200">
             <button
               onClick={e => {
                 e.preventDefault();
@@ -271,7 +282,7 @@ export default function UploadFileModal(props: UploadModalProps) {
               <HiOutlineDeviceMobile className="mr-2" size={18} />
               Device
             </button>
-            <button
+            {/* <button
               onClick={e => {
                 e.preventDefault();
                 if (!isProcessing && !isUploadingRef.current) setActiveTab('url');
@@ -287,7 +298,7 @@ export default function UploadFileModal(props: UploadModalProps) {
             >
               <HiLink className="mr-2" size={18} />
               URL
-            </button>
+            </button> */}
             <button
               onClick={e => {
                 e.preventDefault();
@@ -391,7 +402,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                     />
                     <div className="mt-2 mb-2 text-center">
                       <p className="text-xs text-gray-500">
-                        Supported formats: MP4, MOV, AVI, WEBM, FLV
+                        Supported formats: MP4, MOV, AVI, WEBM, FLV and many more.
                       </p>
                     </div>
                   </>
@@ -400,7 +411,7 @@ export default function UploadFileModal(props: UploadModalProps) {
             )}
 
             {/* URL Upload */}
-            {activeTab === 'url' && (
+            {/* {activeTab === 'url' && (
               <div>
                 <h4 className="text-gray-700 font-medium mb-3 flex items-center">
                   <span className="bg-blue-100 text-blue-600 p-1 rounded-md mr-2">
@@ -442,7 +453,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* File ID Upload */}
             {activeTab === 'fileId' && (

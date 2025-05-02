@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import ComponentCard from '@/components/ComponentCard';
+import ComponentCard from '@/components/cards/ComponentCard';
 import { useDropzone } from 'react-dropzone';
 import { HiOutlineUpload } from 'react-icons/hi';
 import { BsFileEarmarkImage, BsFileEarmarkPlay } from 'react-icons/bs';
@@ -12,6 +12,7 @@ interface DropzoneComponentProps {
   showCard?: boolean;
   className?: string;
   maxSize?: number;
+  desc?: string;
 }
 
 const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
@@ -21,6 +22,7 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
   showCard = true,
   className = '',
   maxSize = 1024 * 1024 * 100, // Default 100MB
+  desc = '',
 }) => {
   const onDrop = React.useCallback(
     (acceptedFiles: File[]) => {
@@ -99,9 +101,7 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
             <p className="text-lg font-medium text-blue-600">Drop files here</p>
           ) : (
             <>
-              <p className="text-lg font-medium text-gray-800">
-                Drag & drop your {getAcceptedFileTypes()}
-              </p>
+              <p className="text-lg font-medium text-gray-800">Drag & drop your files</p>
               <p className="text-sm text-gray-500">
                 <span className="text-blue-500 font-medium">Browse files</span> from your device
               </p>
@@ -122,16 +122,6 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
         </div>
 
         <div className="mt-6 text-center">
-          <button
-            type="button"
-            className="px-6 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-            onClick={e => {
-              e.stopPropagation();
-              document.getElementById('dropzone-file-input')?.click();
-            }}
-          >
-            Select File
-          </button>
           <input
             id="dropzone-file-input"
             type="file"
@@ -144,16 +134,14 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
             accept={Object.keys(acceptTypes || defaultAcceptTypes).join(',')}
           />
         </div>
-
-        <p className="mt-4 text-xs text-gray-500">
-          Maximum file size: {(maxSize / (1024 * 1024)).toFixed(0)}MB
-        </p>
       </div>
     </div>
   );
 
   return showCard ? (
-    <ComponentCard title={title}>{dropzoneContent}</ComponentCard>
+    <ComponentCard title={title} desc={desc}>
+      {dropzoneContent}
+    </ComponentCard>
   ) : (
     dropzoneContent
   );

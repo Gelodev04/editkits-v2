@@ -1,12 +1,12 @@
-import InputField from "@/components/InputField";
-import Toggle from "@/components/Toggle";
+import InputField from '@/components/InputField';
+import Toggle from '@/components/Toggle';
 
-import React from "react";
-import {AuthModalProps} from "@/components/modals/Auth/index";
-import {validateEmail} from "@/lib/validateEmail";
-import {validatePassword} from "@/lib/validatePassword";
-import {useRouter} from "next/router";
-import ButtonOld from "@/components/Button_Old";
+import React from 'react';
+import { AuthModalProps } from '@/components/modals/Auth/index';
+import { validateEmail } from '@/lib/validateEmail';
+import { validatePassword } from '@/lib/validatePassword';
+import { useRouter } from 'next/router';
+import ButtonOld from '@/components/Button_Old';
 
 export default function Login(
   props: AuthModalProps,
@@ -24,15 +24,14 @@ export default function Login(
   setType: (e: React.SetStateAction<string>) => void,
   setAuthModal: (e: React.SetStateAction<boolean>) => void,
   hasTyped: boolean,
-  setHasTyped: (e: React.SetStateAction<boolean>) => void,
+  setHasTyped: (e: React.SetStateAction<boolean>) => void
 ) {
-
   const router = useRouter();
 
   return (
     <>
       <InputField
-        onChange={(e) => {
+        onChange={e => {
           if (!hasTyped) setHasTyped(true);
           setEmail(e.target.value);
           setEmailValid(validateEmail(e.target.value));
@@ -59,15 +58,32 @@ export default function Login(
         />
       </div>
       <div className="flex justify-between items-center pt-[20px]">
-        <Toggle label="Remember me"/>
-        <p onClick={() => props.setType("Forgot your password?")}
-           className="font-lato font-normal text-xs leading-[18px] text-[#6F6C90] cursor-pointer">Forgot your
-          password?</p>
+        <Toggle label="Remember me" />
+        <p
+          onClick={() => props.setType('Forgot your password?')}
+          className="font-lato font-normal text-xs leading-[18px] text-[#6F6C90] cursor-pointer"
+        >
+          Forgot your password?
+        </p>
       </div>
       <div className="pt-[42px] max-w-[446px] mx-auto">
         <ButtonOld
-          disabled={hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)}
-          onClick={() => handleLogin(email, password, login, setType, setAuthModal, props.setModalTitle, props.setModalMessage, props.setAuthConfirmationModal, router)}
+          disabled={
+            hasTyped && (!email || !password || !isEmailValid || !isPasswordValid || isLoginLoading)
+          }
+          onClick={() =>
+            handleLogin(
+              email,
+              password,
+              login,
+              setType,
+              setAuthModal,
+              props.setModalTitle,
+              props.setModalMessage,
+              props.setAuthConfirmationModal,
+              router
+            )
+          }
           label="Login"
           variant="popup"
           filled
@@ -75,14 +91,16 @@ export default function Login(
         />
       </div>
       <div className="flex justify-center pt-[13px] gap-4">
-        <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">Don&apos;t have an account?</p>
+        <p className="font-openSans font-semibold text-xs leading-[15px] text-[#2c2c2c]">
+          Don&apos;t have an account?
+        </p>
         <ButtonOld
-          onClick={() => props.setType("Sign Up")}
+          onClick={() => props.setType('Sign Up')}
           label="Signup"
           variant="popup_link"
           filled
         />
       </div>
     </>
-  )
+  );
 }

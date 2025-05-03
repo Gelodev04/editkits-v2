@@ -1,11 +1,11 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Fade, Modal, Box } from '@mui/material';
-import { TbXboxX } from 'react-icons/tb';
+// import {  } from 'react-icons/tb';
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import toast from 'react-hot-toast';
 import { fileUploader } from '@/lib/uploadFile';
 import DropzoneComponent from '@/components/DropZone.tsx';
-import { HiLink, HiFingerPrint, HiOutlineDeviceMobile, HiX } from 'react-icons/hi';
+import {  HiFingerPrint, HiOutlineDeviceMobile, HiX } from 'react-icons/hi';
 import Button from '@/components/ui/button/Button';
 
 export type UploadModalProps = {
@@ -41,7 +41,7 @@ export default function UploadFileModal(props: UploadModalProps) {
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [fileSelected, setFileSelected] = useState(false);
-  const urlInputRef = useRef<HTMLInputElement>(null);
+  // const urlInputRef = useRef<HTMLInputElement>(null);
   const fileIdInputRef = useRef<HTMLInputElement>(null);
 
   // Create a ref to track if a file upload is in progress
@@ -145,21 +145,21 @@ export default function UploadFileModal(props: UploadModalProps) {
     [props, isProcessing, fileSelected]
   );
 
-  const handleUrlUpload = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isProcessing || !urlInputRef.current?.value) return;
+  // const handleUrlUpload = (e: React.MouseEvent) => {
+  //   e.preventDefault();
+  //   if (isProcessing || !urlInputRef.current?.value) return;
 
-    // Implement URL upload logic
-    setIsProcessing(true);
-    isUploadingRef.current = true;
-    toast.success('URL upload functionality will be implemented');
+  //   // Implement URL upload logic
+  //   setIsProcessing(true);
+  //   isUploadingRef.current = true;
+  //   toast.success('URL upload functionality will be implemented');
 
-    setTimeout(() => {
-      props.setUploadModal(false);
-      setIsProcessing(false);
-      isUploadingRef.current = false;
-    }, 500);
-  };
+  //   setTimeout(() => {
+  //     props.setUploadModal(false);
+  //     setIsProcessing(false);
+  //     isUploadingRef.current = false;
+  //   }, 500);
+  // };
 
   const handleFileIdUpload = () => {
     if (isProcessing || !fileIdInputRef.current?.value) return;

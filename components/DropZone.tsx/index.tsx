@@ -21,7 +21,7 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
   acceptTypes,
   showCard = true,
   className = '',
-  maxSize = 1024 * 1024 * 100, // Default 100MB
+  // maxSize = 1024 * 1024 * 100, // Default 100MB
   desc = '',
 }) => {
   const onDrop = React.useCallback(
@@ -33,22 +33,6 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
     },
     [onFileSelect]
   );
-
-  const defaultAcceptTypes = {
-    'video/*': [
-      '.mp4',
-      '.mov',
-      '.avi',
-      '.webm',
-      '.mkv',
-      '.flv',
-      '.wmv',
-      '.m4v',
-      '.3gp',
-      '.ogv',
-      '.ts',
-    ],
-  };
 
   const { getRootProps, getInputProps, isDragActive, isDragReject, acceptedFiles } = useDropzone({
     onDrop,

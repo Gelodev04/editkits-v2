@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useRef, useState, useEffect } from 'react';
-import { FaAngleRight, FaRuler } from 'react-icons/fa6';
+import { FaRuler } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
 import { VideoUpload } from '@/components/VideoUpload';
 import UploadFileModal from '@/components/modals/UploadFileModal';

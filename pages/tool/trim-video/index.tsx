@@ -16,7 +16,7 @@ import {
   HiOutlineVideoCamera,
   HiOutlineAdjustments,
   // HiOutlinePhotograph,
-  HiOutlineCheck,
+  // HiOutlineCheck,
 } from 'react-icons/hi';
 
 import toast from 'react-hot-toast';

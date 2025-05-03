@@ -5,7 +5,7 @@ import { lato, montserrat, opensans } from '@/lib/fonts';
 import toast from 'react-hot-toast';
 import { fileUploader } from '@/lib/uploadFile';
 import DropzoneComponent from '@/components/DropZone.tsx';
-import { HiLink, HiFingerPrint, HiOutlineDeviceMobile } from 'react-icons/hi';
+import { HiLink, HiFingerPrint, HiOutlineDeviceMobile, HiX } from 'react-icons/hi';
 import Button from '@/components/ui/button/Button';
 
 export type UploadModalProps = {
@@ -83,8 +83,6 @@ export default function UploadFileModal(props: UploadModalProps) {
         props.setFileId(response.data.file_id);
       }
 
-      toast.success('File uploaded successfully!');
-
       // Close the modal after a delay
       setTimeout(() => {
         props.setUploadModal(false);
@@ -93,6 +91,7 @@ export default function UploadFileModal(props: UploadModalProps) {
         // Reset the uploading flag only after the modal is closed
         isUploadingRef.current = false;
       }, 500);
+      toast.success('File uploaded successfully!');
     } catch (error) {
       console.error('Upload error:', error);
       toast.error('An error occurred during upload');
@@ -189,6 +188,7 @@ export default function UploadFileModal(props: UploadModalProps) {
   const handleManualUpload = () => {
     if (isProcessing || isUploadingRef.current) return;
     props.setUploadModal(false);
+    props.setFile?.(null);
   };
 
   // Reset the fileSelected state when the modal opens or closes
@@ -235,25 +235,12 @@ export default function UploadFileModal(props: UploadModalProps) {
                 if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
               }}
               disabled={isProcessing || isUploadingRef.current}
-              className={`absolute right-6 top-6 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ${
+              className={`absolute right-6 top-6 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors" ${
                 isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               aria-label="Close modal"
             >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M6.04289 16.5413C5.65237 16.9318 5.65237 17.565 6.04289 17.9555C6.43342 18.346 7.06658 18.346 7.45711 17.9555L11.9987 13.4139L16.5408 17.956C16.9313 18.3466 17.5645 18.3466 17.955 17.956C18.3455 17.5655 18.3455 16.9323 17.955 16.5418L13.4129 11.9997L17.955 7.4576C18.3455 7.06707 18.3455 6.43391 17.955 6.04338C17.5645 5.65286 16.9313 5.65286 16.5408 6.04338L11.9987 10.5855L7.45711 6.0439C7.06658 5.65338 6.43342 5.65338 6.04289 6.0439C5.65237 6.43442 5.65237 7.06759 6.04289 7.45811L10.5845 11.9997L6.04289 16.5413Z"
-                  fill="currentColor"
-                />
-              </svg>
+              <HiX className="w-5 h-5" />
             </button>
             <h3 className="text-2xl text-gray-900 dark:text-white/90 font-bold">Upload Media</h3>
             <p className="mt-1 text-gray-700 dark:text-gray-400 text-sm">

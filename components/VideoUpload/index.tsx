@@ -26,7 +26,7 @@ export function VideoUpload(props: VideoUploadProps) {
           <div className="flex flex-col sm:flex-row">
             {/* Video Thumbnail/Preview */}
             <div className="relative bg-gray-800 dark:bg-gray-900 w-full sm:w-48 h-36 flex items-center justify-center overflow-hidden">
-              {props.fetchedData?.metadata?.thumbnail_url ? (
+              {props.fetchedData?.metadata?.thumbnail_url && !props.isUploading ? (
                 <Image
                   src={props.fetchedData?.metadata?.thumbnail_url}
                   className="w-full h-full object-cover"
@@ -75,7 +75,7 @@ export function VideoUpload(props: VideoUploadProps) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1">
                   <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                     <span className="mr-1.5 font-medium">Duration:</span>
-                    <span>{Math.floor(props.fetchedData?.metadata?.duration ?? 0)} seconds</span>
+                    <span>{Math.floor(props.fetchedData?.metadata?.duration ?? 0)} sec</span>
                   </div>
 
                   <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
@@ -97,7 +97,7 @@ export function VideoUpload(props: VideoUploadProps) {
 
               {/* Status Indicator */}
               <div className="mt-3">
-                {props.fetchedData?.metadata?.thumbnail_url && (
+                {props.fetchedData?.metadata?.thumbnail_url && !props.isUploading && (
                   <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                     <span className="w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full mr-1.5"></span>
                     Ready to process

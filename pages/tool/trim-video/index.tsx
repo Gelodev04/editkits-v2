@@ -53,9 +53,55 @@ export default function TrimVideo() {
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
 
-  // const [uploadedModal, setUploadedModal] = useState(false);
-  // const [modalTitle, setModalTitle] = useState('');
-  // const [modalMessage, setModalMessage] = useState('');
+  // Function to reset all states when a new file is uploaded
+  const resetStates = () => {
+    setStartTime(null);
+    setEndTime(null);
+    setOutputQuality('MEDIUM');
+    setVideoContainer('mp4');
+    setFetchedData(null);
+    setUploadFileModal(false);
+    if (videoRef.current) {
+      // @ts-ignore
+      videoRef.current.src = '';
+    }
+  };
+
+  // Reset states when file changes
+  useEffect(() => {
+    if (file === null) {
+      resetStates();
+    }
+  }, [file]);
+
+  // Reset states when uploading starts
+  useEffect(() => {
+    if (isUploading) {
+      resetStates();
+      setFileId(null);
+      // Immediately clear any data to prevent old thumbnails from showing
+      setUploadFileModal(false);
+      setFetchedData(null);
+      setProgress(0);
+    }
+  }, [isUploading]);
+
+  // Watch for file changes in the UploadFileModal
+  const handleFileChange = newFile => {
+    if (newFile !== file) {
+      // Clear previous file data immediately
+      setFile(null);
+      setFetchedData(null);
+      setFileId(null);
+      setProgress(0);
+
+      // Then set the new file
+      setTimeout(() => {
+        setFile(newFile);
+      }, 50);
+      resetStates();
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -69,7 +115,7 @@ export default function TrimVideo() {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [data]);
+  }, [data, refetch, fileId]);
 
   useEffect(() => {
     if (!jobId) return;
@@ -95,7 +141,7 @@ export default function TrimVideo() {
 
     return () => clearInterval(interval);
     // @ts-ignore
-  }, [jobId, jobData?.status]);
+  }, [jobId, jobData?.status, refetchJobData]);
 
   async function handleTrimVideo() {
     try {
@@ -127,10 +173,7 @@ export default function TrimVideo() {
       setUploadFileModal(false);
       setFile(null);
       setFileId(null);
-      setStartTime(null);
-      setEndTime(null);
-      setOutputQuality('Medium');
-      setVideoContainer('mp4');
+      resetStates();
 
       const { job_id }: any = response.data;
       setJobId(job_id);
@@ -278,7 +321,7 @@ export default function TrimVideo() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 flex items-center"
+                  className="hidden sm:flex mt-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 items-center"
                 >
                   <div className="rounded-full bg-blue-100 dark:bg-blue-800/50 p-2 mr-3 flex-shrink-0">
                     <FaPlay size={12} />
@@ -317,10 +360,10 @@ export default function TrimVideo() {
                       id="quality"
                       disabled={!file}
                       value={outputQuality}
+                      defaultValue={outputQuality}
                       onChange={e => setOutputQuality(e.target.value)}
                       className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
-                      <option value="">Select quality</option>
                       {outputQualityList.map(opt => (
                         <option key={opt.value} value={opt.value}>
                           {opt.label}
@@ -358,10 +401,10 @@ export default function TrimVideo() {
                       id="format"
                       disabled={!file}
                       value={videoContainer}
+                      defaultValue={videoContainer}
                       onChange={e => setVideoContainer(e.target.value)}
                       className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
-                      <option value="">Select format</option>
                       {videoType.map(opt => (
                         <option key={opt.value} value={opt.value}>
                           {opt.label}
@@ -413,7 +456,7 @@ export default function TrimVideo() {
         uploadModal={uploadFileModal}
         setUploadModal={setUploadFileModal}
         file={file}
-        setFile={setFile}
+        setFile={handleFileChange}
         upload={upload}
         setFileId={setFileId}
         isUploading={isUploading}

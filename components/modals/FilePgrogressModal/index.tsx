@@ -46,8 +46,8 @@ export default function FileProgressModal(props) {
               </button>
 
               {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-50/60 to-purple-50/60 dark:from-blue-900/10 dark:to-purple-900/10 rounded-full -mr-24 -mt-24 z-0" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-50/60 to-blue-50/60 dark:from-purple-900/10 dark:to-blue-900/10 rounded-full -ml-24 -mb-24 z-0" />
+              {/* <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-50/60 to-purple-50/60 dark:from-blue-900/10 dark:to-purple-900/10 rounded-full -mr-24 -mt-24 z-0" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500 dark:bg-blue-900 rounded-full -ml-24 -mb-24 z-0" /> */}
 
               <div className="relative z-10 px-6 py-6">
                 {(props.data?.status === 'PENDING' || props.data?.status === 'IN_PROGRESS') && (
@@ -198,7 +198,7 @@ export default function FileProgressModal(props) {
                         props.setProgressModal(false);
                         router.push('/tools');
                       }}
-                      className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all"
+                      className="px-5 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all"
                     >
                       Explore All Tools
                     </motion.button>

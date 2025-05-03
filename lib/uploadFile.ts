@@ -1,6 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
-export async function fileUploader(baseUrl: string, file: File, setUploadModal, setIsUploading, setProgress) {
+export async function fileUploader(
+  baseUrl: string,
+  file: File,
+  setUploadModal,
+  setIsUploading,
+  setProgress
+) {
   if (file) {
     const reader = new FileReader();
 
@@ -10,17 +16,17 @@ export async function fileUploader(baseUrl: string, file: File, setUploadModal, 
     };
   }
 
-  setUploadModal(false)
+  setUploadModal(false);
   await axios.put(baseUrl, file, {
     headers: {
-      "Content-Type": "video/mp4"
+      'Content-Type': 'video/mp4',
     },
-    onUploadProgress: (progressEvent) => {
+    onUploadProgress: progressEvent => {
       //@ts-ignore
       const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
       setProgress(progress);
-    }
-  })
+    },
+  });
 
-  setIsUploading(false)
+  setIsUploading(false);
 }

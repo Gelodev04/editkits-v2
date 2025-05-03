@@ -58,7 +58,7 @@ export default function ResizeVideo() {
   const [isCustom, setIsCustom] = useState(true);
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
-  const [outputQuality, setOutputQuality] = useState('Medium');
+  const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
   const videoRef = useRef(null);
 
@@ -67,6 +67,67 @@ export default function ResizeVideo() {
 
   const updateSettings = (key, value) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  // Function to reset all states when a new file is uploaded
+  const resetStates = () => {
+    setSettings({
+      width: undefined,
+      height: undefined,
+      aspectX: 1,
+      aspectY: 1,
+      color: '#000000',
+      isColorValid: true,
+      framerate: undefined,
+      audioSampleRate: undefined,
+      stretchStrategy: 'fit',
+    });
+    setFetchedData(null);
+    setPresetWidth(undefined);
+    setPresetHeight(undefined);
+    setActiveInput('');
+    setIsCustom(true);
+    setOutputQuality('MEDIUM');
+    setVideoContainer('mp4');
+    if (videoRef.current) {
+      // @ts-ignore
+      videoRef.current.src = '';
+    }
+  };
+
+  // Reset states when file changes
+  useEffect(() => {
+    if (file === null) {
+      resetStates();
+    }
+  }, [file]);
+
+  // Reset states when uploading starts
+  useEffect(() => {
+    if (isUploading) {
+      resetStates();
+      setFileId(null);
+      // Immediately clear any data to prevent old thumbnails from showing
+      setFetchedData(null);
+      setProgress(0);
+    }
+  }, [isUploading]);
+
+  // Watch for file changes in the UploadFileModal
+  const handleFileChange = newFile => {
+    if (newFile !== file) {
+      // Clear previous file data immediately
+      setFile(null);
+      setFetchedData(null);
+      setFileId(null);
+      setProgress(0);
+
+      // Then set the new file
+      setTimeout(() => {
+        setFile(newFile);
+      }, 50);
+      resetStates();
+    }
   };
 
   useEffect(() => {
@@ -144,7 +205,7 @@ export default function ResizeVideo() {
 
     return () => clearInterval(interval);
     // @ts-ignore
-  }, [jobId, jobData?.status]);
+  }, [jobId, jobData?.status, refetchJobData]);
 
   const handleColorChange = e => {
     const newColor = e.target.value;
@@ -160,8 +221,8 @@ export default function ResizeVideo() {
             tool_id: 'VIDEO_RESIZE',
             properties: {
               input: fileId,
-              width: settings.width ? parseInt(String(settings.width)) : undefined,
-              height: settings.height ? parseInt(String(settings.height)) : undefined,
+              outputWidth: settings.width ? parseInt(String(settings.width)) : undefined,
+              outputHeight: settings.height ? parseInt(String(settings.height)) : undefined,
               padding_color: settings.color,
               stretch_strategy: settings.stretchStrategy,
               framerate: settings.framerate ? parseInt(String(settings.framerate)) : undefined,
@@ -185,6 +246,10 @@ export default function ResizeVideo() {
 
       toast.success('Job initialized successfully');
       setProgressModal(true);
+      setUploadFileModal(false);
+      setFile(null);
+      setFileId(null);
+      resetStates();
 
       const { job_id } = response.data;
       setJobId(job_id);
@@ -658,7 +723,7 @@ export default function ResizeVideo() {
         uploadModal={uploadFileModal}
         setUploadModal={setUploadFileModal}
         file={file}
-        setFile={setFile}
+        setFile={handleFileChange}
         upload={upload}
         setFileId={setFileId}
         isUploading={isUploading}

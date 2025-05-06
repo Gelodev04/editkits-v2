@@ -69,9 +69,15 @@ export default function UploadFileModal(props: UploadModalProps) {
         toast.error(response.error.data.errorMsg);
         isUploadingRef.current = false;
         setIsProcessing(false);
+        props.setIsUploading(false);
         return;
       }
 
+      if (props.setFileId) {
+        props.setFileId(response.data.file_id);
+      }
+
+      // Note: fileUploader now handles closing the modal after the upload is complete
       await fileUploader(
         response.data.url,
         file,
@@ -80,18 +86,10 @@ export default function UploadFileModal(props: UploadModalProps) {
         props.setProgress
       );
 
-      if (props.setFileId) {
-        props.setFileId(response.data.file_id);
-      }
-
-      // Close the modal after a delay
-      setTimeout(() => {
-        props.setUploadModal(false);
-        setIsProcessing(false);
-        setUploadedFileName(null);
-        // Reset the uploading flag only after the modal is closed
-        isUploadingRef.current = false;
-      }, 500);
+      // Reset states only after upload is complete (moved from fileUploader)
+      setIsProcessing(false);
+      setUploadedFileName(null);
+      isUploadingRef.current = false;
       toast.success('File uploaded successfully!');
     } catch (error) {
       console.error('Upload error:', error);
@@ -198,20 +196,27 @@ export default function UploadFileModal(props: UploadModalProps) {
       // Small delay to ensure the modal is fully closed
       setTimeout(() => {
         setFileSelected(false);
-        isUploadingRef.current = false;
+        // Only reset the uploading ref if we're not actively uploading
+        if (!props.isUploading) {
+          isUploadingRef.current = false;
+        }
       }, 100);
     }
-  }, [props.uploadModal]);
+  }, [props.uploadModal, props.isUploading]);
+
+  // Don't allow closing the modal while upload is in progress
+  const handleClose = () => {
+    if (!isProcessing && !isUploadingRef.current && !props.isUploading) {
+      props.setUploadModal(false);
+    } else {
+      toast.error("Upload in progress. Please wait until it's complete.");
+    }
+  };
 
   return (
     <Modal
       open={props.uploadModal}
-      onClose={() => {
-        // Only close if not processing
-        if (!isProcessing && !isUploadingRef.current) {
-          props.setUploadModal(false);
-        }
-      }}
+      onClose={handleClose}
       aria-labelledby="upload-modal-title"
       closeAfterTransition
       disableAutoFocus={true}
@@ -233,11 +238,13 @@ export default function UploadFileModal(props: UploadModalProps) {
               onClick={e => {
                 e.preventDefault();
                 e.stopPropagation();
-                if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
+                handleClose();
               }}
-              disabled={isProcessing || isUploadingRef.current}
+              disabled={isProcessing || isUploadingRef.current || props.isUploading}
               className={`absolute right-6 top-6 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors" ${
-                isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
+                isProcessing || isUploadingRef.current || props.isUploading
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
               }`}
               aria-label="Close modal"
             >

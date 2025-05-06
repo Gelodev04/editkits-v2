@@ -134,25 +134,32 @@ export default function ResizeVideo() {
   };
 
   useEffect(() => {
-    if (fetchedData && fetchedData.metadata) {
+    if (fetchedData && fetchedData.metadata && !isUploading) {
       updateSettings('width', fetchedData.metadata.width);
       updateSettings('height', fetchedData.metadata.height);
     }
-  }, [fetchedData?.metadata]);
+  }, [fetchedData?.metadata, isUploading]);
 
   useEffect(() => {
+    // Don't fetch data while uploading
+    if (isUploading) return;
+
     const interval = setInterval(() => {
       //@ts-ignore // Ignore type issues with the API response
       if (data?.status !== 'COMMITTED' && data?.status !== 'ERROR' && fileId) {
         refetch();
       }
-      //@ts-ignore // Ignore type issues with the API response
-      setFetchedData(data);
-      console.log('data', data);
+
+      // Only update fetchedData if we have actual data and not uploading
+      if (data && !isUploading) {
+        //@ts-ignore // Ignore type issues with the API response
+        setFetchedData(data);
+        console.log('data', data);
+      }
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [data, fileId, refetch]);
+  }, [data, fileId, refetch, isUploading]);
 
   useEffect(() => {
     if (!isCustom) {
@@ -379,7 +386,7 @@ export default function ResizeVideo() {
                           setPresetHeight(presetHeight || undefined);
                           setActiveInput('preset');
                         }}
-                        disabled={!file}
+                        disabled={!file || isUploading || !fetchedData?.metadata}
                         className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                       >
                         {presets.map(opt => (
@@ -432,7 +439,7 @@ export default function ResizeVideo() {
                             setIsCustom(true);
                           }
                         }}
-                        disabled={!file}
+                        disabled={!file || isUploading || !fetchedData?.metadata}
                         className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                       >
                         {aspectRatio.map(opt => (
@@ -471,7 +478,7 @@ export default function ResizeVideo() {
                       <input
                         id="width"
                         type="number"
-                        disabled={!file}
+                        disabled={!file || isUploading || !fetchedData?.metadata}
                         placeholder="1920"
                         value={settings.width || ''}
                         onChange={e => {
@@ -492,7 +499,7 @@ export default function ResizeVideo() {
                       <input
                         id="height"
                         type="number"
-                        disabled={!file}
+                        disabled={!file || isUploading || !fetchedData?.metadata}
                         placeholder="1080"
                         value={settings.height || ''}
                         onChange={e => {
@@ -515,7 +522,7 @@ export default function ResizeVideo() {
                         <input
                           id="color"
                           type="text"
-                          disabled={!file}
+                          disabled={!file || isUploading || !fetchedData?.metadata}
                           placeholder="#000000"
                           value={settings.color}
                           onChange={handleColorChange}
@@ -536,7 +543,7 @@ export default function ResizeVideo() {
                         <input
                           type="color"
                           value={settings.color}
-                          disabled={!file}
+                          disabled={!file || isUploading || !fetchedData?.metadata}
                           onChange={e => {
                             updateSettings('color', e.target.value);
                             updateSettings('isColorValid', true);
@@ -565,7 +572,7 @@ export default function ResizeVideo() {
                           id="stretchStrategy"
                           value={settings.stretchStrategy}
                           onChange={e => updateSettings('stretchStrategy', e.target.value)}
-                          disabled={!file}
+                          disabled={!file || isUploading || !fetchedData?.metadata}
                           className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                         >
                           <option value="fit">Fit</option>
@@ -618,7 +625,7 @@ export default function ResizeVideo() {
                   <div className="relative">
                     <select
                       id="quality"
-                      disabled={!file}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
                       value={outputQuality}
                       onChange={e => setOutputQuality(e.target.value)}
                       className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
@@ -658,7 +665,7 @@ export default function ResizeVideo() {
                   <div className="relative">
                     <select
                       id="format"
-                      disabled={!file}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
                       value={videoContainer}
                       onChange={e => setVideoContainer(e.target.value)}
                       className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
@@ -694,10 +701,22 @@ export default function ResizeVideo() {
           {/* Submit Button */}
           <div className="flex justify-center">
             <Button
-              disabled={!file || !settings.width || !settings.height || !settings.isColorValid}
+              disabled={
+                !file ||
+                !settings.width ||
+                !settings.height ||
+                !settings.isColorValid ||
+                isUploading ||
+                !fetchedData?.metadata
+              }
               onClick={handleResizeVideo}
               className={`px-10 py-4 rounded-xl font-medium text-white flex items-center shadow-lg transition-all ${
-                !file || !settings.width || !settings.height || !settings.isColorValid
+                !file ||
+                !settings.width ||
+                !settings.height ||
+                !settings.isColorValid ||
+                isUploading ||
+                !fetchedData?.metadata
                   ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
                   : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
               }`}

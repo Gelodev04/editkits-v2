@@ -15,6 +15,7 @@ import {
   HiOutlineClock,
   HiOutlineVideoCamera,
   HiOutlineAdjustments,
+  HiArrowRight,
   // HiOutlinePhotograph,
   // HiOutlineCheck,
 } from 'react-icons/hi';
@@ -60,7 +61,6 @@ export default function TrimVideo() {
     setOutputQuality('MEDIUM');
     setVideoContainer('mp4');
     setFetchedData(null);
-    setUploadFileModal(false);
     if (videoRef.current) {
       // @ts-ignore
       videoRef.current.src = '';
@@ -80,7 +80,6 @@ export default function TrimVideo() {
       resetStates();
       setFileId(null);
       // Immediately clear any data to prevent old thumbnails from showing
-      setUploadFileModal(false);
       setFetchedData(null);
       setProgress(0);
     }
@@ -104,18 +103,25 @@ export default function TrimVideo() {
   };
 
   useEffect(() => {
+    // Don't fetch data while uploading
+    if (isUploading) return;
+
     const interval = setInterval(() => {
       //@ts-ignore
       if (data?.status !== 'COMMITTED' && data?.status !== 'ERROR' && fileId) {
         refetch();
       }
-      // @ts-ignore
-      setFetchedData(data);
-      console.log('data', data);
+
+      // Only update fetchedData if we have actual data and not uploading
+      if (data && !isUploading) {
+        // @ts-ignore
+        setFetchedData(data);
+        console.log('data', data);
+      }
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [data, refetch, fileId]);
+  }, [data, refetch, fileId, isUploading]);
 
   useEffect(() => {
     if (!jobId) return;
@@ -286,7 +292,7 @@ export default function TrimVideo() {
                       type="number"
                       value={startTime || ''}
                       onChange={e => setStartTime(e.target.value)}
-                      disabled={!file}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
                       placeholder="0"
                       className="pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     />
@@ -309,7 +315,7 @@ export default function TrimVideo() {
                       type="number"
                       value={endTime || ''}
                       onChange={e => setEndTime(e.target.value)}
-                      disabled={!file}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
                       placeholder="10"
                       className="pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     />
@@ -358,7 +364,7 @@ export default function TrimVideo() {
                   <div className="relative">
                     <select
                       id="quality"
-                      disabled={!file}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
                       value={outputQuality}
                       defaultValue={outputQuality}
                       onChange={e => setOutputQuality(e.target.value)}
@@ -399,7 +405,7 @@ export default function TrimVideo() {
                   <div className="relative">
                     <select
                       id="format"
-                      disabled={!file}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
                       value={videoContainer}
                       defaultValue={videoContainer}
                       onChange={e => setVideoContainer(e.target.value)}
@@ -436,16 +442,15 @@ export default function TrimVideo() {
           {/* Submit Button */}
           <div className="flex justify-center">
             <Button
-              disabled={!file || !startTime || !endTime}
+              disabled={!file || !startTime || !endTime || isUploading || !fetchedData?.metadata}
               onClick={handleTrimVideo}
               className={`px-10 py-4 rounded-xl font-medium text-white flex items-center shadow-lg transition-all ${
-                !file || !startTime || !endTime
+                !file || !startTime || !endTime || isUploading || !fetchedData?.metadata
                   ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
                   : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
               }`}
             >
-              Process Video
-              {/* <HiOutlineCheck className="ml-2" size={20} /> */}
+              Process Video <HiArrowRight className="ml-2" />
             </Button>
           </div>
         </div>

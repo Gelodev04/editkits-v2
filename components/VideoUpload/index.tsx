@@ -47,7 +47,7 @@ export function VideoUpload(props: VideoUploadProps) {
                       ></div>
                     </div>
                     <p className="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">
-                      Processing...
+                      Analyzing...
                     </p>
                   </div>
                 </div>

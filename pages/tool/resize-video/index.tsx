@@ -10,7 +10,12 @@ import GradientHeading from '@/components/Typography/GradientHeading';
 import { useCommitJobMutation, useInitJobMutation, useJobStatusQuery } from '@/services/api/job';
 import FileProgressModal from '@/components/modals/FilePgrogressModal';
 import Button from '@/components/ui/button/Button';
-import { HiOutlineVideoCamera, HiOutlineAdjustments, HiOutlineTemplate } from 'react-icons/hi';
+import {
+  HiOutlineVideoCamera,
+  HiOutlineAdjustments,
+  HiOutlineTemplate,
+  HiArrowRight,
+} from 'react-icons/hi';
 
 import toast from 'react-hot-toast';
 import ToggleButton from '@/components/ToggleButton';
@@ -697,7 +702,7 @@ export default function ResizeVideo() {
                   : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
               }`}
             >
-              Process Video
+              Process Video <HiArrowRight className="ml-2" />
             </Button>
           </div>
         </div>
@@ -714,6 +719,7 @@ export default function ResizeVideo() {
         isUploading={isUploading}
         setIsUploading={setIsUploading}
         setProgress={setProgress}
+        progress={progress}
       />
       <FileProgressModal
         progressModal={progressModal}

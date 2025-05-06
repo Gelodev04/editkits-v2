@@ -107,9 +107,22 @@ export function VideoUpload(props: VideoUploadProps) {
                 )}
 
                 {!showVideoData && !props.isUploading && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Getting video information...
-                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1">
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+                      <span className="mr-1.5 font-medium">Duration:</span>
+                      <span>0 sec</span>
+                    </div>
+
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+                      <span className="mr-1.5 font-medium">Resolution:</span>
+                      <span>0 × 0</span>
+                    </div>
+
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+                      <span className="mr-1.5 font-medium">Size:</span>
+                      <span>0 MB</span>
+                    </div>
+                  </div>
                 )}
 
                 {props.isUploading && (

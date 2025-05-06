@@ -1,13 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { Fade, Modal, Box } from '@mui/material';
+import { Fade, Box } from '@mui/material';
 // import {  } from 'react-icons/tb';
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import toast from 'react-hot-toast';
 import { fileUploader } from '@/lib/uploadFile';
 import DropzoneComponent from '@/components/DropZone.tsx';
-import { HiFingerPrint, HiOutlineDeviceMobile, HiX } from 'react-icons/hi';
+import { HiFingerPrint, HiOutlineDeviceMobile, HiX, HiExclamation } from 'react-icons/hi';
 import Button from '@/components/ui/button/Button';
 import { SpinnerOne } from '@/components/Spinner';
+import { Modal } from '@/components/Modal';
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -44,6 +45,7 @@ export default function UploadFileModal(props: UploadModalProps) {
   const [fileSelected, setFileSelected] = useState(false);
   // const urlInputRef = useRef<HTMLInputElement>(null);
   const fileIdInputRef = useRef<HTMLInputElement>(null);
+  const [fileIdError, setFileIdError] = useState<string | null>(null);
 
   // Create a ref to track if a file upload is in progress
   const isUploadingRef = useRef(false);
@@ -144,35 +146,74 @@ export default function UploadFileModal(props: UploadModalProps) {
     [props, isProcessing, fileSelected]
   );
 
-  // const handleUrlUpload = (e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   if (isProcessing || !urlInputRef.current?.value) return;
+  // Validate if the string is a valid UUID v4
+  const isValidUUID = (uuid: string): boolean => {
+    const uuidV4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidV4Regex.test(uuid);
+  };
 
-  //   // Implement URL upload logic
-  //   setIsProcessing(true);
-  //   isUploadingRef.current = true;
-  //   toast.success('URL upload functionality will be implemented');
-
-  //   setTimeout(() => {
-  //     props.setUploadModal(false);
-  //     setIsProcessing(false);
-  //     isUploadingRef.current = false;
-  //   }, 500);
-  // };
-
-  const handleFileIdUpload = () => {
+  const handleFileIdUpload = async () => {
     if (isProcessing || !fileIdInputRef.current?.value) return;
 
-    // Implement File ID upload logic
-    setIsProcessing(true);
-    isUploadingRef.current = true;
-    toast.success('File ID upload functionality will be implemented');
+    const fileId = fileIdInputRef.current.value.trim();
 
-    setTimeout(() => {
-      props.setUploadModal(false);
+    // Validate UUID format
+    if (!isValidUUID(fileId)) {
+      setFileIdError('Incorrect file ID');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      isUploadingRef.current = true;
+      setFileIdError(null);
+
+      // Send request to check file status
+      const response = await fetch(`/api/file/status?file_id=${fileId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Handle HTTP errors
+      if (!response.ok) {
+        if (response.status >= 400) {
+          setFileIdError('File not found');
+          setIsProcessing(false);
+          isUploadingRef.current = false;
+          return;
+        }
+      }
+
+      // Parse the response data
+      const data = await response.json();
+
+      // Handle different file statuses
+      if (data.status === 'EXPIRED') {
+        setFileIdError('File has expired, please upload it again');
+        setIsProcessing(false);
+        isUploadingRef.current = false;
+        return;
+      } else if (data.status === 'COMMITTED') {
+        // Accept the file
+        if (props.setFileId) {
+          props.setFileId(fileId);
+        }
+        toast.success('File ID accepted successfully!');
+        props.setUploadModal(false);
+      } else {
+        setFileIdError('File is not available');
+        setIsProcessing(false);
+        isUploadingRef.current = false;
+        return;
+      }
+    } catch (error) {
+      console.error('File ID check error:', error);
+      setFileIdError('Error checking file status');
       setIsProcessing(false);
       isUploadingRef.current = false;
-    }, 500);
+    }
   };
 
   const videoFileTypes = {
@@ -196,6 +237,7 @@ export default function UploadFileModal(props: UploadModalProps) {
       // Small delay to ensure the modal is fully closed
       setTimeout(() => {
         setFileSelected(false);
+        setFileIdError(null);
         // Only reset the uploading ref if we're not actively uploading
         if (!props.isUploading) {
           isUploadingRef.current = false;
@@ -215,16 +257,10 @@ export default function UploadFileModal(props: UploadModalProps) {
 
   return (
     <Modal
-      open={props.uploadModal}
+      isOpen={props.uploadModal}
       onClose={handleClose}
       aria-labelledby="upload-modal-title"
-      closeAfterTransition
-      disableAutoFocus={true}
-      disableEnforceFocus={true}
-      BackdropProps={{
-        timeout: 500,
-        style: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
-      }}
+      showCloseButton={false}
     >
       <Fade in={props.uploadModal}>
         <Box
@@ -395,13 +431,24 @@ export default function UploadFileModal(props: UploadModalProps) {
                       type="text"
                       placeholder="Enter file ID"
                       disabled={isProcessing || isUploadingRef.current}
-                      className={`w-full pl-11 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition-all ${
+                      className={`w-full pl-11 pr-4 py-3 border ${
+                        fileIdError
+                          ? 'border-red-500 dark:border-red-500'
+                          : 'border-gray-300 dark:border-gray-700'
+                      } rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition-all ${
                         isProcessing || isUploadingRef.current
                           ? 'bg-gray-100 dark:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 cursor-not-allowed'
                           : ''
                       }`}
+                      onChange={() => fileIdError && setFileIdError(null)}
                     />
                   </div>
+                  {fileIdError && (
+                    <div className="mt-2 flex items-start p-3 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 rounded-md text-sm">
+                      <HiExclamation className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
+                      <span>{fileIdError}</span>
+                    </div>
+                  )}
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Enter previously uploaded file ID
                   </p>
@@ -415,7 +462,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                       isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
                     }`}
                   >
-                    {isProcessing || isUploadingRef.current ? 'Processing...' : 'Use File ID'}
+                    {isProcessing ? 'Processing...' : 'Use File ID'}
                   </Button>
                 </div>
               </div>
@@ -435,9 +482,9 @@ export default function UploadFileModal(props: UploadModalProps) {
               >
                 Cancel
               </Button> */}
-              {activeTab === 'device' && !isProcessing && !isUploadingRef.current && (
+              {/* {activeTab === 'device' && !isProcessing && !isUploadingRef.current && (
                 <Button onClick={handleManualUpload}>Upload</Button>
-              )}
+              )} */}
             </div>
           </div>
         </Box>

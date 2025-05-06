@@ -19,6 +19,7 @@ import {
 
 import toast from 'react-hot-toast';
 import ToggleButton from '@/components/ToggleButton';
+import ComponentToolCard from '@/components/ComponentToolCard';
 
 // Define interface for metadata
 interface FileMetadata {
@@ -246,7 +247,10 @@ export default function ResizeVideo() {
 
       if (response.error) {
         console.error('Error initializing job:', response.error);
-        toast.error('Failed to initialize job');
+        // Show the error message from the response if available, otherwise show a generic message
+        const errorMsg =
+          response.error.data?.errorMsg || response.error.errMsg || 'Failed to initialize job';
+        toast.error(errorMsg);
         return;
       }
 
@@ -261,13 +265,13 @@ export default function ResizeVideo() {
       setJobId(job_id);
 
       await handleCommitJob(job_id);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Unexpected error:', error);
-      toast.error('An unexpected error occurred');
+      toast.error(error.message || 'An unexpected error occurred');
     }
   }
 
-  async function handleCommitJob(jobId) {
+  async function handleCommitJob(jobId: string) {
     if (!jobId) {
       toast.error('Invalid job ID');
       return;
@@ -278,454 +282,436 @@ export default function ResizeVideo() {
 
       if (response.error) {
         console.error('Error committing job:', response.error);
-        // @ts-ignore
-        toast.error(response.error.errMsg || 'Failed to commit job');
+        // Get the error message from the response if available
+        const errorMsg =
+          response.error.data?.errorMsg || response.error.errMsg || 'Failed to commit job';
+        toast.error(errorMsg);
         return;
       }
 
       toast.success('Job committed successfully');
     } catch (error) {
       console.error('Unexpected error in commit:', error);
-      toast.error('An unexpected error occurred while committing');
+      toast.error(error?.message || 'An unexpected error occurred while committing');
     }
   }
 
   return (
-    <div className="max-w-[900px] px-4 sm:px-8 lg:px-12 mx-auto py-6 sm:py-12">
-      {/* Main Form Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white dark:bg-white/[0.03] rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 relative overflow-hidden"
-      >
-        {/* Header */}
-        <div className="relative z-10 pt-8 pb-4 px-8 border-b border-gray-100 dark:border-gray-800">
-          <GradientHeading
-            text="Resize Video"
-            subtext="Easily change the dimensions of your video to fit any platform"
-            icon={<FaRuler size={18} />}
-            fromColor="blue-600"
-            toColor="purple-700"
-          />
-        </div>
-
-        <div className="relative z-10 px-8 py-8">
-          {/* Input Section */}
-          <div className="mb-10">
-            <div className="flex items-center mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
-                <HiOutlineVideoCamera size={20} />
-              </div>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
-                Input Video
-              </h2>
+    <ComponentToolCard title="Resize Video">
+      <div className="relative z-10 px-8 py-8">
+        {/* Input Section */}
+        <div className="mb-10">
+          <div className="flex items-center mb-6">
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
+              <HiOutlineVideoCamera size={20} />
             </div>
-
-            <motion.div whileHover={{ scale: 1.005 }} transition={{ duration: 0.2 }}>
-              <VideoUpload
-                videoRef={videoRef}
-                file={file}
-                setUploadFileModal={setUploadFileModal}
-                uploadedData={data}
-                progress={progress}
-                fetchedData={fetchedData}
-                isUploading={isUploading}
-              />
-            </motion.div>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Input</h2>
           </div>
 
-          {/* Dimensions Section */}
-          <div className="mb-10">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center  mb-6">
-                <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
-                  <HiOutlineTemplate size={20} />
-                </div>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
-                  Dimensions
-                </h2>
+          <motion.div whileHover={{ scale: 1.005 }} transition={{ duration: 0.2 }}>
+            <VideoUpload
+              videoRef={videoRef}
+              file={file}
+              setUploadFileModal={setUploadFileModal}
+              uploadedData={data}
+              progress={progress}
+              fetchedData={fetchedData}
+              isUploading={isUploading}
+            />
+          </motion.div>
+        </div>
+
+        {/* Dimensions Section */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center  mb-6">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
+                <HiOutlineTemplate size={20} />
               </div>
-              <div className="flex items-center justify-end">
-                <ToggleButton
-                  label={toggleName}
-                  checked={isCustom}
-                  onChange={() => {
-                    setIsCustom(!isCustom);
-                    setToggleName(isCustom ? 'Preset' : 'Custom');
-                  }}
-                />
-                {/* <div></div> */}
-              </div>
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
+                Tool Properties
+              </h2>
             </div>
+            <div className="flex items-center justify-end">
+              <ToggleButton
+                label={toggleName}
+                checked={isCustom}
+                onChange={() => {
+                  setIsCustom(!isCustom);
+                  setToggleName(isCustom ? 'Preset' : 'Custom');
+                }}
+              />
+              {/* <div></div> */}
+            </div>
+          </div>
 
-            <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
-              {!isCustom ? (
-                <>
-                  <div className="mb-6">
-                    <label
-                      htmlFor="preset"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
+            {!isCustom ? (
+              <>
+                <div className="mb-6">
+                  <label
+                    htmlFor="preset"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
+                    Preset Options
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="preset"
+                      onChange={e => {
+                        setIsCustom(false);
+                        if (e.target.value === 'None') {
+                          return;
+                        }
+                        const [, , resolution] = e.target.value?.split(',') || [];
+                        const [presetWidth, presetHeight] = resolution.split('x').map(Number);
+
+                        updateSettings('width', presetWidth || undefined);
+                        setPresetWidth(presetWidth || undefined);
+                        updateSettings('height', presetHeight || undefined);
+                        setPresetHeight(presetHeight || undefined);
+                        setActiveInput('preset');
+                      }}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                     >
-                      Preset Options
-                    </label>
-                    <div className="relative">
-                      <select
-                        id="preset"
-                        onChange={e => {
+                      {presets.map(opt => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="mb-6">
+                  <label
+                    htmlFor="aspectRatio"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
+                    Aspect Ratio
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="aspectRatio"
+                      onChange={e => {
+                        const field = e.target.value;
+                        if (field !== 'Custom') {
                           setIsCustom(false);
-                          if (e.target.value === 'None') {
-                            return;
-                          }
-                          const [, , resolution] = e.target.value?.split(',') || [];
-                          const [presetWidth, presetHeight] = resolution.split('x').map(Number);
-
-                          updateSettings('width', presetWidth || undefined);
-                          setPresetWidth(presetWidth || undefined);
-                          updateSettings('height', presetHeight || undefined);
-                          setPresetHeight(presetHeight || undefined);
-                          setActiveInput('preset');
-                        }}
-                        disabled={!file || isUploading || !fetchedData?.metadata}
-                        className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                          const aspect = field.split(':');
+                          const x = aspect[0];
+                          const y = aspect[1];
+                          updateSettings('aspectX', Number(x));
+                          updateSettings('aspectY', Number(y));
+                        } else {
+                          setIsCustom(true);
+                        }
+                      }}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                    >
+                      {aspectRatio.map(opt => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        {presets.map(opt => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M19 9l-7 7-7-7"
-                          ></path>
-                        </svg>
-                      </div>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        ></path>
+                      </svg>
                     </div>
                   </div>
-                </>
-              ) : (
-                <>
-                  <div className="mb-6">
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                  <div className="w-full">
                     <label
-                      htmlFor="aspectRatio"
+                      htmlFor="width"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      Aspect Ratio
+                      Width
                     </label>
-                    <div className="relative">
-                      <select
-                        id="aspectRatio"
-                        onChange={e => {
-                          const field = e.target.value;
-                          if (field !== 'Custom') {
-                            setIsCustom(false);
-                            const aspect = field.split(':');
-                            const x = aspect[0];
-                            const y = aspect[1];
-                            updateSettings('aspectX', Number(x));
-                            updateSettings('aspectY', Number(y));
-                          } else {
-                            setIsCustom(true);
-                          }
-                        }}
-                        disabled={!file || isUploading || !fetchedData?.metadata}
-                        className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                      >
-                        {aspectRatio.map(opt => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M19 9l-7 7-7-7"
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
+                    <input
+                      id="width"
+                      type="number"
+                      disabled={!file || isUploading || !fetchedData?.metadata}
+                      placeholder="1920"
+                      value={settings.width || ''}
+                      onChange={e => {
+                        setActiveInput('width');
+                        updateSettings('width', e.target.value);
+                      }}
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                    />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                    <div className="w-full">
-                      <label
-                        htmlFor="width"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                      >
-                        Width
-                      </label>
-                      <input
-                        id="width"
-                        type="number"
-                        disabled={!file || isUploading || !fetchedData?.metadata}
-                        placeholder="1920"
-                        value={settings.width || ''}
-                        onChange={e => {
-                          setActiveInput('width');
-                          updateSettings('width', e.target.value);
-                        }}
-                        className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                      />
-                    </div>
-
-                    <div className="w-full">
-                      <label
-                        htmlFor="height"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                      >
-                        Height
-                      </label>
-                      <input
-                        id="height"
-                        type="number"
-                        disabled={!file || isUploading || !fetchedData?.metadata}
-                        placeholder="1080"
-                        value={settings.height || ''}
-                        onChange={e => {
-                          setActiveInput('height');
-                          updateSettings('height', e.target.value);
-                        }}
-                        className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                      />
-                    </div>
+                  <div className="w-full">
+                    <label
+                      htmlFor="height"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      Height
+                    </label>
+                    <input
+                      id="height"
+                      type="number"
+                      disabled={!file || isUploading || !fetchedData?.metadata}
+                      placeholder="1080"
+                      value={settings.height || ''}
+                      onChange={e => {
+                        setActiveInput('height');
+                        updateSettings('height', e.target.value);
+                      }}
+                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                    />
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="w-full">
-                      <label
-                        htmlFor="color"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                      >
-                        Padding Color
-                      </label>
-                      <div className="relative flex items-center">
-                        <input
-                          id="color"
-                          type="text"
-                          disabled={!file || isUploading || !fetchedData?.metadata}
-                          placeholder="#000000"
-                          value={settings.color}
-                          onChange={handleColorChange}
-                          className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
-                            settings.isColorValid
-                              ? 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
-                              : 'border-red-500 focus:ring-red-500'
-                          }`}
-                        />
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <div
-                            className="w-4 h-4 rounded-sm border border-gray-300 dark:border-gray-700"
-                            style={{
-                              backgroundColor: settings.isColorValid ? settings.color : 'red',
-                            }}
-                          ></div>
-                        </div>
-                        <input
-                          type="color"
-                          value={settings.color}
-                          disabled={!file || isUploading || !fetchedData?.metadata}
-                          onChange={e => {
-                            updateSettings('color', e.target.value);
-                            updateSettings('isColorValid', true);
-                          }}
-                          className="absolute right-2 w-8 h-8 cursor-pointer opacity-0"
-                          aria-label="Select color"
-                        />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="w-full">
+                    <label
+                      htmlFor="color"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      Padding Color
+                    </label>
+                    <div className="relative flex items-center">
+                      <input
+                        id="color"
+                        type="text"
+                        disabled={!file || isUploading || !fetchedData?.metadata}
+                        placeholder="#000000"
+                        value={settings.color}
+                        onChange={handleColorChange}
+                        className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                          settings.isColorValid
+                            ? 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                            : 'border-red-500 focus:ring-red-500'
+                        }`}
+                      />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <div
-                          className="absolute right-2 w-6 h-6 rounded-md border border-gray-300 dark:border-gray-700 pointer-events-none"
+                          className="w-4 h-4 rounded-sm border border-gray-300 dark:border-gray-700"
                           style={{
                             backgroundColor: settings.isColorValid ? settings.color : 'red',
                           }}
                         ></div>
                       </div>
+                      <input
+                        type="color"
+                        value={settings.color}
+                        disabled={!file || isUploading || !fetchedData?.metadata}
+                        onChange={e => {
+                          updateSettings('color', e.target.value);
+                          updateSettings('isColorValid', true);
+                        }}
+                        className="absolute right-2 w-8 h-8 cursor-pointer opacity-0"
+                        aria-label="Select color"
+                      />
+                      <div
+                        className="absolute right-2 w-6 h-6 rounded-md border border-gray-300 dark:border-gray-700 pointer-events-none"
+                        style={{
+                          backgroundColor: settings.isColorValid ? settings.color : 'red',
+                        }}
+                      ></div>
                     </div>
+                  </div>
 
-                    <div className="w-full">
-                      <label
-                        htmlFor="stretchStrategy"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  <div className="w-full">
+                    <label
+                      htmlFor="stretchStrategy"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      Stretch Strategy
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="stretchStrategy"
+                        value={settings.stretchStrategy}
+                        onChange={e => updateSettings('stretchStrategy', e.target.value)}
+                        disabled={!file || isUploading || !fetchedData?.metadata}
+                        className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
                       >
-                        Stretch Strategy
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="stretchStrategy"
-                          value={settings.stretchStrategy}
-                          onChange={e => updateSettings('stretchStrategy', e.target.value)}
-                          disabled={!file || isUploading || !fetchedData?.metadata}
-                          className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                        <option value="fit">Fit</option>
+                        <option value="fill">Fill</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          <option value="fit">Fit</option>
-                          <option value="fill">Fill</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M19 9l-7 7-7-7"
-                            ></path>
-                          </svg>
-                        </div>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
                       </div>
                     </div>
                   </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Output Settings */}
-          <div className="mb-10">
-            <div className="flex items-center mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
-                <HiOutlineAdjustments size={20} />
-              </div>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
-                Output Settings
-              </h2>
-            </div>
-
-            <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                <div className="w-full">
-                  <label
-                    htmlFor="quality"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
-                    Output Quality
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="quality"
-                      disabled={!file || isUploading || !fetchedData?.metadata}
-                      value={outputQuality}
-                      onChange={e => setOutputQuality(e.target.value)}
-                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                    >
-                      {outputQualityList.map(opt => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 9l-7 7-7-7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
                 </div>
-
-                <div className="w-full">
-                  <label
-                    htmlFor="format"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
-                    Video Format
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="format"
-                      disabled={!file || isUploading || !fetchedData?.metadata}
-                      value={videoContainer}
-                      onChange={e => setVideoContainer(e.target.value)}
-                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                    >
-                      {videoType.map(opt => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 9l-7 7-7-7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <div className="flex justify-center">
-            <Button
-              disabled={
-                !file ||
-                !settings.width ||
-                !settings.height ||
-                !settings.isColorValid ||
-                isUploading ||
-                !fetchedData?.metadata
-              }
-              onClick={handleResizeVideo}
-              className={`px-10 py-4 rounded-xl font-medium text-white flex items-center shadow-lg transition-all ${
-                !file ||
-                !settings.width ||
-                !settings.height ||
-                !settings.isColorValid ||
-                isUploading ||
-                !fetchedData?.metadata
-                  ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
-                  : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
-              }`}
-            >
-              Process Video <HiArrowRight className="ml-2" />
-            </Button>
+              </>
+            )}
           </div>
         </div>
-      </motion.div>
+
+        {/* Output Settings */}
+        <div className="mb-10">
+          <div className="flex items-center mb-6">
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
+              <HiOutlineAdjustments size={20} />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
+              Output Settings
+            </h2>
+          </div>
+
+          <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+              <div className="w-full">
+                <label
+                  htmlFor="quality"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Output Quality
+                </label>
+                <div className="relative">
+                  <select
+                    id="quality"
+                    disabled={!file || isUploading || !fetchedData?.metadata}
+                    value={outputQuality}
+                    onChange={e => setOutputQuality(e.target.value)}
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                  >
+                    {outputQualityList.map(opt => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full">
+                <label
+                  htmlFor="format"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Video Format
+                </label>
+                <div className="relative">
+                  <select
+                    id="format"
+                    disabled={!file || isUploading || !fetchedData?.metadata}
+                    value={videoContainer}
+                    onChange={e => setVideoContainer(e.target.value)}
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                  >
+                    {videoType.map(opt => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex justify-center">
+          <Button
+            disabled={
+              !file ||
+              !settings.width ||
+              !settings.height ||
+              !settings.isColorValid ||
+              isUploading ||
+              !fetchedData?.metadata
+            }
+            onClick={handleResizeVideo}
+            className={`px-10 py-4 rounded-xl font-medium text-white flex items-center shadow-lg transition-all ${
+              !file ||
+              !settings.width ||
+              !settings.height ||
+              !settings.isColorValid ||
+              isUploading ||
+              !fetchedData?.metadata
+                ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
+                : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
+            }`}
+          >
+            Process Video <HiArrowRight className="ml-2" />
+          </Button>
+        </div>
+      </div>
+      {/* </motion.div> */}
 
       <UploadFileModal
         videoRef={videoRef}
@@ -746,6 +732,6 @@ export default function ResizeVideo() {
         data={jobData}
         fetchedData={fetchedData}
       />
-    </div>
+    </ComponentToolCard>
   );
 }

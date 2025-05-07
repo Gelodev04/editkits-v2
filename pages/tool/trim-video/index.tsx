@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { FaPlay, FaScissors } from 'react-icons/fa6';
+import { FaPlay } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
 // // import Typography from '@/components/Typography';
 // import Button from '@/components/Button_Old';
@@ -24,7 +24,6 @@ import toast from 'react-hot-toast';
 
 // Import the dedicated components
 import { useStatusQuery, useUploadMutation } from '@/services/api/file';
-import GradientHeading from '@/components/Typography/GradientHeading';
 import { useCommitJobMutation, useInitJobMutation, useJobStatusQuery } from '@/services/api/job';
 import FileProgressModal from '@/components/modals/FilePgrogressModal';
 import Button from '@/components/ui/button/Button';
@@ -68,6 +67,34 @@ export default function TrimVideo() {
   const [isUploading, setIsUploading] = useState(false);
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
+
+  // Listen for direct file metadata from file ID uploads
+  useEffect(() => {
+    const handleFileMetadataReady = event => {
+      const fileData = event.detail;
+
+      // If resetPrevious flag is set, ensure we clear existing data first
+      if (fileData.resetPrevious) {
+        setFetchedData(null);
+        // Short delay to ensure state is updated before setting new data
+        setTimeout(() => {
+          if (fileData && fileData.metadata) {
+            console.log('File metadata received directly (after reset):', fileData);
+            setFetchedData(fileData);
+          }
+        }, 50);
+      } else if (fileData && fileData.metadata) {
+        setFetchedData(fileData);
+        console.log('File metadata received directly:', fileData);
+      }
+    };
+
+    window.addEventListener('file-metadata-ready', handleFileMetadataReady);
+
+    return () => {
+      window.removeEventListener('file-metadata-ready', handleFileMetadataReady);
+    };
+  }, []);
 
   // Function to reset all states when a new file is uploaded
   const resetStates = () => {
@@ -187,7 +214,9 @@ export default function TrimVideo() {
         console.error('Error initializing job:', response.error);
         // Show the error message from the response if available, otherwise show a generic message
         const errorMsg =
-          response.error.data?.errorMsg || response.error.errMsg || 'Failed to initialize job';
+          (response.error as any).data?.errorMsg ||
+          (response.error as any).errMsg ||
+          'Failed to initialize job';
         toast.error(errorMsg);
         return;
       }
@@ -204,8 +233,12 @@ export default function TrimVideo() {
 
       await handleCommitJob(job_id);
     } catch (error) {
-      console.error('Unexpected error:', error);
-      toast.error(error?.message || 'An unexpected error occurred');
+      if (error instanceof Error) {
+        toast.error(error.message || 'An unexpected error occurred');
+      } else {
+        console.error('Unexpected error:', error);
+        toast.error('An unexpected error occurred');
+      }
     }
   }
 
@@ -222,15 +255,21 @@ export default function TrimVideo() {
         console.error('Error committing job:', response.error);
         // Get the error message from the response if available
         const errorMsg =
-          response.error.data?.errorMsg || response.error.errMsg || 'Failed to commit job';
+          (response.error as any).data?.errorMsg ||
+          (response.error as any).errMsg ||
+          'Failed to commit job';
         toast.error(errorMsg);
         return;
       }
 
       toast.success('Job committed successfully');
     } catch (error) {
-      console.error('Unexpected error in commit:', error);
-      toast.error(error?.message || 'An unexpected error occurred while committing');
+      if (error instanceof Error) {
+        toast.error(error.message || 'An unexpected error occurred');
+      } else {
+        console.error('Unexpected error:', error);
+        toast.error('An unexpected error occurred');
+      }
     }
   }
 

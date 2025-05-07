@@ -4,19 +4,15 @@ import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Fade, Modal } from '@mui/material';
 import {
-  HiOutlineCheck,
   HiOutlineX,
   HiOutlineDocumentDuplicate,
-  HiOutlineDownload,
   HiOutlinePlay,
   HiX,
   HiOutlineInformationCircle,
 } from 'react-icons/hi';
 
-import { IoDownloadOutline } from 'react-icons/io5';
 
 import { lato, montserrat, opensans } from '@/lib/fonts';
-import Typography from '@/components/Typography';
 import Button from '@/components/ui/button/Button';
 import Rocket from '@/public/images/rocket.gif';
 

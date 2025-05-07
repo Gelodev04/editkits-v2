@@ -1,4 +1,4 @@
-export function SpinnerFour() {
+export function Spinner() {
   return (
     <button
       type="button"
@@ -29,9 +29,6 @@ export function SpinnerFour() {
   );
 }
 
-
-
-
 export const SpinnerOne = {
   xs: () => (
     <div className="text-gray-200 animate-spin stroke-brand-500 dark:text-gray-800">
@@ -55,7 +52,7 @@ export const SpinnerOne = {
       </svg>
     </div>
   ),
-  
+
   sm: () => (
     <div className="text-gray-200 animate-spin stroke-brand-500 dark:text-gray-800">
       <svg
@@ -78,7 +75,7 @@ export const SpinnerOne = {
       </svg>
     </div>
   ),
-  
+
   md: () => (
     <div className="text-gray-200 animate-spin stroke-brand-500 dark:text-gray-800">
       <svg
@@ -101,7 +98,7 @@ export const SpinnerOne = {
       </svg>
     </div>
   ),
-  
+
   lg: () => (
     <div className="text-gray-200 animate-spin stroke-brand-500 dark:text-gray-800">
       <svg
@@ -124,7 +121,7 @@ export const SpinnerOne = {
       </svg>
     </div>
   ),
-  
+
   xl: () => (
     <div className="text-gray-200 animate-spin stroke-brand-500 dark:text-gray-800">
       <svg
@@ -147,7 +144,7 @@ export const SpinnerOne = {
       </svg>
     </div>
   ),
-  
+
   // Method to render all spinners in a row (for demo purposes)
   all: () => (
     <div className="flex items-center justify-center gap-4 sm:justify-normal">
@@ -157,5 +154,5 @@ export const SpinnerOne = {
       <SpinnerOne.lg />
       <SpinnerOne.xl />
     </div>
-  )
+  ),
 };

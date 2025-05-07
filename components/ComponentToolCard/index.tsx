@@ -13,8 +13,7 @@ interface ComponentToolCardProps {
 const ComponentToolCard: React.FC<ComponentToolCardProps> = ({
   title,
   children,
-  className = '',
-  desc = '',
+  className = ''
 }) => {
   return (
     <div

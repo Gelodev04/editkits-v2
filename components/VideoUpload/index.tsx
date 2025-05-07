@@ -19,12 +19,39 @@ type VideoUploadProps = {
 };
 
 export function VideoUpload(props: VideoUploadProps) {
-  // Don't show any video data while uploading is in progress
-  const showVideoData = props.file && props.fetchedData?.metadata && !props.isUploading;
+  // Track when data is loading to prevent flashing of old data
+  const [isDataTransitioning, setIsDataTransitioning] = React.useState(false);
+
+  // Watch for changes in fetchedData or file to handle transitions
+  React.useEffect(() => {
+    if (!props.fetchedData || !props.file) {
+      setIsDataTransitioning(true);
+      // Clear the transition state after a short delay
+      const timer = setTimeout(() => {
+        setIsDataTransitioning(false);
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      setIsDataTransitioning(false);
+    }
+  }, [props.fetchedData, props.file]);
+
+  // Show video data when we have metadata and are not uploading
+  const showVideoData =
+    !props.isUploading &&
+    !isDataTransitioning &&
+    ((props.file && props.fetchedData?.metadata) ||
+      (props.fetchedData?.metadata && props.fetchedData?.file_id));
+
+  // Determine if we have a valid file to show
+  const hasValidFile = props.file || (props.fetchedData?.file_id && props.fetchedData?.metadata);
+
+  // Get file name from best available source
+  const fileName = props.file?.name || props.fetchedData?.file_name || 'Video file';
 
   return (
     <div className="pt-2">
-      {props.file ? (
+      {hasValidFile ? (
         <div className="mt-4 bg-white dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
           <div className="flex flex-col sm:flex-row">
             {/* Video Thumbnail/Preview */}
@@ -43,12 +70,6 @@ export function VideoUpload(props: VideoUploadProps) {
                     <HiOutlineCloudUpload className="text-blue-500 dark:text-blue-400 text-2xl animate-pulse" />
                   </div>
                   <div className="w-32">
-                    {/* <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                      <div
-                        className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full transition-all duration-300 animate-pulse"
-                        style={{ width: props.isUploading ? `${props.progress}%` : '100%' }}
-                      ></div>
-                    </div> */}
                     {!props.isUploading && (
                       <p className="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">
                         Analyzing...
@@ -65,7 +86,7 @@ export function VideoUpload(props: VideoUploadProps) {
                 {/* Filename & Delete/Replace */}
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-gray-900 dark:text-white/90 font-semibold text-lg truncate pr-4">
-                    {props.file.name}
+                    {fileName}
                   </h3>
                   <button
                     onClick={() => props.setUploadFileModal(true)}

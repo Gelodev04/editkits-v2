@@ -9,9 +9,9 @@ type ToggleButtonProps = {
 };
 
 export default function ToggleButton(props: ToggleButtonProps) {
-  const handleSwitchChange = (checked: boolean) => {
-    console.log('Switch is now:', checked ? 'ON' : 'OFF');
-  };
+  // const handleSwitchChange = (checked: boolean) => {
+  //   console.log('Switch is now:', checked ? 'ON' : 'OFF');
+  // };
 
   return (
     // <ComponentCard title={props.label}>

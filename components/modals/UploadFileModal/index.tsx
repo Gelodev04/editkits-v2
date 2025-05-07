@@ -9,6 +9,7 @@ import { HiFingerPrint, HiOutlineDeviceMobile, HiX, HiExclamation } from 'react-
 import Button from '@/components/ui/button/Button';
 import { SpinnerOne } from '@/components/Spinner';
 import { Modal } from '@/components/Modal';
+import { useStatusQuery } from '@/services/api/file';
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -46,6 +47,13 @@ export default function UploadFileModal(props: UploadModalProps) {
   // const urlInputRef = useRef<HTMLInputElement>(null);
   const fileIdInputRef = useRef<HTMLInputElement>(null);
   const [fileIdError, setFileIdError] = useState<string | null>(null);
+  const [fileIdToCheck, setFileIdToCheck] = useState<string | null>(null);
+
+  // Use the query hook to fetch file status
+  const { data: fileStatusData, isLoading: isFileStatusLoading } = useStatusQuery(
+    { fileId: fileIdToCheck },
+    { skip: !fileIdToCheck }
+  );
 
   // Create a ref to track if a file upload is in progress
   const isUploadingRef = useRef(false);
@@ -152,8 +160,79 @@ export default function UploadFileModal(props: UploadModalProps) {
     return uuidV4Regex.test(uuid);
   };
 
-  const handleFileIdUpload = async () => {
-    if (isProcessing || !fileIdInputRef.current?.value) return;
+  // Watch for changes in fileStatusData and handle accordingly
+  React.useEffect(() => {
+    if (!fileStatusData || !fileIdToCheck) return;
+
+    try {
+      // Process the file status data
+      if (fileStatusData.status === 'EXPIRED') {
+        setFileIdError('File has expired, please upload it again');
+      } else if (fileStatusData.status === 'COMMITTED') {
+        // First, clear any existing data by setting fileId to null
+        // This will trigger the parent component to clear fetchedData
+        if (props.setFileId) {
+          props.setFileId(null);
+        }
+
+        // Create a mock file object so the VideoUpload component can display it
+        if (props.setFile) {
+          // Clear existing file first
+          props.setFile(null);
+
+          // Small delay to ensure state updates properly
+          setTimeout(() => {
+            // Then create and set the new mock file
+            const mockFile = new File(
+              [new Blob([''], { type: fileStatusData.mime_type || 'video/mp4' })],
+              fileStatusData.file_name || 'video.mp4',
+              { type: fileStatusData.mime_type || 'video/mp4' }
+            );
+            if (props.setFile) {
+              props.setFile(mockFile);
+            }
+
+            // Now set the fileId after the file is set
+            if (props.setFileId) {
+              props.setFileId(fileIdToCheck);
+            }
+
+            // If file data has metadata, pass it directly to avoid waiting for parent component's fetch
+            if (fileStatusData.metadata) {
+              const eventData = new CustomEvent('file-metadata-ready', {
+                detail: { ...fileStatusData, resetPrevious: true },
+              });
+              window.dispatchEvent(eventData);
+            }
+
+            toast.success('File ID accepted successfully!');
+            props.setUploadModal(false);
+          }, 50);
+        } else {
+          // If no setFile function, just set the fileId
+          if (props.setFileId) {
+            props.setFileId(fileIdToCheck);
+          }
+          toast.success('File ID accepted successfully!');
+          props.setUploadModal(false);
+        }
+      } else {
+        setFileIdError('File is not available');
+      }
+    } catch (error) {
+      console.error('Error processing file status:', error);
+      setFileIdError('Error processing file status');
+    } finally {
+      // Always clean up regardless of success or failure
+      setIsProcessing(false);
+      isUploadingRef.current = false;
+      // Reset fileIdToCheck after processing
+      setFileIdToCheck(null);
+    }
+  }, [fileStatusData, fileIdToCheck, props]);
+
+  const handleFileIdUpload = () => {
+    if (isProcessing || isFileStatusLoading || !fileIdInputRef.current?.value) return;
 
     const fileId = fileIdInputRef.current.value.trim();
 
@@ -163,57 +242,12 @@ export default function UploadFileModal(props: UploadModalProps) {
       return;
     }
 
-    try {
-      setIsProcessing(true);
-      isUploadingRef.current = true;
-      setFileIdError(null);
+    setIsProcessing(true);
+    isUploadingRef.current = true;
+    setFileIdError(null);
 
-      // Send request to check file status
-      const response = await fetch(`/api/file/status?file_id=${fileId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      // Handle HTTP errors
-      if (!response.ok) {
-        if (response.status >= 400) {
-          setFileIdError('File not found');
-          setIsProcessing(false);
-          isUploadingRef.current = false;
-          return;
-        }
-      }
-
-      // Parse the response data
-      const data = await response.json();
-
-      // Handle different file statuses
-      if (data.status === 'EXPIRED') {
-        setFileIdError('File has expired, please upload it again');
-        setIsProcessing(false);
-        isUploadingRef.current = false;
-        return;
-      } else if (data.status === 'COMMITTED') {
-        // Accept the file
-        if (props.setFileId) {
-          props.setFileId(fileId);
-        }
-        toast.success('File ID accepted successfully!');
-        props.setUploadModal(false);
-      } else {
-        setFileIdError('File is not available');
-        setIsProcessing(false);
-        isUploadingRef.current = false;
-        return;
-      }
-    } catch (error) {
-      console.error('File ID check error:', error);
-      setFileIdError('Error checking file status');
-      setIsProcessing(false);
-      isUploadingRef.current = false;
-    }
+    // Set the fileId to trigger the query
+    setFileIdToCheck(fileId);
   };
 
   const videoFileTypes = {
@@ -225,11 +259,11 @@ export default function UploadFileModal(props: UploadModalProps) {
     'video/x-matroska': [],
   };
 
-  const handleManualUpload = () => {
-    if (isProcessing || isUploadingRef.current) return;
-    props.setUploadModal(false);
-    props.setFile?.(null);
-  };
+  // const handleManualUpload = () => {
+  //   if (isProcessing || isUploadingRef.current) return;
+  //   props.setUploadModal(false);
+  //   props.setFile?.(null);
+  // };
 
   // Reset the fileSelected state when the modal opens or closes
   React.useEffect(() => {
@@ -250,6 +284,8 @@ export default function UploadFileModal(props: UploadModalProps) {
   const handleClose = () => {
     if (!isProcessing && !isUploadingRef.current && !props.isUploading) {
       props.setUploadModal(false);
+      setFileIdToCheck(null);
+      setFileIdError(null);
     } else {
       toast.error("Upload in progress. Please wait until it's complete.");
     }
@@ -430,13 +466,13 @@ export default function UploadFileModal(props: UploadModalProps) {
                       ref={fileIdInputRef}
                       type="text"
                       placeholder="Enter file ID"
-                      disabled={isProcessing || isUploadingRef.current}
+                      disabled={isProcessing || isUploadingRef.current || isFileStatusLoading}
                       className={`w-full pl-11 pr-4 py-3 border ${
                         fileIdError
                           ? 'border-red-500 dark:border-red-500'
                           : 'border-gray-300 dark:border-gray-700'
                       } rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition-all ${
-                        isProcessing || isUploadingRef.current
+                        isProcessing || isUploadingRef.current || isFileStatusLoading
                           ? 'bg-gray-100 dark:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 cursor-not-allowed'
                           : ''
                       }`}
@@ -457,12 +493,14 @@ export default function UploadFileModal(props: UploadModalProps) {
                 <div className="flex justify-end mt-6">
                   <Button
                     onClick={handleFileIdUpload}
-                    disabled={isProcessing || isUploadingRef.current}
+                    disabled={isProcessing || isUploadingRef.current || isFileStatusLoading}
                     className={` ${
-                      isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
+                      isProcessing || isUploadingRef.current || isFileStatusLoading
+                        ? 'opacity-70 cursor-not-allowed'
+                        : ''
                     }`}
                   >
-                    {isProcessing ? 'Processing...' : 'Use File ID'}
+                    {isProcessing || isFileStatusLoading ? 'Processing...' : 'Use File ID'}
                   </Button>
                 </div>
               </div>

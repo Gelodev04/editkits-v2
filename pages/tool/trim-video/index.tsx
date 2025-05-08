@@ -507,7 +507,7 @@ export default function TrimVideo() {
             disabled={!file || !startTime || !endTime || isUploading || !fetchedData?.metadata}
             onClick={handleTrimVideo}
           >
-            Process Video <HiArrowRight className="ml-2" />
+            Process <HiArrowRight className="ml-2" />
           </Button>
         </div>
       </div>

@@ -61,11 +61,12 @@ export default function ResizeVideo() {
   const [file, setFile] = useState(null);
   const [activeInput, setActiveInput] = useState('');
   const [isCustom, setIsCustom] = useState(true);
-  const [toggleName, setToggleName] = useState('Custom');
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState('1:1');
+  const [selectedPreset, setSelectedPreset] = useState('None');
   const videoRef = useRef(null);
 
   // Add state variable to track whether file info should be cleared
@@ -100,6 +101,9 @@ export default function ResizeVideo() {
     setIsCustom(true);
     setOutputQuality('MEDIUM');
     setVideoContainer('mp4');
+    setSelectedAspectRatio('1:1');
+    setSelectedPreset('None');
+
     if (videoRef.current) {
       // @ts-ignore
       videoRef.current.src = '';
@@ -110,8 +114,12 @@ export default function ResizeVideo() {
   const resetAllFileStates = () => {
     setFile(null);
     setFileId(null);
+    setJobId(null);
     setFetchedData(null);
     setProgress(0);
+    setIsCustom(true);
+    setOutputQuality('MEDIUM');
+    setVideoContainer('mp4');
     resetStates();
     // Set clear file info to true
     setClearFileInfo(true);
@@ -275,6 +283,29 @@ export default function ResizeVideo() {
     // @ts-ignore
   }, [jobId, jobData?.status, refetchJobData]);
 
+  // Add a new useEffect to monitor job status changes and reset when completed
+  useEffect(() => {
+    // Check if job has completed, failed, or been cancelled
+    if (
+      jobData?.status === 'COMPLETED' ||
+      jobData?.status === 'FAILED' ||
+      jobData?.status === 'CANCELLED' ||
+      jobData?.status === 'ERROR'
+    ) {
+      // Job is done - we should reset here too, as an additional safety measure
+      // This ensures reset even if modal is closed programmatically
+      console.log('Job status changed to:', jobData?.status, '- resetting form');
+      // Don't reset immediately to allow user to see the completion status
+      // setTimeout to allow UI to update first showing completion
+      setTimeout(() => {
+        // Only reset all states after modal is closed to ensure thumbnail remains visible
+        if (!progressModal) {
+          resetAllFileStates();
+        }
+      }, 500);
+    }
+  }, [jobData?.status, progressModal]);
+
   const handleColorChange = e => {
     const newColor = e.target.value;
     updateSettings('color', newColor);
@@ -284,7 +315,6 @@ export default function ResizeVideo() {
   // Fix the toggle logic
   const toggleMode = newIsCustom => {
     setIsCustom(newIsCustom);
-    setToggleName(newIsCustom ? 'Custom' : 'Preset');
 
     // Reset active input when switching modes
     setActiveInput('');
@@ -293,9 +323,16 @@ export default function ResizeVideo() {
       // Switching to preset mode - reset aspect ratio to default
       updateSettings('aspectX', 1);
       updateSettings('aspectY', 1);
+      // Reset preset selection
+      setSelectedPreset('None');
     } else {
-      // Switching to custom mode - keep the current dimensions but allow manual editing
-      // No need to change anything as dimensions are already set
+      // Switching to custom mode - reset aspect ratio
+      setSelectedAspectRatio('1:1');
+      // Reset dimension settings to current video dimensions if available
+      if (fetchedData?.metadata?.width && fetchedData?.metadata?.height) {
+        updateSettings('width', fetchedData.metadata.width);
+        updateSettings('height', fetchedData.metadata.height);
+      }
     }
   };
 
@@ -351,10 +388,19 @@ export default function ResizeVideo() {
       toast.success('Job initialized successfully');
       setProgressModal(true);
       setUploadFileModal(false);
-      resetAllFileStates();
 
+      // Store job ID first before resetting other states
       const { job_id } = response.data;
       setJobId(job_id);
+
+      // Only reset UI state but keep the data needed for the progress modal
+      setFile(null);
+      setFileId(null);
+      // Don't clear fetchedData as it's needed for the thumbnail in the completion state
+      // setFetchedData(null);
+      setProgress(0);
+      resetStates();
+      setClearFileInfo(true);
 
       await handleCommitJob(job_id);
     } catch (error) {
@@ -433,8 +479,8 @@ export default function ResizeVideo() {
 
         {/* Dimensions Section */}
         <div className="mb-10">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+            <div className="flex items-center mb-4 sm:mb-6">
               <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
                 <HiOutlineTemplate size={20} />
               </div>
@@ -444,7 +490,7 @@ export default function ResizeVideo() {
             </div>
             <div className="flex items-center justify-end">
               <ToggleButton
-                label={toggleName}
+                label={isCustom ? 'Custom' : 'Preset'}
                 checked={isCustom}
                 onChange={() => toggleMode(!isCustom)}
               />
@@ -464,11 +510,15 @@ export default function ResizeVideo() {
                   <div className="relative">
                     <select
                       id="preset"
+                      value={selectedPreset}
                       onChange={e => {
-                        if (e.target.value === 'None') {
+                        const value = e.target.value;
+                        setSelectedPreset(value);
+
+                        if (value === 'None') {
                           return;
                         }
-                        const [, , resolution] = e.target.value?.split(',') || [];
+                        const [, , resolution] = value?.split(',') || [];
                         const [width, height] = resolution.split('x').map(Number);
 
                         // Update settings directly
@@ -516,8 +566,11 @@ export default function ResizeVideo() {
                   <div className="relative">
                     <select
                       id="aspectRatio"
+                      value={selectedAspectRatio}
                       onChange={e => {
                         const field = e.target.value;
+                        setSelectedAspectRatio(field);
+
                         if (field !== 'Custom') {
                           const aspect = field.split(':');
                           const x = Number(aspect[0]);
@@ -802,7 +855,7 @@ export default function ResizeVideo() {
             }
             onClick={handleResizeVideo}
           >
-            Process Video <HiArrowRight className="ml-2" />
+            Process <HiArrowRight className="ml-2" />
           </Button>
           {(!settings.width || !settings.height) &&
             file &&
@@ -834,7 +887,11 @@ export default function ResizeVideo() {
         setProgressModal={value => {
           setProgressModal(value);
           if (!value) {
-            resetAllFileStates();
+            // When modal is closed, always do a complete reset
+            // Use setTimeout to ensure this happens after modal close animation
+            setTimeout(() => {
+              resetAllFileStates();
+            }, 300); // Increased from 100ms to 300ms to ensure smooth transitions
           }
         }}
         data={jobData}

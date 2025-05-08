@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,6 +19,18 @@ import Rocket from '@/public/images/rocket.gif';
 
 export default function FileProgressModal({ progressModal, setProgressModal, data, fetchedData }) {
   const router = useRouter();
+  // Add state to track if a job has actually been started
+  const [jobStarted, setJobStarted] = useState(false);
+
+  useEffect(() => {
+    // If we receive valid job data with status, mark the job as started
+    if (data && data.status && progressModal) {
+      setJobStarted(true);
+    } else if (!progressModal) {
+      // Reset the job started flag when modal is closed
+      setJobStarted(false);
+    }
+  }, [data, progressModal]);
 
   const copyToClipboard = text => {
     if (!text) return;
@@ -37,15 +49,18 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
     router.push('/tools');
   };
 
-  // Determine current state of the job
-  const isPending = data?.status === 'PENDING' || data?.status === 'IN_PROGRESS';
-  const isCompleted = data?.status === 'COMPLETED';
-  const isFailed = data?.status === 'FAILED' || data?.status === 'CANCELLED';
+  // Determine current state of the job - added jobStarted check
+  // Only show completion if the job was actually started and is now complete
+  const isPending = jobStarted && (data?.status === 'PENDING' || data?.status === 'IN_PROGRESS');
+  const isCompleted = jobStarted && data?.status === 'COMPLETED';
+  const isFailed = jobStarted && (data?.status === 'FAILED' || data?.status === 'CANCELLED');
+
+  // Default to processing state if no other state is determined but modal is open
+  const isProcessing = progressModal && !isPending && !isCompleted && !isFailed;
 
   // Calculate progress percentage safely
-  const progressPercentage = isPending
-    ? Math.min(Math.max(0, data?.progress || 0), 100).toFixed(0)
-    : 0;
+  const progressPercentage =
+    isPending || isProcessing ? Math.min(Math.max(0, data?.progress || 0), 100).toFixed(0) : 0;
 
   return (
     <Modal
@@ -80,7 +95,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                 <div className="p-6 sm:p-8">
                   <AnimatePresence mode="wait">
                     {/* Processing State */}
-                    {isPending && (
+                    {(isPending || isProcessing) && (
                       <motion.div
                         key="processing"
                         initial={{ opacity: 0 }}

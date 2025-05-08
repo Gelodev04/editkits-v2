@@ -59,7 +59,7 @@ export function VideoUpload(props: VideoUploadProps) {
         <div className="mt-4 bg-white dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
           <div className="flex flex-col sm:flex-row">
             {/* Video Thumbnail/Preview */}
-            <div className="relative bg-gray-800 dark:bg-gray-900 w-full sm:w-48 flex-shrink-0 h-36 flex items-center justify-center overflow-hidden">
+            <div className="relative bg-white dark:bg-gray-900 w-full sm:w-48 flex-shrink-0 h-36 flex items-center justify-center overflow-hidden">
               {showVideoData && props.fetchedData?.metadata?.thumbnail_url ? (
                 <div className="relative w-full h-full">
                   <Image

@@ -70,14 +70,27 @@ export function VideoUpload(props: VideoUploadProps) {
                 />
               ) : (
                 <div className="relative bg-gray-50 dark:bg-gray-800 w-full h-36 flex flex-col items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/30 mb-3 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/30 mb-2 flex items-center justify-center">
                     <HiOutlineCloudUpload className="text-blue-500 dark:text-blue-400 text-2xl animate-pulse" />
                   </div>
-                  <div className="w-32">
+                  <div className="w-32 text-center">
                     {!props.isUploading && (
-                      <p className="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
                         Analyzing...
                       </p>
+                    )}
+                    {props.isUploading && (
+                      <>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                          Uploading... {props.progress}%
+                        </p>
+                        <div className="w-full max-w-xs bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                          <div
+                            className="bg-blue-500 h-1.5 rounded-full"
+                            style={{ width: `${props.progress || 0}%` }}
+                          ></div>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
@@ -131,7 +144,7 @@ export function VideoUpload(props: VideoUploadProps) {
                   </div>
                 )}
 
-                {!showVideoData && !props.isUploading && (
+                {!showVideoData && (
                   <div className="flex flex-col md:flex-row gap-6 mb-1">
                     <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                       <span className="mr-1.5 font-medium">Duration:</span>
@@ -149,12 +162,6 @@ export function VideoUpload(props: VideoUploadProps) {
                     </div>
                   </div>
                 )}
-
-                {props.isUploading && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Uploading: {props.progress}% complete
-                  </p>
-                )}
               </div>
 
               {/* Status Indicator */}
@@ -163,13 +170,6 @@ export function VideoUpload(props: VideoUploadProps) {
                   <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                     <span className="w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full mr-1.5"></span>
                     Ready to process
-                  </div>
-                )}
-
-                {props.isUploading && (
-                  <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                    <span className="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mr-1.5 animate-pulse"></span>
-                    Uploading
                   </div>
                 )}
               </div>

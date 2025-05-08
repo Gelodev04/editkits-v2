@@ -87,16 +87,20 @@ export default function UploadFileModal(props: UploadModalProps) {
         props.setFileId(response.data.file_id);
       }
 
-      // Note: fileUploader now handles closing the modal after the upload is complete
+      // Close the modal immediately, but continue with upload in the background
+      props.setUploadModal(false);
+
+      // Note: fileUploader now handles the upload without keeping the modal open
       await fileUploader(
         response.data.url,
         file,
-        props.setUploadModal,
+        null, // Don't close the modal again as we've already closed it
         props.setIsUploading,
-        props.setProgress
+        props.setProgress,
+        true // Close modal immediately
       );
 
-      // Reset states only after upload is complete (moved from fileUploader)
+      // Reset states only after upload is complete
       setIsProcessing(false);
       setUploadedFileName(null);
       isUploadingRef.current = false;
@@ -169,6 +173,9 @@ export default function UploadFileModal(props: UploadModalProps) {
       if (fileStatusData.status === 'EXPIRED') {
         setFileIdError('File has expired, please upload it again');
       } else if (fileStatusData.status === 'COMMITTED') {
+        // Close the modal immediately since we've verified the file ID is valid
+        props.setUploadModal(false);
+
         // First, clear any existing data by setting fileId to null
         // This will trigger the parent component to clear fetchedData
         if (props.setFileId) {
@@ -206,7 +213,6 @@ export default function UploadFileModal(props: UploadModalProps) {
             }
 
             toast.success('File ID accepted successfully!');
-            props.setUploadModal(false);
           }, 50);
         } else {
           // If no setFile function, just set the fileId
@@ -214,7 +220,6 @@ export default function UploadFileModal(props: UploadModalProps) {
             props.setFileId(fileIdToCheck);
           }
           toast.success('File ID accepted successfully!');
-          props.setUploadModal(false);
         }
       } else {
         setFileIdError('File is not available');

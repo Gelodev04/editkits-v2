@@ -5,7 +5,8 @@ export async function fileUploader(
   file: File,
   setUploadModal,
   setIsUploading,
-  setProgress
+  setProgress,
+  closeModalImmediately = false
 ) {
   if (file) {
     const reader = new FileReader();
@@ -16,7 +17,12 @@ export async function fileUploader(
     };
   }
 
-  // Don't close the modal until upload is complete
+  // Close the modal immediately if requested
+  if (closeModalImmediately && setUploadModal) {
+    setUploadModal(false);
+  }
+
+  // Don't close the modal until upload is complete if not closed already
   try {
     await axios.put(baseUrl, file, {
       headers: {
@@ -29,8 +35,10 @@ export async function fileUploader(
       },
     });
 
-    // Only close the modal after successful upload
-    setUploadModal(false);
+    // Only close the modal after successful upload if not already closed
+    if (!closeModalImmediately && setUploadModal) {
+      setUploadModal(false);
+    }
     setIsUploading(false);
   } catch (error) {
     console.error('Upload error:', error);

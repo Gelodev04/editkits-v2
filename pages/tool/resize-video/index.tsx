@@ -801,19 +801,21 @@ export default function ResizeVideo() {
       </div>
       {/* </motion.div> */}
 
-      <UploadFileModal
-        videoRef={videoRef}
-        uploadModal={uploadFileModal}
-        setUploadModal={setUploadFileModal}
-        file={file}
-        setFile={handleFileChange}
-        upload={upload}
-        setFileId={setFileId}
-        isUploading={isUploading}
-        setIsUploading={setIsUploading}
-        setProgress={setProgress}
-        progress={progress}
-      />
+      {uploadFileModal && (
+        <UploadFileModal
+          videoRef={videoRef}
+          uploadModal={uploadFileModal}
+          setUploadModal={setUploadFileModal}
+          file={file}
+          setFile={handleFileChange}
+          upload={upload}
+          setFileId={setFileId}
+          isUploading={isUploading}
+          setIsUploading={setIsUploading}
+          setProgress={setProgress}
+          progress={progress}
+        />
+      )}
       <FileProgressModal
         progressModal={progressModal}
         setProgressModal={value => {

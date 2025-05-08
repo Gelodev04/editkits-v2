@@ -409,43 +409,20 @@ export default function UploadFileModal(props: UploadModalProps) {
                   Upload from your device
                 </h4>
 
-                {isProcessing || isUploadingRef.current ? (
-                  <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-8 text-center">
-                    <div className="animate-pulse flex flex-col items-center justify-center">
-                      <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4">
-                        <SpinnerOne.md />
-                      </div>
-                      <h3 className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Processing
-                      </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                        {uploadedFileName}
-                      </p>
-                      <p>Uploading... {props.progress}%</p>
-                      <div className="w-full max-w-xs bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-2">
-                        <div
-                          className="bg-blue-500 h-2.5 rounded-full"
-                          style={{ width: `${props.progress || 0}%` }}
-                        ></div>
-                      </div>
-                    </div>
+                <>
+                  <DropzoneComponent
+                    showCard={false}
+                    onFileSelect={handleFileChange}
+                    acceptTypes={videoFileTypes}
+                    title=""
+                    className="border-gray-300 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 focus:border-blue-500 dark:focus:border-blue-500 transition-all duration-200"
+                  />
+                  <div className="mt-2 mb-2 text-center">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Supported formats: MP4, MOV, AVI, WEBM, FLV and many more.
+                    </p>
                   </div>
-                ) : (
-                  <>
-                    <DropzoneComponent
-                      showCard={false}
-                      onFileSelect={handleFileChange}
-                      acceptTypes={videoFileTypes}
-                      title=""
-                      className="border-gray-300 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 focus:border-blue-500 dark:focus:border-blue-500 transition-all duration-200"
-                    />
-                    <div className="mt-2 mb-2 text-center">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Supported formats: MP4, MOV, AVI, WEBM, FLV and many more.
-                      </p>
-                    </div>
-                  </>
-                )}
+                </>
               </div>
             )}
 

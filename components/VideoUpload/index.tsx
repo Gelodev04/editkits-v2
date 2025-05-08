@@ -70,29 +70,31 @@ export function VideoUpload(props: VideoUploadProps) {
                 />
               ) : (
                 <div className="relative bg-gray-50 dark:bg-gray-800 w-full h-36 flex flex-col items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/30 mb-2 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/30 mb-3 flex items-center justify-center">
                     <HiOutlineCloudUpload className="text-blue-500 dark:text-blue-400 text-2xl animate-pulse" />
                   </div>
-                  <div className="w-32 text-center">
-                    {!props.isUploading && (
-                      <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
+                  {props.isUploading ? (
+                    <div className="w-32 flex flex-col items-center">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 text-center mb-2">
+                        Uploading...
+                      </p>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                        <div
+                          className="bg-blue-500 h-1.5 rounded-full"
+                          style={{ width: `${props.progress || 0}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">
+                        {props.progress}%
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="w-32">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">
                         Analyzing...
                       </p>
-                    )}
-                    {props.isUploading && (
-                      <>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                          Uploading... {props.progress}%
-                        </p>
-                        <div className="w-full max-w-xs bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
-                          <div
-                            className="bg-blue-500 h-1.5 rounded-full"
-                            style={{ width: `${props.progress || 0}%` }}
-                          ></div>
-                        </div>
-                      </>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

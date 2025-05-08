@@ -7,7 +7,6 @@ import { fileUploader } from '@/lib/uploadFile';
 import DropzoneComponent from '@/components/DropZone.tsx';
 import { HiFingerPrint, HiOutlineDeviceMobile, HiX, HiExclamation } from 'react-icons/hi';
 import Button from '@/components/ui/button/Button';
-import { SpinnerOne } from '@/components/Spinner';
 import { Modal } from '@/components/Modal';
 import { useStatusQuery } from '@/services/api/file';
 
@@ -104,6 +103,7 @@ export default function UploadFileModal(props: UploadModalProps) {
       setIsProcessing(false);
       setUploadedFileName(null);
       isUploadingRef.current = false;
+      console.log('File uploaded successfully!', uploadedFileName);
       toast.success('File uploaded successfully!');
     } catch (error) {
       console.error('Upload error:', error);

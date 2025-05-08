@@ -1,7 +1,5 @@
 import React from 'react';
 import { Modal } from '@/components/Modal';
-import { HiOutlineX } from 'react-icons/hi';
-import Button from '@/components/ui/button/Button';
 
 interface ErrorModalProps {
   isOpen: boolean;

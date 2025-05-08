@@ -13,6 +13,7 @@ import {
   HiOutlineAdjustments,
   HiOutlineTemplate,
   HiArrowRight,
+  HiOutlineColorSwatch,
 } from 'react-icons/hi';
 
 import toast from 'react-hot-toast';
@@ -66,6 +67,9 @@ export default function ResizeVideo() {
   const [videoContainer, setVideoContainer] = useState('mp4');
   const videoRef = useRef(null);
 
+  // Add state variable to track whether file info should be cleared
+  const [clearFileInfo, setClearFileInfo] = useState<boolean>(false);
+
   const calculateHeight = (width, aspectX, aspectY) => Math.floor(width * (aspectY / aspectX));
   const calculateWidth = (height, aspectX, aspectY) => Math.floor(height * (aspectX / aspectY));
 
@@ -95,6 +99,17 @@ export default function ResizeVideo() {
       // @ts-ignore
       videoRef.current.src = '';
     }
+  };
+
+  // Add this function to completely reset all file states
+  const resetAllFileStates = () => {
+    setFile(null);
+    setFileId(null);
+    setFetchedData(null);
+    setProgress(0);
+    resetStates();
+    // Set clear file info to true
+    setClearFileInfo(true);
   };
 
   // Listen for direct file metadata from file ID uploads
@@ -155,6 +170,8 @@ export default function ResizeVideo() {
       // Then set the new file
       setTimeout(() => {
         setFile(newFile);
+        // Reset the clearFileInfo flag when a new file is selected
+        setClearFileInfo(false);
       }, 50);
       resetStates();
     }
@@ -188,35 +205,44 @@ export default function ResizeVideo() {
     return () => clearInterval(interval);
   }, [data, fileId, refetch, isUploading]);
 
+  // When width or height changes, update the other dimension to maintain aspect ratio
   useEffect(() => {
     if (!isCustom) {
-      //@ts-ignore
-      if (activeInput === 'width' && settings?.width > 0) {
-        updateSettings(
-          'height',
-          calculateHeight(settings.width, settings.aspectX, settings.aspectY)
-        );
-        //  @ts-ignore
-      } else if (activeInput === 'height' && settings?.height > 0) {
-        updateSettings(
-          'width',
-          calculateWidth(settings.height, settings.aspectX, settings.aspectY)
-        );
-      }
+      return; // Skip aspect ratio calculation for presets
+    }
+
+    if (
+      activeInput === 'width' &&
+      typeof settings.width === 'number' &&
+      settings.width > 0 &&
+      settings.aspectX > 0 &&
+      settings.aspectY > 0
+    ) {
+      const calculatedHeight = calculateHeight(settings.width, settings.aspectX, settings.aspectY);
+      updateSettings('height', calculatedHeight);
+    } else if (
+      activeInput === 'height' &&
+      typeof settings.height === 'number' &&
+      settings.height > 0 &&
+      settings.aspectX > 0 &&
+      settings.aspectY > 0
+    ) {
+      const calculatedWidth = calculateWidth(settings.height, settings.aspectX, settings.aspectY);
+      updateSettings('width', calculatedWidth);
     }
   }, [settings.width, settings.height, settings.aspectX, settings.aspectY, activeInput, isCustom]);
 
   useEffect(() => {
     if (presetHeight !== undefined) {
-      updateSettings('height', presetHeight * settings.aspectY);
+      updateSettings('height', presetHeight);
     }
-  }, [settings.aspectY, presetHeight]);
+  }, [presetHeight]);
 
   useEffect(() => {
     if (presetWidth !== undefined) {
-      updateSettings('width', presetWidth * settings.aspectX);
+      updateSettings('width', presetWidth);
     }
-  }, [presetWidth, settings.aspectX]);
+  }, [presetWidth]);
 
   useEffect(() => {
     if (!jobId) return;
@@ -250,17 +276,41 @@ export default function ResizeVideo() {
     updateSettings('isColorValid', /^#[0-9A-Fa-f]{6}$/.test(newColor));
   };
 
+  // Fix the toggle logic
+  const toggleMode = newIsCustom => {
+    setIsCustom(newIsCustom);
+    setToggleName(newIsCustom ? 'Custom' : 'Preset');
+
+    // Reset active input when switching modes
+    setActiveInput('');
+
+    if (!newIsCustom) {
+      // Switching to preset mode - reset aspect ratio to default
+      updateSettings('aspectX', 1);
+      updateSettings('aspectY', 1);
+    } else {
+      // Switching to custom mode - keep the current dimensions but allow manual editing
+      // No need to change anything as dimensions are already set
+    }
+  };
+
   async function handleResizeVideo() {
     try {
+      // Validate required fields
+      if (!settings.width || !settings.height) {
+        toast.error('Width and height are required');
+        return;
+      }
+
       const response = await initJob({
         pipeline: [
           {
             tool_id: 'VIDEO_RESIZE',
             properties: {
               input: fileId,
-              outputWidth: settings.width ? parseInt(String(settings.width)) : undefined,
-              outputHeight: settings.height ? parseInt(String(settings.height)) : undefined,
-              padding_color: settings.color,
+              output_width: settings.width ? parseInt(String(settings.width)) : undefined,
+              output_height: settings.height ? parseInt(String(settings.height)) : undefined,
+              background_color: settings.color,
               stretch_strategy: settings.stretchStrategy,
             },
           },
@@ -294,9 +344,7 @@ export default function ResizeVideo() {
       toast.success('Job initialized successfully');
       setProgressModal(true);
       setUploadFileModal(false);
-      setFile(null);
-      setFileId(null);
-      resetStates();
+      resetAllFileStates();
 
       const { job_id } = response.data;
       setJobId(job_id);
@@ -365,6 +413,7 @@ export default function ResizeVideo() {
               progress={progress}
               fetchedData={fetchedData}
               isUploading={isUploading}
+              clearFileInfo={clearFileInfo}
             />
           </motion.div>
         </div>
@@ -372,7 +421,7 @@ export default function ResizeVideo() {
         {/* Dimensions Section */}
         <div className="mb-10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center  mb-6">
+            <div className="flex items-center mb-6">
               <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
                 <HiOutlineTemplate size={20} />
               </div>
@@ -384,12 +433,8 @@ export default function ResizeVideo() {
               <ToggleButton
                 label={toggleName}
                 checked={isCustom}
-                onChange={() => {
-                  setIsCustom(!isCustom);
-                  setToggleName(isCustom ? 'Preset' : 'Custom');
-                }}
+                onChange={() => toggleMode(!isCustom)}
               />
-              {/* <div></div> */}
             </div>
           </div>
 
@@ -407,17 +452,15 @@ export default function ResizeVideo() {
                     <select
                       id="preset"
                       onChange={e => {
-                        setIsCustom(false);
                         if (e.target.value === 'None') {
                           return;
                         }
                         const [, , resolution] = e.target.value?.split(',') || [];
-                        const [presetWidth, presetHeight] = resolution.split('x').map(Number);
+                        const [width, height] = resolution.split('x').map(Number);
 
-                        updateSettings('width', presetWidth || undefined);
-                        setPresetWidth(presetWidth || undefined);
-                        updateSettings('height', presetHeight || undefined);
-                        setPresetHeight(presetHeight || undefined);
+                        // Update settings directly
+                        updateSettings('width', width || undefined);
+                        updateSettings('height', height || undefined);
                         setActiveInput('preset');
                       }}
                       disabled={!file || isUploading || !fetchedData?.metadata}
@@ -463,14 +506,18 @@ export default function ResizeVideo() {
                       onChange={e => {
                         const field = e.target.value;
                         if (field !== 'Custom') {
-                          setIsCustom(false);
                           const aspect = field.split(':');
-                          const x = aspect[0];
-                          const y = aspect[1];
-                          updateSettings('aspectX', Number(x));
-                          updateSettings('aspectY', Number(y));
-                        } else {
-                          setIsCustom(true);
+                          const x = Number(aspect[0]);
+                          const y = Number(aspect[1]);
+                          updateSettings('aspectX', x);
+                          updateSettings('aspectY', y);
+
+                          // Recalculate height based on selected aspect ratio if width exists
+                          if (typeof settings.width === 'number' && settings.width > 0) {
+                            const calculatedHeight = calculateHeight(settings.width, x, y);
+                            updateSettings('height', calculatedHeight);
+                            setActiveInput('width'); // Set active input to width to maintain calculations
+                          }
                         }
                       }}
                       disabled={!file || isUploading || !fetchedData?.metadata}
@@ -550,7 +597,7 @@ export default function ResizeVideo() {
                       htmlFor="color"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      Padding Color
+                      Background Color
                     </label>
                     <div className="relative flex items-center">
                       <input
@@ -585,12 +632,9 @@ export default function ResizeVideo() {
                         className="absolute right-2 w-8 h-8 cursor-pointer opacity-0"
                         aria-label="Select color"
                       />
-                      <div
-                        className="absolute right-2 w-6 h-6 rounded-md border border-gray-300 dark:border-gray-700 pointer-events-none"
-                        style={{
-                          backgroundColor: settings.isColorValid ? settings.color : 'red',
-                        }}
-                      ></div>
+                      <div className="absolute right-2 w-6 h-6 rounded-md pointer-events-none">
+                        <HiOutlineColorSwatch size={20} />
+                      </div>
                     </div>
                   </div>
 
@@ -744,19 +788,15 @@ export default function ResizeVideo() {
               !fetchedData?.metadata
             }
             onClick={handleResizeVideo}
-            className={`px-10 py-4 rounded-xl font-medium text-white flex items-center shadow-lg transition-all ${
-              !file ||
-              !settings.width ||
-              !settings.height ||
-              !settings.isColorValid ||
-              isUploading ||
-              !fetchedData?.metadata
-                ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
-                : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
-            }`}
           >
             Process Video <HiArrowRight className="ml-2" />
           </Button>
+          {(!settings.width || !settings.height) &&
+            file &&
+            fetchedData?.metadata &&
+            !isUploading && (
+              <p className="text-red-500 text-sm mt-2">Width and height are required</p>
+            )}
         </div>
       </div>
       {/* </motion.div> */}
@@ -776,7 +816,12 @@ export default function ResizeVideo() {
       />
       <FileProgressModal
         progressModal={progressModal}
-        setProgressModal={setProgressModal}
+        setProgressModal={value => {
+          setProgressModal(value);
+          if (!value) {
+            resetAllFileStates();
+          }
+        }}
         data={jobData}
         fetchedData={fetchedData}
       />

@@ -16,6 +16,7 @@ type VideoUploadProps = {
   uploadedData: any;
   fetchedData: any;
   isUploading?: boolean;
+  clearFileInfo?: boolean;
 };
 
 export function VideoUpload(props: VideoUploadProps) {
@@ -36,21 +37,24 @@ export function VideoUpload(props: VideoUploadProps) {
     }
   }, [props.fetchedData, props.file]);
 
-  // Show video data when we have metadata and are not uploading
+  // Show video data when we have metadata and are not uploading and clearFileInfo is false
   const showVideoData =
     !props.isUploading &&
     !isDataTransitioning &&
+    !props.clearFileInfo &&
     ((props.file && props.fetchedData?.metadata) ||
       (props.fetchedData?.metadata && props.fetchedData?.file_id));
 
-  // Determine if we have a valid file to show
-  const hasValidFile = props.file || (props.fetchedData?.file_id && props.fetchedData?.metadata);
+  // Determine if we have a valid file to show, but respect clearFileInfo flag
+  const hasValidFile =
+    !props.clearFileInfo &&
+    (props.file || (props.fetchedData?.file_id && props.fetchedData?.metadata));
 
   // Get file name from best available source
   const fileName = props.file?.name || props.fetchedData?.file_name || 'Video file';
 
   return (
-    <div className="pt-2">
+    <div>
       {hasValidFile ? (
         <div className="mt-4 bg-white dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
           <div className="flex flex-col sm:flex-row">
@@ -104,7 +108,7 @@ export function VideoUpload(props: VideoUploadProps) {
 
                 {/* Video Metadata */}
                 {showVideoData && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1">
+                  <div className="flex flex-col md:flex-row gap-6 mb-1">
                     <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                       <span className="mr-1.5 font-medium">Duration:</span>
                       <span>{Math.floor(props.fetchedData?.metadata?.duration ?? 0)} sec</span>
@@ -128,7 +132,7 @@ export function VideoUpload(props: VideoUploadProps) {
                 )}
 
                 {!showVideoData && !props.isUploading && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1">
+                  <div className="flex flex-col md:flex-row gap-6 mb-1">
                     <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                       <span className="mr-1.5 font-medium">Duration:</span>
                       <span>0 sec</span>
@@ -185,7 +189,7 @@ export function VideoUpload(props: VideoUploadProps) {
           </p>
           <Button
             onClick={() => props.setUploadFileModal(true)}
-            className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all"
+            // className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all"
           >
             Select Video
           </Button>

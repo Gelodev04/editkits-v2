@@ -9,12 +9,13 @@ import {
   HiOutlinePlay,
   HiX,
   HiOutlineInformationCircle,
+  HiDownload,
 } from 'react-icons/hi';
-
 
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import Button from '@/components/ui/button/Button';
 import Rocket from '@/public/images/rocket.gif';
+// import { IoDownloadOutline } from 'react-icons/io5';
 
 export default function FileProgressModal({ progressModal, setProgressModal, data, fetchedData }) {
   const router = useRouter();
@@ -53,8 +54,10 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
       className="flex items-center justify-center px-4 sm:px-0"
     >
       <Fade in={progressModal}>
-        <div className={`${montserrat.variable} ${lato.variable} ${opensans.variable}`}>
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-80 backdrop-blur-sm transition-opacity" />
+        <div
+          className={`${montserrat.variable} ${lato.variable} ${opensans.variable} bg-white dark:bg-gray-900`}
+        >
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-gray-800 dark:bg-opacity-80 backdrop-blur-sm transition-opacity" />
 
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
@@ -68,7 +71,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                 {/* Close button */}
                 <button
                   onClick={handleClose}
-                  className="absolute top-4 right-4 z-20 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900"
+                  className="absolute top-4 right-4 z-20 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
                   aria-label="Close modal"
                 >
                   <HiX className="w-5 h-5" />
@@ -124,7 +127,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                           the file size.
                         </p>
 
-                        <div className="mt-6 flex items-start p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg w-full">
+                        <div className="m-6 flex items-start p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg w-full">
                           <HiOutlineInformationCircle className="text-blue-600 dark:text-blue-400 w-5 h-5 mt-0.5 mr-3 flex-shrink-0" />
                           <p className="text-xs text-blue-700 dark:text-blue-300">
                             You can close this modal and continue using the app. We'll notify you
@@ -196,52 +199,43 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                               className="w-full h-auto object-cover aspect-video"
                               priority
                             />
-                            <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all flex items-center justify-center opacity-0 hover:opacity-100">
-                              <div className="rounded-full bg-white/80 p-3">
-                                <HiOutlinePlay className="w-6 h-6" />
-                              </div>
-                            </div>
                           </div>
                         )}
 
                         {data?.id && (
-                          <div className="w-full p-3 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4 flex items-center justify-between">
-                            <div className="flex items-center">
-                              <span className="text-xs text-gray-500 dark:text-gray-400 mr-2">
-                                ID:
-                              </span>
-                              <code className="text-xs font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-800 dark:text-gray-200">
-                                {data.id.substring(0, 10)}...
-                              </code>
+                          <div className="p-3 rounded-lg mb-4">
+                            <div className="flex items-center justify-between mb-3">
+                              <div className="flex items-center">
+                                <span className="text-xs px-2 py-1 rounded text-gray-800 dark:text-gray-200">
+                                  # {data.id.substring(0, 4)}...
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between gap-2">
+                                <button
+                                  onClick={() => copyToClipboard(data.id)}
+                                  className="flex items-center justify-center p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
+                                  aria-label="Copy ID"
+                                  title="Copy ID to clipboard"
+                                >
+                                  <HiOutlineDocumentDuplicate />
+                                </button>
+                                <button
+                                  onClick={() => {}}
+                                  className="flex items-center justify-center p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
+                                >
+                                  <HiOutlinePlay />
+                                </button>
+
+                                <button
+                                  onClick={() => {}}
+                                  className="flex items-center justify-center p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
+                                >
+                                  <HiDownload />
+                                </button>
+                              </div>
                             </div>
-                            <button
-                              onClick={() => copyToClipboard(data.id)}
-                              className="p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none"
-                              aria-label="Copy ID"
-                              title="Copy ID to clipboard"
-                            >
-                              <HiOutlineDocumentDuplicate className="w-4 h-4" />
-                            </button>
                           </div>
                         )}
-
-                        {/* <div className="grid grid-cols-2 gap-3 w-full mb-2">
-                          <button
-                            onClick={() => {}}
-                            className="flex items-center justify-center py-2.5 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          >
-                            <HiOutlinePlay className="w-4 h-4 mr-2" />
-                            Preview
-                          </button>
-
-                          <button
-                            onClick={() => {}}
-                            className="flex items-center justify-center py-2.5 px-4 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-800/30 rounded-lg text-sm font-medium text-blue-700 dark:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          >
-                            <IoDownloadOutline className="w-4 h-4 mr-2" />
-                            Download
-                          </button>
-                        </div> */}
                       </motion.div>
                     )}
 
@@ -277,13 +271,13 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
 
                   {/* Footer Actions - Always Present */}
                   {data && (
-                    <div className="mt-6 flex flex-col justify-end sm:flex-row gap-3 sm:justify-center">
-                      <Button
+                    <div className="flex flex-col justify-end sm:flex-row gap-3 sm:justify-center">
+                      <button
                         onClick={goToJobsDashboard}
-                        className="w-full sm:w-auto order-2 sm:order-1 py-2.5 px-4 bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-lg font-medium text-sm"
+                        className="w-full sm:w-auto order-2 sm:order-1 py-2.5 px-4 text-black bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white rounded-lg font-medium text-sm"
                       >
-                        View All Jobs
-                      </Button>
+                        Dashboard
+                      </button>
 
                       <Button
                         onClick={goToTools}

@@ -62,6 +62,9 @@ export default function TrimVideo() {
   const [endTime, setEndTime] = useState<any>(null);
   const videoRef = useRef(null);
 
+  // Add state variable to track whether file info should be cleared
+  const [clearFileInfo, setClearFileInfo] = React.useState<boolean>(false);
+
   const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
@@ -109,6 +112,17 @@ export default function TrimVideo() {
     }
   };
 
+  // Add this function to completely reset all file states
+  const resetAllFileStates = () => {
+    setFile(null);
+    setFileId(null);
+    setFetchedData(null);
+    setProgress(0);
+    resetStates();
+    // Set clear file info to true
+    setClearFileInfo(true);
+  };
+
   // Reset states when file changes
   useEffect(() => {
     if (file === null) {
@@ -139,6 +153,8 @@ export default function TrimVideo() {
       // Then set the new file
       setTimeout(() => {
         setFile(newFile);
+        // Reset the clearFileInfo flag when a new file is selected
+        setClearFileInfo(false);
       }, 50);
       resetStates();
     }
@@ -224,9 +240,7 @@ export default function TrimVideo() {
       toast.success('Job initialized successfully');
       setProgressModal(true);
       setUploadFileModal(false);
-      setFile(null);
-      setFileId(null);
-      resetStates();
+      resetAllFileStates();
 
       const { job_id } = response.data;
       setJobId(job_id);
@@ -275,15 +289,6 @@ export default function TrimVideo() {
 
   return (
     <ComponentToolCard title="Trim Video">
-      {/* <div className="max-w-[900px] px-4 sm:px-8 lg:px-12 mx-auto py-6 sm:py-12"> */}
-      {/* Main Form Card */}
-
-      {/* Background decorative elements */}
-      {/* <div className="absolute top-0 right-0 w-56 h-56 bg-gradient-to-br from-blue-50/60 to-purple-50/60 rounded-full -mr-28 -mt-28 z-0" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-purple-50/60 to-blue-50/60 rounded-full -ml-28 -mb-28 z-0" /> */}
-
-      {/* Header */}
-
       <div className="relative z-10 px-8 py-8">
         {/* Input Section */}
         <div className="mb-10">
@@ -303,6 +308,7 @@ export default function TrimVideo() {
               progress={progress}
               fetchedData={fetchedData}
               isUploading={isUploading}
+              clearFileInfo={clearFileInfo}
             />
           </motion.div>
         </div>
@@ -510,7 +516,12 @@ export default function TrimVideo() {
       />
       <FileProgressModal
         progressModal={progressModal}
-        setProgressModal={setProgressModal}
+        setProgressModal={value => {
+          setProgressModal(value);
+          if (!value) {
+            resetAllFileStates();
+          }
+        }}
         data={jobData}
         fetchedData={fetchedData}
       />

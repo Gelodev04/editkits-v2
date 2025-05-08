@@ -488,7 +488,7 @@ export default function ResizeVideo() {
                 Tool Properties
               </h2>
             </div>
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-end mb-4 sm:mb-0 ml-1 sm:ml-0">
               <ToggleButton
                 label={isCustom ? 'Custom' : 'Preset'}
                 checked={isCustom}

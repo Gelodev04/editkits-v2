@@ -19,6 +19,7 @@ import {
 import toast from 'react-hot-toast';
 import ToggleButton from '@/components/ToggleButton';
 import ComponentToolCard from '@/components/ComponentToolCard';
+import ErrorModal from '@/components/modals/ErrorModal';
 
 // Define interface for metadata
 interface FileMetadata {
@@ -69,6 +70,10 @@ export default function ResizeVideo() {
 
   // Add state variable to track whether file info should be cleared
   const [clearFileInfo, setClearFileInfo] = useState<boolean>(false);
+
+  // Add error modal state
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const calculateHeight = (width, aspectX, aspectY) => Math.floor(width * (aspectY / aspectX));
   const calculateWidth = (height, aspectX, aspectY) => Math.floor(height * (aspectX / aspectY));
@@ -298,7 +303,8 @@ export default function ResizeVideo() {
     try {
       // Validate required fields
       if (!settings.width || !settings.height) {
-        toast.error('Width and height are required');
+        setErrorMessage('Width and height are required');
+        setErrorModalOpen(true);
         return;
       }
 
@@ -337,7 +343,8 @@ export default function ResizeVideo() {
         } else if ('errMsg' in response.error) {
           errorMsg = (response.error as any).errMsg;
         }
-        toast.error(errorMsg);
+        setErrorMessage(errorMsg);
+        setErrorModalOpen(true);
         return;
       }
 
@@ -353,17 +360,20 @@ export default function ResizeVideo() {
     } catch (error) {
       if (error instanceof Error) {
         console.error('Unexpected error:', error);
-        toast.error(error.message || 'An unexpected error occurred');
+        setErrorMessage(error.message || 'An unexpected error occurred');
+        setErrorModalOpen(true);
       } else {
         console.error('Unexpected error:', error);
-        toast.error('An unexpected error occurred');
+        setErrorMessage('An unexpected error occurred');
+        setErrorModalOpen(true);
       }
     }
   }
 
   async function handleCommitJob(jobId: string) {
     if (!jobId) {
-      toast.error('Invalid job ID');
+      setErrorMessage('Invalid job ID');
+      setErrorModalOpen(true);
       return;
     }
 
@@ -377,17 +387,20 @@ export default function ResizeVideo() {
           (response.error as any).data?.errorMsg ||
           (response.error as any).errMsg ||
           'Failed to commit job';
-        toast.error(errorMsg);
+        setErrorMessage(errorMsg);
+        setErrorModalOpen(true);
         return;
       }
 
       toast.success('Job committed successfully');
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message || 'An unexpected error occurred');
+        setErrorMessage(error.message || 'An unexpected error occurred');
+        setErrorModalOpen(true);
       } else {
         console.error('Unexpected error:', error);
-        toast.error('An unexpected error occurred');
+        setErrorMessage('An unexpected error occurred');
+        setErrorModalOpen(true);
       }
     }
   }
@@ -826,6 +839,11 @@ export default function ResizeVideo() {
         }}
         data={jobData}
         fetchedData={fetchedData}
+      />
+      <ErrorModal
+        isOpen={errorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+        errorMessage={errorMessage}
       />
     </ComponentToolCard>
   );

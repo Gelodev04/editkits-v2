@@ -28,6 +28,7 @@ import { useCommitJobMutation, useInitJobMutation, useJobStatusQuery } from '@/s
 import FileProgressModal from '@/components/modals/FilePgrogressModal';
 import Button from '@/components/ui/button/Button';
 import ComponentToolCard from '@/components/ComponentToolCard';
+import ErrorModal from '@/components/modals/ErrorModal';
 
 // Define interface for metadata
 interface FileMetadata {
@@ -70,6 +71,10 @@ export default function TrimVideo() {
   const [isUploading, setIsUploading] = useState(false);
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
+
+  // Add error modal state
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Listen for direct file metadata from file ID uploads
   useEffect(() => {
@@ -233,7 +238,8 @@ export default function TrimVideo() {
           (response.error as any).data?.errorMsg ||
           (response.error as any).errMsg ||
           'Failed to initialize job';
-        toast.error(errorMsg);
+        setErrorMessage(errorMsg);
+        setErrorModalOpen(true);
         return;
       }
 
@@ -248,17 +254,20 @@ export default function TrimVideo() {
       await handleCommitJob(job_id);
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message || 'An unexpected error occurred');
+        setErrorMessage(error.message || 'An unexpected error occurred');
+        setErrorModalOpen(true);
       } else {
         console.error('Unexpected error:', error);
-        toast.error('An unexpected error occurred');
+        setErrorMessage('An unexpected error occurred');
+        setErrorModalOpen(true);
       }
     }
   }
 
   async function handleCommitJob(jobId) {
     if (!jobId) {
-      toast.error('Invalid job ID');
+      setErrorMessage('Invalid job ID');
+      setErrorModalOpen(true);
       return;
     }
 
@@ -272,17 +281,20 @@ export default function TrimVideo() {
           (response.error as any).data?.errorMsg ||
           (response.error as any).errMsg ||
           'Failed to commit job';
-        toast.error(errorMsg);
+        setErrorMessage(errorMsg);
+        setErrorModalOpen(true);
         return;
       }
 
       toast.success('Job committed successfully');
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message || 'An unexpected error occurred');
+        setErrorMessage(error.message || 'An unexpected error occurred');
+        setErrorModalOpen(true);
       } else {
         console.error('Unexpected error:', error);
-        toast.error('An unexpected error occurred');
+        setErrorMessage('An unexpected error occurred');
+        setErrorModalOpen(true);
       }
     }
   }
@@ -526,6 +538,11 @@ export default function TrimVideo() {
         }}
         data={jobData}
         fetchedData={fetchedData}
+      />
+      <ErrorModal
+        isOpen={errorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+        errorMessage={errorMessage}
       />
     </ComponentToolCard>
   );

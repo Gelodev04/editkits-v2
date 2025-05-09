@@ -15,12 +15,23 @@ import {
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import Button from '@/components/ui/button/Button';
 import Rocket from '@/public/images/rocket.gif';
+import { usePreviewVideoQuery } from '@/services/api/file';
+import { downloadFile } from '@/lib/utils';
+import VideoPreviewModal from '../VideoPreviewModal';
 // import { IoDownloadOutline } from 'react-icons/io5';
 
 export default function FileProgressModal({ progressModal, setProgressModal, data, fetchedData }) {
   const router = useRouter();
   // Add state to track if a job has actually been started
   const [jobStarted, setJobStarted] = useState(false);
+  const [fileId, setFileId] = useState<string | null>(null);
+  const [video, setVideo] = useState<string | null>(null);
+
+  const [videoPreviewModal, setVideoPreviewModal] = useState(false);
+
+  console.log('this is data: ', data);
+
+  const { refetch: refetchVideoUrl } = usePreviewVideoQuery({ fileId }, { skip: !fileId });
 
   useEffect(() => {
     // If we receive valid job data with status, mark the job as started
@@ -41,7 +52,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
 
   const goToJobsDashboard = () => {
     handleClose();
-    router.push('/dashboard/jobs-status');
+    router.push('dashboard/job-status');
   };
 
   const goToTools = () => {
@@ -211,6 +222,10 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                               width={400}
                               height={225}
                               alt="Processed video thumbnail"
+                              style={{
+                                objectFit: 'contain',
+                                objectPosition: 'center',
+                              }}
                               className="w-full h-auto object-cover aspect-video"
                               priority
                             />
@@ -235,14 +250,42 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                   <HiOutlineDocumentDuplicate />
                                 </button>
                                 <button
-                                  onClick={() => {}}
+                                  onClick={async () => {
+                                    await setFileId(data.output_file_ids[0]);
+                                    const result = await refetchVideoUrl();
+                                    const resultData = result.data as { url: string } | undefined;
+                                    if (resultData?.url) {
+                                      setVideo(resultData.url);
+                                      setVideoPreviewModal(true);
+                                    } else {
+                                      console.error('Failed to get video preview URL');
+                                    }
+                                  }}
                                   className="flex items-center justify-center p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
                                 >
                                   <HiOutlinePlay />
                                 </button>
 
                                 <button
-                                  onClick={() => {}}
+                                  onClick={async e => {
+                                    e.preventDefault();
+
+                                    try {
+                                      await setFileId(data.output_file_ids[0]);
+                                      const result = await refetchVideoUrl();
+
+                                      const resultData = result.data as { url: string } | undefined;
+                                      console.log('resultData: ', resultData);
+                                      const url = resultData?.url;
+                                      if (url) {
+                                        downloadFile(url, 'video.mp4');
+                                      } else {
+                                        console.error('Failed to get video download URL');
+                                      }
+                                    } catch (error) {
+                                      console.error('Error fetching video URL:', error);
+                                    }
+                                  }}
                                   className="flex items-center justify-center p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
                                 >
                                   <HiDownload />
@@ -306,6 +349,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
               </motion.div>
             </div>
           </div>
+          <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} url={video} />
         </div>
       </Fade>
     </Modal>

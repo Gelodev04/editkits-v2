@@ -63,6 +63,12 @@ export default function TrimVideo() {
   const [endTime, setEndTime] = useState<any>(null);
   const videoRef = useRef(null);
 
+  // Add state to track if fields have been touched
+  const [startTimeTouched, setStartTimeTouched] = useState(false);
+  const [endTimeTouched, setEndTimeTouched] = useState(false);
+  // Track form submission attempts
+  const [formSubmitAttempted, setFormSubmitAttempted] = useState(false);
+
   // Add state variable to track whether file info should be cleared
   const [clearFileInfo, setClearFileInfo] = React.useState<boolean>(false);
 
@@ -111,6 +117,9 @@ export default function TrimVideo() {
     setOutputQuality('MEDIUM');
     setVideoContainer('mp4');
     setFetchedData(null);
+    setStartTimeTouched(false);
+    setEndTimeTouched(false);
+    setFormSubmitAttempted(false);
     if (videoRef.current) {
       // @ts-ignore
       videoRef.current.src = '';
@@ -214,6 +223,15 @@ export default function TrimVideo() {
 
   async function handleTrimVideo() {
     try {
+      // Set form submission attempted flag to true to show errors
+      setFormSubmitAttempted(true);
+
+      // Check if required fields are filled
+      if (!startTime || !endTime) {
+        toast.error('Please fill in all required fields');
+        return;
+      }
+
       const response = await initJob({
         pipeline: [
           {
@@ -299,6 +317,11 @@ export default function TrimVideo() {
     }
   }
 
+  // Helper to determine if we should show error state
+  const shouldShowError = (value, fieldTouched) => {
+    return (fieldTouched || formSubmitAttempted) && !value;
+  };
+
   return (
     <ComponentToolCard title="Trim Video">
       <div className="relative z-10 px-8 py-8">
@@ -345,19 +368,31 @@ export default function TrimVideo() {
                 >
                   Start Time (seconds)
                 </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 dark:text-gray-400">
-                    <HiOutlineClock size={18} />
+                <div className="flex flex-col">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 dark:text-gray-400">
+                      <HiOutlineClock size={18} />
+                    </div>
+                    <input
+                      id="start-time"
+                      type="number"
+                      value={startTime || ''}
+                      onChange={e => {
+                        setStartTime(e.target.value);
+                        setStartTimeTouched(true);
+                      }}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
+                      placeholder="0"
+                      className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border ${
+                        shouldShowError(startTime, startTimeTouched)
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                      } rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none`}
+                    />
                   </div>
-                  <input
-                    id="start-time"
-                    type="number"
-                    value={startTime || ''}
-                    onChange={e => setStartTime(e.target.value)}
-                    disabled={!file || isUploading || !fetchedData?.metadata}
-                    placeholder="0"
-                    className="pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                  />
+                  {shouldShowError(startTime, startTimeTouched) && (
+                    <p className="mt-1 text-sm text-red-500">Start time is required</p>
+                  )}
                 </div>
               </div>
 
@@ -368,19 +403,31 @@ export default function TrimVideo() {
                 >
                   End Time (seconds)
                 </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 dark:text-gray-400">
-                    <HiOutlineClock size={18} />
+                <div className="flex flex-col">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 dark:text-gray-400">
+                      <HiOutlineClock size={18} />
+                    </div>
+                    <input
+                      id="end-time"
+                      type="number"
+                      value={endTime || ''}
+                      onChange={e => {
+                        setEndTime(e.target.value);
+                        setEndTimeTouched(true);
+                      }}
+                      disabled={!file || isUploading || !fetchedData?.metadata}
+                      placeholder="10"
+                      className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border ${
+                        shouldShowError(endTime, endTimeTouched)
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                      } rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none`}
+                    />
                   </div>
-                  <input
-                    id="end-time"
-                    type="number"
-                    value={endTime || ''}
-                    onChange={e => setEndTime(e.target.value)}
-                    disabled={!file || isUploading || !fetchedData?.metadata}
-                    placeholder="10"
-                    className="pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                  />
+                  {shouldShowError(endTime, endTimeTouched) && (
+                    <p className="mt-1 text-sm text-red-500">End time is required</p>
+                  )}
                 </div>
               </div>
             </div>

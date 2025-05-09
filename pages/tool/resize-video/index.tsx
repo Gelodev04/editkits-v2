@@ -53,7 +53,13 @@ export default function ResizeVideo() {
     stretchStrategy: 'fit',
   });
 
-  const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
+  // Add state to track if fields have been touched
+  const [widthTouched, setWidthTouched] = useState(false);
+  const [heightTouched, setHeightTouched] = useState(false);
+  // Track form submission attempts
+  const [formSubmitAttempted, setFormSubmitAttempted] = useState(false);
+
+    const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
   const [presetWidth, setPresetWidth] = useState<number | undefined>(undefined);
   const [presetHeight, setPresetHeight] = useState<number | undefined>(undefined);
   const [uploadFileModal, setUploadFileModal] = useState(false);
@@ -83,6 +89,11 @@ export default function ResizeVideo() {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
+  // Helper to determine if we should show error state
+  const shouldShowError = (value, fieldTouched) => {
+    return (fieldTouched || formSubmitAttempted) && !value;
+  };
+
   // Function to reset all states when a new file is uploaded
   const resetStates = () => {
     setSettings({
@@ -103,6 +114,9 @@ export default function ResizeVideo() {
     setVideoContainer('mp4');
     setSelectedAspectRatio('1:1');
     setSelectedPreset('None');
+    setWidthTouched(false);
+    setHeightTouched(false);
+    setFormSubmitAttempted(false);
 
     if (videoRef.current) {
       // @ts-ignore
@@ -192,10 +206,47 @@ export default function ResizeVideo() {
 
   useEffect(() => {
     if (fetchedData && fetchedData.metadata && !isUploading) {
-      updateSettings('width', fetchedData.metadata.width);
-      updateSettings('height', fetchedData.metadata.height);
+      const originalWidth = fetchedData.metadata.width;
+      const originalHeight = fetchedData.metadata.height;
+
+      updateSettings('width', originalWidth);
+      updateSettings('height', originalHeight);
+
+      // If in custom mode and using default 1:1 aspect ratio, try to determine the original aspect ratio
+      if (isCustom && selectedAspectRatio === '1:1' && originalWidth && originalHeight) {
+        // Calculate GCD for the most accurate aspect ratio
+        const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+        const divisor = gcd(originalWidth, originalHeight);
+
+        if (divisor > 0) {
+          const aspectX = originalWidth / divisor;
+          const aspectY = originalHeight / divisor;
+
+          // Only update if we get a reasonable aspect ratio (avoid extreme values)
+          if (aspectX < 100 && aspectY < 100) {
+            updateSettings('aspectX', aspectX);
+            updateSettings('aspectY', aspectY);
+
+            // Try to find a matching standard aspect ratio
+            const aspectString = `${aspectX}:${aspectY}`;
+            const matchingAspect = aspectRatio.find(a => a.value === aspectString);
+            if (matchingAspect) {
+              setSelectedAspectRatio(matchingAspect.value);
+            } else if (Math.abs(aspectX / aspectY - 16 / 9) < 0.01) {
+              // Close to 16:9
+              setSelectedAspectRatio('16:9');
+            } else if (Math.abs(aspectX / aspectY - 4 / 3) < 0.01) {
+              // Close to 4:3
+              setSelectedAspectRatio('4:3');
+            } else {
+              // If no standard aspect ratio matches, set to Custom
+              setSelectedAspectRatio('Custom');
+            }
+          }
+        }
+      }
     }
-  }, [fetchedData?.metadata, isUploading]);
+  }, [fetchedData?.metadata, isUploading, isCustom, selectedAspectRatio]);
 
   useEffect(() => {
     // Don't fetch data while uploading
@@ -338,10 +389,12 @@ export default function ResizeVideo() {
 
   async function handleResizeVideo() {
     try {
+      // Set form submission attempted flag to show validation errors
+      setFormSubmitAttempted(true);
+
       // Validate required fields
       if (!settings.width || !settings.height) {
-        setErrorMessage('Width and height are required');
-        setErrorModalOpen(true);
+        toast.error('Width and height are required');
         return;
       }
 
@@ -578,11 +631,31 @@ export default function ResizeVideo() {
                           updateSettings('aspectX', x);
                           updateSettings('aspectY', y);
 
-                          // Recalculate height based on selected aspect ratio if width exists
+                          // Recalculate dimensions based on the new aspect ratio
                           if (typeof settings.width === 'number' && settings.width > 0) {
+                            // If width exists, calculate height based on width
                             const calculatedHeight = calculateHeight(settings.width, x, y);
                             updateSettings('height', calculatedHeight);
                             setActiveInput('width'); // Set active input to width to maintain calculations
+                          } else if (typeof settings.height === 'number' && settings.height > 0) {
+                            // If only height exists, calculate width based on height
+                            const calculatedWidth = calculateWidth(settings.height, x, y);
+                            updateSettings('width', calculatedWidth);
+                            setActiveInput('height'); // Set active input to height to maintain calculations
+                          } else if (
+                            fetchedData?.metadata?.width &&
+                            fetchedData?.metadata?.height
+                          ) {
+                            // If neither width nor height exists but we have original dimensions,
+                            // use the original width and calculate new height
+                            updateSettings('width', fetchedData.metadata.width);
+                            const calculatedHeight = calculateHeight(
+                              fetchedData.metadata.width,
+                              x,
+                              y
+                            );
+                            updateSettings('height', calculatedHeight);
+                            setActiveInput('width');
                           }
                         }
                       }}
@@ -631,9 +704,17 @@ export default function ResizeVideo() {
                       onChange={e => {
                         setActiveInput('width');
                         updateSettings('width', e.target.value);
+                        setWidthTouched(true);
                       }}
-                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                        shouldShowError(settings.width, widthTouched)
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                      }`}
                     />
+                    {shouldShowError(settings.width, widthTouched) && (
+                      <p className="mt-1 text-sm text-red-500">Width is required</p>
+                    )}
                   </div>
 
                   <div className="w-full">
@@ -652,9 +733,17 @@ export default function ResizeVideo() {
                       onChange={e => {
                         setActiveInput('height');
                         updateSettings('height', e.target.value);
+                        setHeightTouched(true);
                       }}
-                      className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                        shouldShowError(settings.height, heightTouched)
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                      }`}
                     />
+                    {shouldShowError(settings.height, heightTouched) && (
+                      <p className="mt-1 text-sm text-red-500">Height is required</p>
+                    )}
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -857,12 +946,6 @@ export default function ResizeVideo() {
           >
             Process <HiArrowRight className="ml-2" />
           </Button>
-          {(!settings.width || !settings.height) &&
-            file &&
-            fetchedData?.metadata &&
-            !isUploading && (
-              <p className="text-red-500 text-sm mt-2">Width and height are required</p>
-            )}
         </div>
       </div>
       {/* </motion.div> */}

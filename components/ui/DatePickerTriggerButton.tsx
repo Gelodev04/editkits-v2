@@ -37,7 +37,7 @@ const DatePickerTriggerButton = React.forwardRef<HTMLButtonElement, DatePickerTr
 
     const combinedClasses = cn(
       customButtonVariants({ variant, size }),
-      'w-[300px] justify-start text-left font-normal',
+      'w-fit justify-start text-left font-normal',
       className
     );
 

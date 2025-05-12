@@ -164,7 +164,7 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div className="flex flex-col lg:flex-row gap-5">
+            <div className="flex max-[360px]:flex-col max-[360px]:items-center flex-row gap-5">
               <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
 
               <Button

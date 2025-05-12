@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 import { DatePickerTriggerButton } from '@/components/ui/DatePickerTriggerButton';
@@ -15,12 +16,33 @@ interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 export function DatePickerWithRange({ className, date, onDateChange }: DatePickerWithRangeProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [localDate, setLocalDate] = useState<DateRange | undefined>(date);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setLocalDate(date);
+    }
+  }, [date, isOpen]);
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      if (localDate?.from !== date?.from || localDate?.to !== date?.to) {
+        onDateChange(localDate);
+      }
+    }
+    if (open) {
+      setLocalDate(date);
+    }
+  };
+
   return (
     <div className={cn('grid gap-2', className)}>
-      <Popover>
+      <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <DatePickerTriggerButton className={cn(!date && 'text-muted-foreground')}>
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon className="max-[590px]:mr-0 mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
                 <>
@@ -30,7 +52,7 @@ export function DatePickerWithRange({ className, date, onDateChange }: DatePicke
                 format(date.from, 'LLL dd, y')
               )
             ) : (
-              <span>Pick a date</span>
+              <span className="max-[590px]:hidden">Pick a date</span>
             )}
           </DatePickerTriggerButton>
         </PopoverTrigger>
@@ -38,9 +60,9 @@ export function DatePickerWithRange({ className, date, onDateChange }: DatePicke
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={onDateChange}
+            defaultMonth={localDate?.from}
+            selected={localDate}
+            onSelect={setLocalDate}
             numberOfMonths={2}
           />
         </PopoverContent>

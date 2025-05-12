@@ -185,7 +185,7 @@ export default function JobStatus() {
           )}
         </div>
         <ComponentCard title="Job Status" className="max-w-[1488px] mx-auto">
-          <div className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
+          <div className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl lg:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <span className="hidden sm:block text-gray-500 dark:text-gray-400"> Show </span>
               <div className="relative z-20 bg-transparent">
@@ -229,7 +229,7 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div className="flex flex-col lg:flex-row gap-5">
+            <div className="flex max-[360px]:flex-col max-[360px]:items-center flex-row gap-5">
               <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
 
               <Button
@@ -242,14 +242,14 @@ export default function JobStatus() {
                   </>
                 }
               >
-                Filters
+                <span className="max-[590px]:hidden">Filters</span>
               </Button>
               <Button
                 startIcon={<AiOutlinePlus size={18} />}
                 variant="primary"
                 onClick={() => router.push('/tools')}
               >
-                <p>New Job</p>
+                <span className="max-[590px]:hidden">New Job</span>
               </Button>
 
               {isRefreshing ? (

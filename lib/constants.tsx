@@ -229,6 +229,10 @@ export const jobStatusColumns: { key?: string; name?: string }[] = [
     name: 'Input File Name',
   },
   {
+    key: 'type',
+    name: 'Type',
+  },
+  {
     key: 'created_at',
     name: 'Created At',
   },
@@ -251,17 +255,19 @@ export const jobStatusColumns: { key?: string; name?: string }[] = [
   {},
   {},
 ];
+
 export const uploadedFilesColumns = [
   {
+    key: 'thumbnail_url',
     name: 'Thumbnail',
   },
   {
     key: 'id',
-    name: 'ID',
+    name: 'File ID',
   },
   {
     key: 'name',
-    name: 'Name',
+    name: 'File Name',
   },
   {
     key: 'size_in_mb',
@@ -269,13 +275,20 @@ export const uploadedFilesColumns = [
   },
   {
     key: 'type',
-    name: 'File Type',
+    name: 'Type',
   },
   {
     key: 'created_at',
     name: 'Created At',
   },
-  {},
+  {
+    key: 'expires_at',
+    name: 'Expires At',
+  },
+  {
+    key: 'actions',
+    name: 'Actions',
+  },
 ];
 
 export const aspectRatio = [

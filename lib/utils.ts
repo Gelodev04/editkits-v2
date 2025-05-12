@@ -44,6 +44,25 @@ export function truncateFileName(fileName: string, maxLength: number = 20): stri
   return `${truncatedName}...${extension ? '.' + extension : ''}`;
 }
 
+export const VIDEO_EXTENSIONS = ['MP4', 'MOV', 'AVI', 'WMV', 'FLV', 'MKV'];
+export const IMAGE_EXTENSIONS = ['JPG', 'JPEG', 'PNG', 'GIF', 'BMP', 'WEBP'];
+export const AUDIO_EXTENSIONS = ['MP3', 'WAV', 'OGG', 'AAC', 'FLAC'];
+
+export type PreviewFileType = 'VIDEO' | 'IMAGE' | 'AUDIO' | null;
+
+export function getFileTypeFromExtension(extension: string | undefined): PreviewFileType {
+  if (!extension) return null;
+  const upperCaseExtension = extension.toUpperCase();
+  if (VIDEO_EXTENSIONS.includes(upperCaseExtension)) {
+    return 'VIDEO';
+  } else if (IMAGE_EXTENSIONS.includes(upperCaseExtension)) {
+    return 'IMAGE';
+  } else if (AUDIO_EXTENSIONS.includes(upperCaseExtension)) {
+    return 'AUDIO';
+  }
+  return null;
+}
+
 export function downloadFile(url: string, filename: string): void {
   if (!url) {
     console.error('Download failed: URL is invalid or missing.');

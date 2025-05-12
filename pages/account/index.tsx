@@ -16,10 +16,10 @@ export default function Account() {
 
   return (
     <div
-      className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] p-6`}
+      className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 lg:dark:border-gray-800 lg:rounded-xl sm:max-w-[980px] lg:max-w-[1920px] lg:p-6`}
     >
       {activeAccountTab === 'profile' && (
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
+        <div className="lg:rounded-2xl lg:border lg:border-gray-200 bg-white p-5 lg:dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
           <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
             Profile Information
           </h3>
@@ -30,7 +30,7 @@ export default function Account() {
       )}
 
       {activeAccountTab === 'subscription' && (
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
+        <div className="lg:rounded-2xl lg:border lg:border-gray-200 bg-white p-5 lg:dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
           <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
             Subscription Details
           </h3>

@@ -1,4 +1,5 @@
 import ComponentCard from '@/components/ComponentCard';
+import Copy from '@/components/icons/Copy';
 import Menu from '@/components/Menu';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
@@ -9,7 +10,7 @@ import { DatePickerWithRange } from '@/components/ui/DateRangePicker';
 import { useSidebar } from '@/context/SidebarContext';
 import { ExpiredIcon, WhiteExpiredIcon } from '@/icons';
 import { uploadedFilesColumns } from '@/lib/constants';
-import { truncateFileName } from '@/lib/utils';
+import { PreviewFileType, truncateFileName } from '@/lib/utils';
 import { useGetRecentFilesQuery, usePreviewVideoQuery } from '@/services/api/file';
 import { router } from 'next/client';
 import Image from 'next/image';
@@ -17,19 +18,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IoMdRefresh } from 'react-icons/io';
-import { IoCopyOutline } from 'react-icons/io5';
 import PaginationWithIcon from '../PaginationWithIcon';
-
-type PreviewFileType = 'VIDEO' | 'IMAGE' | null;
-
-type SortKey = 'id' | 'name' | 'size_in_mb' | 'age' | 'date' | 'salary' | 'type';
-type SortOrder = 'asc' | 'desc';
 
 export default function JobStatus() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [sortKey, setSortKey] = useState<SortKey>('name');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined);
   const [filterModal, setFilterModal] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -89,31 +82,26 @@ export default function JobStatus() {
 
     if (resultData?.url) {
       setPreviewUrl(resultData.url);
-      if (jobType === 'VIDEO') {
+      const jobTypeUpper = jobType.toUpperCase();
+      if (jobTypeUpper === 'VIDEO') {
         setPreviewFileType('VIDEO');
-      } else if (jobType === 'IMAGE' || jobType === 'PNG' || jobType === 'JPG') {
+      } else if (['IMAGE', 'PNG', 'JPG', 'JPEG'].includes(jobTypeUpper)) {
         setPreviewFileType('IMAGE');
+      } else if (['AUDIO', 'MP3', 'WAV'].includes(jobTypeUpper)) {
+        setPreviewFileType('AUDIO');
       } else {
-        console.warn('File type not supported:', jobType);
+        console.warn('File type not supported for preview:', jobTypeRaw);
+        setPreviewUrl(null);
         return;
       }
       setVideoPreviewModal(true);
     } else {
-      console.error('Failed to get preview URL for:', jobId, 'Type:', jobType);
+      console.error('Failed to get preview URL for:', jobId, 'Type:', jobTypeRaw);
     }
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-  };
-
-  const handleSort = (key: SortKey) => {
-    if (sortKey === key) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortKey(key);
-      setSortOrder('asc');
-    }
   };
 
   function applyFilter() {
@@ -219,44 +207,10 @@ export default function JobStatus() {
                       isHeader
                       className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
                     >
-                      <div
-                        className="flex items-center justify-between cursor-pointer"
-                        onClick={() => handleSort(key as SortKey)}
-                      >
+                      <div className="flex items-center justify-between">
                         <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                           {name}
                         </p>
-                        <button
-                          className={
-                            !name || name === 'Thumbnail'
-                              ? 'hidden'
-                              : 'flex flex-col gap-0.5 text-gray-800 dark:text-gray-700'
-                          }
-                        >
-                          <svg
-                            width="8"
-                            height="5"
-                            viewBox="0 0 8 5"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                          <svg
-                            width="8"
-                            height="5"
-                            viewBox="0 0 8 5"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                        </button>
                       </div>
                     </TableCell>
                   ))}
@@ -304,7 +258,7 @@ export default function JobStatus() {
                           onClick={() => navigator.clipboard.writeText(job.id)}
                           className="text-gray-500 dark:text-gray-400 dark:hover:text-white/90"
                         >
-                          <IoCopyOutline size={17} />
+                          <Copy className="w-5 h-5 text-[#1C274C] dark:text-white" />
                         </button>
                       </div>
                     </TableCell>
@@ -318,9 +272,28 @@ export default function JobStatus() {
                       {job.type.charAt(0).toUpperCase() + job.type.slice(1).toLowerCase()}
                     </TableCell>
                     <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                      {new Date(job.created_at * 1000).toLocaleDateString('en-GB') +
-                        ' ' +
-                        new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
+                      {new Intl.DateTimeFormat('sv-SE', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false,
+                      }).format(new Date(job.created_at * 1000))}
+                    </TableCell>
+                    <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                      {job.expires_at
+                        ? new Intl.DateTimeFormat('sv-SE', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: false,
+                          }).format(new Date(job.expires_at * 1000))
+                        : 'N/A'}
                     </TableCell>
                     <TableCell className="text-center px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                       <Menu

@@ -11,6 +11,9 @@ import { DateRange } from 'react-day-picker';
 import PaginationWithIcon from '../PaginationWithIcon';
 
 import ComponentCard from '@/components/ComponentCard';
+import Copy from '@/components/icons/Copy';
+import Download from '@/components/icons/Download';
+import Play from '@/components/icons/Play';
 import Menu from '@/components/Menu';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
@@ -18,37 +21,29 @@ import Spinner from '@/components/Spinner';
 import Button from '@/components/ui/button/Button';
 import { DatePickerWithRange } from '@/components/ui/DateRangePicker';
 import { useSidebar } from '@/context/SidebarContext';
-import { downloadFile, truncateFileName } from '@/lib/utils';
-import { usePreviewVideoQuery } from '@/services/api/file';
+import {
+  downloadFile,
+  getFileTypeFromExtension,
+  PreviewFileType,
+  truncateFileName,
+} from '@/lib/utils';
+import { useLazyPreviewVideoQuery } from '@/services/api/file';
 import { router } from 'next/client';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IoMdRefresh } from 'react-icons/io';
-import { IoCopyOutline, IoDownloadOutline } from 'react-icons/io5';
-import { LuCirclePlay, LuSettings2 } from 'react-icons/lu';
-
-type SortKey =
-  | 'input_file_name'
-  | 'input_file_id'
-  | 'createdAt'
-  | 'tools_used'
-  | 'credits'
-  | 'status'
-  | 'output_file_id';
-type SortOrder = 'asc' | 'desc';
+import { LuSettings2 } from 'react-icons/lu';
 
 export default function JobStatus() {
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined);
   const { isMobileOpen, isHovered, isExpanded } = useSidebar();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [sortKey, setSortKey] = useState<SortKey>('input_file_name');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [filterModal, setFilterModal] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
-  const [fileId, setFileId] = useState<string | null>(null);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [video, setVideo] = useState<string | null>(null);
+  const [previewFileType, setPreviewFileType] = useState<PreviewFileType>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { data: statsData, isLoading: isStatsLoading, refetch: refetchStats } = useGetStatsQuery();
@@ -68,10 +63,7 @@ export default function JobStatus() {
     status: filters.length > 0 ? filters[0] : undefined,
   });
 
-  const { data: videoData, refetch: refetchVideoUrl } = usePreviewVideoQuery(
-    { fileId },
-    { skip: !fileId }
-  );
+  const [triggerPreview] = useLazyPreviewVideoQuery();
 
   const realTimeStats = useMemo(() => {
     if (!statsData) {
@@ -138,11 +130,6 @@ export default function JobStatus() {
   const jobsArray = (queryData as any)?.jobs ?? [];
 
   useEffect(() => {
-    // @ts-ignore - Use type assertion here if needed, or check videoData directly
-    setVideo((videoData as { url: string } | undefined)?.url);
-  }, [videoData]);
-
-  useEffect(() => {
     refetchJobs();
   }, [currentPage, refetchJobs]);
 
@@ -155,37 +142,11 @@ export default function JobStatus() {
   const totalItems = (queryData as any)?.metadata?.total;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const sortedJobs = [...jobsArray].sort((a, b) => {
-    const aValue = a[sortKey];
-    const bValue = b[sortKey];
-
-    if (aValue === null || aValue === undefined) return 1;
-    if (bValue === null || bValue === undefined) return -1;
-
-    if (typeof aValue === 'string') {
-      return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-    } else if (typeof aValue === 'number') {
-      return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
-    } else if (Array.isArray(aValue)) {
-      return sortOrder === 'asc' ? aValue.length - bValue.length : bValue.length - aValue.length;
-    }
-    return 0;
-  });
-
   const dataToDisplay =
-    filters.length === 0 ? sortedJobs : sortedJobs.filter(item => filters.includes(item.status));
+    filters.length === 0 ? jobsArray : jobsArray.filter(item => filters.includes(item.status));
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-  };
-
-  const handleSort = (key: SortKey) => {
-    if (sortKey === key) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortKey(key);
-      setSortOrder('asc');
-    }
   };
 
   function statusMapper(status) {
@@ -339,44 +300,10 @@ export default function JobStatus() {
                         isHeader
                         className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
                       >
-                        <div
-                          className="flex items-center justify-between cursor-pointer"
-                          onClick={() => handleSort(key as SortKey)}
-                        >
+                        <div className="flex items-center justify-between">
                           <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                             {name}
                           </p>
-                          <button
-                            className={
-                              !name || name === 'Thumbnail'
-                                ? 'hidden'
-                                : 'flex flex-col gap-0.5 text-gray-800 dark:text-gray-700'
-                            }
-                          >
-                            <svg
-                              width="8"
-                              height="5"
-                              viewBox="0 0 8 5"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                            <svg
-                              width="8"
-                              height="5"
-                              viewBox="0 0 8 5"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </button>
                         </div>
                       </TableCell>
                     ))}
@@ -428,7 +355,7 @@ export default function JobStatus() {
                             onClick={() => navigator.clipboard.writeText(job.input_file_id)}
                             className="text-gray-500 dark:text-gray-400 dark:hover:text-white/90"
                           >
-                            <IoCopyOutline size={17} />
+                            <Copy className="w-5 h-5 text-[#1C274C] dark:text-white" />
                           </button>
                         </div>
                       </TableCell>
@@ -436,9 +363,18 @@ export default function JobStatus() {
                         {truncateFileName(job.input_file_name)}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {new Date(job.created_at * 1000).toLocaleDateString('en-GB') +
-                          ' ' +
-                          new Date(job.created_at * 1000).toLocaleTimeString('en-GB')}
+                        {getFileTypeFromExtension(job.input_file_name.split('.').pop())}
+                      </TableCell>
+                      <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
+                        {new Intl.DateTimeFormat('sv-SE', {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: false,
+                        }).format(new Date(job.created_at * 1000))}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                         {job.tools_used.join(', ')}
@@ -472,7 +408,7 @@ export default function JobStatus() {
                                     onClick={() => navigator.clipboard.writeText(id)}
                                     className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90"
                                   >
-                                    <IoCopyOutline size={17} />
+                                    <Copy className="w-5 h-5 text-[#1C274C] dark:text-white" />
                                   </button>
                                 </div>
                               </div>
@@ -492,7 +428,7 @@ export default function JobStatus() {
                                     }
                                     className="text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-white/90"
                                   >
-                                    <IoCopyOutline size={17} />
+                                    <Copy className="w-5 h-5 text-[#1C274C] dark:text-white" />
                                   </button>
                                 </div>
                               </div>
@@ -502,25 +438,39 @@ export default function JobStatus() {
                       </TableCell>
                       <TableCell className="px-4 py-4 font-normal text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm dark:text-white/90 whitespace-nowrap ">
                         {job.output_file_id && (
-                          <div className="flex items-center w-full gap-2">
+                          <div className="flex items-center w-full justify-around gap-3">
                             <div>
                               <button
                                 onClick={async () => {
-                                  if (job.output_file_id) {
-                                    await setFileId(job.output_file_id);
-                                    const result = await refetchVideoUrl();
+                                  if (job.output_file_id && job.input_file_name) {
+                                    const result = await triggerPreview({
+                                      fileId: job.output_file_id,
+                                    });
                                     const resultData = result.data as { url: string } | undefined;
-                                    if (resultData?.url) {
+                                    if (!result.isError && resultData?.url) {
+                                      const extension = job.input_file_name.split('.').pop();
+                                      const fileType = getFileTypeFromExtension(extension);
+
+                                      console.log(
+                                        'Setting video URL for preview:',
+                                        resultData.url,
+                                        'Type:',
+                                        fileType
+                                      );
                                       setVideo(resultData.url);
+                                      setPreviewFileType(fileType);
                                       setVideoPreviewModal(true);
                                     } else {
-                                      console.error('Failed to get video preview URL');
+                                      console.error(
+                                        'Failed to get video preview URL via trigger:',
+                                        result.error || 'No URL found'
+                                      );
                                     }
                                   }
                                 }}
                                 className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90"
                               >
-                                <LuCirclePlay size={17} />
+                                <Play className="w-5 h-5 text-[#1C274C] dark:text-white" />
                               </button>
                             </div>
                             <a
@@ -529,23 +479,26 @@ export default function JobStatus() {
                                 e.preventDefault();
                                 if (job.output_file_id) {
                                   try {
-                                    await setFileId(job.output_file_id);
-                                    const result = await refetchVideoUrl();
+                                    const result = await triggerPreview({
+                                      fileId: job.output_file_id,
+                                    });
                                     const resultData = result.data as { url: string } | undefined;
-                                    const url = resultData?.url;
-                                    if (url) {
-                                      downloadFile(url, 'video.mp4');
+                                    if (!result.isError && resultData?.url) {
+                                      downloadFile(resultData.url, 'video.mp4');
                                     } else {
-                                      console.error('Failed to get video download URL');
+                                      console.error(
+                                        'Failed to get video download URL via trigger:',
+                                        result.error || 'No URL found'
+                                      );
                                     }
                                   } catch (error) {
-                                    console.error('Error fetching video URL:', error);
+                                    console.error('Error triggering preview for download:', error);
                                   }
                                 }
                               }}
                             >
                               <button className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
-                                <IoDownloadOutline size={17} />
+                                <Download className="w-5 h-5 text-[#1C274C] dark:text-white" />
                               </button>
                             </a>
                           </div>
@@ -559,23 +512,40 @@ export default function JobStatus() {
                           }
                           handleDownload={async (outputFileId: string) => {
                             if (outputFileId) {
-                              await setFileId(outputFileId);
-                              const result = await refetchVideoUrl();
+                              const result = await triggerPreview({ fileId: outputFileId });
                               const resultData = result.data as { url: string } | undefined;
-                              return resultData?.url;
+                              if (!result.isError && resultData?.url) {
+                                return resultData.url;
+                              }
+                              console.error(
+                                'Failed to get video download URL for menu action:',
+                                result.error || 'No URL found'
+                              );
                             }
                             return undefined;
                           }}
                           handlePreview={async () => {
-                            if (job.output_file_id) {
-                              await setFileId(job.output_file_id);
-                              const result = await refetchVideoUrl();
+                            if (job.output_file_id && job.input_file_name) {
+                              const result = await triggerPreview({ fileId: job.output_file_id });
                               const resultData = result.data as { url: string } | undefined;
-                              if (resultData?.url) {
+                              if (!result.isError && resultData?.url) {
+                                const extension = job.input_file_name.split('.').pop();
+                                const fileType = getFileTypeFromExtension(extension);
+
+                                console.log(
+                                  'Setting video URL for menu preview:',
+                                  resultData.url,
+                                  'Type:',
+                                  fileType
+                                );
                                 setVideo(resultData.url);
+                                setPreviewFileType(fileType);
                                 setVideoPreviewModal(true);
                               } else {
-                                console.error('Failed to get video preview URL');
+                                console.error(
+                                  'Failed to get video preview URL via menu trigger:',
+                                  result.error || 'No URL found'
+                                );
                               }
                             }
                           }}
@@ -614,7 +584,12 @@ export default function JobStatus() {
           onClick={applyFilter}
           filters={filters}
         />
-        <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} url={video} />
+        <VideoPreviewModal
+          open={videoPreviewModal}
+          setOpen={setVideoPreviewModal}
+          url={video}
+          fileType={previewFileType}
+        />
       </div>
     </>
   );

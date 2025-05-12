@@ -1,69 +1,76 @@
-import React from "react";
+import React, { useState } from 'react';
 
-import {FormControl, MenuItem, Select as Dropdown} from "@mui/material";
+// Add a simple ChevronDownIcon component
+const ChevronDownIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+  </svg>
+);
 
-import Typography from "@/components/Typography";
-
-type SelectProps = {
+interface Option {
+  value: string;
   label: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  type?: string;
-  error?: boolean;
-  value?: string;
-  setValue?: (e: React.SetStateAction<string>) => void;
-  options: any;
-  disabled?: boolean;
-  variant?: string;
-  default?: string;
 }
 
-export default function Select(props: SelectProps) {
-  return (
-    <>
-      <Typography label={props.label} variant={props.variant === "t2" ? "bb3" : "b3"} />
-      <div className="pt-2">
-        <FormControl className={`w-full ${props.disabled && "bg-[#E0E0E0A6]"} rounded-lg`}>
-          <Dropdown
-            defaultValue={props.options[0].value}
-            disabled={props.disabled}
-            value={props.value}
-            //@ts-ignore
-            onChange={props.onChange}
-            displayEmpty
-            renderValue={value => value?.length ? Array.isArray(value) ? value.join(', ') : value : props.placeholder}
-            className={`max-h-10 border ${!props.disabled && "border-1 border-[#e0e0e0]"}`}
-            sx={{
-              boxShadow: "none",
-              ".MuiOutlinedInput-notchedOutline": { border: 0 },
-              "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                {
-                  border: 0,
-                },
-              "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  border: 0,
-                },
-              fontSize: 14,
-              fontFamily: 'Lato',
-              color: "#4f4f4f",
-              fontWeight: "bold"
-            }}
-          >
-            {
-              props.options.map((opt: any) => (
-                <MenuItem
-                  key={opt.value}
-                  sx={{fontSize: 14, fontFamily: "Lato", color: "#4f4f4f", fontWeight: "bold"}}
-                  value={opt.value}
-                >
-                  <Typography label={opt.label} variant="bb4" />
-                </MenuItem>
-              ))
-            }
-          </Dropdown>
-        </FormControl>
-      </div>
-    </>
-  )
+interface SelectProps {
+  options: Option[];
+  placeholder?: string;
+  onChange: (value: string) => void;
+  className?: string;
+  defaultValue?: string;
 }
+
+const Select: React.FC<SelectProps> = ({
+  options,
+  placeholder = 'Select an option',
+  onChange,
+  className = '',
+  defaultValue = '',
+}) => {
+  // Manage the selected value
+  const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedValue(value);
+    onChange(value); // Trigger parent handler
+  };
+
+  return (
+    <div className="relative">
+      <select
+        className={`h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 ${
+          selectedValue ? 'text-gray-800 dark:text-white/90' : 'text-gray-400 dark:text-gray-400'
+        } ${className}`}
+        value={selectedValue}
+        onChange={handleChange}
+      >
+        {/* Placeholder option */}
+        <option value="" disabled className="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+          {placeholder}
+        </option>
+        {/* Map over options */}
+        {options.map(option => (
+          <option
+            key={option.value}
+            value={option.value}
+            className="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+          >
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+        <ChevronDownIcon />
+      </span>
+    </div>
+  );
+};
+
+export default Select;

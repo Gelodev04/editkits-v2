@@ -33,7 +33,8 @@ export default function InputField(props: InputFieldProps) {
             type={props.type}
             onChange={props.onChange}
             placeholder={props.placeholder}
-            value={props.value}
+
+            defaultValue={props.value}
           />
         )}
       </div>

@@ -17,7 +17,7 @@ import Play from '@/components/icons/Play';
 import Menu from '@/components/Menu';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
-import Spinner from '@/components/Spinner';
+import { Spinner } from '@/components/Spinner';
 import Button from '@/components/ui/button/Button';
 import { DatePickerWithRange } from '@/components/ui/DateRangePicker';
 import { useSidebar } from '@/context/SidebarContext';

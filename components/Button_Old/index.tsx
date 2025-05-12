@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Spinner from "@/components/Spinner";
+import {Spinner} from "@/components/Spinner";
 
 type ButtonProps = {
   label: string;

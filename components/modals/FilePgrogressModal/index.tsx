@@ -15,7 +15,7 @@ import {
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import Button from '@/components/ui/button/Button';
 import Rocket from '@/public/images/rocket.gif';
-import { usePreviewVideoQuery } from '@/services/api/file';
+import { usePreviewVideoQuery, useStatusQuery } from '@/services/api/file';
 import { downloadFile } from '@/lib/utils';
 import VideoPreviewModal from '../VideoPreviewModal';
 // import { IoDownloadOutline } from 'react-icons/io5';
@@ -29,14 +29,20 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
 
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
 
-  console.log('this is data: ', data);
+  
 
-  const { refetch: refetchVideoUrl } = usePreviewVideoQuery({ fileId }, { skip: !fileId });
+  const { data: processedData, refetch: refetchVideoUrl } = usePreviewVideoQuery({ fileId }, { skip: !fileId });
 
+  const {data : processedStatus} = useStatusQuery({ fileId }, { skip: !fileId })
+
+  
+  
   useEffect(() => {
     // If we receive valid job data with status, mark the job as started
-    if (data && data.status && progressModal) {
+    if (data && data.output_file_ids && data.status && progressModal) {
       setJobStarted(true);
+      console.log('this is data: ', data);
+      setFileId(data.output_file_ids[0]);
     } else if (!progressModal) {
       // Reset the job started flag when modal is closed
       setJobStarted(false);
@@ -66,8 +72,15 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const isCompleted = jobStarted && data?.status === 'COMPLETED';
   const isFailed = jobStarted && (data?.status === 'FAILED' || data?.status === 'CANCELLED');
 
+
   // Default to processing state if no other state is determined but modal is open
   const isProcessing = progressModal && !isPending && !isCompleted && !isFailed;
+
+  // console.log('this is processedData: ', processedData);
+
+  console.log('this is processedStatus: ', processedStatus);
+
+
 
   // Calculate progress percentage safely
   const progressPercentage =
@@ -215,10 +228,10 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                           Your video has been successfully processed and is ready to use.
                         </p>
 
-                        {fetchedData?.metadata?.thumbnail_url && (
+                        {processedStatus?.metadata?.thumbnail_url && (
                           <div className="relative w-full rounded-lg overflow-hidden mb-5 border border-gray-200 dark:border-gray-700">
                             <Image
-                              src={fetchedData.metadata.thumbnail_url}
+                              src={processedStatus.metadata.thumbnail_url}
                               width={400}
                               height={225}
                               alt="Processed video thumbnail"
@@ -251,7 +264,8 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 </button>
                                 <button
                                   onClick={async () => {
-                                    await setFileId(data.output_file_ids[0]);
+                                   setFileId(data.output_file_ids[0]);
+                                    console.log('this is processedData: ', processedData);
                                     const result = await refetchVideoUrl();
                                     const resultData = result.data as { url: string } | undefined;
                                     if (resultData?.url) {

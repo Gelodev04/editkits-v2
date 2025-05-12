@@ -140,32 +140,32 @@ export default function ResizeVideo() {
   };
 
   // Listen for direct file metadata from file ID uploads
-  useEffect(() => {
-    const handleFileMetadataReady = event => {
-      const fileData = event.detail;
+  // useEffect(() => {
+  //   const handleFileMetadataReady = event => {
+  //     const fileData = event.detail;
 
-      // If resetPrevious flag is set, ensure we clear existing data first
-      if (fileData.resetPrevious) {
-        setFetchedData(null);
-        // Short delay to ensure state is updated before setting new data
-        setTimeout(() => {
-          if (fileData && fileData.metadata) {
-            console.log('File metadata received directly (after reset):', fileData);
-            setFetchedData(fileData);
-          }
-        }, 50);
-      } else if (fileData && fileData.metadata) {
-        setFetchedData(fileData);
-        console.log('File metadata received directly:', fileData);
-      }
-    };
+  //     // If resetPrevious flag is set, ensure we clear existing data first
+  //     if (fileData.resetPrevious) {
+  //       setFetchedData(null);
+  //       // Short delay to ensure state is updated before setting new data
+  //       setTimeout(() => {
+  //         if (fileData && fileData.metadata) {
+  //           console.log('File metadata received directly (after reset):', fileData);
+  //           setFetchedData(fileData);
+  //         }
+  //       }, 50);
+  //     } else if (fileData && fileData.metadata) {
+  //       setFetchedData(fileData);
+  //       console.log('File metadata received directly:', fileData);
+  //     }
+  //   };
 
-    window.addEventListener('file-metadata-ready', handleFileMetadataReady);
+  //   window.addEventListener('file-metadata-ready', handleFileMetadataReady);
 
-    return () => {
-      window.removeEventListener('file-metadata-ready', handleFileMetadataReady);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('file-metadata-ready', handleFileMetadataReady);
+  //   };
+  // }, []);
 
   // Reset states when file changes
   useEffect(() => {
@@ -962,8 +962,6 @@ export default function ResizeVideo() {
           isUploading={isUploading}
           setIsUploading={setIsUploading}
           setProgress={setProgress}
-          error={errorMessage}
-          setErrorMessage={setErrorMessage}
           progress={progress}
         />
       )}

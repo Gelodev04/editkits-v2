@@ -22,8 +22,6 @@ export type UploadModalProps = {
   setIsUploading?: any;
   setProgress?: (e: React.SetStateAction<number>) => void;
   progress?: number;
-  error?: string;
-  setErrorMessage?: (e: React.SetStateAction<any>) => void;
 };
 
 const style = {
@@ -45,7 +43,7 @@ export default function UploadFileModal(props: UploadModalProps) {
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [fileSelected, setFileSelected] = useState(false);
-  // const urlInputRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string | null>(null);
   const fileIdInputRef = useRef<HTMLInputElement>(null);
   const [fileIdError, setFileIdError] = useState<string | null>(null);
   const [fileIdToCheck, setFileIdToCheck] = useState<string | null>(null);
@@ -79,9 +77,7 @@ export default function UploadFileModal(props: UploadModalProps) {
       if (response?.error) {
         // Handle 404 and other errors
         const errorMsg = response.error.data?.errorMsg || 'An error occurred during upload';
-        if (props.setErrorMessage) {
-          props.setErrorMessage(errorMsg);
-        }
+        setError(errorMsg);
         toast.error(errorMsg);
         isUploadingRef.current = false;
         setIsProcessing(false);
@@ -114,9 +110,7 @@ export default function UploadFileModal(props: UploadModalProps) {
       } catch (error: any) {
         console.error('Upload error:', error);
         const errorMsg = error.response?.data?.errorMsg || 'An error occurred during upload';
-        if (props.setErrorMessage) {
-          props.setErrorMessage(errorMsg);
-        }
+        setError(errorMsg);
         toast.error(errorMsg);
         setIsProcessing(false);
         setUploadedFileName(null);
@@ -126,9 +120,7 @@ export default function UploadFileModal(props: UploadModalProps) {
     } catch (error: any) {
       console.error('Upload error:', error);
       const errorMsg = error.response?.data?.errorMsg || 'An error occurred during upload';
-      if (props.setErrorMessage) {
-        props.setErrorMessage(errorMsg);
-      }
+      setError(errorMsg);
       toast.error(errorMsg);
       setIsProcessing(false);
       setUploadedFileName(null);
@@ -271,8 +263,8 @@ export default function UploadFileModal(props: UploadModalProps) {
   }, [fileStatusData, fileIdToCheck, props, reqError]);
 
   const handleFileIdUpload = () => {
-    if (reqError && props.setErrorMessage) {
-      props.setErrorMessage(reqError);
+    if (reqError) {
+      setError(reqError?.data?.errorMsg || 'An error occurred');
     }
     if (isProcessing || isFileStatusLoading || !fileIdInputRef.current?.value) return;
 
@@ -526,7 +518,9 @@ export default function UploadFileModal(props: UploadModalProps) {
             )}
 
             {/* Action Buttons */}
-            <div className="flex justify-end"></div>
+            <div className="flex justify-end">
+              {/* Add any action buttons here if needed */}
+            </div>
           </div>
         </Box>
       </Fade>

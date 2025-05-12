@@ -363,7 +363,9 @@ export default function JobStatus() {
                         {truncateFileName(job.input_file_name)}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
-                        {getFileTypeFromExtension(job.input_file_name.split('.').pop())}
+                        {getFileTypeFromExtension(
+                          job.input_file_name ? job.input_file_name.split('.').pop() : undefined
+                        ) || 'N/A'}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-normal dark:text-gray-400/90 text-gray-800 border border-gray-100 dark:border-white/[0.05] text-theme-sm whitespace-nowrap">
                         {new Intl.DateTimeFormat('sv-SE', {

@@ -22,6 +22,8 @@ export type UploadModalProps = {
   setIsUploading?: any;
   setProgress?: (e: React.SetStateAction<number>) => void;
   progress?: number;
+  error?: string;
+  setErrorMessage?: (e: React.SetStateAction<any>) => void;
 };
 
 const style = {
@@ -49,10 +51,11 @@ export default function UploadFileModal(props: UploadModalProps) {
   const [fileIdToCheck, setFileIdToCheck] = useState<string | null>(null);
 
   // Use the query hook to fetch file status
-  const { data: fileStatusData, isLoading: isFileStatusLoading } = useStatusQuery(
-    { fileId: fileIdToCheck },
-    { skip: !fileIdToCheck }
-  );
+  const result = useStatusQuery({ fileId: fileIdToCheck }, { skip: !fileIdToCheck });
+
+  const fileStatusData = result.data;
+  const isFileStatusLoading = result.isLoading;
+  const reqError = result.error as { data: { errorMsg: string } } | null;
 
   // Create a ref to track if a file upload is in progress
   const isUploadingRef = useRef(false);
@@ -61,7 +64,6 @@ export default function UploadFileModal(props: UploadModalProps) {
     if (!props.setIsUploading || !props.upload || isProcessing || isUploadingRef.current) return;
 
     try {
-      // Set the ref to indicate uploading is in progress
       isUploadingRef.current = true;
       setIsProcessing(true);
       setUploadedFileName(file.name);
@@ -75,7 +77,12 @@ export default function UploadFileModal(props: UploadModalProps) {
       });
 
       if (response?.error) {
-        toast.error(response.error.data.errorMsg);
+        // Handle 404 and other errors
+        const errorMsg = response.error.data?.errorMsg || 'An error occurred during upload';
+        if (props.setErrorMessage) {
+          props.setErrorMessage(errorMsg);
+        }
+        toast.error(errorMsg);
         isUploadingRef.current = false;
         setIsProcessing(false);
         props.setIsUploading(false);
@@ -86,28 +93,43 @@ export default function UploadFileModal(props: UploadModalProps) {
         props.setFileId(response.data.file_id);
       }
 
-      // Close the modal immediately, but continue with upload in the background
+      // Close modal immediately but continue upload in background
       props.setUploadModal(false);
 
-      // Note: fileUploader now handles the upload without keeping the modal open
-      await fileUploader(
-        response.data.url,
-        file,
-        null, // Don't close the modal again as we've already closed it
-        props.setIsUploading,
-        props.setProgress,
-        true // Close modal immediately
-      );
+      try {
+        await fileUploader(
+          response.data.url,
+          file,
+          null,
+          props.setIsUploading,
+          props.setProgress,
+          true
+        );
 
-      // Reset states only after upload is complete
-      setIsProcessing(false);
-      setUploadedFileName(null);
-      isUploadingRef.current = false;
-      console.log('File uploaded successfully!', uploadedFileName);
-      toast.success('File uploaded successfully!');
-    } catch (error) {
+        setIsProcessing(false);
+        setUploadedFileName(null);
+        isUploadingRef.current = false;
+        console.log('File uploaded successfully!', uploadedFileName);
+        toast.success('File uploaded successfully!');
+      } catch (error: any) {
+        console.error('Upload error:', error);
+        const errorMsg = error.response?.data?.errorMsg || 'An error occurred during upload';
+        if (props.setErrorMessage) {
+          props.setErrorMessage(errorMsg);
+        }
+        toast.error(errorMsg);
+        setIsProcessing(false);
+        setUploadedFileName(null);
+        props.setIsUploading(false);
+        isUploadingRef.current = false;
+      }
+    } catch (error: any) {
       console.error('Upload error:', error);
-      toast.error('An error occurred during upload');
+      const errorMsg = error.response?.data?.errorMsg || 'An error occurred during upload';
+      if (props.setErrorMessage) {
+        props.setErrorMessage(errorMsg);
+      }
+      toast.error(errorMsg);
       setIsProcessing(false);
       setUploadedFileName(null);
       props.setIsUploading(false);
@@ -166,10 +188,22 @@ export default function UploadFileModal(props: UploadModalProps) {
 
   // Watch for changes in fileStatusData and handle accordingly
   React.useEffect(() => {
-    if (!fileStatusData || !fileIdToCheck) return;
+    if (!fileStatusData || !fileIdToCheck) {
+      // Reset processing state if there's an error
+      if (reqError) {
+        setIsProcessing(false);
+        isUploadingRef.current = false;
+        setFileIdError(reqError?.data?.errorMsg || 'File not found');
+        setFileIdToCheck(null);
+      }
+      return;
+    }
 
+    console.log('fileStatusData :', fileStatusData);
+    console.log('error :', reqError?.data?.errorMsg);
     try {
       // Process the file status data
+      console.log(fileStatusData);
       if (fileStatusData.status === 'EXPIRED') {
         setFileIdError('File has expired, please upload it again');
       } else if (fileStatusData.status === 'COMMITTED') {
@@ -234,9 +268,12 @@ export default function UploadFileModal(props: UploadModalProps) {
       // Reset fileIdToCheck after processing
       setFileIdToCheck(null);
     }
-  }, [fileStatusData, fileIdToCheck, props]);
+  }, [fileStatusData, fileIdToCheck, props, reqError]);
 
   const handleFileIdUpload = () => {
+    if (reqError && props.setErrorMessage) {
+      props.setErrorMessage(reqError);
+    }
     if (isProcessing || isFileStatusLoading || !fileIdInputRef.current?.value) return;
 
     const fileId = fileIdInputRef.current.value.trim();
@@ -489,23 +526,7 @@ export default function UploadFileModal(props: UploadModalProps) {
             )}
 
             {/* Action Buttons */}
-            <div className="flex justify-end">
-              {/* <Button
-                onClick={() => {
-                  if (!isProcessing && !isUploadingRef.current) props.setUploadModal(false);
-                }}
-                disabled={isProcessing || isUploadingRef.current}
-                variant="outline"
-                className={
-                  isProcessing || isUploadingRef.current ? 'opacity-50 cursor-not-allowed' : ''
-                }
-              >
-                Cancel
-              </Button> */}
-              {/* {activeTab === 'device' && !isProcessing && !isUploadingRef.current && (
-                <Button onClick={handleManualUpload}>Upload</Button>
-              )} */}
-            </div>
+            <div className="flex justify-end"></div>
           </div>
         </Box>
       </Fade>

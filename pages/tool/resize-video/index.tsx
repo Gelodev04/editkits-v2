@@ -962,6 +962,8 @@ export default function ResizeVideo() {
           isUploading={isUploading}
           setIsUploading={setIsUploading}
           setProgress={setProgress}
+          error={errorMessage}
+          setErrorMessage={setErrorMessage}
           progress={progress}
         />
       )}

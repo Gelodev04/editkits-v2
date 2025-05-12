@@ -978,7 +978,6 @@ export default function ResizeVideo() {
           }
         }}
         data={jobData}
-        fetchedData={fetchedData}
       />
       <ErrorModal
         isOpen={errorModalOpen}

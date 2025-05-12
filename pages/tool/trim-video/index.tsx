@@ -584,7 +584,6 @@ export default function TrimVideo() {
           }
         }}
         data={jobData}
-        fetchedData={fetchedData}
       />
       <ErrorModal
         isOpen={errorModalOpen}

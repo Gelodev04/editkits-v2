@@ -55,6 +55,8 @@ export default function UploadFileModal(props: UploadModalProps) {
   const isFileStatusLoading = result.isLoading;
   const reqError = result.error as { data: { errorMsg: string } } | null;
 
+  console.log(error)
+
   // Create a ref to track if a file upload is in progress
   const isUploadingRef = useRef(false);
 

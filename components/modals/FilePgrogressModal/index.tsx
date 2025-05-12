@@ -20,7 +20,7 @@ import { downloadFile } from '@/lib/utils';
 import VideoPreviewModal from '../VideoPreviewModal';
 // import { IoDownloadOutline } from 'react-icons/io5';
 
-export default function FileProgressModal({ progressModal, setProgressModal, data, fetchedData }) {
+export default function FileProgressModal({ progressModal, setProgressModal, data }) {
   const router = useRouter();
   // Add state to track if a job has actually been started
   const [jobStarted, setJobStarted] = useState(false);

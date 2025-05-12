@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,25 +18,106 @@ import Rocket from '@/public/images/rocket.gif';
 import { usePreviewVideoQuery, useStatusQuery } from '@/services/api/file';
 import { downloadFile } from '@/lib/utils';
 import VideoPreviewModal from '../VideoPreviewModal';
-// import { IoDownloadOutline } from 'react-icons/io5';
 
 export default function FileProgressModal({ progressModal, setProgressModal, data }) {
   const router = useRouter();
-  // Add state to track if a job has actually been started
   const [jobStarted, setJobStarted] = useState(false);
   const [fileId, setFileId] = useState<string | null>(null);
   const [video, setVideo] = useState<string | null>(null);
-
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
+  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
 
-  
+  const { data: processedData, refetch: refetchVideoUrl } = usePreviewVideoQuery(
+    { fileId },
+    { skip: !fileId }
+  );
 
-  const { data: processedData, refetch: refetchVideoUrl } = usePreviewVideoQuery({ fileId }, { skip: !fileId });
+  const {
+    refetch: refetchStatus
+  } = useStatusQuery(
+    { fileId },
+    { skip: !fileId }
+  );
 
-  const {data : processedStatus} = useStatusQuery({ fileId }, { skip: !fileId })
+  const pollFileStatus = useCallback(async () => {
+    if (!fileId) return;
 
-  
-  
+    try {
+      const result = await refetchStatus();
+      const status = result.data?.status;
+
+      if (status === 'COMMITTED') {
+        // Stop polling
+        if (pollingInterval) {
+          clearInterval(pollingInterval);
+          setPollingInterval(null);
+        }
+
+        // Set thumbnail URL if available
+        if (result.data?.metadata?.thumbnail_url) {
+          setThumbnailUrl(result.data.metadata.thumbnail_url);
+        }
+      } else if (status === 'ERROR') {
+        // Stop polling in case of error
+        if (pollingInterval) {
+          clearInterval(pollingInterval);
+          setPollingInterval(null);
+        }
+      }
+    } catch (error) {
+      console.error('Error polling file status:', error);
+      // Stop polling in case of error
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+        setPollingInterval(null);
+      }
+    }
+  }, [fileId, pollingInterval, refetchStatus]);
+
+  // Start polling when fileId is set
+  useEffect(() => {
+    // Clear any existing interval
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+    }
+
+    // If we have a fileId, start polling
+    if (fileId) {
+      // Initial immediate check
+      pollFileStatus();
+
+      // Then set up interval polling
+      const interval = setInterval(pollFileStatus, 5000); // Poll every 5 seconds
+      setPollingInterval(interval);
+
+      // Cleanup function
+      return () => {
+        if (interval) {
+          clearInterval(interval);
+        }
+      };
+    }
+  }, [fileId, pollFileStatus]);
+
+  useEffect(() => {
+    // If we receive valid job data with status, mark the job as started
+    if (data && data.output_file_ids && data.status && progressModal) {
+      setJobStarted(true);
+      setFileId(data.output_file_ids[0]);
+    } else if (!progressModal) {
+      // Reset the job started flag when modal is closed
+      setJobStarted(false);
+      // Clear polling interval
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+        setPollingInterval(null);
+      }
+    }
+  }, [data, progressModal]);
+
+
+
   useEffect(() => {
     // If we receive valid job data with status, mark the job as started
     if (data && data.output_file_ids && data.status && progressModal) {
@@ -75,10 +156,6 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
 
   // Default to processing state if no other state is determined but modal is open
   const isProcessing = progressModal && !isPending && !isCompleted && !isFailed;
-
-  // console.log('this is processedData: ', processedData);
-
-  console.log('this is processedStatus: ', processedStatus);
 
 
 
@@ -228,10 +305,11 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                           Your video has been successfully processed and is ready to use.
                         </p>
 
-                        {processedStatus?.metadata?.thumbnail_url && (
+
+                        {thumbnailUrl && (
                           <div className="relative w-full rounded-lg overflow-hidden mb-5 border border-gray-200 dark:border-gray-700">
                             <Image
-                              src={processedStatus.metadata.thumbnail_url}
+                              src={thumbnailUrl}
                               width={400}
                               height={225}
                               alt="Processed video thumbnail"
@@ -264,7 +342,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 </button>
                                 <button
                                   onClick={async () => {
-                                   setFileId(data.output_file_ids[0]);
+                                    setFileId(data.output_file_ids[0]);
                                     console.log('this is processedData: ', processedData);
                                     const result = await refetchVideoUrl();
                                     const resultData = result.data as { url: string } | undefined;

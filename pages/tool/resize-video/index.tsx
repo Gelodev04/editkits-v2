@@ -251,21 +251,29 @@ export default function ResizeVideo() {
   useEffect(() => {
     // Don't fetch data while uploading
     if (isUploading) return;
-
+  
     const interval = setInterval(() => {
-      //@ts-ignore // Ignore type issues with the API response
-      if (data?.status !== 'COMMITTED' && data?.status !== 'ERROR' && fileId) {
-        refetch();
-      }
-
-      // Only update fetchedData if we have actual data and not uploading
-      if (data && !isUploading) {
-        //@ts-ignore // Ignore type issues with the API response
-        setFetchedData(data);
-        console.log('data', data);
+      // Only poll if we have a fileId
+      if (fileId) {
+        // Continue polling until we get a final status (COMMITTED or ERROR)
+        // or until we have the metadata we need
+        const shouldContinuePolling = 
+          (!data?.status || (data.status !== 'COMMITTED' && data.status !== 'ERROR')) || 
+          !data?.metadata;
+  
+        if (shouldContinuePolling) {
+          refetch();
+        }
+  
+        // Update fetchedData if we have new data
+        if (data && !isUploading) {
+          setFetchedData(data);
+          console.log('data', data);
+        }
       }
     }, 2000);
-
+  
+    // Cleanup interval on unmount or when dependencies change
     return () => clearInterval(interval);
   }, [data, fileId, refetch, isUploading]);
 

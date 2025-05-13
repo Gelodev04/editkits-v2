@@ -5,7 +5,7 @@ import { lato, montserrat, opensans } from '@/lib/fonts';
 import toast from 'react-hot-toast';
 import { fileUploader } from '@/lib/uploadFile';
 import DropzoneComponent from '@/components/DropZone.tsx';
-import { HiFingerPrint, HiOutlineDeviceMobile, HiX, HiExclamation } from 'react-icons/hi';
+import { HiFingerPrint, HiOutlineDeviceMobile, HiX } from 'react-icons/hi';
 import Button from '@/components/ui/button/Button';
 import { Modal } from '@/components/Modal';
 import { useStatusQuery } from '@/services/api/file';

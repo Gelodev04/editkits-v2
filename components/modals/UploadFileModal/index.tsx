@@ -493,8 +493,8 @@ export default function UploadFileModal(props: UploadModalProps) {
                     />
                   </div>
                   {fileIdError && (
-                    <div className="mt-2 flex items-start p-3 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 rounded-md text-sm">
-                      <HiExclamation className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
+                    <div className="mt-1 flex items-start pl-2 text-red-500 text-sm">
+                      {/* <HiExclamation className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" /> */}
                       <span>{fileIdError}</span>
                     </div>
                   )}

@@ -59,7 +59,7 @@ export default function ResizeVideo() {
   // Track form submission attempts
   const [formSubmitAttempted, setFormSubmitAttempted] = useState(false);
 
-    const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
+  const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
   const [presetWidth, setPresetWidth] = useState<number | undefined>(undefined);
   const [presetHeight, setPresetHeight] = useState<number | undefined>(undefined);
   const [uploadFileModal, setUploadFileModal] = useState(false);
@@ -251,20 +251,20 @@ export default function ResizeVideo() {
   useEffect(() => {
     // Don't fetch data while uploading
     if (isUploading) return;
-  
+
     const interval = setInterval(() => {
       // Only poll if we have a fileId
       if (fileId) {
         // Continue polling until we get a final status (COMMITTED or ERROR)
         // or until we have the metadata we need
-        const shouldContinuePolling = 
-          (!data?.status || (data.status !== 'COMMITTED' && data.status !== 'ERROR')) || 
+        const shouldContinuePolling =
+          (!data?.status || (data.status !== 'COMMITTED' && data.status !== 'ERROR')) ||
           !data?.metadata;
-  
+
         if (shouldContinuePolling) {
           refetch();
         }
-  
+
         // Update fetchedData if we have new data
         if (data && !isUploading) {
           setFetchedData(data);
@@ -272,7 +272,7 @@ export default function ResizeVideo() {
         }
       }
     }, 2000);
-  
+
     // Cleanup interval on unmount or when dependencies change
     return () => clearInterval(interval);
   }, [data, fileId, refetch, isUploading]);
@@ -487,6 +487,7 @@ export default function ResizeVideo() {
     try {
       const response = await commitJob({ job_id: jobId });
 
+
       if (response.error) {
         console.error('Error committing job:', response.error);
         // Get the error message from the response if available
@@ -494,6 +495,7 @@ export default function ResizeVideo() {
           (response.error as any).data?.errorMsg ||
           (response.error as any).errMsg ||
           'Failed to commit job';
+          setProgressModal(false);
         setErrorMessage(errorMsg);
         setErrorModalOpen(true);
         return;
@@ -714,11 +716,10 @@ export default function ResizeVideo() {
                         updateSettings('width', e.target.value);
                         setWidthTouched(true);
                       }}
-                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
-                        shouldShowError(settings.width, widthTouched)
+                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${shouldShowError(settings.width, widthTouched)
                           ? 'border-red-500 focus:ring-red-500'
                           : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
-                      }`}
+                        }`}
                     />
                     {shouldShowError(settings.width, widthTouched) && (
                       <p className="mt-1 text-sm text-red-500">Width is required</p>
@@ -743,11 +744,10 @@ export default function ResizeVideo() {
                         updateSettings('height', e.target.value);
                         setHeightTouched(true);
                       }}
-                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
-                        shouldShowError(settings.height, heightTouched)
+                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${shouldShowError(settings.height, heightTouched)
                           ? 'border-red-500 focus:ring-red-500'
                           : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
-                      }`}
+                        }`}
                     />
                     {shouldShowError(settings.height, heightTouched) && (
                       <p className="mt-1 text-sm text-red-500">Height is required</p>
@@ -770,11 +770,10 @@ export default function ResizeVideo() {
                         placeholder="#000000"
                         value={settings.color}
                         onChange={handleColorChange}
-                        className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
-                          settings.isColorValid
+                        className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${settings.isColorValid
                             ? 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
                             : 'border-red-500 focus:ring-red-500'
-                        }`}
+                          }`}
                       />
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <div

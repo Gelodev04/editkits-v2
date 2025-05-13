@@ -300,6 +300,7 @@ export default function TrimVideo() {
           (response.error as any).errMsg ||
           'Failed to commit job';
         setErrorMessage(errorMsg);
+        setProgressModal(false);
         setErrorModalOpen(true);
         return;
       }

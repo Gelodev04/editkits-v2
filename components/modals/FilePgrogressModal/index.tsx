@@ -49,6 +49,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
 
       if (status === 'COMMITTED') {
         // Stop polling
+        
         if (pollingInterval) {
           clearInterval(pollingInterval);
           setPollingInterval(null);
@@ -57,6 +58,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
         // Set thumbnail URL if available
         if (result.data?.metadata?.thumbnail_url) {
           setThumbnailUrl(result.data.metadata.thumbnail_url);
+          setFileId(null);
         }
       } else if (status === 'ERROR') {
         // Stop polling in case of error
@@ -78,6 +80,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   // Start polling when fileId is set
   useEffect(() => {
     // Clear any existing interval
+
     if (pollingInterval) {
       clearInterval(pollingInterval);
     }
@@ -105,6 +108,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
     if (data && data.output_file_ids && data.status && progressModal) {
       setJobStarted(true);
       setFileId(data.output_file_ids[0]);
+      setThumbnailUrl(null);
     } else if (!progressModal) {
       // Reset the job started flag when modal is closed
       setJobStarted(false);
@@ -342,7 +346,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 </button>
                                 <button
                                   onClick={async () => {
-                                    setFileId(data.output_file_ids[0]);
+                                    await setFileId(data.output_file_ids[0]);
                                     console.log('this is processedData: ', processedData);
                                     const result = await refetchVideoUrl();
                                     const resultData = result.data as { url: string } | undefined;

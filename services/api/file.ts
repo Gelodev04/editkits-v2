@@ -76,6 +76,7 @@ export const fileApi = api.injectEndpoints({
       
       },  
       transformResponse: response => response,
+      
     }),
   }),
 });
@@ -85,6 +86,7 @@ export const fileApi = api.injectEndpoints({
 export const {
   useUploadMutation,
   useStatusQuery,
+  useLazyStatusQuery,
   useGetRecentFilesQuery,
   usePreviewVideoQuery,
   useLazyPreviewVideoQuery,

@@ -48,12 +48,11 @@ export default function TrimVideo() {
   const [fileId, setFileId] = React.useState<string | null>(null);
   const [jobId, setJobId] = React.useState(null);
   const [upload] = useUploadMutation();
-  const { data: _data, refetch, ...others } = useStatusQuery({ fileId }, { skip: !fileId });
+  const { data: _data, refetch } = useStatusQuery({ fileId }, { skip: !fileId });
 
   // this is not a concrete solution, but a workaround
   const data = fileId ? _data : null;
-
-  // console.log("others: ", others)
+  
   console.log("FileId: ", fileId)
   const { data: jobData, refetch: refetchJobData } = useJobStatusQuery(
     { job_id: jobId },

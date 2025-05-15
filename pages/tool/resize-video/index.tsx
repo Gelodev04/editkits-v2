@@ -71,7 +71,7 @@ export default function ResizeVideo() {
   const [isUploading, setIsUploading] = useState(false);
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
-  const [selectedAspectRatio, setSelectedAspectRatio] = useState('1:1');
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState('Custom');
   const [selectedPreset, setSelectedPreset] = useState('None');
   const videoRef = useRef(null);
 
@@ -82,8 +82,18 @@ export default function ResizeVideo() {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const calculateHeight = (width, aspectX, aspectY) => Math.floor(width * (aspectY / aspectX));
-  const calculateWidth = (height, aspectX, aspectY) => Math.floor(height * (aspectX / aspectY));
+  // Improved calculation functions with proper type handling and precision
+  const calculateHeight = (width, aspectX, aspectY) => {
+    if (typeof width !== 'number' || isNaN(width) || width <= 0) return undefined;
+    if (typeof aspectX !== 'number' || aspectX <= 0 || typeof aspectY !== 'number' || aspectY <= 0) return undefined;
+    return Math.floor(width * (aspectY / aspectX));
+  };
+  
+  const calculateWidth = (height, aspectX, aspectY) => {
+    if (typeof height !== 'number' || isNaN(height) || height <= 0) return undefined;
+    if (typeof aspectX !== 'number' || aspectX <= 0 || typeof aspectY !== 'number' || aspectY <= 0) return undefined;
+    return Math.floor(height * (aspectX / aspectY));
+  };
 
   const updateSettings = (key, value) => {
     setSettings(prev => ({ ...prev, [key]: value }));
@@ -139,41 +149,12 @@ export default function ResizeVideo() {
     setClearFileInfo(true);
   };
 
-  // Listen for direct file metadata from file ID uploads
-  // useEffect(() => {
-  //   const handleFileMetadataReady = event => {
-  //     const fileData = event.detail;
-
-  //     // If resetPrevious flag is set, ensure we clear existing data first
-  //     if (fileData.resetPrevious) {
-  //       setFetchedData(null);
-  //       // Short delay to ensure state is updated before setting new data
-  //       setTimeout(() => {
-  //         if (fileData && fileData.metadata) {
-  //           console.log('File metadata received directly (after reset):', fileData);
-  //           setFetchedData(fileData);
-  //         }
-  //       }, 50);
-  //     } else if (fileData && fileData.metadata) {
-  //       setFetchedData(fileData);
-  //       console.log('File metadata received directly:', fileData);
-  //     }
-  //   };
-
-  //   window.addEventListener('file-metadata-ready', handleFileMetadataReady);
-
-  //   return () => {
-  //     window.removeEventListener('file-metadata-ready', handleFileMetadataReady);
-  //   };
-  // }, []);
-
   // Reset states when file changes
   useEffect(() => {
     if (file === null) {
       resetStates();
     }
   }, [file]);
-
 
   // Watch for file changes in the UploadFileModal
   const handleFileChange = newFile => {
@@ -266,30 +247,35 @@ export default function ResizeVideo() {
     return () => clearInterval(interval);
   }, [data, fileId, refetch, isUploading]);
 
-  // When width or height changes, update the other dimension to maintain aspect ratio
+  // Enhanced effect for maintaining aspect ratio when width or height changes
   useEffect(() => {
+
+    if (selectedAspectRatio === 'Custom') return;
     if (!isCustom) {
       return; // Skip aspect ratio calculation for presets
     }
 
-    if (
-      activeInput === 'width' &&
-      typeof settings.width === 'number' &&
-      settings.width > 0 &&
-      settings.aspectX > 0 &&
-      settings.aspectY > 0
-    ) {
-      const calculatedHeight = calculateHeight(settings.width, settings.aspectX, settings.aspectY);
-      updateSettings('height', calculatedHeight);
-    } else if (
-      activeInput === 'height' &&
-      typeof settings.height === 'number' &&
-      settings.height > 0 &&
-      settings.aspectX > 0 &&
-      settings.aspectY > 0
-    ) {
-      const calculatedWidth = calculateWidth(settings.height, settings.aspectX, settings.aspectY);
-      updateSettings('width', calculatedWidth);
+    // Skip calculation if we're not in an active input state
+    if (!activeInput) {
+      return;
+    }
+
+    // Convert values to numbers for safe calculation
+    const width = typeof settings.width === 'string' ? parseInt(settings.width, 10) : settings.width;
+    const height = typeof settings.height === 'string' ? parseInt(settings.height, 10) : settings.height;
+    const aspectX = settings.aspectX;
+    const aspectY = settings.aspectY;
+
+    if (activeInput === 'width' && width && width > 0 && aspectX > 0 && aspectY > 0) {
+      const calculatedHeight = calculateHeight(width, aspectX, aspectY);
+      if (calculatedHeight && calculatedHeight !== settings.height) {
+        updateSettings('height', calculatedHeight);
+      }
+    } else if (activeInput === 'height' && height && height > 0 && aspectX > 0 && aspectY > 0) {
+      const calculatedWidth = calculateWidth(height, aspectX, aspectY);
+      if (calculatedWidth && calculatedWidth !== settings.width) {
+        updateSettings('width', calculatedWidth);
+      }
     }
   }, [settings.width, settings.height, settings.aspectX, settings.aspectY, activeInput, isCustom]);
 
@@ -374,8 +360,7 @@ export default function ResizeVideo() {
       // Reset preset selection
       setSelectedPreset('None');
     } else {
-      // Switching to custom mode - reset aspect ratio
-      setSelectedAspectRatio('1:1');
+      setSelectedAspectRatio('Custom');
       // Reset dimension settings to current video dimensions if available
       if (fetchedData?.metadata?.width && fetchedData?.metadata?.height) {
         updateSettings('width', fetchedData.metadata.width);
@@ -474,7 +459,6 @@ export default function ResizeVideo() {
 
     try {
       const response = await commitJob({ job_id: jobId });
-
 
       if (response.error) {
         console.error('Error committing job:', response.error);

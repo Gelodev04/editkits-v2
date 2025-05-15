@@ -18,6 +18,7 @@ import Rocket from '@/public/images/rocket.gif';
 import { usePreviewVideoQuery, useStatusQuery } from '@/services/api/file';
 import { downloadFile } from '@/lib/utils';
 import VideoPreviewModal from '../VideoPreviewModal';
+import { SpinnerOne } from '@/components/Spinner';
 
 export default function FileProgressModal({ progressModal, setProgressModal, data, reset }) {
   const router = useRouter();
@@ -29,42 +30,50 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
   const [url, setUrl] = useState<string | null>(null);
 
+  const [status, setStatus] = useState<string | null>(null);
 
-  const { data: processedData, refetch: refetchVideoUrl } = usePreviewVideoQuery(
+  const { refetch: refetchVideoUrl } = usePreviewVideoQuery(
     { fileId },
-    { skip: !fileId }
+    { skip: !fileId || status !== 'COMMITTED'}
   );
 
   const {
-    refetch: refetchStatus
+    refetch: refetchStatus, 
   } = useStatusQuery(
     { fileId }, 
     { skip: !fileId }
   );
 
   useEffect(() => {
+    if (data?.output_file_ids?.[0]) {
+      const newFileId = data.output_file_ids[0];
+      setFileId(newFileId);
+    }
+  }, [data]);
+
+  
     const fetchData = async () => {
       if (data?.output_file_ids?.[0]) {
         const newFileId = data.output_file_ids[0];
         setFileId(newFileId);
-  
+        setStatus('COMMITTED'); // Ensure status is set to allow the query
+        
+        // Wait for state updates to propagate
         await new Promise(resolve => setTimeout(resolve, 0));
-  
+        
         try {
           const result = await refetchVideoUrl();
           const resultData = result.data as { url: string } | undefined;
           if (resultData?.url) {
             setUrl(resultData.url);
-            setVideo(resultData.url); // Set video URL immediately
+            setVideo(resultData.url);
           }
         } catch (error) {
           console.error('Error fetching video URL:', error);
         }
       }
     };
-  
-    fetchData();
-  }, [data, refetchVideoUrl]);
+
 
   const pollFileStatus = useCallback(async () => {
     if (!fileId) return;
@@ -73,8 +82,11 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
       const result = await refetchStatus();
       const status = result.data?.status;
 
+      console.log('Polling file result:', result);
+
       if (status === 'COMMITTED') {
         // Stop polling
+        setStatus(status);
         
         if (pollingInterval) {
           clearInterval(pollingInterval);
@@ -84,6 +96,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
         // Set thumbnail URL if available
         if (result.data?.metadata?.thumbnail_url) {
           setThumbnailUrl(result.data.metadata.thumbnail_url);
+          await fetchData();
           setFileId(null);
         }
       } else if (status === 'ERROR') {
@@ -127,7 +140,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
         }
       };
     }
-  }, [fileId, pollFileStatus]);
+  }, [fileId]);
 
   useEffect(() => {
     // If we receive valid job data with status, mark the job as started
@@ -337,9 +350,9 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                         <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-6">
                           Your video has been successfully processed and is ready to use.
                         </p>
+                        
 
-
-                        {thumbnailUrl && (
+                        {thumbnailUrl ? (
                           <div className="relative w-full rounded-lg overflow-hidden mb-5 border border-gray-200 dark:border-gray-700">
                             <Image
                               src={thumbnailUrl}
@@ -353,6 +366,10 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                               className="w-full h-auto object-cover aspect-video"
                               priority
                             />
+                          </div>
+                        ) : (
+                          <div className="flex justify-center mb-4">
+                            <SpinnerOne.lg />
                           </div>
                         )}
 
@@ -375,7 +392,10 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 </button>
                                 <button
                                   onClick={async () => {
+                                    await fetchData();
+
                                     if (url) {
+                                      console.log('Video URL:', url);
                                       setVideo(url);
                                       setVideoPreviewModal(true);
                                     } else {
@@ -390,7 +410,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 <button
                                   onClick={async e => {
                                     e.preventDefault();
-
+                                    await fetchData();
                                     try {
                                       if (url) {
                                         downloadFile(url, 'video.mp4');
@@ -464,7 +484,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
               </motion.div>
             </div>
           </div>
-          <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} url={video} />
+          <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} url={video} fileType={"VIDEO"} />
         </div>
       </Fade>
     </Modal>

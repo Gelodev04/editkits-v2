@@ -376,7 +376,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                 isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
               } ${
                 activeTab === 'device'
-                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                  ? 'text-blue-500 border-b-2 border-blue-500'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
@@ -393,7 +393,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                 isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
               } ${
                 activeTab === 'fileId'
-                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                  ? 'text-blue-500 border-b-2 border-blue-500'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >

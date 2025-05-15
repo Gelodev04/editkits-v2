@@ -174,16 +174,6 @@ export default function ResizeVideo() {
     }
   }, [file]);
 
-  // Reset states when uploading starts
-  useEffect(() => {
-    if (isUploading) {
-      resetStates();
-      setFileId(null);
-      // Immediately clear any data to prevent old thumbnails from showing
-      setFetchedData(null);
-      setProgress(0);
-    }
-  }, [isUploading]);
 
   // Watch for file changes in the UploadFileModal
   const handleFileChange = newFile => {
@@ -200,7 +190,6 @@ export default function ResizeVideo() {
         // Reset the clearFileInfo flag when a new file is selected
         setClearFileInfo(false);
       }, 50);
-      resetStates();
     }
   };
 
@@ -372,7 +361,7 @@ export default function ResizeVideo() {
   };
 
   // Fix the toggle logic
-  const toggleMode = newIsCustom => {
+  const toggleMode = (newIsCustom) => {
     setIsCustom(newIsCustom);
 
     // Reset active input when switching modes
@@ -460,7 +449,6 @@ export default function ResizeVideo() {
       // Don't clear fetchedData as it's needed for the thumbnail in the completion state
       // setFetchedData(null);
       setProgress(0);
-      resetStates();
       setClearFileInfo(true);
 
       await handleCommitJob(job_id);
@@ -555,7 +543,9 @@ export default function ResizeVideo() {
               <ToggleButton
                 label={isCustom ? 'Custom' : 'Preset'}
                 checked={isCustom}
-                onChange={() => toggleMode(!isCustom)}
+                onChange={() => {
+                  toggleMode(!isCustom)
+                }}
               />
             </div>
           </div>
@@ -974,16 +964,8 @@ export default function ResizeVideo() {
       )}
       <FileProgressModal
         progressModal={progressModal}
-        setProgressModal={value => {
-          setProgressModal(value);
-          if (!value) {
-            // When modal is closed, always do a complete reset
-            // Use setTimeout to ensure this happens after modal close animation
-            setTimeout(() => {
-              resetAllFileStates();
-            }, 300); // Increased from 100ms to 300ms to ensure smooth transitions
-          }
-        }}
+        setProgressModal={setProgressModal}
+        reset={resetStates}
         data={jobData}
       />
       <ErrorModal

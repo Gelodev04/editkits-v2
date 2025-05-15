@@ -19,7 +19,7 @@ import { usePreviewVideoQuery, useStatusQuery } from '@/services/api/file';
 import { downloadFile } from '@/lib/utils';
 import VideoPreviewModal from '../VideoPreviewModal';
 
-export default function FileProgressModal({ progressModal, setProgressModal, data }) {
+export default function FileProgressModal({ progressModal, setProgressModal, data, reset }) {
   const router = useRouter();
   const [jobStarted, setJobStarted] = useState(false);
   const [fileId, setFileId] = useState<string | null>(null);
@@ -27,6 +27,8 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
+  const [url, setUrl] = useState<string | null>(null);
+
 
   const { data: processedData, refetch: refetchVideoUrl } = usePreviewVideoQuery(
     { fileId },
@@ -36,9 +38,33 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const {
     refetch: refetchStatus
   } = useStatusQuery(
-    { fileId },
+    { fileId }, 
     { skip: !fileId }
   );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (data?.output_file_ids?.[0]) {
+        const newFileId = data.output_file_ids[0];
+        setFileId(newFileId);
+  
+        await new Promise(resolve => setTimeout(resolve, 0));
+  
+        try {
+          const result = await refetchVideoUrl();
+          const resultData = result.data as { url: string } | undefined;
+          if (resultData?.url) {
+            setUrl(resultData.url);
+            setVideo(resultData.url); // Set video URL immediately
+          }
+        } catch (error) {
+          console.error('Error fetching video URL:', error);
+        }
+      }
+    };
+  
+    fetchData();
+  }, [data, refetchVideoUrl]);
 
   const pollFileStatus = useCallback(async () => {
     if (!fileId) return;
@@ -139,7 +165,10 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
     navigator.clipboard.writeText(text);
   };
 
-  const handleClose = () => setProgressModal(false);
+  const handleClose = () => {
+    setProgressModal(false);
+    reset();
+  }
 
   const goToJobsDashboard = () => {
     handleClose();
@@ -170,7 +199,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   return (
     <Modal
       open={progressModal}
-      onClose={handleClose}
+      hideBackdrop
       className="flex items-center justify-center px-4 sm:px-0"
     >
       <Fade in={progressModal}>
@@ -346,12 +375,8 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 </button>
                                 <button
                                   onClick={async () => {
-                                    await setFileId(data.output_file_ids[0]);
-                                    console.log('this is processedData: ', processedData);
-                                    const result = await refetchVideoUrl();
-                                    const resultData = result.data as { url: string } | undefined;
-                                    if (resultData?.url) {
-                                      setVideo(resultData.url);
+                                    if (url) {
+                                      setVideo(url);
                                       setVideoPreviewModal(true);
                                     } else {
                                       console.error('Failed to get video preview URL');
@@ -367,12 +392,6 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                     e.preventDefault();
 
                                     try {
-                                      await setFileId(data.output_file_ids[0]);
-                                      const result = await refetchVideoUrl();
-
-                                      const resultData = result.data as { url: string } | undefined;
-                                      console.log('resultData: ', resultData);
-                                      const url = resultData?.url;
                                       if (url) {
                                         downloadFile(url, 'video.mp4');
                                       } else {

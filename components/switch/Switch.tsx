@@ -5,7 +5,7 @@ interface SwitchProps {
   label: string;
   defaultChecked?: boolean;
   disabled?: boolean;
-  onChange?: (checked: boolean) => void;
+  onChange?: () => void;
   color?: 'blue' | 'gray'; // Added prop to toggle color theme (now always uses blue)
 }
 
@@ -17,19 +17,19 @@ const Switch: React.FC<SwitchProps> = ({
 }) => {
   const [isChecked, setIsChecked] = useState(defaultChecked);
 
-  const handleToggle = () => {
-    if (disabled) return;
-    const newCheckedState = !isChecked;
-    setIsChecked(newCheckedState);
-    if (onChange) {
-      onChange(newCheckedState);
-    }
-  };
+  // const handleToggle = () => {
+  //   if (disabled) return;
+  //   const newCheckedState = !isChecked;
+  //   setIsChecked(newCheckedState);
+  //   if (onChange) {
+  //     onChange(newCheckedState);
+  //   }
+  // };
 
   // Always use blue color for the switch regardless of state
   const switchColors = {
     background: 'bg-brand-500', // Always blue
-    knob: isChecked ? 'translate-x-full bg-white' : 'translate-x-0 bg-white',
+    knob: defaultChecked ? 'translate-x-full bg-white' : 'translate-x-0 bg-white',
   };
 
   return (
@@ -37,7 +37,7 @@ const Switch: React.FC<SwitchProps> = ({
       className={`flex cursor-pointer select-none items-center gap-2 sm:gap-3 text-xs sm:text-sm font-medium ${
         disabled ? 'text-gray-400' : 'text-gray-700 dark:text-gray-400'
       }`}
-      onClick={handleToggle} // Toggle when the label itself is clicked
+      onClick={onChange} // Toggle when the label itself is clicked
     >
       {label}
       <div className="relative">

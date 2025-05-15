@@ -93,7 +93,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
         // Set thumbnail URL if available
         if (result.data?.metadata?.thumbnail_url) {
           setThumbnailUrl(result.data.metadata.thumbnail_url);
-          await fetchData()
+          // await fetchData()
           setFileId(null);
         }
       } else if (status === 'ERROR') {

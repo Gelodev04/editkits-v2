@@ -15,7 +15,7 @@ import {
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import Button from '@/components/ui/button/Button';
 import Rocket from '@/public/images/rocket.gif';
-import { useLazyPreviewVideoQuery, usePreviewVideoQuery, useStatusQuery } from '@/services/api/file';
+import { useLazyPreviewVideoQuery, useStatusQuery } from '@/services/api/file';
 import { downloadFile } from '@/lib/utils';
 import VideoPreviewModal from '../VideoPreviewModal';
 import { SpinnerOne } from '@/components/Spinner';
@@ -24,7 +24,6 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const router = useRouter();
   const [jobStarted, setJobStarted] = useState(false);
   const [fileId, setFileId] = useState<string | null>(null);
-  const [previewFileId, setPreviewFileId] = useState<string | null>(null);
   const [video, setVideo] = useState<string | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
@@ -33,7 +32,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
 
   const [status, setStatus] = useState<string | null>(null);
 
-  const [triggerPreview, { data: previewData, error: previewError }] = useLazyPreviewVideoQuery();
+  const [triggerPreview] = useLazyPreviewVideoQuery();
 
   const {
     refetch: refetchStatus, 
@@ -53,9 +52,8 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const fetchData = async () => {
     const newFileId = data?.output_file_ids?.[0];
     if (!newFileId) return;
-  
-    setPreviewFileId(newFileId);
     setStatus('COMMITTED');
+    console.log(status)
   
     try {
       // directly pass the freshly fetched ID:

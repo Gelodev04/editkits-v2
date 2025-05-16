@@ -1,6 +1,7 @@
 import ComponentCard from '@/components/ComponentCard';
 import Copy from '@/components/icons/Copy';
 import Menu from '@/components/Menu';
+import ErrorModal from '@/components/modals/ErrorModal';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
 import { Spinner } from '@/components/Spinner';
@@ -10,12 +11,13 @@ import { DatePickerWithRange } from '@/components/ui/DateRangePicker';
 import { useSidebar } from '@/context/SidebarContext';
 import { ExpiredIcon, WhiteExpiredIcon } from '@/icons';
 import { uploadedFilesColumns } from '@/lib/constants';
-import { PreviewFileType, truncateFileName } from '@/lib/utils';
-import { useGetRecentFilesQuery, usePreviewVideoQuery } from '@/services/api/file';
+import { downloadFile, getErrorMessage, PreviewFileType, truncateFileName } from '@/lib/utils';
+import { useGetRecentFilesQuery, useLazyPreviewVideoQuery } from '@/services/api/file';
 import { router } from 'next/client';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { DateRange } from 'react-day-picker';
+import { toast } from 'react-hot-toast';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IoMdRefresh } from 'react-icons/io';
 import PaginationWithIcon from '../PaginationWithIcon';
@@ -26,11 +28,12 @@ export default function JobStatus() {
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined);
   const [filterModal, setFilterModal] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
-  const [fileId, setFileId] = useState('');
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewFileType, setPreviewFileType] = useState<PreviewFileType>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { data: queryData, refetch: refetchRecentFiles } = useGetRecentFilesQuery({
     //@ts-ignore
@@ -46,10 +49,7 @@ export default function JobStatus() {
     refetchRecentFiles();
   }, [currentPage, refetchRecentFiles]);
 
-  const { data: videoUrl, refetch: refetchVideoUrl } = usePreviewVideoQuery(
-    { fileId },
-    { skip: !fileId }
-  );
+  const [triggerPreviewVideo] = useLazyPreviewVideoQuery();
   const { isMobileOpen, isExpanded, isHovered } = useSidebar();
 
   const recentFiles = useMemo(() => {
@@ -59,44 +59,74 @@ export default function JobStatus() {
   const totalItems = (queryData as any)?.metadata?.total ?? recentFiles.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  useEffect(() => {
-    // @ts-ignore
-    const url = (videoUrl as { url: string } | undefined)?.url;
-    if (url) {
-      setPreviewUrl(url);
-    } else {
-      setPreviewUrl(null);
-    }
-  }, [videoUrl]);
-
   const handlePreviewClick = async (jobId: string, jobTypeRaw: string) => {
     const jobType = jobTypeRaw.toUpperCase();
-    if (!jobId) return;
+    if (!jobId) {
+      setErrorMessage('Cannot preview: File ID is missing.');
+      setErrorModalOpen(true);
+      return;
+    }
 
-    await setFileId(jobId);
     setPreviewFileType(null);
     setPreviewUrl(null);
 
-    const result = await refetchVideoUrl();
-    const resultData = result.data as { url: string } | undefined;
+    try {
+      const result = await triggerPreviewVideo({ fileId: jobId });
+      const resultData = result.data as { url: string } | undefined;
 
-    if (resultData?.url) {
-      setPreviewUrl(resultData.url);
-      const jobTypeUpper = jobType.toUpperCase();
-      if (jobTypeUpper === 'VIDEO') {
-        setPreviewFileType('VIDEO');
-      } else if (['IMAGE', 'PNG', 'JPG', 'JPEG'].includes(jobTypeUpper)) {
-        setPreviewFileType('IMAGE');
-      } else if (['AUDIO', 'MP3', 'WAV'].includes(jobTypeUpper)) {
-        setPreviewFileType('AUDIO');
+      if (resultData?.url && !result.isError) {
+        setPreviewUrl(resultData.url);
+        const jobTypeUpper = jobType.toUpperCase();
+        if (jobTypeUpper === 'VIDEO') {
+          setPreviewFileType('VIDEO');
+        } else if (['IMAGE', 'PNG', 'JPG', 'JPEG'].includes(jobTypeUpper)) {
+          setPreviewFileType('IMAGE');
+        } else if (['AUDIO', 'MP3', 'WAV'].includes(jobTypeUpper)) {
+          setPreviewFileType('AUDIO');
+        } else {
+          toast('Warning: File type not supported for preview: ' + jobTypeRaw, { icon: '⚠️' });
+          setPreviewUrl(null);
+          return;
+        }
+        setVideoPreviewModal(true);
       } else {
-        console.warn('File type not supported for preview:', jobTypeRaw);
-        setPreviewUrl(null);
-        return;
+        const errorMsg = getErrorMessage(result.error, 'Failed to get preview URL.');
+        setErrorMessage(errorMsg);
+        setErrorModalOpen(true);
       }
-      setVideoPreviewModal(true);
-    } else {
-      console.error('Failed to get preview URL for:', jobId, 'Type:', jobTypeRaw);
+    } catch (error) {
+      const errorMsg = getErrorMessage(error);
+      setErrorMessage(errorMsg);
+      setErrorModalOpen(true);
+    }
+  };
+
+  const handleDownloadClick = async (outputFileId: string) => {
+    if (!outputFileId) {
+      setErrorMessage('Download cannot proceed: File ID is missing.');
+      setErrorModalOpen(true);
+      return null;
+    }
+    try {
+      const result = await triggerPreviewVideo({ fileId: outputFileId });
+      const resultData = result.data as { url: string } | undefined;
+      if (resultData?.url && !result.isError) {
+        const fileNameToDownload = outputFileId || 'downloaded_file';
+        downloadFile(resultData.url, fileNameToDownload);
+        return resultData.url;
+      }
+      const errorMsg = getErrorMessage(result.error, 'Failed to get download URL.');
+      setErrorMessage(errorMsg);
+      setErrorModalOpen(true);
+      return null;
+    } catch (error) {
+      const errorMsg = getErrorMessage(
+        error,
+        'An unexpected error occurred while preparing the download.'
+      );
+      setErrorMessage(errorMsg);
+      setErrorModalOpen(true);
+      return null;
     }
   };
 
@@ -299,15 +329,7 @@ export default function JobStatus() {
                       <Menu
                         outputFileId={job.id}
                         handleCopy={() => navigator.clipboard.writeText(job.id)}
-                        handleDownload={async (outputFileId: string) => {
-                          if (outputFileId) {
-                            await setFileId(outputFileId);
-                            const result = await refetchVideoUrl();
-                            const resultData = result.data as { url: string } | undefined;
-                            return resultData?.url;
-                          }
-                          return undefined;
-                        }}
+                        handleDownload={() => handleDownloadClick(job.id)}
                         handlePreview={() => handlePreviewClick(job.id, job.type)}
                       />
                     </TableCell>
@@ -348,6 +370,11 @@ export default function JobStatus() {
         setOpen={setVideoPreviewModal}
         url={previewUrl}
         fileType={previewFileType}
+      />
+      <ErrorModal
+        isOpen={errorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+        errorMessage={errorMessage}
       />
     </>
   );

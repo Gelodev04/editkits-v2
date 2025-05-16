@@ -1,14 +1,14 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { Fade, Box } from '@mui/material';
+import { Box, Fade } from '@mui/material';
+import React, { useCallback, useRef, useState } from 'react';
 // import {  } from 'react-icons/tb';
-import { lato, montserrat, opensans } from '@/lib/fonts';
-import toast from 'react-hot-toast';
-import { fileUploader } from '@/lib/uploadFile';
 import DropzoneComponent from '@/components/DropZone.tsx';
-import { HiFingerPrint, HiOutlineDeviceMobile, HiX, HiExclamation } from 'react-icons/hi';
-import Button from '@/components/ui/button/Button';
 import { Modal } from '@/components/Modal';
+import Button from '@/components/ui/button/Button';
+import { lato, montserrat, opensans } from '@/lib/fonts';
+import { fileUploader } from '@/lib/uploadFile';
 import { useStatusQuery } from '@/services/api/file';
+import toast from 'react-hot-toast';
+import { HiExclamation, HiFingerPrint, HiOutlineDeviceMobile, HiX } from 'react-icons/hi';
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -55,7 +55,7 @@ export default function UploadFileModal(props: UploadModalProps) {
   const isFileStatusLoading = result.isLoading;
   const reqError = result.error as { data: { errorMsg: string } } | null;
 
-  console.log(error)
+  console.log(error);
 
   // Create a ref to track if a file upload is in progress
   const isUploadingRef = useRef(false);
@@ -520,9 +520,7 @@ export default function UploadFileModal(props: UploadModalProps) {
             )}
 
             {/* Action Buttons */}
-            <div className="flex justify-end">
-              {/* Add any action buttons here if needed */}
-            </div>
+            <div className="flex justify-end">{/* Add any action buttons here if needed */}</div>
           </div>
         </Box>
       </Fade>

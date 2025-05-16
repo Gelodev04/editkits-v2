@@ -15,6 +15,8 @@ import Copy from '@/components/icons/Copy';
 import Download from '@/components/icons/Download';
 import Play from '@/components/icons/Play';
 import Menu from '@/components/Menu';
+
+import ErrorModal from '@/components/modals/ErrorModal';
 import FilterModal from '@/components/modals/FilterModal';
 import VideoPreviewModal from '@/components/modals/VideoPreviewModal';
 import { Spinner } from '@/components/Spinner';
@@ -23,6 +25,7 @@ import { DatePickerWithRange } from '@/components/ui/DateRangePicker';
 import { useSidebar } from '@/context/SidebarContext';
 import {
   downloadFile,
+  getErrorMessage,
   getFileTypeFromExtension,
   PreviewFileType,
   truncateFileName,
@@ -45,6 +48,8 @@ export default function JobStatus() {
   const [video, setVideo] = useState<string | null>(null);
   const [previewFileType, setPreviewFileType] = useState<PreviewFileType>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
 
   const { data: statsData, isLoading: isStatsLoading, refetch: refetchStats } = useGetStatsQuery();
 
@@ -64,6 +69,68 @@ export default function JobStatus() {
   });
 
   const [triggerPreview] = useLazyPreviewVideoQuery();
+
+  const handleDownloadClick = async (outputFileId: string) => {
+    if (!outputFileId) {
+      setError('Download cannot proceed: Output file ID is missing.');
+      setErrorModalOpen(true);
+      return null;
+    }
+    try {
+      const result = await triggerPreview({ fileId: outputFileId });
+      const resultData = result.data as { url: string } | undefined;
+      if (!result.isError && resultData?.url) {
+        const fileNameToDownload = outputFileId || 'downloaded_file';
+        downloadFile(resultData.url, fileNameToDownload);
+        return resultData.url;
+      }
+      const errorMsg = getErrorMessage(result.error, 'Failed to get download URL.');
+      setError(errorMsg);
+      setErrorModalOpen(true);
+      return null;
+    } catch (error) {
+      const errorMsg = getErrorMessage(
+        error,
+        'An unexpected error occurred while preparing the download.'
+      );
+      setError(errorMsg);
+      setErrorModalOpen(true);
+      return null;
+    }
+  };
+
+  const handlePreviewClick = async (outputFileId: string, inputFileNameForPreview?: string) => {
+    if (!outputFileId) {
+      setError('Cannot preview: Output file ID is missing.');
+      setErrorModalOpen(true);
+      return;
+    }
+    if (!inputFileNameForPreview) {
+      setError('Cannot preview: Input file name is missing for type determination.');
+      setErrorModalOpen(true);
+      return;
+    }
+    try {
+      const result = await triggerPreview({ fileId: outputFileId });
+      const resultData = result.data as { url: string } | undefined;
+
+      if (!result.isError && resultData?.url) {
+        const extension = inputFileNameForPreview.split('.').pop();
+        const fileType = getFileTypeFromExtension(extension);
+        setVideo(resultData.url);
+        setPreviewFileType(fileType);
+        setVideoPreviewModal(true);
+      } else {
+        const errorMsg = getErrorMessage(result.error, 'Preview failed');
+        setError(errorMsg);
+        setErrorModalOpen(true);
+      }
+    } catch (error) {
+      const errorMsg = getErrorMessage(error, 'An unexpected error occurred during preview.');
+      setError(errorMsg);
+      setErrorModalOpen(true);
+    }
+  };
 
   const realTimeStats = useMemo(() => {
     if (!statsData) {
@@ -444,31 +511,7 @@ export default function JobStatus() {
                             <div>
                               <button
                                 onClick={async () => {
-                                  if (job.output_file_id && job.input_file_name) {
-                                    const result = await triggerPreview({
-                                      fileId: job.output_file_id,
-                                    });
-                                    const resultData = result.data as { url: string } | undefined;
-                                    if (!result.isError && resultData?.url) {
-                                      const extension = job.input_file_name.split('.').pop();
-                                      const fileType = getFileTypeFromExtension(extension);
-
-                                      console.log(
-                                        'Setting video URL for preview:',
-                                        resultData.url,
-                                        'Type:',
-                                        fileType
-                                      );
-                                      setVideo(resultData.url);
-                                      setPreviewFileType(fileType);
-                                      setVideoPreviewModal(true);
-                                    } else {
-                                      console.error(
-                                        'Failed to get video preview URL via trigger:',
-                                        result.error || 'No URL found'
-                                      );
-                                    }
-                                  }
+                                  await handlePreviewClick(job.output_file_id, job.input_file_name);
                                 }}
                                 className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90"
                               >
@@ -479,24 +522,7 @@ export default function JobStatus() {
                               href="#"
                               onClick={async e => {
                                 e.preventDefault();
-                                if (job.output_file_id) {
-                                  try {
-                                    const result = await triggerPreview({
-                                      fileId: job.output_file_id,
-                                    });
-                                    const resultData = result.data as { url: string } | undefined;
-                                    if (!result.isError && resultData?.url) {
-                                      downloadFile(resultData.url, 'video.mp4');
-                                    } else {
-                                      console.error(
-                                        'Failed to get video download URL via trigger:',
-                                        result.error || 'No URL found'
-                                      );
-                                    }
-                                  } catch (error) {
-                                    console.error('Error triggering preview for download:', error);
-                                  }
-                                }
+                                await handleDownloadClick(job.output_file_id);
                               }}
                             >
                               <button className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90">
@@ -512,45 +538,10 @@ export default function JobStatus() {
                           handleCopy={() =>
                             job.output_file_id && navigator.clipboard.writeText(job.output_file_id)
                           }
-                          handleDownload={async (outputFileId: string) => {
-                            if (outputFileId) {
-                              const result = await triggerPreview({ fileId: outputFileId });
-                              const resultData = result.data as { url: string } | undefined;
-                              if (!result.isError && resultData?.url) {
-                                return resultData.url;
-                              }
-                              console.error(
-                                'Failed to get video download URL for menu action:',
-                                result.error || 'No URL found'
-                              );
-                            }
-                            return undefined;
-                          }}
-                          handlePreview={async () => {
-                            if (job.output_file_id && job.input_file_name) {
-                              const result = await triggerPreview({ fileId: job.output_file_id });
-                              const resultData = result.data as { url: string } | undefined;
-                              if (!result.isError && resultData?.url) {
-                                const extension = job.input_file_name.split('.').pop();
-                                const fileType = getFileTypeFromExtension(extension);
-
-                                console.log(
-                                  'Setting video URL for menu preview:',
-                                  resultData.url,
-                                  'Type:',
-                                  fileType
-                                );
-                                setVideo(resultData.url);
-                                setPreviewFileType(fileType);
-                                setVideoPreviewModal(true);
-                              } else {
-                                console.error(
-                                  'Failed to get video preview URL via menu trigger:',
-                                  result.error || 'No URL found'
-                                );
-                              }
-                            }
-                          }}
+                          handleDownload={() => handleDownloadClick(job.output_file_id)}
+                          handlePreview={() =>
+                            handlePreviewClick(job.output_file_id, job.input_file_name)
+                          }
                         />
                       </TableCell>
                     </TableRow>
@@ -591,6 +582,14 @@ export default function JobStatus() {
           setOpen={setVideoPreviewModal}
           url={video}
           fileType={previewFileType}
+        />
+        <ErrorModal
+          isOpen={errorModalOpen}
+          onClose={() => {
+            setErrorModalOpen(false);
+            setError(null);
+          }}
+          errorMessage={error || 'An unexpected error occurred.'}
         />
       </div>
     </>

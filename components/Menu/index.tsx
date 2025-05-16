@@ -8,7 +8,8 @@ import { DropdownItem } from '@/components/dropdown/DropdownItem';
 import Copy from '@/components/icons/Copy';
 import Download from '@/components/icons/Download';
 import Play from '@/components/icons/Play';
-import { downloadFile } from '@/lib/utils';
+import ErrorModal from '@/components/modals/ErrorModal';
+import { getErrorMessage } from '@/lib/utils';
 
 type MenuProps = {
   outputFileId: string;
@@ -20,6 +21,8 @@ type MenuProps = {
 export default function Menu(props: MenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -76,14 +79,10 @@ export default function Menu(props: MenuProps) {
                 e.preventDefault();
                 closeDropdown();
                 try {
-                  const url = await props.handleDownload(props.outputFileId);
-                  if (url) {
-                    downloadFile(url, 'video.mp4');
-                  } else {
-                    console.error('Download failed: Could not get URL.');
-                  }
+                  await props.handleDownload(props.outputFileId);
                 } catch (error) {
-                  console.error('Error fetching video URL for download:', error);
+                  setErrorMessage(getErrorMessage(error, 'An unexpected error occurred.'));
+                  setErrorModalOpen(true);
                 }
               }}
             >
@@ -113,6 +112,11 @@ export default function Menu(props: MenuProps) {
           </li>
         </ul>
       </MenuComponent>
+      <ErrorModal
+        isOpen={errorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+        errorMessage={errorMessage}
+      />
     </div>
   );
 }

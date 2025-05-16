@@ -79,3 +79,28 @@ export function downloadFile(url: string, filename: string): void {
     console.error('Failed to initiate download:', error);
   }
 }
+
+export function getErrorMessage(
+  error: any,
+  defaultMessage: string = 'An unknown error occurred'
+): string {
+  if (!error) {
+    return defaultMessage;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  if (error.data && typeof error.data.errorMsg === 'string') {
+    return error.data.errorMsg;
+  }
+  if (error.data && typeof error.data.message === 'string') {
+    return error.data.message;
+  }
+  if (typeof error.error === 'string') {
+    return error.error;
+  }
+  if (typeof error.message === 'string') {
+    return error.message;
+  }
+  return defaultMessage;
+}

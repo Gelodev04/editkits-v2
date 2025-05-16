@@ -1,5 +1,5 @@
-import React from 'react';
 import { Modal } from '@/components/Modal';
+import React from 'react';
 
 interface ErrorModalProps {
   isOpen: boolean;
@@ -47,11 +47,8 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ isOpen, onClose, errorMessage }
         </div>
 
         <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90 sm:text-title-sm">
-          Something went wrong
+          {errorMessage || 'Something went wrong, please try again.'}
         </h4>
-        <p className="text-sm leading-6 text-gray-500 dark:text-gray-400">
-          {errorMessage || 'An unknown error occurred. Please try again.'}
-        </p>
 
         <div className="flex items-center justify-center w-full gap-3 mt-7">
           <button
@@ -59,7 +56,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ isOpen, onClose, errorMessage }
             className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-500 shadow-theme-xs hover:bg-error-600 sm:w-auto"
             onClick={onClose}
           >
-            Dismiss
+            Okay, got it!
           </button>
         </div>
       </div>

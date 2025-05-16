@@ -59,7 +59,7 @@ export default function ResizeVideo() {
   // Track form submission attempts
   const [formSubmitAttempted, setFormSubmitAttempted] = useState(false);
 
-    const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
+  const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
   const [presetWidth, setPresetWidth] = useState<number | undefined>(undefined);
   const [presetHeight, setPresetHeight] = useState<number | undefined>(undefined);
   const [uploadFileModal, setUploadFileModal] = useState(false);
@@ -71,7 +71,7 @@ export default function ResizeVideo() {
   const [isUploading, setIsUploading] = useState(false);
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
-  const [selectedAspectRatio, setSelectedAspectRatio] = useState('1:1');
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState('Custom');
   const [selectedPreset, setSelectedPreset] = useState('None');
   const videoRef = useRef(null);
 
@@ -82,8 +82,18 @@ export default function ResizeVideo() {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const calculateHeight = (width, aspectX, aspectY) => Math.floor(width * (aspectY / aspectX));
-  const calculateWidth = (height, aspectX, aspectY) => Math.floor(height * (aspectX / aspectY));
+  // Improved calculation functions with proper type handling and precision
+  const calculateHeight = (width, aspectX, aspectY) => {
+    if (typeof width !== 'number' || isNaN(width) || width <= 0) return undefined;
+    if (typeof aspectX !== 'number' || aspectX <= 0 || typeof aspectY !== 'number' || aspectY <= 0) return undefined;
+    return Math.floor(width * (aspectY / aspectX));
+  };
+  
+  const calculateWidth = (height, aspectX, aspectY) => {
+    if (typeof height !== 'number' || isNaN(height) || height <= 0) return undefined;
+    if (typeof aspectX !== 'number' || aspectX <= 0 || typeof aspectY !== 'number' || aspectY <= 0) return undefined;
+    return Math.floor(height * (aspectX / aspectY));
+  };
 
   const updateSettings = (key, value) => {
     setSettings(prev => ({ ...prev, [key]: value }));
@@ -139,51 +149,12 @@ export default function ResizeVideo() {
     setClearFileInfo(true);
   };
 
-  // Listen for direct file metadata from file ID uploads
-  // useEffect(() => {
-  //   const handleFileMetadataReady = event => {
-  //     const fileData = event.detail;
-
-  //     // If resetPrevious flag is set, ensure we clear existing data first
-  //     if (fileData.resetPrevious) {
-  //       setFetchedData(null);
-  //       // Short delay to ensure state is updated before setting new data
-  //       setTimeout(() => {
-  //         if (fileData && fileData.metadata) {
-  //           console.log('File metadata received directly (after reset):', fileData);
-  //           setFetchedData(fileData);
-  //         }
-  //       }, 50);
-  //     } else if (fileData && fileData.metadata) {
-  //       setFetchedData(fileData);
-  //       console.log('File metadata received directly:', fileData);
-  //     }
-  //   };
-
-  //   window.addEventListener('file-metadata-ready', handleFileMetadataReady);
-
-  //   return () => {
-  //     window.removeEventListener('file-metadata-ready', handleFileMetadataReady);
-  //   };
-  // }, []);
-
   // Reset states when file changes
   useEffect(() => {
     if (file === null) {
       resetStates();
     }
   }, [file]);
-
-  // Reset states when uploading starts
-  useEffect(() => {
-    if (isUploading) {
-      resetStates();
-      setFileId(null);
-      // Immediately clear any data to prevent old thumbnails from showing
-      setFetchedData(null);
-      setProgress(0);
-    }
-  }, [isUploading]);
 
   // Watch for file changes in the UploadFileModal
   const handleFileChange = newFile => {
@@ -200,7 +171,6 @@ export default function ResizeVideo() {
         // Reset the clearFileInfo flag when a new file is selected
         setClearFileInfo(false);
       }, 50);
-      resetStates();
     }
   };
 
@@ -251,20 +221,20 @@ export default function ResizeVideo() {
   useEffect(() => {
     // Don't fetch data while uploading
     if (isUploading) return;
-  
+
     const interval = setInterval(() => {
       // Only poll if we have a fileId
       if (fileId) {
         // Continue polling until we get a final status (COMMITTED or ERROR)
         // or until we have the metadata we need
-        const shouldContinuePolling = 
-          (!data?.status || (data.status !== 'COMMITTED' && data.status !== 'ERROR')) || 
+        const shouldContinuePolling =
+          (!data?.status || (data.status !== 'COMMITTED' && data.status !== 'ERROR')) ||
           !data?.metadata;
-  
+
         if (shouldContinuePolling) {
           refetch();
         }
-  
+
         // Update fetchedData if we have new data
         if (data && !isUploading) {
           setFetchedData(data);
@@ -272,35 +242,40 @@ export default function ResizeVideo() {
         }
       }
     }, 2000);
-  
+
     // Cleanup interval on unmount or when dependencies change
     return () => clearInterval(interval);
   }, [data, fileId, refetch, isUploading]);
 
-  // When width or height changes, update the other dimension to maintain aspect ratio
+  // Enhanced effect for maintaining aspect ratio when width or height changes
   useEffect(() => {
+
+    if (selectedAspectRatio === 'Custom') return;
     if (!isCustom) {
       return; // Skip aspect ratio calculation for presets
     }
 
-    if (
-      activeInput === 'width' &&
-      typeof settings.width === 'number' &&
-      settings.width > 0 &&
-      settings.aspectX > 0 &&
-      settings.aspectY > 0
-    ) {
-      const calculatedHeight = calculateHeight(settings.width, settings.aspectX, settings.aspectY);
-      updateSettings('height', calculatedHeight);
-    } else if (
-      activeInput === 'height' &&
-      typeof settings.height === 'number' &&
-      settings.height > 0 &&
-      settings.aspectX > 0 &&
-      settings.aspectY > 0
-    ) {
-      const calculatedWidth = calculateWidth(settings.height, settings.aspectX, settings.aspectY);
-      updateSettings('width', calculatedWidth);
+    // Skip calculation if we're not in an active input state
+    if (!activeInput) {
+      return;
+    }
+
+    // Convert values to numbers for safe calculation
+    const width = typeof settings.width === 'string' ? parseInt(settings.width, 10) : settings.width;
+    const height = typeof settings.height === 'string' ? parseInt(settings.height, 10) : settings.height;
+    const aspectX = settings.aspectX;
+    const aspectY = settings.aspectY;
+
+    if (activeInput === 'width' && width && width > 0 && aspectX > 0 && aspectY > 0) {
+      const calculatedHeight = calculateHeight(width, aspectX, aspectY);
+      if (calculatedHeight && calculatedHeight !== settings.height) {
+        updateSettings('height', calculatedHeight);
+      }
+    } else if (activeInput === 'height' && height && height > 0 && aspectX > 0 && aspectY > 0) {
+      const calculatedWidth = calculateWidth(height, aspectX, aspectY);
+      if (calculatedWidth && calculatedWidth !== settings.width) {
+        updateSettings('width', calculatedWidth);
+      }
     }
   }, [settings.width, settings.height, settings.aspectX, settings.aspectY, activeInput, isCustom]);
 
@@ -372,7 +347,7 @@ export default function ResizeVideo() {
   };
 
   // Fix the toggle logic
-  const toggleMode = newIsCustom => {
+  const toggleMode = (newIsCustom) => {
     setIsCustom(newIsCustom);
 
     // Reset active input when switching modes
@@ -385,8 +360,7 @@ export default function ResizeVideo() {
       // Reset preset selection
       setSelectedPreset('None');
     } else {
-      // Switching to custom mode - reset aspect ratio
-      setSelectedAspectRatio('1:1');
+      setSelectedAspectRatio('Custom');
       // Reset dimension settings to current video dimensions if available
       if (fetchedData?.metadata?.width && fetchedData?.metadata?.height) {
         updateSettings('width', fetchedData.metadata.width);
@@ -460,7 +434,6 @@ export default function ResizeVideo() {
       // Don't clear fetchedData as it's needed for the thumbnail in the completion state
       // setFetchedData(null);
       setProgress(0);
-      resetStates();
       setClearFileInfo(true);
 
       await handleCommitJob(job_id);
@@ -494,6 +467,7 @@ export default function ResizeVideo() {
           (response.error as any).data?.errorMsg ||
           (response.error as any).errMsg ||
           'Failed to commit job';
+          setProgressModal(false);
         setErrorMessage(errorMsg);
         setErrorModalOpen(true);
         return;
@@ -553,7 +527,9 @@ export default function ResizeVideo() {
               <ToggleButton
                 label={isCustom ? 'Custom' : 'Preset'}
                 checked={isCustom}
-                onChange={() => toggleMode(!isCustom)}
+                onChange={() => {
+                  toggleMode(!isCustom)
+                }}
               />
             </div>
           </div>
@@ -714,11 +690,10 @@ export default function ResizeVideo() {
                         updateSettings('width', e.target.value);
                         setWidthTouched(true);
                       }}
-                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
-                        shouldShowError(settings.width, widthTouched)
+                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${shouldShowError(settings.width, widthTouched)
                           ? 'border-red-500 focus:ring-red-500'
                           : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
-                      }`}
+                        }`}
                     />
                     {shouldShowError(settings.width, widthTouched) && (
                       <p className="mt-1 text-sm text-red-500">Width is required</p>
@@ -743,11 +718,10 @@ export default function ResizeVideo() {
                         updateSettings('height', e.target.value);
                         setHeightTouched(true);
                       }}
-                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
-                        shouldShowError(settings.height, heightTouched)
+                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${shouldShowError(settings.height, heightTouched)
                           ? 'border-red-500 focus:ring-red-500'
                           : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
-                      }`}
+                        }`}
                     />
                     {shouldShowError(settings.height, heightTouched) && (
                       <p className="mt-1 text-sm text-red-500">Height is required</p>
@@ -770,11 +744,10 @@ export default function ResizeVideo() {
                         placeholder="#000000"
                         value={settings.color}
                         onChange={handleColorChange}
-                        className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
-                          settings.isColorValid
+                        className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${settings.isColorValid
                             ? 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
                             : 'border-red-500 focus:ring-red-500'
-                        }`}
+                          }`}
                       />
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <div
@@ -975,16 +948,8 @@ export default function ResizeVideo() {
       )}
       <FileProgressModal
         progressModal={progressModal}
-        setProgressModal={value => {
-          setProgressModal(value);
-          if (!value) {
-            // When modal is closed, always do a complete reset
-            // Use setTimeout to ensure this happens after modal close animation
-            setTimeout(() => {
-              resetAllFileStates();
-            }, 300); // Increased from 100ms to 300ms to ensure smooth transitions
-          }
-        }}
+        setProgressModal={setProgressModal}
+        reset={resetStates}
         data={jobData}
       />
       <ErrorModal

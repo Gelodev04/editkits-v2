@@ -5,7 +5,7 @@ import Switch from '../switch/Switch';
 type ToggleButtonProps = {
   label: string;
   checked: boolean;
-  onChange: (checked: boolean) => void;
+  onChange: () => void;
 };
 
 export default function ToggleButton(props: ToggleButtonProps) {

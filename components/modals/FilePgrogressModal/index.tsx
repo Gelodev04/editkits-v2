@@ -15,11 +15,12 @@ import {
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import Button from '@/components/ui/button/Button';
 import Rocket from '@/public/images/rocket.gif';
-import { usePreviewVideoQuery, useStatusQuery } from '@/services/api/file';
+import { useLazyPreviewVideoQuery, useStatusQuery } from '@/services/api/file';
 import { downloadFile } from '@/lib/utils';
 import VideoPreviewModal from '../VideoPreviewModal';
+import { SpinnerOne } from '@/components/Spinner';
 
-export default function FileProgressModal({ progressModal, setProgressModal, data }) {
+export default function FileProgressModal({ progressModal, setProgressModal, data, reset }) {
   const router = useRouter();
   const [jobStarted, setJobStarted] = useState(false);
   const [fileId, setFileId] = useState<string | null>(null);
@@ -27,18 +28,49 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [videoPreviewModal, setVideoPreviewModal] = useState(false);
   const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
+  const [url, setUrl] = useState<string | null>(null);
 
-  const { data: processedData, refetch: refetchVideoUrl } = usePreviewVideoQuery(
-    { fileId },
-    { skip: !fileId }
-  );
+  const [status, setStatus] = useState<string | null>(null);
+
+  const [triggerPreview] = useLazyPreviewVideoQuery();
 
   const {
-    refetch: refetchStatus
+    refetch: refetchStatus, 
   } = useStatusQuery(
-    { fileId },
+    { fileId }, 
     { skip: !fileId }
   );
+
+  useEffect(() => {
+    if (data?.output_file_ids?.[0]) {
+      const newFileId = data.output_file_ids[0];
+      setFileId(newFileId);
+    }
+  }, [data]);
+
+  
+  const fetchData = async () => {
+    const newFileId = data?.output_file_ids?.[0];
+    if (!newFileId) return;
+    setStatus('COMMITTED');
+    console.log(status)
+  
+    try {
+      // directly pass the freshly fetched ID:
+      // .unwrap() will either return the data or throw, so you can catch errors cleanly
+      console.log('Fetching video URL for file ID:', newFileId);
+      const response = await triggerPreview({ fileId: newFileId }).unwrap();
+      console.log('Preview response:', response);
+      const url = (response as { url: string }).url;
+  
+      setUrl(url);
+      setVideo(url);
+    } catch (err) {
+      console.error('Error fetching video URL:', err);
+      // optionally surface a toast/toaster here
+    }
+  };
+
 
   const pollFileStatus = useCallback(async () => {
     if (!fileId) return;
@@ -47,8 +79,12 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
       const result = await refetchStatus();
       const status = result.data?.status;
 
+      console.log('Polling file result:', result);
+
       if (status === 'COMMITTED') {
         // Stop polling
+        setStatus(status);
+        
         if (pollingInterval) {
           clearInterval(pollingInterval);
           setPollingInterval(null);
@@ -57,6 +93,8 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
         // Set thumbnail URL if available
         if (result.data?.metadata?.thumbnail_url) {
           setThumbnailUrl(result.data.metadata.thumbnail_url);
+          // await fetchData()
+          setFileId(null);
         }
       } else if (status === 'ERROR') {
         // Stop polling in case of error
@@ -78,6 +116,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   // Start polling when fileId is set
   useEffect(() => {
     // Clear any existing interval
+
     if (pollingInterval) {
       clearInterval(pollingInterval);
     }
@@ -98,13 +137,13 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
         }
       };
     }
-  }, [fileId, pollFileStatus]);
+  }, [fileId]);
 
   useEffect(() => {
     // If we receive valid job data with status, mark the job as started
     if (data && data.output_file_ids && data.status && progressModal) {
       setJobStarted(true);
-      setFileId(data.output_file_ids[0]);
+      setThumbnailUrl(null);
     } else if (!progressModal) {
       // Reset the job started flag when modal is closed
       setJobStarted(false);
@@ -118,24 +157,26 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
 
 
 
-  useEffect(() => {
-    // If we receive valid job data with status, mark the job as started
-    if (data && data.output_file_ids && data.status && progressModal) {
-      setJobStarted(true);
-      console.log('this is data: ', data);
-      setFileId(data.output_file_ids[0]);
-    } else if (!progressModal) {
-      // Reset the job started flag when modal is closed
-      setJobStarted(false);
-    }
-  }, [data, progressModal]);
+  // useEffect(() => {
+  //   // If we receive valid job data with status, mark the job as started
+  //   if (data && data.output_file_ids && data.status && progressModal) {
+  //     setJobStarted(true);
+  //     console.log('this is data: ', data);
+  //   } else if (!progressModal) {
+  //     // Reset the job started flag when modal is closed
+  //     setJobStarted(false);
+  //   }
+  // }, [data, progressModal]);
 
   const copyToClipboard = text => {
     if (!text) return;
     navigator.clipboard.writeText(text);
   };
 
-  const handleClose = () => setProgressModal(false);
+  const handleClose = () => {
+    setProgressModal(false);
+    reset();
+  }
 
   const goToJobsDashboard = () => {
     handleClose();
@@ -166,7 +207,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   return (
     <Modal
       open={progressModal}
-      onClose={handleClose}
+      hideBackdrop
       className="flex items-center justify-center px-4 sm:px-0"
     >
       <Fade in={progressModal}>
@@ -304,9 +345,9 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                         <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-6">
                           Your video has been successfully processed and is ready to use.
                         </p>
+                        
 
-
-                        {thumbnailUrl && (
+                        {thumbnailUrl ? (
                           <div className="relative w-full rounded-lg overflow-hidden mb-5 border border-gray-200 dark:border-gray-700">
                             <Image
                               src={thumbnailUrl}
@@ -320,6 +361,10 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                               className="w-full h-auto object-cover aspect-video"
                               priority
                             />
+                          </div>
+                        ) : (
+                          <div className="flex justify-center mb-4">
+                            <SpinnerOne.lg />
                           </div>
                         )}
 
@@ -342,12 +387,11 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 </button>
                                 <button
                                   onClick={async () => {
-                                    setFileId(data.output_file_ids[0]);
-                                    console.log('this is processedData: ', processedData);
-                                    const result = await refetchVideoUrl();
-                                    const resultData = result.data as { url: string } | undefined;
-                                    if (resultData?.url) {
-                                      setVideo(resultData.url);
+                                    await fetchData();
+
+                                    if (url) {
+                                      console.log('Video URL:', url);
+                                      setVideo(url);
                                       setVideoPreviewModal(true);
                                     } else {
                                       console.error('Failed to get video preview URL');
@@ -361,14 +405,8 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 <button
                                   onClick={async e => {
                                     e.preventDefault();
-
+                                    await fetchData();
                                     try {
-                                      await setFileId(data.output_file_ids[0]);
-                                      const result = await refetchVideoUrl();
-
-                                      const resultData = result.data as { url: string } | undefined;
-                                      console.log('resultData: ', resultData);
-                                      const url = resultData?.url;
                                       if (url) {
                                         downloadFile(url, 'video.mp4');
                                       } else {
@@ -441,7 +479,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
               </motion.div>
             </div>
           </div>
-          <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} url={video} />
+          <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} url={video} fileType={"VIDEO"} />
         </div>
       </Fade>
     </Modal>

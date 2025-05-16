@@ -45,10 +45,15 @@ interface FileMetadata {
 }
 
 export default function TrimVideo() {
-  const [fileId, setFileId] = React.useState(null);
+  const [fileId, setFileId] = React.useState<string | null>(null);
   const [jobId, setJobId] = React.useState(null);
   const [upload] = useUploadMutation();
-  const { data, refetch } = useStatusQuery({ fileId }, { skip: !fileId });
+  const { data: _data, refetch } = useStatusQuery({ fileId }, { skip: !fileId });
+
+  // this is not a concrete solution, but a workaround
+  const data = fileId ? _data : null;
+  
+  console.log("FileId: ", fileId)
   const { data: jobData, refetch: refetchJobData } = useJobStatusQuery(
     { job_id: jobId },
     { skip: !jobId }
@@ -83,32 +88,32 @@ export default function TrimVideo() {
   const [errorMessage, setErrorMessage] = useState('');
 
   // Listen for direct file metadata from file ID uploads
-  useEffect(() => {
-    const handleFileMetadataReady = event => {
-      const fileData = event.detail;
+  // useEffect(() => {
+  //   const handleFileMetadataReady = event => {
+  //     const fileData = event.detail;
 
-      // If resetPrevious flag is set, ensure we clear existing data first
-      if (fileData.resetPrevious) {
-        setFetchedData(null);
-        // Short delay to ensure state is updated before setting new data
-        setTimeout(() => {
-          if (fileData && fileData.metadata) {
-            console.log('File metadata received directly (after reset):', fileData);
-            setFetchedData(fileData);
-          }
-        }, 50);
-      } else if (fileData && fileData.metadata) {
-        setFetchedData(fileData);
-        console.log('File metadata received directly:', fileData);
-      }
-    };
+  //     // If resetPrevious flag is set, ensure we clear existing data first
+  //     if (fileData.resetPrevious) {
+  //       setFetchedData(null);
+  //       // Short delay to ensure state is updated before setting new data
+  //       setTimeout(() => {
+  //         if (fileData && fileData.metadata) {
+  //           console.log('File metadata received directly (after reset):', fileData);
+  //           setFetchedData(fileData);
+  //         }
+  //       }, 50);
+  //     } else if (fileData && fileData.metadata) {
+  //       setFetchedData(fileData);
+  //       console.log('File metadata received directly:', fileData);
+  //     }
+  //   };
 
-    window.addEventListener('file-metadata-ready', handleFileMetadataReady);
+  //   window.addEventListener('file-metadata-ready', handleFileMetadataReady);
 
-    return () => {
-      window.removeEventListener('file-metadata-ready', handleFileMetadataReady);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('file-metadata-ready', handleFileMetadataReady);
+  //   };
+  // }, []);
 
   // Function to reset all states when a new file is uploaded
   const resetStates = () => {
@@ -120,6 +125,9 @@ export default function TrimVideo() {
     setStartTimeTouched(false);
     setEndTimeTouched(false);
     setFormSubmitAttempted(false);
+    setProgressModal(false);
+    setFile(null);
+    setFileId(null);
     if (videoRef.current) {
       // @ts-ignore
       videoRef.current.src = '';
@@ -127,27 +135,26 @@ export default function TrimVideo() {
   };
 
   // Add this function to completely reset all file states
-  const resetAllFileStates = () => {
-    setFile(null);
-    setFileId(null);
-    setFetchedData(null);
-    setProgress(0);
-    resetStates();
-    // Set clear file info to true
-    setClearFileInfo(true);
-  };
+  // const resetAllFileStates = () => {
+  //   setFile(null);
+  //   setFileId(null);
+  //   setFetchedData(null);
+  //   setProgress(0);
+  //   resetStates();
+  //   // Set clear file info to true
+  //   setClearFileInfo(true);
+  // };
 
-  // Reset states when file changes
-  useEffect(() => {
-    if (file === null) {
-      resetStates();
-    }
-  }, [file]);
+  // // Reset states when file changes
+  // useEffect(() => {
+  //   if (file === null) {
+  //     resetStates();
+  //   }
+  // }, [file]);
 
   // Reset states when uploading starts
   useEffect(() => {
     if (isUploading) {
-      resetStates();
       setFileId(null);
       // Immediately clear any data to prevent old thumbnails from showing
       setFetchedData(null);
@@ -170,26 +177,33 @@ export default function TrimVideo() {
         // Reset the clearFileInfo flag when a new file is selected
         setClearFileInfo(false);
       }, 50);
-      resetStates();
     }
   };
 
   useEffect(() => {
     // Don't fetch data while uploading
     if (isUploading) return;
+  
 
     const interval = setInterval(() => {
+      console.log(data)
       //@ts-ignore
       if (data?.status !== 'COMMITTED' && data?.status !== 'ERROR' && fileId) {
         refetch();
+        return;
       }
 
+      console.log("Setitng fetched data: ", data)
+      setFetchedData(data);
+      
+      clearInterval(interval);
+
       // Only update fetchedData if we have actual data and not uploading
-      if (data && !isUploading) {
-        // @ts-ignore
-        setFetchedData(data);
-        console.log('data', data);
-      }
+      // if (data && !isUploading) {
+      //   // @ts-ignore
+      //   setFetchedData(data);
+      //   console.log('data', data);
+      // }
     }, 2000);
 
     return () => clearInterval(interval);
@@ -264,7 +278,6 @@ export default function TrimVideo() {
       toast.success('Job initialized successfully');
       setProgressModal(true);
       setUploadFileModal(false);
-      resetAllFileStates();
 
       const { job_id } = response.data;
       setJobId(job_id);
@@ -300,6 +313,7 @@ export default function TrimVideo() {
           (response.error as any).errMsg ||
           'Failed to commit job';
         setErrorMessage(errorMsg);
+        setProgressModal(false);
         setErrorModalOpen(true);
         return;
       }
@@ -577,12 +591,8 @@ export default function TrimVideo() {
       )}
       <FileProgressModal
         progressModal={progressModal}
-        setProgressModal={value => {
-          setProgressModal(value);
-          if (!value) {
-            resetAllFileStates();
-          }
-        }}
+        setProgressModal={setProgressModal}
+        reset={resetStates}
         data={jobData}
       />
       <ErrorModal

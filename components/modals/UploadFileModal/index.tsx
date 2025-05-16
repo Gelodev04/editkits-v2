@@ -1,14 +1,13 @@
-import { Box, Fade } from '@mui/material';
-import React, { useCallback, useRef, useState } from 'react';
-// import {  } from 'react-icons/tb';
 import DropzoneComponent from '@/components/DropZone.tsx';
 import { Modal } from '@/components/Modal';
 import Button from '@/components/ui/button/Button';
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import { fileUploader } from '@/lib/uploadFile';
 import { useStatusQuery } from '@/services/api/file';
+import { Box, Fade } from '@mui/material';
+import React, { useCallback, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { HiExclamation, HiFingerPrint, HiOutlineDeviceMobile, HiX } from 'react-icons/hi';
+import { HiFingerPrint, HiOutlineDeviceMobile, HiX } from 'react-icons/hi';
 
 export type UploadModalProps = {
   uploadModal: boolean;
@@ -376,7 +375,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                 isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
               } ${
                 activeTab === 'device'
-                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                  ? 'text-blue-500 border-b-2 border-blue-500'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
@@ -393,7 +392,7 @@ export default function UploadFileModal(props: UploadModalProps) {
                 isProcessing || isUploadingRef.current ? 'opacity-70 cursor-not-allowed' : ''
               } ${
                 activeTab === 'fileId'
-                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                  ? 'text-blue-500 border-b-2 border-blue-500'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
@@ -493,8 +492,8 @@ export default function UploadFileModal(props: UploadModalProps) {
                     />
                   </div>
                   {fileIdError && (
-                    <div className="mt-2 flex items-start p-3 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 rounded-md text-sm">
-                      <HiExclamation className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
+                    <div className="mt-1 flex items-start pl-2 text-red-500 text-sm">
+                      {/* <HiExclamation className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" /> */}
                       <span>{fileIdError}</span>
                     </div>
                   )}

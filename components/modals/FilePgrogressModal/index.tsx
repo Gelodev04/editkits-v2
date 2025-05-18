@@ -71,6 +71,8 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
     }
   };
 
+  console.log("data", data);
+
 
   const pollFileStatus = useCallback(async () => {
     if (!fileId) return;
@@ -154,19 +156,6 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
       }
     }
   }, [data, progressModal]);
-
-
-
-  // useEffect(() => {
-  //   // If we receive valid job data with status, mark the job as started
-  //   if (data && data.output_file_ids && data.status && progressModal) {
-  //     setJobStarted(true);
-  //     console.log('this is data: ', data);
-  //   } else if (!progressModal) {
-  //     // Reset the job started flag when modal is closed
-  //     setJobStarted(false);
-  //   }
-  // }, [data, progressModal]);
 
   const copyToClipboard = text => {
     if (!text) return;

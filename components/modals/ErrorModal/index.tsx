@@ -5,12 +5,14 @@ interface ErrorModalProps {
   isOpen: boolean;
   onClose: () => void;
   errorMessage: string;
+  errorLog?: string;
 }
 
-const ErrorModal: React.FC<ErrorModalProps> = ({ isOpen, onClose, errorMessage }) => {
+const ErrorModal: React.FC<ErrorModalProps> = ({ isOpen, onClose, errorMessage, errorLog }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="max-w-[600px] p-5 lg:p-10">
+    <Modal isOpen={isOpen} onClose={onClose} className="max-w-[600px] p-5 lg:p-10 rounded-xl">
       <div className="text-center">
+        {/* Error Icon - Keeping this unchanged as requested */}
         <div className="relative flex items-center justify-center z-1 mb-7">
           <svg
             className="fill-error-50 dark:fill-error-500/15"
@@ -46,10 +48,26 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ isOpen, onClose, errorMessage }
           </span>
         </div>
 
-        <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90 sm:text-title-sm">
-          {errorMessage || 'Something went wrong, please try again.'}
-        </h4>
+        {/* Content area with improved styling */}
+        <div className="mb-5 flex flex-col items-center justify-center">
+          {/* Title - Keeping font as requested */}
+          <h4 className="mb-4 text-2xl font-semibold text-gray-800 dark:text-white/90 sm:text-title-sm">
+            {errorMessage || 'Something went wrong, please try again.'}
+          </h4>
 
+          {/* Error log with improved styling */}
+          {errorLog && (
+            <div className="w-full mt-2">
+              <div className="relative">
+                <div className="px-4 py-3 text-sm bg-gray-100 dark:bg-gray-800/80 rounded-lg text-left overflow-auto max-h-40 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 shadow-sm">
+                  <code className="font-mono text-xs">{errorLog}</code>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Button - Keeping as requested */}
         <div className="flex items-center justify-center w-full gap-3 mt-7">
           <button
             type="button"

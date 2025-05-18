@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaScissors } from 'react-icons/fa6';
+import { FaRuler, FaScissors, FaCrop } from 'react-icons/fa6';
 import Typography from '@/components/Typography';
+// import { FaCrop } from 'react-icons/fa';
 
 /**
  * GradientHeading component with animated icon and gradient text
@@ -14,10 +15,18 @@ import Typography from '@/components/Typography';
  * @param {string} props.toColor - Ending gradient color (default: purple-700)
  * @returns {JSX.Element}
  */
+
+const GradientHeadingIcons = {
+  "Trim Video": <FaScissors size={18} />,
+  "Resize Video": <FaRuler size={18} />,
+  "Crop Video": <FaCrop size={18} />,
+  // "Crop": <Fa size={18} />,
+  // "Resize": <FaScissors size={18} />,
+}
+
 const GradientHeading = ({
   text,
   subtext,
-  icon = <FaScissors size={18} />,
   fromColor = 'blue-600',
   toColor = 'purple-700',
 }) => (
@@ -32,7 +41,7 @@ const GradientHeading = ({
         <div
           className={`w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white`}
         >
-          {icon}
+          {GradientHeadingIcons[text]}
         </div>
         <Typography
           label={text}

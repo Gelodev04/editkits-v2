@@ -2,27 +2,17 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { FaPlay } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
-// // import Typography from '@/components/Typography';
-// import Button from '@/components/Button_Old';
 import UploadFileModal from '@/components/modals/UploadFileModal';
-// import TextField from '@/components/TextField';
-// import Select from '@/components/Select';
 import { outputQualityList, videoType } from '@/lib/constants';
 import { VideoUpload } from '@/components/VideoUpload';
 import { useEffect } from 'react';
-// import { CalendarIcon, ClockIcon, UploadIcon } from '@/components/Icons';
 import {
   HiOutlineClock,
   HiOutlineVideoCamera,
   HiOutlineAdjustments,
   HiArrowRight,
-  // HiOutlinePhotograph,
-  // HiOutlineCheck,
 } from 'react-icons/hi';
-
 import toast from 'react-hot-toast';
-
-// Import the dedicated components
 import { useStatusQuery, useUploadMutation } from '@/services/api/file';
 import { useCommitJobMutation, useInitJobMutation, useJobStatusQuery } from '@/services/api/job';
 import FileProgressModal from '@/components/modals/FilePgrogressModal';
@@ -49,41 +39,28 @@ export default function TrimVideo() {
   const [jobId, setJobId] = React.useState(null);
   const [upload] = useUploadMutation();
   const { data: _data, refetch } = useStatusQuery({ fileId }, { skip: !fileId });
-
-  // this is not a concrete solution, but a workaround
   const data = fileId ? _data : null;
-
-  console.log("FileId: ", fileId)
   const { data: jobData, refetch: refetchJobData } = useJobStatusQuery(
     { job_id: jobId },
     { skip: !jobId }
   );
   const [initJob] = useInitJobMutation();
   const [commitJob] = useCommitJobMutation();
-
   const [uploadFileModal, setUploadFileModal] = React.useState<boolean>(false);
   const [progressModal, setProgressModal] = React.useState<boolean>(false);
   const [file, setFile] = React.useState<any>(null);
   const [startTime, setStartTime] = React.useState<any>(null);
   const [endTime, setEndTime] = useState<any>(null);
   const videoRef = useRef(null);
-
-  // Add state to track if fields have been touched
   const [startTimeTouched, setStartTimeTouched] = useState(false);
   const [endTimeTouched, setEndTimeTouched] = useState(false);
-  // Track form submission attempts
   const [formSubmitAttempted, setFormSubmitAttempted] = useState(false);
-
-  // Add state variable to track whether file info should be cleared
   const [clearFileInfo, setClearFileInfo] = React.useState<boolean>(false);
-
   const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
-
-  // Add error modal state
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 

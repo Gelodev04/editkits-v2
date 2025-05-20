@@ -15,8 +15,8 @@ import { useInitJobMutation, useCommitJobMutation, useJobStatusQuery } from '@/s
 import OutputQualityVideo from '@/components/OutputQualityVideo';
 
 export default function CropVideo() {
-  const [fileId, setFileId] = useState<string | null>(null);
-  const [jobId, setJobId] = useState<string | null>(null);
+  const [fileId, setFileId] = useState(null);
+  const [jobId, setJobId] = useState(null);
   const [upload] = useUploadMutation();
   const { data: fileData, refetch: refetchFile } = useStatusQuery({ fileId }, { skip: !fileId });
   const { data: jobData, refetch: refetchJob } = useJobStatusQuery(
@@ -34,95 +34,152 @@ export default function CropVideo() {
   });
   const [touched, setTouched] = useState({ x: false, y: false, width: false, height: false });
   const [formAttempted, setFormAttempted] = useState(false);
-  const [fetchedMeta, setFetchedMeta] = useState<{ width?: number; height?: number } | null>(null);
+  const [fetchedMeta, setFetchedMeta] = useState<ImageMeta | null>(null);
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
   const [fetchedData, setFetchedData] = useState(null);
 
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [progressModalOpen, setProgressModalOpen] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [errorLog, setErrorLog] = useState('');
   const [clearInfo, setClearInfo] = useState(false);
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const updateSetting = (key: keyof typeof settings, value?: number) => {
+  const updateSetting = (key, value) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
-  const touch = (key: keyof typeof touched) => {
+  
+  const touch = (key) => {
     setTouched(prev => ({ ...prev, [key]: true }));
   };
 
-  const shouldError = (key: keyof typeof settings) => {
+  const shouldError = (key) => {
     const val = settings[key];
     return (touched[key] || formAttempted) && (val === undefined || isNaN(val));
   };
 
-  const resetAll = () => {
+  interface ImageMeta {
+    width: number;
+    height: number;
+  }
+  
+  // Function to reset just UI states but not file-related data
+  const resetUiStates = () => {
+    setSettings({ x: undefined, y: undefined, width: undefined, height: undefined });
+    setTouched({ x: false, y: false, width: false, height: false });
+    setFormAttempted(false);
+  };
+
+  // Function to reset all states
+  const resetAllStates = () => {
     setFile(null);
     setFileId(null);
     setJobId(null);
     setFetchedMeta(null);
-    setSettings({ x: undefined, y: undefined, width: undefined, height: undefined });
-    setTouched({ x: false, y: false, width: false, height: false });
-    setFormAttempted(false);
+    setFetchedData(null);
+    resetUiStates();
     setProgress(0);
     setClearInfo(true);
+    
     if (videoRef.current) {
-      // @ts-ignore
-      videoRef.current.src = '';
+      videoRef.current.src = ''
+    }
+  };
+
+  // Handle file changes properly, with delay between clearing and setting
+  const handleFileChange = (newFile) => {
+    if (newFile !== file) {
+      // Clear previous file data immediately
+      setFile(null);
+      setFetchedMeta(null);
+      setFileId(null);
+      setProgress(0);
+
+      // Then set the new file after a short delay
+      setTimeout(() => {
+        setFile(newFile);
+        setClearInfo(false);  // Important to reset clearInfo flag
+      }, 50);
     }
   };
 
   // Poll file status and fetch metadata
   useEffect(() => {
-    if (!fileId) return;
-    const interval = setInterval(() => refetchFile(), 2000);
-    if (fileData?.metadata) {
-      setFetchedMeta(fileData.metadata);
-      // Don't set default values, just store metadata for validation
-    }
-    return () => clearInterval(interval);
-  }, [fileId, fileData, refetchFile]);
-
-  // Add useEffect for updating fetchedData
-  useEffect(() => {
-    if (!fileId) return;
+    if (!fileId || isUploading) return;
+    
     const interval = setInterval(() => {
-      if (fileData?.status !== 'COMMITTED' && fileData?.status !== 'ERROR' && fileId) {
+      const shouldContinuePolling = 
+        !fileData?.status || 
+        (fileData.status !== 'COMMITTED' && fileData.status !== 'ERROR') ||
+        !fileData?.metadata;
+        
+      if (shouldContinuePolling) {
         refetchFile();
       }
-      setFetchedData(fileData);
+      
+      if (fileData?.metadata) {
+        console.log('File data:', fileData);
+        setFetchedMeta(fileData.metadata);
+        setFetchedData(fileData);
+      }
     }, 2000);
-
+    
     return () => clearInterval(interval);
-  }, [fileData, fileId, refetchFile]);
+  }, [fileId, fileData, refetchFile, isUploading]);
 
   // Poll job status and reset on completion
   useEffect(() => {
     if (!jobId) return;
-    const interval = setInterval(() => refetchJob(), 5000);
-    if (jobData?.status && ['COMPLETED', 'FAILED', 'CANCELLED', 'ERROR'].includes(jobData.status)) {
-      clearInterval(interval);
-      setTimeout(resetAll, 500);
-    }
+    
+    const interval = setInterval(() => {
+      if (
+        jobData?.status !== 'COMMITTED' &&
+        jobData?.status !== 'ERROR' &&
+        jobData?.status !== 'COMPLETED' &&
+        jobData?.status !== 'FAILED' &&
+        jobData?.status !== 'CANCELLED'
+      ) {
+        refetchJob();
+      } else {
+        clearInterval(interval);
+      }
+    }, 5000);
+    
     return () => clearInterval(interval);
   }, [jobId, jobData?.status, refetchJob]);
+
+  // Add a new useEffect to monitor job status changes and reset when completed
+  useEffect(() => {
+    // Check if job has completed, failed, or been cancelled
+    if (
+      jobData?.status === 'COMPLETED' ||
+      jobData?.status === 'FAILED' ||
+      jobData?.status === 'CANCELLED' ||
+      jobData?.status === 'ERROR'
+    ) {
+      // Don't reset immediately to allow user to see the completion status
+      // Only reset all states after modal is closed to ensure thumbnail remains visible
+      if (!progressModalOpen) {
+        resetAllStates();
+      }
+    }
+  }, [jobData?.status, progressModalOpen]);
 
   const handleCrop = async () => {
     setFormAttempted(true);
     const { x, y, width, height } = settings;
-    if ([x, y, width, height].some(v => v === undefined || isNaN(v!))) {
+    if ([x, y, width, height].some(v => v === undefined || isNaN(v))) {
       toast.error('All crop fields are required');
       return;
     }
 
     try {
-      const resp = await initJob({
+      const response = await initJob({
         pipeline: [
           {
             tool_id: 'VIDEO_CROP',
@@ -140,25 +197,40 @@ export default function CropVideo() {
           video_output_format: videoContainer,
         },
       });
-      if (resp.error) throw resp.error;
+      
+      if (response.error) {
+        throw response.error;
+      }
 
-      toast.success('Crop job initialized');
+      toast.success('Job initialized successfully');
       setProgressModalOpen(true);
-      const jid = resp.data.job_id;
+      setUploadModalOpen(false);
+      
+      // Store job ID before resetting other states
+      const jid = response.data.job_id;
       setJobId(jid);
+      
+      // Only reset UI state but keep the data needed for the progress modal
+      resetUiStates();
       setFile(null);
       setFileId(null);
+      setProgress(0);
       setClearInfo(true);
 
       const commitResp = await commitJob({ job_id: jid });
       if (commitResp.error) throw commitResp.error;
       toast.success('Crop job committed');
-    } catch (err: any) {
-      const msg = err.data?.errorMsg || err.message || 'Failed to crop video';
-      const errLog = err.data?.errorLog || err.error || 'No error log available';
-      setErrorLog(errLog);
-      setErrorMessage(msg);
-      setErrorModalOpen(true);
+    } catch (err) {
+      if (err) {
+        console.error('Error processing video:', err);
+        const apiError = err as any;
+        const msg = apiError?.data?.errorMsg || (err as Error).message || 'Failed to crop video';
+        const errLog = apiError?.data?.errorLog || apiError?.error || 'No error log available';
+        setErrorLog(errLog);
+        setErrorMessage(msg);
+        setErrorModalOpen(true);
+        setProgressModalOpen(false);
+      }
     }
   };
 
@@ -187,19 +259,24 @@ export default function CropVideo() {
           <HeaderToolProperties />
           <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-              {(['x', 'y'] as (keyof typeof settings)[]).map(key => (
+              {(['x', 'y']).map(key => (
                 <div key={key}>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 capitalize">
                     {key === 'x' ? 'X-Coordinate' : key === 'y' ? 'Y-Coordinate' : key}
                   </label>
                   <input
                     type="number"
-                    disabled={!fetchedMeta}
+                    disabled={!fetchedMeta }
                     value={settings[key] !== undefined ? settings[key] : ''}
-                    placeholder={fetchedMeta ? `0 to ${key === 'x' ? fetchedMeta.width : fetchedMeta.height}` : 'Enter value'}
+                    placeholder={
+                      fetchedMeta as any
+                        ? `0 to ${key === 'x' ? fetchedMeta?.width : fetchedMeta?.height}`
+                        : 'Enter value'
+                    }
                     onChange={e => {
                       touch(key);
-                      const value = e.target.value === '' ? undefined : parseInt(e.target.value, 10);
+                      const value =
+                        e.target.value === '' ? undefined : parseInt(e.target.value, 10);
                       updateSetting(key, value);
                     }}
                     className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all ${
@@ -215,7 +292,7 @@ export default function CropVideo() {
               ))}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-              {(['width', 'height'] as (keyof typeof settings)[]).map(key => (
+              {(['width', 'height']).map(key => (
                 <div key={key}>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 capitalize">
                     {key === 'width' ? 'Width' : key === 'height' ? 'Height' : key}
@@ -227,7 +304,8 @@ export default function CropVideo() {
                     placeholder={fetchedMeta ? `Max ${fetchedMeta[key]}` : 'Enter value'}
                     onChange={e => {
                       touch(key);
-                      const value = e.target.value === '' ? undefined : parseInt(e.target.value, 10);
+                      const value =
+                        e.target.value === '' ? undefined : parseInt(e.target.value, 10);
                       updateSetting(key, value);
                     }}
                     className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all ${
@@ -244,8 +322,6 @@ export default function CropVideo() {
             </div>
           </div>
         </div>
-
-        {/* Output Settings could be added here if needed */}
 
         <div className="mb-10">
           <div className="flex items-center mb-6">
@@ -271,12 +347,10 @@ export default function CropVideo() {
         </div>
         <div className="mt-10 flex justify-center">
           <Button disabled={!fetchedMeta} onClick={handleCrop}>
-            Crop <HiArrowRight className="ml-2" />
+            Process <HiArrowRight className="ml-2" />
           </Button>
         </div>
       </div>
-
-      {/* Output Settings */}
 
       {uploadModalOpen && (
         <UploadFileModal
@@ -284,10 +358,7 @@ export default function CropVideo() {
           uploadModal={uploadModalOpen}
           setUploadModal={setUploadModalOpen}
           file={file}
-          setFile={f => {
-            setFile(null);
-            setTimeout(() => setFile(f), 50);
-          }}
+          setFile={handleFileChange}
           upload={upload}
           setFileId={setFileId}
           isUploading={isUploading}
@@ -296,13 +367,14 @@ export default function CropVideo() {
           progress={progress}
         />
       )}
-
-      <FileProgressModal
-        progressModal={progressModalOpen}
-        setProgressModal={setProgressModalOpen}
-        data={jobData}
-        reset={resetAll}
-      />
+      {progressModalOpen && (
+        <FileProgressModal
+          progressModal={progressModalOpen}
+          setProgressModal={setProgressModalOpen}
+          data={jobData}
+          reset={resetAllStates}
+        />
+      )}
       <ErrorModal
         isOpen={errorModalOpen}
         onClose={() => setErrorModalOpen(false)}

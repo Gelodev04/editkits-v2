@@ -516,8 +516,6 @@ export default function ResizeVideo() {
 
         {/* Dimensions Section */}
         <div className="mb-10">
-          
-
           <HeaderToolProperties>
             <ToggleButton
               label={isCustom ? 'Custom' : 'Preset'}
@@ -826,14 +824,14 @@ export default function ResizeVideo() {
 
           <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
             <OutputQualityVideo
-              file = {file}
-              isUploading = {isUploading}
-              fetchedData = {fetchedData}
-              outputQuality = {outputQuality}
-              setOutputQuality = {setOutputQuality}
-              videoContainer = {videoContainer}
-              setVideoContainer = {setVideoContainer}
-              />
+              file={file}
+              isUploading={isUploading}
+              fetchedData={fetchedData}
+              outputQuality={outputQuality}
+              setOutputQuality={setOutputQuality}
+              videoContainer={videoContainer}
+              setVideoContainer={setVideoContainer}
+            />
           </div>
         </div>
 
@@ -871,12 +869,14 @@ export default function ResizeVideo() {
           progress={progress}
         />
       )}
-      <FileProgressModal
-        progressModal={progressModal}
-        setProgressModal={setProgressModal}
-        reset={resetStates}
-        data={jobData}
-      />
+      {progressModal && (
+        <FileProgressModal
+          progressModal={progressModal}
+          setProgressModal={setProgressModal}
+          reset={resetStates}
+          data={jobData}
+        />
+      )}
       <ErrorModal
         isOpen={errorModalOpen}
         onClose={() => setErrorModalOpen(false)}

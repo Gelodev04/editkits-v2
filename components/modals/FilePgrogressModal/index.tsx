@@ -3,14 +3,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Fade, Modal } from '@mui/material';
-import {
-  HiOutlineX,
-  HiOutlineDocumentDuplicate,
-  HiOutlinePlay,
-  HiX,
-  HiOutlineInformationCircle,
-  HiDownload,
-} from 'react-icons/hi';
+import { HiOutlineX, HiX, HiOutlineInformationCircle } from 'react-icons/hi';
+import Copy from '@/components/icons/Copy';
+import Download from '@/components/icons/Download';
 
 import { lato, montserrat, opensans } from '@/lib/fonts';
 import Button from '@/components/ui/button/Button';
@@ -19,6 +14,7 @@ import { useLazyPreviewVideoQuery, useStatusQuery } from '@/services/api/file';
 import { downloadFile } from '@/lib/utils';
 import VideoPreviewModal from '../VideoPreviewModal';
 import { SpinnerOne } from '@/components/Spinner';
+import Play from '@/components/icons/Play';
 
 export default function FileProgressModal({ progressModal, setProgressModal, data, reset }) {
   const router = useRouter();
@@ -34,44 +30,15 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
 
   const [triggerPreview] = useLazyPreviewVideoQuery();
 
-  const {
-    refetch: refetchStatus, 
-  } = useStatusQuery(
-    { fileId }, 
-    { skip: !fileId }
-  );
+  const { refetch: refetchStatus } = useStatusQuery({ fileId }, { skip: !fileId });
 
   useEffect(() => {
+    // if(!fileId){return}
     if (data?.output_file_ids?.[0]) {
       const newFileId = data.output_file_ids[0];
       setFileId(newFileId);
     }
   }, [data]);
-
-  
-  const fetchData = async () => {
-    const newFileId = data?.output_file_ids?.[0];
-    if (!newFileId) return;
-    setStatus('COMMITTED');
-    console.log(status)
-  
-    try {
-      // directly pass the freshly fetched ID:
-      // .unwrap() will either return the data or throw, so you can catch errors cleanly
-      console.log('Fetching video URL for file ID:', newFileId);
-      const response = await triggerPreview({ fileId: newFileId }).unwrap();
-      console.log('Preview response:', response);
-      const url = (response as { url: string }).url;
-  
-      setUrl(url);
-      setVideo(url);
-    } catch (err) {
-      console.error('Error fetching video URL:', err);
-      // optionally surface a toast/toaster here
-    }
-  };
-
-  console.log("data", data);
 
 
   const pollFileStatus = useCallback(async () => {
@@ -86,7 +53,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
       if (status === 'COMMITTED') {
         // Stop polling
         setStatus(status);
-        
+
         if (pollingInterval) {
           clearInterval(pollingInterval);
           setPollingInterval(null);
@@ -165,7 +132,7 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const handleClose = () => {
     setProgressModal(false);
     reset();
-  }
+  };
 
   const goToJobsDashboard = () => {
     handleClose();
@@ -183,11 +150,8 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
   const isCompleted = jobStarted && data?.status === 'COMPLETED';
   const isFailed = jobStarted && (data?.status === 'FAILED' || data?.status === 'CANCELLED');
 
-
   // Default to processing state if no other state is determined but modal is open
   const isProcessing = progressModal && !isPending && !isCompleted && !isFailed;
-
-
 
   // Calculate progress percentage safely
   const progressPercentage =
@@ -334,7 +298,6 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                         <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-6">
                           Your video has been successfully processed and is ready to use.
                         </p>
-                        
 
                         {thumbnailUrl ? (
                           <div className="relative w-full rounded-lg overflow-hidden mb-5 border border-gray-200 dark:border-gray-700">
@@ -372,42 +335,75 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                   aria-label="Copy ID"
                                   title="Copy ID to clipboard"
                                 >
-                                  <HiOutlineDocumentDuplicate />
+                                  <Copy className="w-5 h-5 text-[#1C274C] dark:text-white" />
                                 </button>
                                 <button
                                   onClick={async () => {
-                                    await fetchData();
 
                                     if (url) {
                                       console.log('Video URL:', url);
                                       setVideo(url);
                                       setVideoPreviewModal(true);
                                     } else {
-                                      console.error('Failed to get video preview URL');
+                                      const newFileId = data?.output_file_ids?.[0];
+                                      if (!newFileId) return;
+                                      setStatus('COMMITTED');
+                                      console.log(status);
+
+                                      try {
+                                        console.log('Fetching video URL for file ID:', newFileId);
+                                        const response = await triggerPreview({
+                                          fileId: newFileId,
+                                        }).unwrap();
+                                        console.log('Preview response:', response);
+                                        const url = (response as { url: string }).url;
+
+                                        setUrl(url);
+                                        setVideo(url);
+                                        setVideoPreviewModal(true);
+                                      } catch (err) {
+                                        console.error('Error fetching video URL:', err);
+                                        // optionally surface a toast/toaster here
+                                      }
                                     }
                                   }}
                                   className="flex items-center justify-center p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
                                 >
-                                  <HiOutlinePlay />
+                                  <Play className="w-5 h-5 text-[#1C274C] dark:text-white" />
                                 </button>
 
                                 <button
                                   onClick={async e => {
                                     e.preventDefault();
-                                    await fetchData();
-                                    try {
-                                      if (url) {
+
+                                    if (url) {
+                                      downloadFile(url, 'video.mp4');
+                                    } else {
+                                      const newFileId = data?.output_file_ids?.[0];
+                                      if (!newFileId) return;
+                                      setStatus('COMMITTED');
+                                      console.log(status);
+
+                                      try {
+                                        console.log('Fetching video URL for file ID:', newFileId);
+                                        const response = await triggerPreview({
+                                          fileId: newFileId,
+                                        }).unwrap();
+                                        console.log('Preview response:', response);
+                                        const url = (response as { url: string }).url;
+
+                                        setUrl(url);
+                                        setVideo(url);
                                         downloadFile(url, 'video.mp4');
-                                      } else {
-                                        console.error('Failed to get video download URL');
+                                      } catch (err) {
+                                        console.error('Error fetching video URL:', err);
+                                        // optionally surface a toast/toaster here
                                       }
-                                    } catch (error) {
-                                      console.error('Error fetching video URL:', error);
                                     }
                                   }}
                                   className="flex items-center justify-center p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
                                 >
-                                  <HiDownload />
+                                  <Download className="w-5 h-5 text-[#1C274C] dark:text-white" />
                                 </button>
                               </div>
                             </div>
@@ -468,7 +464,12 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
               </motion.div>
             </div>
           </div>
-          <VideoPreviewModal open={videoPreviewModal} setOpen={setVideoPreviewModal} url={video} fileType={"VIDEO"} />
+          <VideoPreviewModal
+            open={videoPreviewModal}
+            setOpen={setVideoPreviewModal}
+            url={video}
+            fileType={'VIDEO'}
+          />
         </div>
       </Fade>
     </Modal>

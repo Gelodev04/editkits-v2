@@ -49,7 +49,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ isOpen, onClose, errorMessage, 
         </div>
 
         {/* Content area with improved styling */}
-        <div className="mb-5 flex flex-col items-center justify-center">
+        <div className="mb-2 flex flex-col items-center justify-center">
           {/* Title - Keeping font as requested */}
           <h4 className="mb-4 text-2xl font-semibold text-gray-800 dark:text-white/90 sm:text-title-sm">
             {errorMessage || 'Something went wrong, please try again.'}
@@ -57,11 +57,11 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ isOpen, onClose, errorMessage, 
 
           {/* Error log with improved styling */}
           {errorLog && (
-            <div className="w-full mt-2">
+            <div className="w-full mb-5">
               <div className="relative">
-                <div className="px-4 py-3 text-sm bg-gray-100 dark:bg-gray-800/80 rounded-lg text-left overflow-auto max-h-40 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 shadow-sm">
+                {/* <div className="px-4 py-3 text-sm bg-gray-100 dark:bg-gray-800/80 rounded-lg text-left overflow-auto max-h-40 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 shadow-sm"> */}
                   <code className="font-mono text-xs">{errorLog}</code>
-                </div>
+                {/* </div> */}
               </div>
             </div>
           )}

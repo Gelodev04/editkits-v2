@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { VideoUpload } from '@/components/VideoUpload';
 import UploadFileModal from '@/components/modals/UploadFileModal';
-import { aspectRatio, outputQualityList, presets, videoType } from '@/lib/constants';
+import { aspectRatio, presets } from '@/lib/constants';
 import { useStatusQuery, useUploadMutation } from '@/services/api/file';
 import { useCommitJobMutation, useInitJobMutation, useJobStatusQuery } from '@/services/api/job';
 import FileProgressModal from '@/components/modals/FilePgrogressModal';
@@ -11,7 +11,6 @@ import Button from '@/components/ui/button/Button';
 import {
   HiOutlineVideoCamera,
   HiOutlineAdjustments,
-  HiOutlineTemplate,
   HiArrowRight,
   HiOutlineColorSwatch,
 } from 'react-icons/hi';
@@ -20,6 +19,8 @@ import toast from 'react-hot-toast';
 import ToggleButton from '@/components/ToggleButton';
 import ComponentToolCard from '@/components/ComponentToolCard';
 import ErrorModal from '@/components/modals/ErrorModal';
+import { HeaderToolInput, HeaderToolProperties } from '@/components/HeaderTool';
+import OutputQualityVideo from '@/components/OutputQualityVideo';
 
 // Define interface for metadata
 interface FileMetadata {
@@ -85,13 +86,15 @@ export default function ResizeVideo() {
   // Improved calculation functions with proper type handling and precision
   const calculateHeight = (width, aspectX, aspectY) => {
     if (typeof width !== 'number' || isNaN(width) || width <= 0) return undefined;
-    if (typeof aspectX !== 'number' || aspectX <= 0 || typeof aspectY !== 'number' || aspectY <= 0) return undefined;
+    if (typeof aspectX !== 'number' || aspectX <= 0 || typeof aspectY !== 'number' || aspectY <= 0)
+      return undefined;
     return Math.floor(width * (aspectY / aspectX));
   };
-  
+
   const calculateWidth = (height, aspectX, aspectY) => {
     if (typeof height !== 'number' || isNaN(height) || height <= 0) return undefined;
-    if (typeof aspectX !== 'number' || aspectX <= 0 || typeof aspectY !== 'number' || aspectY <= 0) return undefined;
+    if (typeof aspectX !== 'number' || aspectX <= 0 || typeof aspectY !== 'number' || aspectY <= 0)
+      return undefined;
     return Math.floor(height * (aspectX / aspectY));
   };
 
@@ -228,7 +231,8 @@ export default function ResizeVideo() {
         // Continue polling until we get a final status (COMMITTED or ERROR)
         // or until we have the metadata we need
         const shouldContinuePolling =
-          (!data?.status || (data.status !== 'COMMITTED' && data.status !== 'ERROR')) ||
+          !data?.status ||
+          (data.status !== 'COMMITTED' && data.status !== 'ERROR') ||
           !data?.metadata;
 
         if (shouldContinuePolling) {
@@ -249,7 +253,6 @@ export default function ResizeVideo() {
 
   // Enhanced effect for maintaining aspect ratio when width or height changes
   useEffect(() => {
-
     if (selectedAspectRatio === 'Custom') return;
     if (!isCustom) {
       return; // Skip aspect ratio calculation for presets
@@ -261,8 +264,10 @@ export default function ResizeVideo() {
     }
 
     // Convert values to numbers for safe calculation
-    const width = typeof settings.width === 'string' ? parseInt(settings.width, 10) : settings.width;
-    const height = typeof settings.height === 'string' ? parseInt(settings.height, 10) : settings.height;
+    const width =
+      typeof settings.width === 'string' ? parseInt(settings.width, 10) : settings.width;
+    const height =
+      typeof settings.height === 'string' ? parseInt(settings.height, 10) : settings.height;
     const aspectX = settings.aspectX;
     const aspectY = settings.aspectY;
 
@@ -347,7 +352,7 @@ export default function ResizeVideo() {
   };
 
   // Fix the toggle logic
-  const toggleMode = (newIsCustom) => {
+  const toggleMode = newIsCustom => {
     setIsCustom(newIsCustom);
 
     // Reset active input when switching modes
@@ -467,7 +472,7 @@ export default function ResizeVideo() {
           (response.error as any).data?.errorMsg ||
           (response.error as any).errMsg ||
           'Failed to commit job';
-          setProgressModal(false);
+        setProgressModal(false);
         setErrorMessage(errorMsg);
         setErrorModalOpen(true);
         return;
@@ -491,12 +496,9 @@ export default function ResizeVideo() {
       <div className="relative z-10 px-8 py-8">
         {/* Input Section */}
         <div className="mb-10">
-          <div className="flex items-center mb-6">
-            <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
-              <HiOutlineVideoCamera size={20} />
-            </div>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Input</h2>
-          </div>
+          <HeaderToolInput>
+            <HiOutlineVideoCamera size={20} />
+          </HeaderToolInput>
 
           <motion.div whileHover={{ scale: 1.005 }} transition={{ duration: 0.2 }}>
             <VideoUpload
@@ -514,25 +516,15 @@ export default function ResizeVideo() {
 
         {/* Dimensions Section */}
         <div className="mb-10">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
-            <div className="flex items-center mb-4 sm:mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
-                <HiOutlineTemplate size={20} />
-              </div>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
-                Tool Properties
-              </h2>
-            </div>
-            <div className="flex items-center justify-end mb-4 sm:mb-0 ml-1 sm:ml-0">
-              <ToggleButton
-                label={isCustom ? 'Custom' : 'Preset'}
-                checked={isCustom}
-                onChange={() => {
-                  toggleMode(!isCustom)
-                }}
-              />
-            </div>
-          </div>
+          <HeaderToolProperties>
+            <ToggleButton
+              label={isCustom ? 'Custom' : 'Preset'}
+              checked={isCustom}
+              onChange={() => {
+                toggleMode(!isCustom);
+              }}
+            />
+          </HeaderToolProperties>
 
           <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
             {!isCustom ? (
@@ -690,10 +682,11 @@ export default function ResizeVideo() {
                         updateSettings('width', e.target.value);
                         setWidthTouched(true);
                       }}
-                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${shouldShowError(settings.width, widthTouched)
+                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                        shouldShowError(settings.width, widthTouched)
                           ? 'border-red-500 focus:ring-red-500'
                           : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
-                        }`}
+                      }`}
                     />
                     {shouldShowError(settings.width, widthTouched) && (
                       <p className="mt-1 text-sm text-red-500">Width is required</p>
@@ -718,10 +711,11 @@ export default function ResizeVideo() {
                         updateSettings('height', e.target.value);
                         setHeightTouched(true);
                       }}
-                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${shouldShowError(settings.height, heightTouched)
+                      className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                        shouldShowError(settings.height, heightTouched)
                           ? 'border-red-500 focus:ring-red-500'
                           : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
-                        }`}
+                      }`}
                     />
                     {shouldShowError(settings.height, heightTouched) && (
                       <p className="mt-1 text-sm text-red-500">Height is required</p>
@@ -744,10 +738,11 @@ export default function ResizeVideo() {
                         placeholder="#000000"
                         value={settings.color}
                         onChange={handleColorChange}
-                        className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${settings.isColorValid
+                        className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                          settings.isColorValid
                             ? 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
                             : 'border-red-500 focus:ring-red-500'
-                          }`}
+                        }`}
                       />
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <div
@@ -828,87 +823,15 @@ export default function ResizeVideo() {
           </div>
 
           <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-              <div className="w-full">
-                <label
-                  htmlFor="quality"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                >
-                  Output Quality
-                </label>
-                <div className="relative">
-                  <select
-                    id="quality"
-                    disabled={!file || isUploading || !fetchedData?.metadata}
-                    value={outputQuality}
-                    onChange={e => setOutputQuality(e.target.value)}
-                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                  >
-                    {outputQualityList.map(opt => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full">
-                <label
-                  htmlFor="format"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                >
-                  Video Format
-                </label>
-                <div className="relative">
-                  <select
-                    id="format"
-                    disabled={!file || isUploading || !fetchedData?.metadata}
-                    value={videoContainer}
-                    onChange={e => setVideoContainer(e.target.value)}
-                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
-                  >
-                    {videoType.map(opt => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <OutputQualityVideo
+              file={file}
+              isUploading={isUploading}
+              fetchedData={fetchedData}
+              outputQuality={outputQuality}
+              setOutputQuality={setOutputQuality}
+              videoContainer={videoContainer}
+              setVideoContainer={setVideoContainer}
+            />
           </div>
         </div>
 
@@ -946,12 +869,14 @@ export default function ResizeVideo() {
           progress={progress}
         />
       )}
-      <FileProgressModal
-        progressModal={progressModal}
-        setProgressModal={setProgressModal}
-        reset={resetStates}
-        data={jobData}
-      />
+      {progressModal && (
+        <FileProgressModal
+          progressModal={progressModal}
+          setProgressModal={setProgressModal}
+          reset={resetStates}
+          data={jobData}
+        />
+      )}
       <ErrorModal
         isOpen={errorModalOpen}
         onClose={() => setErrorModalOpen(false)}

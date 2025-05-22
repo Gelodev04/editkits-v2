@@ -2,27 +2,17 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { FaPlay } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
-// // import Typography from '@/components/Typography';
-// import Button from '@/components/Button_Old';
 import UploadFileModal from '@/components/modals/UploadFileModal';
-// import TextField from '@/components/TextField';
-// import Select from '@/components/Select';
 import { outputQualityList, videoType } from '@/lib/constants';
 import { VideoUpload } from '@/components/VideoUpload';
 import { useEffect } from 'react';
-// import { CalendarIcon, ClockIcon, UploadIcon } from '@/components/Icons';
 import {
   HiOutlineClock,
   HiOutlineVideoCamera,
   HiOutlineAdjustments,
   HiArrowRight,
-  // HiOutlinePhotograph,
-  // HiOutlineCheck,
 } from 'react-icons/hi';
-
 import toast from 'react-hot-toast';
-
-// Import the dedicated components
 import { useStatusQuery, useUploadMutation } from '@/services/api/file';
 import { useCommitJobMutation, useInitJobMutation, useJobStatusQuery } from '@/services/api/job';
 import FileProgressModal from '@/components/modals/FilePgrogressModal';
@@ -49,71 +39,31 @@ export default function TrimVideo() {
   const [jobId, setJobId] = React.useState(null);
   const [upload] = useUploadMutation();
   const { data: _data, refetch } = useStatusQuery({ fileId }, { skip: !fileId });
-
-  // this is not a concrete solution, but a workaround
   const data = fileId ? _data : null;
-  
-  console.log("FileId: ", fileId)
   const { data: jobData, refetch: refetchJobData } = useJobStatusQuery(
     { job_id: jobId },
     { skip: !jobId }
   );
   const [initJob] = useInitJobMutation();
   const [commitJob] = useCommitJobMutation();
-
   const [uploadFileModal, setUploadFileModal] = React.useState<boolean>(false);
   const [progressModal, setProgressModal] = React.useState<boolean>(false);
   const [file, setFile] = React.useState<any>(null);
   const [startTime, setStartTime] = React.useState<any>(null);
   const [endTime, setEndTime] = useState<any>(null);
   const videoRef = useRef(null);
-
-  // Add state to track if fields have been touched
   const [startTimeTouched, setStartTimeTouched] = useState(false);
   const [endTimeTouched, setEndTimeTouched] = useState(false);
-  // Track form submission attempts
   const [formSubmitAttempted, setFormSubmitAttempted] = useState(false);
-
-  // Add state variable to track whether file info should be cleared
   const [clearFileInfo, setClearFileInfo] = React.useState<boolean>(false);
-
   const [fetchedData, setFetchedData] = useState<FileMetadata | null>(null);
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
-
-  // Add error modal state
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Listen for direct file metadata from file ID uploads
-  // useEffect(() => {
-  //   const handleFileMetadataReady = event => {
-  //     const fileData = event.detail;
-
-  //     // If resetPrevious flag is set, ensure we clear existing data first
-  //     if (fileData.resetPrevious) {
-  //       setFetchedData(null);
-  //       // Short delay to ensure state is updated before setting new data
-  //       setTimeout(() => {
-  //         if (fileData && fileData.metadata) {
-  //           console.log('File metadata received directly (after reset):', fileData);
-  //           setFetchedData(fileData);
-  //         }
-  //       }, 50);
-  //     } else if (fileData && fileData.metadata) {
-  //       setFetchedData(fileData);
-  //       console.log('File metadata received directly:', fileData);
-  //     }
-  //   };
-
-  //   window.addEventListener('file-metadata-ready', handleFileMetadataReady);
-
-  //   return () => {
-  //     window.removeEventListener('file-metadata-ready', handleFileMetadataReady);
-  //   };
-  // }, []);
 
   // Function to reset all states when a new file is uploaded
   const resetStates = () => {
@@ -133,24 +83,6 @@ export default function TrimVideo() {
       videoRef.current.src = '';
     }
   };
-
-  // Add this function to completely reset all file states
-  // const resetAllFileStates = () => {
-  //   setFile(null);
-  //   setFileId(null);
-  //   setFetchedData(null);
-  //   setProgress(0);
-  //   resetStates();
-  //   // Set clear file info to true
-  //   setClearFileInfo(true);
-  // };
-
-  // // Reset states when file changes
-  // useEffect(() => {
-  //   if (file === null) {
-  //     resetStates();
-  //   }
-  // }, [file]);
 
   // Reset states when uploading starts
   useEffect(() => {
@@ -181,10 +113,7 @@ export default function TrimVideo() {
   };
 
   useEffect(() => {
-    // Don't fetch data while uploading
     if (isUploading) return;
-  
-
     const interval = setInterval(() => {
       console.log(data)
       //@ts-ignore
@@ -192,18 +121,8 @@ export default function TrimVideo() {
         refetch();
         return;
       }
-
-      console.log("Setitng fetched data: ", data)
-      setFetchedData(data);
-      
+      setFetchedData(data);     
       clearInterval(interval);
-
-      // Only update fetchedData if we have actual data and not uploading
-      // if (data && !isUploading) {
-      //   // @ts-ignore
-      //   setFetchedData(data);
-      //   console.log('data', data);
-      // }
     }, 2000);
 
     return () => clearInterval(interval);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaRuler } from 'react-icons/fa';
 import GradientHeading from '../Typography/GradientHeading';
 import { motion } from 'framer-motion';
 
@@ -30,7 +29,6 @@ const ComponentToolCard: React.FC<ComponentToolCardProps> = ({
             <GradientHeading
               text={title}
               subtext="Easily change the dimensions of your video to fit any platform"
-              icon={<FaRuler size={18} />}
               fromColor="blue-600"
               toColor="purple-700"
             />

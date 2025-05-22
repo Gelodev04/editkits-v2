@@ -25,7 +25,7 @@ export default function ButtonGroup({ buttons, selected, onClick }: ButtonGroupP
             index === 0 && 'rounded-l-lg',
             index === buttons.length - 1 && 'rounded-r-lg',
             selected.includes(button.value)
-              ? 'bg-[#273266] text-white'
+              ? 'bg-brand-500 text-white'
               : 'bg-transparent text-gray-700 hover:text-gray-800 dark:bg-transparent dark:text-gray-400'
           )}
         >

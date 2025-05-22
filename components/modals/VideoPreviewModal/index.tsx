@@ -24,7 +24,7 @@ export default function VideoPreviewModal(props: PopUpProps) {
     <Modal
       isOpen={props.open}
       onClose={() => props.setOpen(false)}
-      className="w-fit max-h-[90vh] overflow-visible flex items-center justify-center"
+      className="w-fit max-h-[90vh] overflow-visible flex items-center justify-center max-w-[80vw] lg:max-w-[90vw]"
     >
       <div className="p-4">
         {fileType === 'VIDEO' && (

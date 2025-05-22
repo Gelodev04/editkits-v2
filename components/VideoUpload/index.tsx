@@ -3,7 +3,6 @@ import Image from 'next/image';
 import {
   HiOutlineCloudUpload,
   HiOutlineRefresh,
-  // HiPlay,
   HiOutlineVideoCamera,
 } from 'react-icons/hi';
 import Button from '../ui/button/Button';

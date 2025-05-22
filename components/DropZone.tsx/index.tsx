@@ -18,16 +18,15 @@ interface DropzoneComponentProps {
 const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
   title = 'Dropzone',
   onFileSelect,
-  acceptTypes,
   showCard = true,
   className = '',
-  // maxSize = 1024 * 1024 * 100, // Default 100MB
   desc = '',
 }) => {
   const onDrop = React.useCallback(
     (acceptedFiles: File[]) => {
       console.log('Files dropped:', acceptedFiles);
       if (onFileSelect && acceptedFiles.length > 0) {
+        console.log('Accepted files:', acceptedFiles);
         onFileSelect(acceptedFiles);
       }
     },
@@ -50,7 +49,7 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
         '.ogv',
         '.ts',
       ],
-      ...(acceptTypes || {}),
+      'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp'],
     },
     noClick: false,
     noKeyboard: false,
@@ -69,7 +68,7 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
 
   // Format accepted file types for display
   const getAcceptedFileTypes = () => {
-    return 'video files';
+    return 'Media files';
   };
 
   const dropzoneContent = (
@@ -132,7 +131,7 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({
                 onFileSelect(Array.from(e.target.files));
               }
             }}
-            accept="video/*,.mp4,.mov,.avi,.webm,.mkv,.flv,.wmv,.m4v,.3gp,.ogv,.ts"
+            accept="video/*,.mp4,.mov,.avi,.webm,.mkv,.flv,.wmv,.m4v,.3gp,.ogv,.ts, image/*,.jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp"
           />
         </div>
       </div>

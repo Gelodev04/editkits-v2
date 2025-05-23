@@ -140,8 +140,8 @@ export default function UploadMultipleFileModal(props: MultipleUploadModalProps)
       // Set fileSelected to true to prevent multiple calls
       setFileSelected(true);
 
-      const file = acceptedFiles[0];
-      if (file) {
+      // Process all accepted files
+      for (const file of acceptedFiles) {
         if (file.type.startsWith('video/') || file.type.startsWith('image/')) {
           props.setFile(file, props.fileIndex);
           await handleFileUpload(file);
@@ -159,9 +159,8 @@ export default function UploadMultipleFileModal(props: MultipleUploadModalProps)
           toast.error('Please upload a valid video or image file.');
           setFileSelected(false);
           isUploadingRef.current = false;
+          break; // Stop processing if invalid file found
         }
-      } else {
-        setFileSelected(false);
       }
     },
     [props, isProcessing, fileSelected]

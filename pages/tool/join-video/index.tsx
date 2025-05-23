@@ -3,7 +3,12 @@ import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import FileProgressModal from '@/components/modals/FilePgrogressModal';
 import Button from '@/components/ui/button/Button';
-import { HiOutlineVideoCamera, HiOutlineAdjustments, HiArrowRight } from 'react-icons/hi';
+import {
+  HiOutlineVideoCamera,
+  HiOutlineAdjustments,
+  HiArrowRight,
+  HiOutlineColorSwatch,
+} from 'react-icons/hi';
 import toast from 'react-hot-toast';
 import ComponentToolCard from '@/components/ComponentToolCard';
 import ErrorModal from '@/components/modals/ErrorModal';
@@ -38,9 +43,26 @@ export default function JoinMedia() {
   const [initJob] = useInitJobMutation();
   const [commitJob] = useCommitJobMutation();
 
+  // Output settings
   const [outputQuality, setOutputQuality] = useState('MEDIUM');
   const [videoContainer, setVideoContainer] = useState('mp4');
   const [fetchedData, setFetchedData] = useState<any[]>([]);
+
+  // Join video settings from VJoinProperties
+  const [settings, setSettings] = useState({
+    outputWidth: 1280,
+    outputHeight: 720,
+    stretchStrategy: 'fit',
+    backgroundColor: '#000000',
+    frameRate: 30,
+    isColorValid: true,
+  });
+  const [touched, setTouched] = useState({
+    outputWidth: false,
+    outputHeight: false,
+    frameRate: false,
+  });
+  const [formAttempted, setFormAttempted] = useState(false);
 
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [progressModalOpen, setProgressModalOpen] = useState(false);
@@ -59,6 +81,25 @@ export default function JoinMedia() {
     height: number;
   }
 
+  const updateSetting = (key, value) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  const touch = key => {
+    setTouched(prev => ({ ...prev, [key]: true }));
+  };
+
+  const shouldError = key => {
+    const val = settings[key];
+    return (touched[key] || formAttempted) && (val === undefined || isNaN(val) || val <= 0);
+  };
+
+  const handleColorChange = e => {
+    const newColor = e.target.value;
+    updateSetting('backgroundColor', newColor);
+    updateSetting('isColorValid', /^#[0-9A-Fa-f]{6}$/.test(newColor));
+  };
+
   // Function to reset all states
   const resetAllStates = () => {
     setFiles([]);
@@ -70,6 +111,20 @@ export default function JoinMedia() {
     setClearInfo(true);
     setSelectedFileIndex(0);
     setUploadIndex(0);
+    setSettings({
+      outputWidth: 1280,
+      outputHeight: 720,
+      stretchStrategy: 'fit',
+      backgroundColor: '#000000',
+      frameRate: 30,
+      isColorValid: true,
+    });
+    setTouched({
+      outputWidth: false,
+      outputHeight: false,
+      frameRate: false,
+    });
+    setFormAttempted(false);
 
     if (videoRef.current) {
       videoRef.current.src = '';
@@ -90,12 +145,15 @@ export default function JoinMedia() {
     while (newFetchedData.length < newFiles.length) {
       newFetchedData.push(null);
     }
+
+    // Explicitly set the data for this index to null to clear previous data
+    newFetchedData[index] = null;
     setFetchedData(newFetchedData);
 
     // Initialize duration for image files
     if (newFile.type.startsWith('image/')) {
       const newDurations = [...durations];
-      newDurations[index] = 3; // Default 3 seconds
+      newDurations[index] = 5; // Default 5 seconds
       setDurations(newDurations);
     }
 
@@ -180,6 +238,11 @@ export default function JoinMedia() {
     const newFileIds = [...fileIds];
     newFileIds[index] = fileId;
     setFileIds(newFileIds);
+
+    // Clear the fetchedData for this index to prevent showing previous data
+    const newFetchedData = [...fetchedData];
+    newFetchedData[index] = null;
+    setFetchedData(newFetchedData);
   };
 
   // Poll file status and fetch metadata for each file using RTK
@@ -203,9 +266,12 @@ export default function JoinMedia() {
             }
 
             if (data && data.metadata) {
-              const newFetchedData = [...fetchedData];
-              newFetchedData[index] = data;
-              setFetchedData(newFetchedData);
+              // Use functional update to avoid stale closure issues
+              setFetchedData(prevData => {
+                const newData = [...prevData];
+                newData[index] = data;
+                return newData;
+              });
             }
           } catch (error) {
             console.error(`Error fetching status for file ${fileId}:`, error);
@@ -216,12 +282,13 @@ export default function JoinMedia() {
       await Promise.all(promises);
 
       if (!isUploading && statusofFile) {
+        console.log('statusofFile', statusofFile);
         clearInterval(interval);
       }
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isUploading]);
+  }, [isUploading, fileIds, triggerStatusQuery]);
 
   // Poll job status and reset on completion
   useEffect(() => {
@@ -262,6 +329,8 @@ export default function JoinMedia() {
   }, [jobData?.status, progressModalOpen]);
 
   const handleJoinVideos = async () => {
+    setFormAttempted(true);
+
     if (files.length < 2) {
       toast.error('Please upload at least 2 files to join');
       return;
@@ -283,10 +352,20 @@ export default function JoinMedia() {
       return;
     }
 
+    // Validate required settings
+    const { outputWidth, outputHeight, frameRate } = settings;
+    if ([outputWidth, outputHeight, frameRate].some(v => v === undefined || isNaN(v) || v <= 0)) {
+      toast.error('All output settings are required and must be positive numbers');
+      return;
+    }
+
     try {
-      // Prepare input array for the VIDEO_JOIN tool
-      const inputs = fileIds.map((fileId, index) => {
-        const input: any = { file_id: fileId };
+      console.log('fileIds', fileIds);
+      // Prepare input array for the VIDEO_JOIN tool with proper structure
+      const input_data = fileIds.map((fileId, index) => {
+        const input: any = {
+          input: fileId,
+        };
 
         // Only add duration for image files
         if (files[index] && files[index].type.startsWith('image/')) {
@@ -301,7 +380,12 @@ export default function JoinMedia() {
           {
             tool_id: 'VIDEO_JOIN',
             properties: {
-              inputs: inputs,
+              input_data,
+              output_width: settings.outputWidth,
+              output_height: settings.outputHeight,
+              stretch_strategy: settings.stretchStrategy,
+              background_color: settings.backgroundColor,
+              frame_rate: settings.frameRate,
             },
           },
         ],
@@ -367,6 +451,187 @@ export default function JoinMedia() {
               reorderFiles={reorderFiles}
             />
           </motion.div>
+        </div>
+
+        <div className="mb-10">
+          <HeaderToolProperties />
+          <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+              <div className="w-full">
+                <label
+                  htmlFor="outputWidth"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Output Width
+                </label>
+                <input
+                  id="outputWidth"
+                  type="number"
+                  disabled={files.length === 0 || isUploading || fileIds.length !== files.length}
+                  value={settings.outputWidth !== undefined ? settings.outputWidth : ''}
+                  placeholder="1280"
+                  onChange={e => {
+                    touch('outputWidth');
+                    const value = e.target.value === '' ? undefined : parseInt(e.target.value, 10);
+                    updateSetting('outputWidth', value);
+                  }}
+                  className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                    shouldError('outputWidth')
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                  }`}
+                />
+                {shouldError('outputWidth') && (
+                  <p className="mt-1 text-sm text-red-500">
+                    Output width is required and must be positive
+                  </p>
+                )}
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="outputHeight"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Output Height
+                </label>
+                <input
+                  id="outputHeight"
+                  type="number"
+                  disabled={files.length === 0 || isUploading || fileIds.length !== files.length}
+                  value={settings.outputHeight !== undefined ? settings.outputHeight : ''}
+                  placeholder="720"
+                  onChange={e => {
+                    touch('outputHeight');
+                    const value = e.target.value === '' ? undefined : parseInt(e.target.value, 10);
+                    updateSetting('outputHeight', value);
+                  }}
+                  className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                    shouldError('outputHeight')
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                  }`}
+                />
+                {shouldError('outputHeight') && (
+                  <p className="mt-1 text-sm text-red-500">
+                    Output height is required and must be positive
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+              <div className="w-full">
+                <label
+                  htmlFor="frameRate"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Frame Rate (FPS)
+                </label>
+                <input
+                  id="frameRate"
+                  type="number"
+                  disabled={files.length === 0 || isUploading || fileIds.length !== files.length}
+                  value={settings.frameRate !== undefined ? settings.frameRate : ''}
+                  placeholder="30"
+                  onChange={e => {
+                    touch('frameRate');
+                    const value = e.target.value === '' ? undefined : parseInt(e.target.value, 10);
+                    updateSetting('frameRate', value);
+                  }}
+                  className={`w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                    shouldError('frameRate')
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                  }`}
+                />
+                {shouldError('frameRate') && (
+                  <p className="mt-1 text-sm text-red-500">
+                    Frame rate is required and must be positive
+                  </p>
+                )}
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="stretchStrategy"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Stretch Strategy
+                </label>
+                <div className="relative">
+                  <select
+                    id="stretchStrategy"
+                    value={settings.stretchStrategy}
+                    onChange={e => updateSetting('stretchStrategy', e.target.value)}
+                    disabled={files.length === 0 || isUploading || fileIds.length !== files.length}
+                    className="w-full text-black dark:text-white bg-white dark:bg-gray-800 pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none"
+                  >
+                    <option value="fit">Fit</option>
+                    <option value="fill">Fill</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mb-6">
+              <label
+                htmlFor="backgroundColor"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                Background Color
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  id="backgroundColor"
+                  type="text"
+                  disabled={files.length === 0 || isUploading || fileIds.length !== files.length}
+                  placeholder="#000000"
+                  value={settings.backgroundColor}
+                  onChange={handleColorChange}
+                  className={`pl-10 text-black dark:text-white bg-white dark:bg-gray-800 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800/50 disabled:text-gray-500 dark:disabled:text-gray-400 transition-all outline-none ${
+                    settings.isColorValid
+                      ? 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                      : 'border-red-500 focus:ring-red-500'
+                  }`}
+                />
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <div
+                    className="w-4 h-4 rounded-sm border border-gray-300 dark:border-gray-700"
+                    style={{
+                      backgroundColor: settings.isColorValid ? settings.backgroundColor : 'red',
+                    }}
+                  ></div>
+                </div>
+                <input
+                  type="color"
+                  value={settings.backgroundColor}
+                  disabled={files.length === 0 || isUploading || fileIds.length !== files.length}
+                  onChange={e => {
+                    updateSetting('backgroundColor', e.target.value);
+                    updateSetting('isColorValid', true);
+                  }}
+                  className="absolute right-2 w-8 h-8 cursor-pointer opacity-0"
+                  aria-label="Select color"
+                />
+                <div className="absolute right-2 w-6 h-6 rounded-md pointer-events-none">
+                  <HiOutlineColorSwatch size={20} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="mb-10">

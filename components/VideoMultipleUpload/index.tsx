@@ -91,7 +91,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
     const isSelected = props.selectedFileIndex === index;
     let metadata = fileHasMetadata(index) ? props.fetchedData[index].metadata : null;
 
-    const showFileData = !props.isUploading && fileHasMetadata(index);
+    const showFileData = fileHasMetadata(index);
 
     return (
       <div
@@ -231,9 +231,9 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
               </div>
               {/* Duration input for images */}
               {props.durations && file.type.startsWith('image/') && (
-                <div className="mb-2">
+                <div className="mb-2 flex items-center gap-1">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Duration (seconds):
+                    Duration (seconds) :
                   </label>
                   <input
                     type="number"
@@ -241,7 +241,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
                     step="0.1"
                     value={props.durations[index] || ''}
                     onChange={e => handleDurationChange(index, e.target.value)}
-                    className="w-full max-w-[150px] text-black dark:text-white bg-white dark:bg-gray-800 pl-3 pr-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                    className="w-full max-w-[50px] text-black dark:text-white bg-white dark:bg-gray-800 pl-3 pr-3 py-1 border border-gray-300 dark:border-gray-700 rounded-md outline-none transition-all"
                   />
                 </div>
               )}
@@ -249,10 +249,12 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
               {/* File Metadata */}
               {metadata ? (
                 <div className="flex flex-col md:flex-row gap-6 mb-1">
-                  <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
-                    <span className="mr-1.5 font-medium">Duration:</span>
-                    <span>{Math.floor(metadata?.duration ?? 0)} sec</span>
-                  </div>
+                  {!file.type.startsWith('image/') && (
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+                      <span className="mr-1.5 font-medium">Duration:</span>
+                      <span>{Math.floor(metadata?.duration ?? 0)} sec</span>
+                    </div>
+                  )}
 
                   <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                     <span className="mr-1.5 font-medium">Resolution:</span>
@@ -268,10 +270,12 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
                 </div>
               ) : (
                 <div className="flex flex-col md:flex-row gap-6 mb-1">
-                  <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
-                    <span className="mr-1.5 font-medium">Duration:</span>
-                    <span>0 sec</span>
-                  </div>
+                  {!file.type.startsWith('image/') && (
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+                      <span className="mr-1.5 font-medium">Duration:</span>
+                      <span>0 sec</span>
+                    </div>
+                  )}
 
                   <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                     <span className="mr-1.5 font-medium">Resolution:</span>

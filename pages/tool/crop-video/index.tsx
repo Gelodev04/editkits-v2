@@ -53,12 +53,12 @@ export default function CropVideo() {
   const updateSetting = (key, value) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
-  
-  const touch = (key) => {
+
+  const touch = key => {
     setTouched(prev => ({ ...prev, [key]: true }));
   };
 
-  const shouldError = (key) => {
+  const shouldError = key => {
     const val = settings[key];
     return (touched[key] || formAttempted) && (val === undefined || isNaN(val));
   };
@@ -67,7 +67,7 @@ export default function CropVideo() {
     width: number;
     height: number;
   }
-  
+
   // Function to reset just UI states but not file-related data
   const resetUiStates = () => {
     setSettings({ x: undefined, y: undefined, width: undefined, height: undefined });
@@ -85,14 +85,14 @@ export default function CropVideo() {
     resetUiStates();
     setProgress(0);
     setClearInfo(true);
-    
+
     if (videoRef.current) {
-      videoRef.current.src = ''
+      videoRef.current.src = '';
     }
   };
 
   // Handle file changes properly, with delay between clearing and setting
-  const handleFileChange = (newFile) => {
+  const handleFileChange = newFile => {
     if (newFile !== file) {
       // Clear previous file data immediately
       setFile(null);
@@ -103,7 +103,7 @@ export default function CropVideo() {
       // Then set the new file after a short delay
       setTimeout(() => {
         setFile(newFile);
-        setClearInfo(false);  // Important to reset clearInfo flag
+        setClearInfo(false); // Important to reset clearInfo flag
       }, 50);
     }
   };
@@ -111,31 +111,31 @@ export default function CropVideo() {
   // Poll file status and fetch metadata
   useEffect(() => {
     if (!fileId || isUploading) return;
-    
+
     const interval = setInterval(() => {
-      const shouldContinuePolling = 
-        !fileData?.status || 
+      const shouldContinuePolling =
+        !fileData?.status ||
         (fileData.status !== 'COMMITTED' && fileData.status !== 'ERROR') ||
         !fileData?.metadata;
-        
+
       if (shouldContinuePolling) {
         refetchFile();
       }
-      
+
       if (fileData?.metadata) {
         console.log('File data:', fileData);
         setFetchedMeta(fileData.metadata);
         setFetchedData(fileData);
       }
     }, 2000);
-    
+
     return () => clearInterval(interval);
   }, [fileId, fileData, refetchFile, isUploading]);
 
   // Poll job status and reset on completion
   useEffect(() => {
     if (!jobId) return;
-    
+
     const interval = setInterval(() => {
       if (
         jobData?.status !== 'COMMITTED' &&
@@ -145,11 +145,21 @@ export default function CropVideo() {
         jobData?.status !== 'CANCELLED'
       ) {
         refetchJob();
+      } else if (jobData?.status === 'FAILED') {
+        clearInterval(interval);
+        setErrorMessage('Job failed');
+        setErrorModalOpen(true);
+        setProgressModalOpen(false);
+      } else if (jobData?.status === 'ERROR') {
+        clearInterval(interval);
+        setErrorMessage('An Error Occured');
+        setErrorModalOpen(true);
+        setProgressModalOpen(false);
       } else {
         clearInterval(interval);
       }
     }, 5000);
-    
+
     return () => clearInterval(interval);
   }, [jobId, jobData?.status, refetchJob]);
 
@@ -197,7 +207,7 @@ export default function CropVideo() {
           video_output_format: videoContainer,
         },
       });
-      
+
       if (response.error) {
         throw response.error;
       }
@@ -205,11 +215,11 @@ export default function CropVideo() {
       toast.success('Job initialized successfully');
       setProgressModalOpen(true);
       setUploadModalOpen(false);
-      
+
       // Store job ID before resetting other states
       const jid = response.data.job_id;
       setJobId(jid);
-      
+
       // Only reset UI state but keep the data needed for the progress modal
       resetUiStates();
       setFile(null);
@@ -259,17 +269,17 @@ export default function CropVideo() {
           <HeaderToolProperties />
           <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-              {(['x', 'y']).map(key => (
+              {['x', 'y'].map(key => (
                 <div key={key}>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 capitalize">
                     {key === 'x' ? 'X-Coordinate' : key === 'y' ? 'Y-Coordinate' : key}
                   </label>
                   <input
                     type="number"
-                    disabled={!fetchedMeta }
+                    disabled={!fetchedMeta}
                     value={settings[key] !== undefined ? settings[key] : ''}
                     placeholder={
-                      fetchedMeta as any
+                      (fetchedMeta as any)
                         ? `0 to ${key === 'x' ? fetchedMeta?.width : fetchedMeta?.height}`
                         : 'Enter value'
                     }
@@ -292,7 +302,7 @@ export default function CropVideo() {
               ))}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-              {(['width', 'height']).map(key => (
+              {['width', 'height'].map(key => (
                 <div key={key}>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 capitalize">
                     {key === 'width' ? 'Width' : key === 'height' ? 'Height' : key}

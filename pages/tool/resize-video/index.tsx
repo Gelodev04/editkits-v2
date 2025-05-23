@@ -313,6 +313,16 @@ export default function ResizeVideo() {
         jobData?.status !== 'CANCELLED'
       ) {
         refetchJobData();
+      } else if (jobData?.status === 'FAILED') {
+        clearInterval(interval);
+        setErrorMessage('Job failed');
+        setErrorModalOpen(true);
+        setProgressModal(false);
+      } else if (jobData?.status === 'ERROR') {
+        clearInterval(interval);
+        setErrorMessage('An Error Occured');
+        setErrorModalOpen(true);
+        setProgressModal(false);
       } else {
         clearInterval(interval);
       }

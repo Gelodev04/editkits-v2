@@ -64,7 +64,6 @@ export default function TrimVideo() {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-
   // Function to reset all states when a new file is uploaded
   const resetStates = () => {
     setStartTime(null);
@@ -115,13 +114,13 @@ export default function TrimVideo() {
   useEffect(() => {
     if (isUploading) return;
     const interval = setInterval(() => {
-      console.log(data)
+      console.log(data);
       //@ts-ignore
       if (data?.status !== 'COMMITTED' && data?.status !== 'ERROR' && fileId) {
         refetch();
         return;
       }
-      setFetchedData(data);     
+      setFetchedData(data);
       clearInterval(interval);
     }, 2000);
 
@@ -145,6 +144,16 @@ export default function TrimVideo() {
         jobData?.status !== 'CANCELLED'
       ) {
         refetchJobData();
+      } else if (jobData?.status === 'FAILED') {
+        clearInterval(interval);
+        setErrorMessage('Job failed');
+        setErrorModalOpen(true);
+        setProgressModal(false);
+      } else if (jobData?.status === 'ERROR') {
+        clearInterval(interval);
+        setErrorMessage('An Error Occured');
+        setErrorModalOpen(true);
+        setProgressModal(false);
       } else {
         clearInterval(interval);
       }

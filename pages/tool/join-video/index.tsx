@@ -300,6 +300,16 @@ export default function JoinMedia() {
         jobData?.status !== 'CANCELLED'
       ) {
         refetchJob();
+      } else if (jobData?.status === 'FAILED') {
+        clearInterval(interval);
+        setErrorMessage('Job failed');
+        setErrorModalOpen(true);
+        setProgressModalOpen(false);
+      } else if (jobData?.status === 'ERROR') {
+        clearInterval(interval);
+        setErrorMessage('An Error Occured');
+        setErrorModalOpen(true);
+        setProgressModalOpen(false);
       } else {
         clearInterval(interval);
       }

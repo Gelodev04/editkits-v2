@@ -39,11 +39,6 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
   React.useEffect(() => {
     if (!props.fetchedData || !props.files || props.files.length === 0) {
       setIsDataTransitioning(false);
-      // Clear the transition state after a short delay
-      // const timer = setTimeout(() => {
-      //   setIsDataTransitioning(false);
-      // }, 100);
-      // return () => clearTimeout(timer);
     } else {
       setIsDataTransitioning(false);
     }
@@ -83,8 +78,12 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
 
   // Check if a file has metadata
   const fileHasMetadata = (index: number) => {
-    // console.log(`props.fetchedData at the ${index}`, props.fetchedData[index]);
-    return props.fetchedData && props.fetchedData[index] && props.fetchedData[index].metadata;
+    return (
+      props.fetchedData &&
+      props.fetchedData[index] &&
+      props.fetchedData[index].metadata &&
+      props.fetchedData[index].metadata.thumbnail_url
+    );
   };
 
   // Render a single file item
@@ -92,12 +91,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
     const isSelected = props.selectedFileIndex === index;
     let metadata = fileHasMetadata(index) ? props.fetchedData[index].metadata : null;
 
-    // console.log('metadata', metadata);
-
-    // console.log('Hello', props.fetchedData[index]);
-
-    const showFileData =
-      !props.isUploading && !isDataTransitioning && props.fetchedData[index] && metadata;
+    const showFileData = !props.isUploading && fileHasMetadata(index);
 
     return (
       <div
@@ -111,7 +105,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
         <div className="flex flex-col sm:flex-row">
           {/* Thumbnail/Preview */}
           <div className="relative bg-white dark:bg-gray-900 w-full sm:w-48 flex-shrink-0 h-36 flex items-center justify-center overflow-hidden">
-            {showFileData && props.fetchedData[index].metadata.thumbnail_url ? (
+            {showFileData ? (
               <div className="relative w-full h-full">
                 <Image
                   src={props.fetchedData[index].metadata.thumbnail_url}
@@ -253,7 +247,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
               )}
 
               {/* File Metadata */}
-              {props.fetchedData[index] && metadata ? (
+              {metadata ? (
                 <div className="flex flex-col md:flex-row gap-6 mb-1">
                   <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                     <span className="mr-1.5 font-medium">Duration:</span>
@@ -294,7 +288,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
 
             {/* Status Indicator */}
             <div className="mt-3">
-              {metadata && metadata.thumbnail_url && (
+              {fileHasMetadata(index) && (
                 <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                   <span className="w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full mr-1.5"></span>
                   Ready to process

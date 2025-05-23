@@ -85,6 +85,13 @@ export default function JoinMedia() {
     newFiles[index] = newFile;
     setFiles(newFiles);
 
+    // Ensure fetchedData array is expanded to match file array length
+    const newFetchedData = [...fetchedData];
+    while (newFetchedData.length < newFiles.length) {
+      newFetchedData.push(null);
+    }
+    setFetchedData(newFetchedData);
+
     // Initialize duration for image files
     if (newFile.type.startsWith('image/')) {
       const newDurations = [...durations];

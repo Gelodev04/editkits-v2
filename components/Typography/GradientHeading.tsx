@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaRuler, FaScissors, FaCrop } from 'react-icons/fa6';
+import { FaRuler, FaScissors, FaCrop, FaFilm } from 'react-icons/fa6';
 import Typography from '@/components/Typography';
 // import { FaCrop } from 'react-icons/fa';
 
@@ -17,19 +17,15 @@ import Typography from '@/components/Typography';
  */
 
 const GradientHeadingIcons = {
-  "Trim Video": <FaScissors size={18} />,
-  "Resize Video": <FaRuler size={18} />,
-  "Crop Video": <FaCrop size={18} />,
+  'Trim Video': <FaScissors size={18} />,
+  'Resize Video': <FaRuler size={18} />,
+  'Crop Video': <FaCrop size={18} />,
+  'Join Videos': <FaFilm size={18} />,
   // "Crop": <Fa size={18} />,
   // "Resize": <FaScissors size={18} />,
-}
+};
 
-const GradientHeading = ({
-  text,
-  subtext,
-  fromColor = 'blue-600',
-  toColor = 'purple-700',
-}) => (
+const GradientHeading = ({ text, subtext, fromColor = 'blue-600', toColor = 'purple-700' }) => (
   <div className="mb-8 text-center">
     <div className="inline-block mb-2">
       <motion.div

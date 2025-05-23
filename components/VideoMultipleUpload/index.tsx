@@ -4,12 +4,10 @@ import {
   HiOutlineCloudUpload,
   HiOutlineRefresh,
   HiOutlineVideoCamera,
-  HiOutlinePlusCircle,
   HiOutlineX,
-  HiOutlineArrowUp,
-  HiOutlineArrowDown,
 } from 'react-icons/hi';
 import Button from '../ui/button/Button';
+import DraggableList from '../DraggableList';
 
 type MultipleMediaUploadProps = {
   files: any[];
@@ -53,18 +51,6 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
     props.setDurations(newDurations);
   };
 
-  // Move a file up in the order
-  const moveFileUp = (index: number) => {
-    if (index <= 0 || !props.reorderFiles) return;
-    props.reorderFiles(index, index - 1);
-  };
-
-  // Move a file down in the order
-  const moveFileDown = (index: number) => {
-    if (!props.files || index >= props.files.length - 1 || !props.reorderFiles) return;
-    props.reorderFiles(index, index + 1);
-  };
-
   // Determine if we have valid files to show, but respect clearFileInfo flag
   const hasValidFiles = !props.clearFileInfo && props.files && props.files.length > 0;
 
@@ -95,11 +81,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
 
     return (
       <div
-        className={`mt-4 bg-white dark:bg-gray-900 rounded-lg overflow-hidden border ${
-          isSelected
-            ? 'border-blue-500 dark:border-blue-400'
-            : 'border-gray-200 dark:border-gray-800'
-        } shadow-sm hover:shadow-md transition-shadow duration-300`}
+        className={`mt-4 bg-white dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300`}
         onClick={() => props.setSelectedFileIndex && props.setSelectedFileIndex(index)}
       >
         <div className="flex flex-col sm:flex-row">
@@ -158,38 +140,6 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
                   {getFileName(index).slice(0, 20)}...
                 </h3>
                 <div className="flex">
-                  {/* Reorder buttons */}
-                  <button
-                    onClick={e => {
-                      e.stopPropagation();
-                      moveFileUp(index);
-                    }}
-                    disabled={index === 0 || props.isUploading}
-                    className={`p-2 rounded-full ${
-                      index === 0 || props.isUploading
-                        ? 'opacity-30 cursor-not-allowed'
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                    } transition-colors flex items-center justify-center`}
-                    aria-label="Move up"
-                  >
-                    <HiOutlineArrowUp className="text-lg" />
-                  </button>
-                  <button
-                    onClick={e => {
-                      e.stopPropagation();
-                      moveFileDown(index);
-                    }}
-                    disabled={index === props.files.length - 1 || props.isUploading}
-                    className={`p-2 rounded-full ${
-                      index === props.files.length - 1 || props.isUploading
-                        ? 'opacity-30 cursor-not-allowed'
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                    } transition-colors flex items-center justify-center`}
-                    aria-label="Move down"
-                  >
-                    <HiOutlineArrowDown className="text-lg" />
-                  </button>
-
                   {/* Remove button */}
                   {props.handleRemoveFile && (
                     <button
@@ -230,25 +180,26 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
                 </div>
               </div>
               {/* Duration input for images */}
-              {props.durations && file.type.startsWith('image/') && (
-                <div className="mb-2 flex items-center gap-1">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Duration (seconds) :
-                  </label>
-                  <input
-                    type="number"
-                    min="0.1"
-                    step="0.1"
-                    value={props.durations[index] || ''}
-                    onChange={e => handleDurationChange(index, e.target.value)}
-                    className="w-full max-w-[50px] text-black dark:text-white bg-white dark:bg-gray-800 pl-3 pr-3 py-1 border border-gray-300 dark:border-gray-700 rounded-md outline-none transition-all"
-                  />
-                </div>
-              )}
 
               {/* File Metadata */}
               {metadata ? (
                 <div className="flex flex-col md:flex-row gap-6 mb-1">
+                  {props.durations && file.type.startsWith('image/') && (
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm gap-1">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Duration :
+                      </label>
+                      <input
+                        type="number"
+                        min="0.1"
+                        step="0.1"
+                        value={props.durations[index] || ''}
+                        onChange={e => handleDurationChange(index, e.target.value)}
+                        className="w-full max-w-[50px] text-black dark:text-white bg-white dark:bg-gray-800 pl-3 pr-3 border border-gray-300 dark:border-gray-700 rounded-md outline-none transition-all"
+                      />
+                    </div>
+                  )}
+
                   {!file.type.startsWith('image/') && (
                     <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                       <span className="mr-1.5 font-medium">Duration:</span>
@@ -270,6 +221,20 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
                 </div>
               ) : (
                 <div className="flex flex-col md:flex-row gap-6 mb-1">
+                  {props.durations && file.type.startsWith('image/') && (
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm gap-1">
+                      <span className="mr-1.5 font-medium">Duration : </span>
+                      <input
+                        type="number"
+                        min="0.1"
+                        step="0.1"
+                        value={props.durations[index] || ''}
+                        onChange={e => handleDurationChange(index, e.target.value)}
+                        className="w-full max-w-[25px] text-black dark:text-white bg-white dark:bg-gray-800 pl-3 py-1 border border-gray-300 dark:border-gray-700 rounded-md outline-none transition-all"
+                      />
+                    </div>
+                  )}
+
                   {!file.type.startsWith('image/') && (
                     <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                       <span className="mr-1.5 font-medium">Duration:</span>
@@ -308,10 +273,21 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
   return (
     <div>
       {hasValidFiles ? (
-        <div className="space-y-4">
-          {props.files.map((file, index) => (
-            <div key={index}>{renderFileItem(file, index)}</div>
-          ))}
+        <div>
+          {props.reorderFiles ? (
+            <DraggableList
+              items={props.files}
+              renderItem={(file, index) => renderFileItem(file, index)}
+              onReorder={props.reorderFiles}
+              keyExtractor={(file, index) => `file-${index}`}
+            />
+          ) : (
+            <div className="space-y-4">
+              {props.files.map((file, index) => (
+                <div key={index}>{renderFileItem(file, index)}</div>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <div className="mt-2 flex flex-col items-center justify-center px-6 py-8 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg hover:border-blue-400 dark:hover:border-blue-500 transition-colors bg-gray-50 dark:bg-gray-800/30">

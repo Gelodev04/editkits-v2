@@ -6,7 +6,7 @@ type HeaderToolProps = {
 
 export function HeaderToolInput({ children }: HeaderToolProps) {
   return (
-    <div className="flex items-center mb-6">
+    <div className="flex items-center mb-4">
       <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
         {/* <HiOutlineVideoCamera size={20} /> */}
         {children}

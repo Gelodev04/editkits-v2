@@ -8,7 +8,12 @@ import {
   HiOutlineAdjustments,
   HiArrowRight,
   HiOutlineColorSwatch,
+  HiOutlinePlusCircle,
 } from 'react-icons/hi';
+
+import { HiPlus } from 'react-icons/hi';
+
+import PlusIcon from '@/icons/plus.svg';
 import toast from 'react-hot-toast';
 import ComponentToolCard from '@/components/ComponentToolCard';
 import ErrorModal from '@/components/modals/ErrorModal';
@@ -428,9 +433,24 @@ export default function JoinMedia() {
     <ComponentToolCard title="Join Videos">
       <div className="relative z-10 px-8 py-8 ">
         <div className="mb-10">
-          <HeaderToolInput>
-            <HiOutlineVideoCamera size={20} />
-          </HeaderToolInput>
+          <div className="flex justify-between items-center ">
+            <HeaderToolInput>
+              <HiOutlineVideoCamera size={20} />
+            </HeaderToolInput>
+            {files.length > 0 && (
+              <Button
+                onClick={() => {
+                  setSelectedFileIndex(files.length);
+                  setUploadIndex(files.length);
+                  setUploadModalOpen(true);
+                }}
+                className="flex items-center"
+              >
+                <HiPlus className="mr-1" />
+                Add Media
+              </Button>
+            )}
+          </div>
           <motion.div whileHover={{ scale: 1.005 }} transition={{ duration: 0.2 }}>
             <VideoMultipleUpload
               videoRef={videoRef}

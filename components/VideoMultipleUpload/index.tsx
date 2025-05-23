@@ -312,21 +312,6 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
           {props.files.map((file, index) => (
             <div key={index}>{renderFileItem(file, index)}</div>
           ))}
-
-          {/* Add More Files Button */}
-          <div className="mt-2">
-            <Button
-              onClick={() => {
-                if (props.setSelectedFileIndex) props.setSelectedFileIndex(props.files.length);
-                if (props.setUploadFileIndex) props.setUploadFileIndex(props.files.length);
-                props.setUploadFileModal(true);
-              }}
-              className="flex items-center"
-            >
-              <HiOutlinePlusCircle className="mr-2" />
-              Add More Media
-            </Button>
-          </div>
         </div>
       ) : (
         <div className="mt-2 flex flex-col items-center justify-center px-6 py-8 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg hover:border-blue-400 dark:hover:border-blue-500 transition-colors bg-gray-50 dark:bg-gray-800/30">

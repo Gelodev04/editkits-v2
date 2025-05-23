@@ -72,6 +72,9 @@ export default function UploadMultipleFileModal(props: MultipleUploadModalProps)
         content_length: file.size,
       });
 
+      // console.log('response', response);
+      // console.log('file', file);
+
       if (response?.error) {
         // Handle 404 and other errors
         const errorMsg = response.error.data?.errorMsg || 'An error occurred during upload';
@@ -86,6 +89,7 @@ export default function UploadMultipleFileModal(props: MultipleUploadModalProps)
         props.setFileId(response.data.file_id, props.fileIndex);
       }
 
+      console.log('file', file);
       // Close modal immediately but continue upload in background
       props.setUploadModal(false);
 
@@ -139,6 +143,8 @@ export default function UploadMultipleFileModal(props: MultipleUploadModalProps)
 
       // Set fileSelected to true to prevent multiple calls
       setFileSelected(true);
+
+      console.log('acceptedFiles', acceptedFiles);
 
       // Process all accepted files
       for (const file of acceptedFiles) {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { HiOutlineMenuAlt4 } from 'react-icons/hi';
 
 // Item type constant for drag and drop
 const ITEM_TYPE = 'DRAGGABLE_ITEM';
@@ -21,7 +20,6 @@ const DraggableItem = ({
   index,
   moveItem,
   children,
-  showDragHandle = true,
 }: DraggableItemProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
 

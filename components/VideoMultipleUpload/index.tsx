@@ -30,17 +30,7 @@ type MultipleMediaUploadProps = {
 
 export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
   // Track when data is loading to prevent flashing of old data
-  const [isDataTransitioning, setIsDataTransitioning] = React.useState(false);
   console.log('props.fetchedData', props.fetchedData);
-
-  // Watch for changes in fetchedData or files to handle transitions
-  React.useEffect(() => {
-    if (!props.fetchedData || !props.files || props.files.length === 0) {
-      setIsDataTransitioning(false);
-    } else {
-      setIsDataTransitioning(false);
-    }
-  }, [props.fetchedData, props.files]);
 
   // Handle duration change for a specific file
   const handleDurationChange = (index: number, value: string) => {
@@ -75,7 +65,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
   // Render a single file item
   const renderFileItem = (file: any, index: number) => {
     const isSelected = props.selectedFileIndex === index;
-    let metadata = fileHasMetadata(index) ? props.fetchedData[index].metadata : null;
+    const metadata = fileHasMetadata(index) ? props.fetchedData[index].metadata : null;
 
     const showFileData = fileHasMetadata(index);
 
@@ -186,9 +176,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
                 <div className="flex flex-col md:flex-row gap-6 mb-1">
                   {props.durations && file.type.startsWith('image/') && (
                     <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm gap-1">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Duration :
-                      </label>
+                      <span className="mr-1.5 font-medium">Duration :</span>
                       <input
                         type="number"
                         min="0.1"
@@ -230,7 +218,7 @@ export function VideoMultipleUpload(props: MultipleMediaUploadProps) {
                         step="0.1"
                         value={props.durations[index] || ''}
                         onChange={e => handleDurationChange(index, e.target.value)}
-                        className="w-full max-w-[25px] text-black dark:text-white bg-white dark:bg-gray-800 pl-3 py-1 border border-gray-300 dark:border-gray-700 rounded-md outline-none transition-all"
+                        className="w-full max-w-[50px] text-black dark:text-white bg-white dark:bg-gray-800 pl-3 pr-3 border border-gray-300 dark:border-gray-700 rounded-md outline-none transition-all"
                       />
                     </div>
                   )}

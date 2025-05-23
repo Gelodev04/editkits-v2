@@ -26,7 +26,7 @@ export async function fileUploader(
   try {
     await axios.put(baseUrl, file, {
       headers: {
-        'Content-Type': 'video/mp4',
+        'Content-Type': file.type,
       },
       onUploadProgress: progressEvent => {
         //@ts-ignore

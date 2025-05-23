@@ -8,12 +8,9 @@ import {
   HiOutlineAdjustments,
   HiArrowRight,
   HiOutlineColorSwatch,
-  HiOutlinePlusCircle,
 } from 'react-icons/hi';
 
 import { HiPlus } from 'react-icons/hi';
-
-import PlusIcon from '@/icons/plus.svg';
 import toast from 'react-hot-toast';
 import ComponentToolCard from '@/components/ComponentToolCard';
 import ErrorModal from '@/components/modals/ErrorModal';
@@ -35,7 +32,7 @@ export default function JoinMedia() {
   const [triggerStatusQuery] = useLazyStatusQuery();
 
   // Only fetch status for the selected file
-  const { data: fileData, refetch: refetchFile } = useStatusQuery(
+  const { data: fileData } = useStatusQuery(
     { fileId: fileIds[selectedFileIndex] },
     { skip: !fileIds[selectedFileIndex] }
   );
@@ -80,11 +77,6 @@ export default function JoinMedia() {
   const [errorLog, setErrorLog] = useState('');
   const [clearInfo, setClearInfo] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  interface ImageMeta {
-    width: number;
-    height: number;
-  }
 
   const updateSetting = (key, value) => {
     setSettings(prev => ({ ...prev, [key]: value }));
@@ -365,7 +357,9 @@ export default function JoinMedia() {
     }
 
     try {
-      console.log('fileIds', fileIds);
+      // console.log('fileIds', fileIds);
+
+      console.log('files', files);
       // Prepare input array for the VIDEO_JOIN tool with proper structure
       const input_data = fileIds.map((fileId, index) => {
         const input: any = {
@@ -379,6 +373,8 @@ export default function JoinMedia() {
 
         return input;
       });
+
+      console.log('input_data', input_data);
 
       const response = await initJob({
         pipeline: [
@@ -681,7 +677,7 @@ export default function JoinMedia() {
             disabled={files.length < 2 || isUploading || fileIds.length !== files.length}
             onClick={handleJoinVideos}
           >
-            Join Media <HiArrowRight className="ml-2" />
+            Process <HiArrowRight className="ml-2" />
           </Button>
         </div>
       </div>

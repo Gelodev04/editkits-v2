@@ -9,13 +9,14 @@ export default function ContactUsCard() {
         Talk!</p>
       <p className="lato font-normal text-base leading-[24px] text-[#4f4f4f] pb-[62px]"> We usually respond within 24
         hours!</p>
-      <div className="flex gap-[34px]">
+      <div className="flex flex-col md:flex-row gap-[34px]">
         {contactUsSections.map(section => (
           <InfoCard
             title={section.title}
             description={section.description}
             icon={section.icon}
           />
+          
         ))}
       </div>
 

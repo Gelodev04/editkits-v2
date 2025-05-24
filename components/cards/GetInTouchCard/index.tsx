@@ -37,7 +37,7 @@ type GetInTouchCardProps = {
 export default function GetInTouchCard(props: GetInTouchCardProps) {
 
   return (
-    <div className="w-[600px] pb-[30px] pt-[30px] px-[41px] border-[1px] border-[#bebebea6] rounded-[12px]">
+    <div className=" max-w-[600px] mx-auto px-3 md:px-[2rem] pb-[30px] pt-[30px]  border-[1px] border-[#bebebea6] rounded-[12px]">
       <p className="font-montserrat font-bold text-[24px] leading-[24px] text-[#111111] pb-[16px]">
         Get In Touch
       </p>

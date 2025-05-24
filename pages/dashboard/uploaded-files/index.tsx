@@ -299,7 +299,7 @@ export default function JobStatus() {
                               height={40}
                               src={job.thumbnail_url}
                               alt="thumbnail"
-                              className="object-fit w-full h-[40px] rounded-md"
+                              className="object-fit w-full h-[40px] rounded"
                             />
                           </div>
                         )}

@@ -36,13 +36,13 @@ export default function Article({article}) {
   }
 
   return (
-    <div className="max-w-[1280px] mx-auto pb-[147px] pt-[12px]">
+    <div className="max-w-[1280px] mx-auto pb-[147px] pt-[12px] px-2">
       {article?.content.map((content) => {
         if (content.type === "heading") {
           if (content.style === "large") {
             return (
               <h1
-                className="font-montserrat font-bold text-[48px] leading-[64px] text-[#2c2c2c] py-[12px]">{boldText(content.value)}</h1>
+                className="font-montserrat font-bold text-[40px] sm:text-[48px] leading-[64px] text-[#2c2c2c] py-[12px]">{boldText(content.value)}</h1>
             )
           }
           if (content.style === "medium") {
@@ -68,9 +68,9 @@ export default function Article({article}) {
         }
         if (content.type === "image") {
           return (
-            <div className="flex justify-center py-[12px] min-h-[570px]">
+            <div className="flex justify-center py-[12px] max-h-[570px]">
               <Image
-                className="rounded-[8px]"
+                className="rounded-[8px] object-cover"
                 src={content.src}
                 width={1280}
                 height={570}

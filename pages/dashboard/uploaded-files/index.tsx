@@ -100,7 +100,7 @@ export default function JobStatus() {
       setErrorModalOpen(true);
     }
   };
-
+// DOWNLOAD
   const handleDownloadClick = async (outputFileId: string) => {
     if (!outputFileId) {
       setErrorMessage('Download cannot proceed: File ID is missing.');

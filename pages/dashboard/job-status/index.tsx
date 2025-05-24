@@ -424,6 +424,7 @@ export default function JobStatus() {
                             </div>
                           ) : (
                             <div className="flex justify-center">
+                              {/* thumbnail image */}
                               <Image
                                 width={135}
                                 height={40}

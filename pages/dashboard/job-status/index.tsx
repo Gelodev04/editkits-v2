@@ -60,9 +60,33 @@ export default function JobStatus() {
   } = useGetJobsQuery({
     //@ts-ignore
     from_ts: selectedDateRange?.from
-      ? Math.floor(selectedDateRange.from.getTime() / 1000)
+      ? Math.floor(
+          new Date(
+            Date.UTC(
+              selectedDateRange.from.getFullYear(),
+              selectedDateRange.from.getMonth(),
+              selectedDateRange.from.getDate(),
+              0,
+              0,
+              0
+            )
+          ).getTime() / 1000
+        )
       : undefined,
-    to_ts: selectedDateRange?.to ? Math.floor(selectedDateRange.to.getTime() / 1000) : undefined,
+    to_ts: selectedDateRange?.to
+      ? Math.floor(
+          new Date(
+            Date.UTC(
+              selectedDateRange.to.getFullYear(),
+              selectedDateRange.to.getMonth(),
+              selectedDateRange.to.getDate(),
+              23,
+              59,
+              59
+            )
+          ).getTime() / 1000
+        )
+      : undefined,
     offset: currentPage > 1 ? currentPage - 1 : 0,
     limit: itemsPerPage,
     status: filters.length > 0 ? filters[0] : undefined,
@@ -236,7 +260,7 @@ export default function JobStatus() {
   return (
     <>
       <div
-        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] lg:p-6`}
+        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] lg:p-6 p-4`}
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 pb-6 max-w-[1488px] mx-auto">
           {isStatsLoading ? (
@@ -296,7 +320,7 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div className="flex max-[360px]:flex-col max-[360px]:items-center flex-row gap-5">
+            <div className="flex max-[360px]:flex-col max-[360px]:items-center flex-row gap-5 whitespace-nowrap overflow-x-auto">
               <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
 
               <Button

@@ -38,9 +38,33 @@ export default function JobStatus() {
   const { data: queryData, refetch: refetchRecentFiles } = useGetRecentFilesQuery({
     //@ts-ignore
     from_ts: selectedDateRange?.from
-      ? Math.floor(selectedDateRange.from.getTime() / 1000)
+      ? Math.floor(
+          new Date(
+            Date.UTC(
+              selectedDateRange.from.getFullYear(),
+              selectedDateRange.from.getMonth(),
+              selectedDateRange.from.getDate(),
+              0,
+              0,
+              0
+            )
+          ).getTime() / 1000
+        )
       : undefined,
-    to_ts: selectedDateRange?.to ? Math.floor(selectedDateRange.to.getTime() / 1000) : undefined,
+    to_ts: selectedDateRange?.to
+      ? Math.floor(
+          new Date(
+            Date.UTC(
+              selectedDateRange.to.getFullYear(),
+              selectedDateRange.to.getMonth(),
+              selectedDateRange.to.getDate(),
+              23,
+              59,
+              59
+            )
+          ).getTime() / 1000
+        )
+      : undefined,
     offset: currentPage > 1 ? currentPage - 1 : 0,
     limit: itemsPerPage,
   });
@@ -100,7 +124,7 @@ export default function JobStatus() {
       setErrorModalOpen(true);
     }
   };
-// DOWNLOAD
+  // DOWNLOAD
   const handleDownloadClick = async (outputFileId: string) => {
     if (!outputFileId) {
       setErrorMessage('Download cannot proceed: File ID is missing.');
@@ -147,7 +171,7 @@ export default function JobStatus() {
   return (
     <>
       <div
-        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] lg:p-6`}
+        className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] lg:p-6 p-4 `}
       >
         <ComponentCard title="Uploaded Files" className="max-w-[1488px] mx-auto">
           <div className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
@@ -194,7 +218,7 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div className="flex max-[360px]:flex-col max-[360px]:items-center flex-row gap-5">
+            <div className="flex max-[360px]:flex-col max-[360px]:items-center flex-row gap-5 whitespace-nowrap overflow-x-auto">
               <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
 
               <Button

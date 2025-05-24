@@ -37,11 +37,20 @@ export function DatePickerWithRange({ className, date, onDateChange }: DatePicke
     }
   };
 
+  const handleClear = () => {
+    onDateChange(undefined);
+  };
+
   return (
     <div className={cn('grid gap-2', className)}>
       <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
-          <DatePickerTriggerButton className={cn(!date && 'text-muted-foreground')}>
+          <DatePickerTriggerButton
+            variant="primary"
+            className={cn('font-lato text-sm leading-[28px]', !date && 'text-white')}
+            date={date}
+            onClear={handleClear}
+          >
             <CalendarIcon className="max-[590px]:mr-0 mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
@@ -52,7 +61,7 @@ export function DatePickerWithRange({ className, date, onDateChange }: DatePicke
                 format(date.from, 'LLL dd, y')
               )
             ) : (
-              <span className="max-[590px]:hidden">Pick a date</span>
+              <span>Select date range</span>
             )}
           </DatePickerTriggerButton>
         </PopoverTrigger>

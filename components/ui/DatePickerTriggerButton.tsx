@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
+import { DateRange } from 'react-day-picker';
 
 const customButtonVariants = cva(
   'inline-flex items-center justify-center font-medium gap-2 rounded-lg transition h-auto focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 disabled:opacity-50',
@@ -29,21 +30,50 @@ export interface DatePickerTriggerButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
     VariantProps<typeof customButtonVariants> {
   asChild?: boolean;
+  date?: DateRange;
+  onClear?: () => void;
 }
 
 const DatePickerTriggerButton = React.forwardRef<HTMLButtonElement, DatePickerTriggerButtonProps>(
-  ({ className, children, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, children, variant, size, asChild = false, date, onClear, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
 
     const combinedClasses = cn(
       customButtonVariants({ variant, size }),
-      'w-fit justify-start text-left font-normal',
+      'w-fit justify-start text-left font-normal items-center ',
       className
     );
+
+    const handleClear = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onClear?.();
+    };
 
     return (
       <Comp className={combinedClasses} ref={ref} {...props}>
         {children}
+        {date?.from && (
+          <button
+            className="z-10 hover:bg-white/10 rounded-full p-1 transition-colors"
+            onClick={handleClear}
+            title="Clear date filter"
+          >
+            <svg
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
       </Comp>
     );
   }

@@ -45,6 +45,7 @@ export const authApi = api.injectEndpoints({
         };
       },
     }),
+    // confirm password
     confirmPasswordReset: builder.mutation({
       query: ({email, resetCode, newPassword}) => ({
         url: '/auth/confirm_password_reset',

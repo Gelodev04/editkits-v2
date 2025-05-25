@@ -46,8 +46,11 @@ export function DatePickerWithRange({ className, date, onDateChange }: DatePicke
       <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <DatePickerTriggerButton
-            variant="primary"
-            className={cn('font-lato text-sm leading-[28px]', !date && 'text-white')}
+            variant="outline"
+            className={cn(
+              'font-lato text-sm leading-[28px]',
+              !date && 'text-gray-700 dark:text-gray-400'
+            )}
             date={date}
             onClear={handleClear}
           >
@@ -61,7 +64,7 @@ export function DatePickerWithRange({ className, date, onDateChange }: DatePicke
                 format(date.from, 'LLL dd, y')
               )
             ) : (
-              <span>Select date range</span>
+              <span>Select Date Range</span>
             )}
           </DatePickerTriggerButton>
         </PopoverTrigger>

@@ -324,12 +324,12 @@ export default function JobStatus() {
               <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
 
               <Button
-                variant={filters.length > 0 ? 'primary' : 'primary'}
+                variant={filters.length > 0 ? 'primary' : 'outline'}
                 onClick={() => setFilterModal(true)}
                 startIcon={
                   <>
                     <LuSettings2 className="dark:hidden" size={18} />
-                    <LuSettings2 className="hidden dark:block" size={18} color={'white'} />
+                    <LuSettings2 className="hidden dark:block" size={18} color={'#98a2b3'} />
                   </>
                 }
               >

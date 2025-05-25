@@ -24,12 +24,12 @@ export default function VideoPreviewModal(props: PopUpProps) {
     <Modal
       isOpen={props.open}
       onClose={() => props.setOpen(false)}
-      className="w-fit max-h-[90vh] overflow-visible flex items-center justify-center max-w-[80vw] lg:max-w-[90vw]  p-5"
+      className="w-fit max-h-[90vh] overflow-visible flex items-center justify-center max-w-[80vw] lg:max-w-[90vw]  p-10  "
     >
       <div className="p-4">
         {fileType === 'VIDEO' && (
           <video
-            className="video-js vjs-default-skin max-w-full max-h-[80vh] rounded-2xl "
+            className="video-js vjs-default-skin max-w-full max-h-[70vh] rounded-2xl "
             controls
             preload="auto"
             key={props.url}

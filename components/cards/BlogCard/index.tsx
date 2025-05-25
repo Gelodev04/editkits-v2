@@ -18,7 +18,7 @@ export default function BlogCard({ img, title, date, slug, category }) {
 
   return (
     <Link href={`/blog/${slug}`}>
-      <div className="flex flex-col h-full w-full max-w-[420px] border border-gray-300 border-opacity-65 pt-6 px-5 rounded-lg relative hover:scale-105 transition-transform duration-500 bg-white">
+      <div className="flex flex-col h-full w-full max-w-[420px] border border-gray-300 dark:border-gray-800 border-opacity-65 pt-6 px-5 rounded-lg relative hover:scale-105 transition-transform duration-500 bg-white dark:bg-[#101828]">
         <div className="w-full aspect-[4/3] flex justify-center items-center  rounded-md relative">
           <Image
             className="w-full h-full object-cover rounded-md"
@@ -33,12 +33,12 @@ export default function BlogCard({ img, title, date, slug, category }) {
             <BlogTag category={category} />
           </div>
         </div>
-        <h3 className="font-montserrat font-bold text-base leading-tight text-[#2c2c2c] py-3 break-words">
+        <h3 className="font-montserrat font-bold text-base leading-tight text-[#2c2c2c] dark:text-[#d5d7da] py-3 break-words">
           {title}
         </h3>
         <div className="flex pt-2 pb-5 gap-2 items-center flex-wrap">
           <Image loading="lazy" src={CalendarIcon} alt="icon" />
-          <p className="font-lato font-normal text-sm leading-6 text-[#a0aec0]">
+          <p className="font-lato font-normal text-sm leading-6 text-[#a0aec0] dark:text-[#d5d7da]">
             {formatDate(date)}
           </p>
         </div>

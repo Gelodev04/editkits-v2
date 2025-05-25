@@ -27,7 +27,7 @@ export default function Article({article}) {
 
     return parts.map((part, index) =>
       part.startsWith("**") && part.endsWith("**") ? (
-        <span className="font-lato font-bold text-base leading-[24px] text-[#4f4f4f] py-[12px]"
+        <span className="font-lato font-bold text-base leading-[24px] text-[#4f4f4f] dark:text-[#b0b0b0] py-[12px] "
               key={index}>{part.slice(2, -2)}</span>
       ) : (
         part
@@ -42,7 +42,7 @@ export default function Article({article}) {
           if (content.style === "large") {
             return (
               <h1
-                className="font-montserrat font-bold text-[40px] sm:text-[48px] leading-[64px] text-[#2c2c2c] py-[12px]">{boldText(content.value)}</h1>
+                className="font-montserrat font-bold text-[40px] sm:text-[48px] leading-[64px] text-[#2c2c2c] dark:text-[#d5d7da] py-[12px]">{boldText(content.value)}</h1>
             )
           }
           if (content.style === "medium") {
@@ -54,7 +54,7 @@ export default function Article({article}) {
           }
           if (content.style === "small") {
             return (
-              <div className="py-[12px]">
+              <div className="py-[12px]  ">
                 <Typography label={boldText(content.value)} variant="h6"/>
               </div>
             )
@@ -63,7 +63,7 @@ export default function Article({article}) {
         if (content.type === "text") {
           return (
             <p
-              className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] py-[12px]">{boldText(content.value)}</p>
+              className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] dark:text-[#d5d7da] py-[12px]">{boldText(content.value)}</p>
           )
         }
         if (content.type === "image") {
@@ -112,7 +112,7 @@ export default function Article({article}) {
                 {content.items.map((item, index) => (
                   <li
                     key={index}
-                    className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f]"
+                    className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] dark:text-[#d5d7da]"
                   >
                     {boldText(item)}
                   </li>
@@ -127,7 +127,7 @@ export default function Article({article}) {
                 {content.items.map((item, index) => (
                   <li
                     key={index}
-                    className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f]"
+                    className="font-lato font-normal text-base leading-[24px] text-[#4f4f4f] dark:text-[#d5d7da]"
                   >
                     {boldText(item)}
                   </li>
@@ -153,7 +153,7 @@ export default function Article({article}) {
 
         if (content.type === "callout") {
           return (
-            <div className="py-[12px]">
+            <div className="py-[12px] ">
               <Alert label={boldText(content.value)} mode={content.style}/>
             </div>
           )

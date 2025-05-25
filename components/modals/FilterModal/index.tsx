@@ -22,6 +22,13 @@ const filters = [
 ];
 
 export default function FilterModal(props: PopUpProps) {
+
+React.useEffect(() => {
+  if(props.open) {
+    props.setSelected([]);
+  }
+}, [props.open, props.setSelected])
+  
   function handleFilterSelect(status) {
     return props.setSelected(prev =>
       prev.includes(status) ? prev.filter(item => item !== status) : [...prev, status]
@@ -32,7 +39,7 @@ export default function FilterModal(props: PopUpProps) {
     <Modal
       isOpen={props.open}
       onClose={() => props.setOpen(false)}
-      className="max-w-[500px] w-full"
+      className="max-w-[500px] w-full mx-3"
     >
       <h4 className="pt-[40px] font-semibold text-gray-800 mb-7 text-title-sm dark:text-white/90 text-center">
         {props.title}

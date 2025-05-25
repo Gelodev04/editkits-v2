@@ -174,8 +174,8 @@ export default function JobStatus() {
         className={`${mainContentMargin} min-h-[100vh] transition-all duration-300 ease-in-out overflow-hidden dark:bg-gray-900 dark:border-gray-800 rounded-xl sm:max-w-[980px] lg:max-w-[1920px] lg:p-6 p-4 `}
       >
         <ComponentCard title="Uploaded Files" className="max-w-[1488px] mx-auto">
-          <div className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
+          <div className="dark:bg-white/3 flex flex-col gap-2 mb-0 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl md:flex-row sm:items-center md:justify-between ">
+            <div className="flex items-center gap-3 ">
               <span className="hidden sm:block text-gray-500 dark:text-gray-400"> Show </span>
               <div className="relative z-20 bg-transparent">
                 <select
@@ -218,10 +218,13 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div className="flex max-[511px]:flex-col max-[511px]:items-center flex-row gap-5 whitespace-nowrap overflow-x-auto">
-              <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
+            <div className="grid grid-cols-1 [@media(min-width:416px)]:flex flex-wrap justify-center gap-4 w-full max-w-[800px] md:justify-end mx-auto whitespace-nowrap">
+              <div className="w-full [@media(min-width:380px)]:w-auto">
+                <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
+              </div>
 
               <Button
+                className="w-full [@media(min-width:380px)]:w-auto"
                 startIcon={<AiOutlinePlus size={18} />}
                 variant="primary"
                 onClick={() => router.push('/tools')}
@@ -229,9 +232,12 @@ export default function JobStatus() {
                 <p>New Job</p>
               </Button>
               {isRefreshing ? (
-                <Spinner />
+                <div className="w-full flex justify-center [@media(min-width:380px)]:w-auto">
+                  <Spinner />
+                </div>
               ) : (
                 <Button
+                  className="w-full [@media(min-width:380px)]:w-auto"
                   variant="primary"
                   onClick={async () => {
                     setIsRefreshing(true);

@@ -48,7 +48,7 @@ export function DatePickerWithRange({ className, date, onDateChange }: DatePicke
           <DatePickerTriggerButton
             variant="outline"
             className={cn(
-              'font-lato text-sm leading-[28px]',
+              'font-lato text-sm leading-[28px] w-full flex items-center justify-center gap-2',
               !date && 'text-gray-700 dark:text-gray-400'
             )}
             date={date}

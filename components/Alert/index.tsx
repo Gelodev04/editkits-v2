@@ -9,7 +9,7 @@ export default function Alert({label, mode}) {
   return (
     <div className={className}
          role="alert">
-      <span className="block sm:inline">{label}</span>
+      <span className="block sm:inline ">{label}</span>
     </div>
   )
 }

@@ -21,10 +21,10 @@ export default function Blog() {
 
   return (
     <div className="max-w-[1367px] mx-auto pb-[69px]">
-      <h1 className="font-montserrat font-bold text-[48px] leading-[64px] text-center text-[#2c2c2c] pt-[59px] pb-[27px]">
+      <h1 className="font-montserrat font-bold text-[48px] leading-[64px] text-center text-[#2c2c2c] dark:text-[#d5d7da] pt-[59px] pb-[27px]">
         EditKits Blog – Everything Media Processing
       </h1>
-      <p className="font-lato font-normal text-base leading-[24px] text-center text-[#4f4f4f] pb-[55px] px-2 max-w-[800px] mx-auto">
+      <p className="font-lato font-normal text-base leading-[24px] text-center text-[#4f4f4f] dark:text-[#d5d7da] pb-[55px] px-2 max-w-[800px] mx-auto ">
         Stay ahead with the latest in cloud media processing! Explore expert tips, feature updates,
         and deep dives into video, image, and audio editing with EditKits. 🚀
       </p>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState} from 'react';
 
 import { Modal } from '@/components/Modal';
 import Button from '@/components/ui/button/Button';
@@ -9,10 +9,10 @@ type PopUpProps = {
   setOpen: (e: React.SetStateAction<boolean>) => void;
   title: string;
   description: string;
-  selected: any;
+  selected: string[];
   setSelected: (e: React.SetStateAction<string[]>) => void;
-  onClick: any;
-  filters: any;
+  onClick: () => void;
+  filters: string[];
 };
 
 const filters = [
@@ -23,12 +23,13 @@ const filters = [
 
 export default function FilterModal(props: PopUpProps) {
 
-React.useEffect(() => {
-  if(props.open) {
-    props.setSelected([]);
-  }
-}, [props.open, props.setSelected])
-  
+  useEffect(() => {
+    if(props.open){
+      props.setSelected([...props.filters])
+    }
+  }, [props.open, props.filters])
+
+
   function handleFilterSelect(status) {
     return props.setSelected(prev =>
       prev.includes(status) ? prev.filter(item => item !== status) : [...prev, status]

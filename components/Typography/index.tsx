@@ -90,7 +90,7 @@ function TypographyStyle(props: TypographyProps) {
 
 export default function Typography(props: TypographyProps) {
   return (
-    <p
+    <h2
       //@ts-ignore
       style={{
         color: props.color,
@@ -101,6 +101,6 @@ export default function Typography(props: TypographyProps) {
       className={TypographyStyle(props)}
     >
       {props.label}
-    </p>
+    </h2>
   );
 }

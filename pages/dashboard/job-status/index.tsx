@@ -329,7 +329,6 @@ export default function JobStatus() {
                 className="w-full [@media(min-width:640px)]:w-auto"
                 variant={filters.length > 0 ? 'outline' : 'outline'}
                 onClick={() => {
-                  setSelectedFilters([]);
                   setFilterModal(true);
                 }}
                 startIcon={

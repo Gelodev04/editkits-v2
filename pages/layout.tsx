@@ -20,16 +20,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <div
-      className={`${alexandria.variable} ${lato.variable} ${montserrat.variable} ${roboto.variable} ${opensans.variable} ${workSans.variable}`}
+      className={`${alexandria.variable} ${lato.variable} ${montserrat.variable} ${roboto.variable} ${opensans.variable} ${workSans.variable} min-h-screen flex flex-col`}
     >
       <ThemeProvider>
         <SidebarProvider>
           {(router.pathname === '/dashboard/job-status' ||
             router.pathname === '/dashboard/uploaded-files' ||
             router.pathname === '/account') && <Sidebar />}
-          <div className="border border-b-1 flex-1 bg-gray-50 dark:bg-gray-900 dark:border-gray-800">
+          <div className="border border-b-1 flex flex-col flex-grow bg-gray-50 dark:bg-gray-900 dark:border-gray-800">
             <Header />
-            {children}
+            <main className="flex-grow">{children}</main>
             <Footer />
           </div>
         </SidebarProvider>

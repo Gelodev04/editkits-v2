@@ -18,8 +18,6 @@ const AuthModal = dynamic(() => import('@/components/modals/Auth'), {
 import ButtonOld from '@/components/Button_Old';
 import { featureCards, videoTools } from '@/lib/constants';
 import { getUserInfo } from '@/services/api';
-import { useContactUsUserMutation } from '@/services/api/auth';
-import { useContactUsCommonMutation } from '@/services/api/public';
 
 const Hero = dynamic(() => import('@/components/home/Hero'), {
   ssr: false,
@@ -27,8 +25,8 @@ const Hero = dynamic(() => import('@/components/home/Hero'), {
 });
 
 export default function Home() {
-  const [contactUsCommon, { isLoading: isWaitlistLoading }] = useContactUsCommonMutation();
-  const [contactUsUser] = useContactUsUserMutation();
+  // const [contactUsCommon, { isLoading: isWaitlistLoading }] = useContactUsCommonMutation();
+  // const [contactUsUser] = useContactUsUserMutation();
   const { userInfo } = useUserInfo();
 
   const [user, setUser] = useState(getUserInfo());
@@ -39,7 +37,7 @@ export default function Home() {
   const [email, setEmail] = useState(user?.email || '');
   const [isEmailValid, setEmailValid] = useState(true);
   const [message, setMessage] = useState('');
-  const [isMessageValid, setMessageValid] = useState(true);
+  // const [isMessageValid, setMessageValid] = useState(true);
   const [waitlistModal, setWaitlistModal] = useState(false);
   const [submittedModalTitle, setSubmittedModalTitle] = useState('');
   const [submittedModalBody, setSubmittedModalBody] = useState('');

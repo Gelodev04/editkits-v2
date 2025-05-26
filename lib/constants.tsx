@@ -4,7 +4,6 @@ import Loop from '../public/images/tools/loop.svg';
 import OverlayVideo from '../public/images/tools/overlay.svg';
 import Resize from '../public/images/tools/resize.svg';
 import Rotate from '../public/images/tools/rotate.svg';
-import Sound from '../public/images/tools/sound.svg';
 import Speed from '../public/images/tools/speed_up_down.svg';
 import Trim from '../public/images/tools/trim.svg';
 
@@ -14,7 +13,6 @@ import LoopHover from '../public/images/tools/loop_hover.svg';
 import OverlayVideoHover from '../public/images/tools/overlay_hover.svg';
 import ResizeHover from '../public/images/tools/resize_hover.svg';
 import RotateHover from '../public/images/tools/rotate_hover.svg';
-import SoundHover from '../public/images/tools/sound_hover.svg';
 import SpeedHover from '../public/images/tools/speed_up_down_hover.svg';
 import TrimHover from '../public/images/tools/trim_hover.svg';
 

@@ -13,7 +13,7 @@ export default function ToolCard({ name, description, icon, icon_hover, variant 
   return variant === 'tools' ? (
     <ForToolsPage name={name} icon={icon} icon_hover={icon_hover} description={description} />
   ) : (
-    <ForHomePage name={name} icon={icon} icon_hover={icon_hover} description={description} />
+    <ForHomePage name={name} icon={icon} description={description} />
   );
 }
 
@@ -53,7 +53,7 @@ function ForToolsPage({ name, description, icon, icon_hover }) {
   );
 }
 
-function ForHomePage({ icon, name, icon_hover, description }) {
+function ForHomePage({ icon, name, description }) {
   return (
   //   <div
   //     key={name}

@@ -21,7 +21,7 @@ function ButtonStyle(variant: string, filled?: boolean, disabled?: boolean) {
       return "font-openSans font-bold text-xs leading-[15px] text-[#148cfc]";
     case "primary":
       return `w-[209px] h-[48px] rounded-[37px] outline-none 
-        ${disabled ? "bg-[#ebebeb] text-[#2c2c2c]" : filled ? "bg-[#148cfc] text-white" : "text-[#2c2c2c] bg-white border border-[#2c2c2c]"} 
+        ${disabled ? "bg-[#465fff] text-[white] cursor-not-allowed" : filled ? "bg-[#465fff] text-white" : "text-[#2c2c2c] bg-white border border-[#2c2c2c]"} 
         flex justify-center items-center gap-[27px] font-lato font-bold text-sm leading-[28px]`;
     case "secondary":
       return `w-[200px] h-[48px] rounded-[8px] outline-none text-[#4f4f4f] border-[1px] border-gray-300 font-montserrat font-bold text-sm leading-[28px] cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 dark:border-gray-700`;

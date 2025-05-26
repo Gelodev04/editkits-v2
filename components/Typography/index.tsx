@@ -34,7 +34,7 @@ function TypographyStyle(props: TypographyProps) {
         props.center && 'text-center'
       } leading-[40px] whitespace-pre-line`;
     case 'h4-dark':
-      return `dark:text-[#2c2c2c] font-montserrat font-bold text-[32px] text-[#2c2c2c] ${
+      return `dark:text-gray-200 font-montserrat font-bold text-[32px] text-[#2c2c2c] ${
         props.center && 'text-center'
       } leading-[40px] whitespace-pre-line`;
     case 'hb4':
@@ -52,7 +52,7 @@ function TypographyStyle(props: TypographyProps) {
         props.center && 'text-center'
       } leading-[24px]`;
     case 'b2-dark':
-      return `dark:text-[#4f4f4f] group-hover:text-white/90 font-lato text-base text-[#4f4f4f] font-normal ${
+      return `dark:text-gray-200 group-hover:text-white/90 font-lato text-base text-[#4f4f4f] font-normal ${
         props.center && 'text-center'
       } leading-[24px]`;
     case 'bb2':

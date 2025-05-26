@@ -134,7 +134,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
             props.isLoading
           }
           label="Submit"
-          variant="secondary"
+          variant="primary"
           filled
           isLoading={props.isLoading}
         />

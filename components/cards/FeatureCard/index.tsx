@@ -20,7 +20,7 @@ export default function FeatureCard({name, icon, description}: ToolCardProps) {
         width={36}
 		className="dark:invert"
       />
-      <p className="font-lato font-bold text-base  py-[12px] leading-[22.4px] text-[#2c2c2c] dark:text-white">{name}</p>
+      <h2 className="font-lato font-bold text-base  py-[12px] leading-[22.4px] text-[#2c2c2c] dark:text-white">{name}</h2>
       <Typography label={description} variant="b3" />
     </div>
   )

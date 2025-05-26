@@ -120,10 +120,10 @@ export default function AuthModal(props: AuthModalProps) {
       <Fade in={props.showAuthModal}>
         <div>
           <div
-            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "
             aria-hidden="true"
           />
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto ">
             <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
               <div
                 className={`${montserrat.variable} ${lato.variable} ${opensans.variable} px-[43px] pb-[34.5px] relative transform overflow-hidden rounded-[23px] bg-white text-left shadow-xl transition-all sm:w-[532px]`}

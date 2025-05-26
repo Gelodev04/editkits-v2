@@ -218,7 +218,7 @@ export default function JobStatus() {
               </div>
               <span className="text-gray-500 dark:text-gray-400"> entries </span>
             </div>
-            <div className="grid grid-cols-1 [@media(min-width:416px)]:flex flex-wrap justify-center gap-4 w-full max-w-[800px] md:justify-end mx-auto whitespace-nowrap">
+            <div className="grid grid-cols-1 [@media(min-width:416px)]:flex flex-wrap justify-center gap-4 w-full  md:justify-end mx-auto whitespace-nowrap">
               <div className="w-full [@media(min-width:380px)]:w-auto">
                 <DatePickerWithRange date={selectedDateRange} onDateChange={setSelectedDateRange} />
               </div>

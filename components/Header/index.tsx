@@ -73,7 +73,7 @@ export default function Header() {
     <>
       {/* Desktop Header */}
       <div
-        className={`hidden lg:flex transition-all items-center duration-300 ease-in-out py-[16px] justify-between bg-white dark:bg-gray-900 border-b border-gray-200 z-99999 dark:border-gray-800 w-full mx-auto  ${
+        className={`hidden lg:flex transition-all items-center duration-300 ease-in-out py-[16px] justify-between bg-white dark:bg-gray-900 border-b border-gray-200 z-[999] dark:border-gray-800 w-full mx-auto  ${
           !(
             router.pathname === '/dashboard/job-status' ||
             router.pathname === '/dashboard/uploaded-files' ||

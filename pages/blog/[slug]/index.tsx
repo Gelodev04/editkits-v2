@@ -72,7 +72,7 @@ export default function Article({ article }) {
         }
         if (content.type === 'image') {
           return (
-            <div className="flex justify-center py-[12px] min-h-[570px]">
+            <div className="flex justify-center py-[12px] max-h-[570px]">
               <Image
                 className="rounded-[8px] object-cover"
                 src={content.src}

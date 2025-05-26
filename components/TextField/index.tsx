@@ -29,7 +29,7 @@ export default function TextField(props: TextFieldProps) {
           id=""
           rows={10}
           placeholder={props.placeholder}
-          className={`w-full font-lato pt-[9px] px-[12px] font-normal text-sm text-[#6f6c90] shadow-none rounded-[8px] border ${props.error ? 'border-red-300' : 'border-[#9f9f9f]'} leading-[18px] font-normal outline-none dark:text-white`}
+          className={`w-full font-lato pt-[9px] px-[12px] font-normal text-sm text-[#6f6c90] shadow-none rounded-[8px] border ${props.error ? 'border-red-300' : 'border-gray-300 dark:border-gray-800'} leading-[18px] font-normal outline-none dark:text-white`}
         />
 
       </div>

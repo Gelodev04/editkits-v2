@@ -37,11 +37,11 @@ type GetInTouchCardProps = {
 export default function GetInTouchCard(props: GetInTouchCardProps) {
 
   return (
-    <div className=" max-w-[600px] mx-auto px-3 md:px-[2rem] pb-[30px] pt-[30px]  border-[1px] border-[#bebebea6] rounded-[12px]">
-      <p className="font-montserrat font-bold text-[24px] leading-[24px] text-[#111111] pb-[16px]">
+    <div className=" max-w-[600px] mx-auto px-3 md:px-[2rem] pb-[30px] pt-[30px]  border-[1px] border-[#bebebea6] rounded-[12px] dark:border-gray-800">
+      <p className="font-montserrat font-bold text-[24px] leading-[24px] text-[#111111] dark:text-gray-200 pb-[16px]">
         Get In Touch
       </p>
-      <p className="font-lato font-normal text-sm leading-[24px] text-[#4f4f4f]">
+      <p className="font-lato font-normal text-sm leading-[24px] text-[#4f4f4f] dark:text-gray-200">
         Use the form below to submit a message, and one of our team members will
         get back to you promptly
       </p>
@@ -134,7 +134,7 @@ export default function GetInTouchCard(props: GetInTouchCardProps) {
             props.isLoading
           }
           label="Submit"
-          variant="popup"
+          variant="secondary"
           filled
           isLoading={props.isLoading}
         />

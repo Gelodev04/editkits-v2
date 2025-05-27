@@ -7,6 +7,7 @@
     "build": "DISABLE_ESLINT_PLUGIN=true next build",
     "postbuild": "next-sitemap",
     "start": "next build && next start",
+    "lint": "next lint",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

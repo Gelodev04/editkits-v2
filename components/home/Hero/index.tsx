@@ -1,24 +1,27 @@
 import Image from 'next/image';
 
-import {useRouter} from 'next/router';
-import { useUserInfo } from '@/hooks/useUserInfo'
+import { useRouter } from 'next/router';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 import Typography from '@/components/Typography';
 import Button from '@/components/ui/button/Button';
 import HeroImg from '@/public/images/home_hero.png';
 
-export default function Hero({ setWaitlistModal }) {
+interface HeroProps {
+  onGetStarted: () => void;
+}
+
+export default function Hero({ onGetStarted }: HeroProps) {
   const router = useRouter();
   const { userInfo } = useUserInfo();
 
   const handleGetStarted = () => {
-    if(userInfo){
+    if (userInfo) {
       router.push('/dashboard/job-status');
     } else {
-      setWaitlistModal(true);
+      onGetStarted();
     }
-  }
-
+  };
 
   return (
     <div className="bg-[url(../public/images/hero_bg.png)] max-w-[1400px] mx-auto bg-center bg-cover px-8 lg:px-0">
@@ -40,7 +43,7 @@ export default function Hero({ setWaitlistModal }) {
             />
           </div>
           <Button size="md" variant="primary" onClick={handleGetStarted}>
-            {userInfo ? 'Go to Dashboard' : 'Get Started Now, It\'s Free!'}
+            {userInfo ? 'Go to Dashboard' : "Get Started Now, It's Free!"}
           </Button>
         </div>
         <div className="w-full lg:col-span-6 bg-[url(../public/images/hero_bg.svg)] bg-cover bg-left">

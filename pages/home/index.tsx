@@ -1,15 +1,11 @@
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import FeatureCard from '@/components/cards/FeatureCard';
 import ToolCard from '@/components/cards/ToolCard';
 import Typography from '@/components/Typography';
 import { useUserInfo } from '@/hooks/useUserInfo';
-
-const PopUp = dynamic(() => import('@/components/modals/Popup'), {
-  ssr: false,
-});
 
 const AuthModal = dynamic(() => import('@/components/modals/Auth'), {
   ssr: false,
@@ -17,7 +13,6 @@ const AuthModal = dynamic(() => import('@/components/modals/Auth'), {
 
 import ButtonOld from '@/components/Button_Old';
 import { featureCards, videoTools } from '@/lib/constants';
-import { getUserInfo } from '@/services/api';
 
 const Hero = dynamic(() => import('@/components/home/Hero'), {
   ssr: false,
@@ -26,11 +21,6 @@ const Hero = dynamic(() => import('@/components/home/Hero'), {
 
 export default function Home() {
   const { userInfo } = useUserInfo();
-  const [user, setUser] = useState(getUserInfo());
-  const [waitlistModal, setWaitlistModal] = useState(false);
-  const [submittedModalTitle, setSubmittedModalTitle] = useState('');
-  const [submittedModalBody, setSubmittedModalBody] = useState('');
-  const [submittedModal, setSubmittedModal] = useState(false);
   const [showAuthModal, setAuthModal] = useState(false);
   const [authType, setAuthType] = useState('');
   const [authConfirmationModal, setAuthConfirmationModal] = useState(false);
@@ -38,23 +28,11 @@ export default function Home() {
   const [modalMessage, setModalMessage] = useState('');
 
   const handleGetStarted = () => {
-    if (userInfo) {
-      setWaitlistModal(true);
-    } else {
+    if (!userInfo) {
       setAuthType('Sign Up');
       setAuthModal(true);
     }
   };
-
-  useEffect(() => {
-    const checkUserInfo = () => {
-      const updatedUser = getUserInfo();
-      setUser(updatedUser);
-    };
-
-    const interval = setInterval(checkUserInfo, 2000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <>
@@ -64,7 +42,7 @@ export default function Home() {
           content="EditKits is the ultimate online platform for fast, high-quality video, audio, and image processing. Edit, enhance, and optimize media effortlessly with powerful cloud-based tools and APIs."
         />
       </Head>
-      <Hero setWaitlistModal={handleGetStarted} />
+      <Hero onGetStarted={handleGetStarted} />
       <div className="px-8">
         <div className="bg-white dark:bg-gray-900 pt-[53px] pb-[59px] border-[1px] border-solid border-[#9f9f9f] dark:border-gray-700 rounded-[40px] max-w-[1313px]  mx-auto">
           <div className="pb-[12px] ">
@@ -130,12 +108,6 @@ export default function Home() {
         setAuthConfirmationModal={setAuthConfirmationModal}
         setModalTitle={setModalTitle}
         setModalMessage={setModalMessage}
-      />
-      <PopUp
-        open={submittedModal}
-        setOpen={setSubmittedModal}
-        title={submittedModalTitle}
-        description={submittedModalBody}
       />
     </>
   );

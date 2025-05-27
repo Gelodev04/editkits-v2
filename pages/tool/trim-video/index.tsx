@@ -17,6 +17,7 @@ import FileProgressModal from '@/components/modals/FilePgrogressModal';
 import Button from '@/components/ui/button/Button';
 import ComponentToolCard from '@/components/ComponentToolCard';
 import ErrorModal from '@/components/modals/ErrorModal';
+import { FaPlay } from 'react-icons/fa';
 
 // Define interface for metadata
 interface FileMetadata {

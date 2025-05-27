@@ -25,38 +25,17 @@ const Hero = dynamic(() => import('@/components/home/Hero'), {
 });
 
 export default function Home() {
-  // const [contactUsCommon, { isLoading: isWaitlistLoading }] = useContactUsCommonMutation();
-  // const [contactUsUser] = useContactUsUserMutation();
   const { userInfo } = useUserInfo();
-
   const [user, setUser] = useState(getUserInfo());
-  const [firstName, setFirstName] = useState('');
-  const [isFirstNameValid, setFirstNameValid] = useState(true);
-  const [lastName, setLastName] = useState('');
-  const [isLastNameValid, setLastNameValid] = useState(true);
-  const [email, setEmail] = useState(user?.email || '');
-  const [isEmailValid, setEmailValid] = useState(true);
-  const [message, setMessage] = useState('');
-  // const [isMessageValid, setMessageValid] = useState(true);
   const [waitlistModal, setWaitlistModal] = useState(false);
   const [submittedModalTitle, setSubmittedModalTitle] = useState('');
   const [submittedModalBody, setSubmittedModalBody] = useState('');
   const [submittedModal, setSubmittedModal] = useState(false);
-
   const [showAuthModal, setAuthModal] = useState(false);
   const [authType, setAuthType] = useState('');
   const [authConfirmationModal, setAuthConfirmationModal] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalMessage, setModalMessage] = useState('');
-
-  useEffect(() => {
-    setFirstName('');
-    setLastName('');
-    setMessage('');
-    if (!user) {
-      setEmail('');
-    }
-  }, [waitlistModal, user]);
 
   const handleGetStarted = () => {
     if (userInfo) {
@@ -67,50 +46,10 @@ export default function Home() {
     }
   };
 
-  // async function handleWaitlistSubmit() {
-  //   const mutationFn = user ? contactUsUser : contactUsCommon;
-  //   const payload = {
-  //     first_name: firstName,
-  //     last_name: lastName,
-  //     email,
-  //     message,
-  //     ...(user ? {} : { category: 'WAITLIST' }),
-  //   };
-
-  //   const response = await mutationFn(payload);
-  //   if (response.error) {
-  //     // @ts-ignore
-  //     setSubmittedModalTitle("Uh-oh! Something's Off");
-  //     // @ts-ignore
-  //     setSubmittedModalBody(response.error.data.errorMsg);
-  //     setWaitlistModal(false);
-  //     setSubmittedModal(true);
-  //     return;
-  //   }
-
-  //   setFirstName('');
-  //   setLastName('');
-  //   setMessage('');
-  //   if (!user) {
-  //     setEmail('');
-  //   }
-  //   setWaitlistModal(false);
-  //   setSubmittedModalTitle('Request Submitted');
-  //   setSubmittedModalBody('Our support team would reach out to you soon.');
-  //   setSubmittedModal(true);
-  // }
-
   useEffect(() => {
     const checkUserInfo = () => {
       const updatedUser = getUserInfo();
       setUser(updatedUser);
-
-      if (updatedUser) {
-        setEmail(updatedUser.email || '');
-        setFirstNameValid(true);
-        setLastNameValid(true);
-        setEmailValid(true);
-      }
     };
 
     const interval = setInterval(checkUserInfo, 2000);
@@ -126,7 +65,7 @@ export default function Home() {
         />
       </Head>
       <Hero setWaitlistModal={handleGetStarted} />
-      <div className='px-8'>
+      <div className="px-8">
         <div className="bg-white dark:bg-gray-900 pt-[53px] pb-[59px] border-[1px] border-solid border-[#9f9f9f] dark:border-gray-700 rounded-[40px] max-w-[1313px]  mx-auto">
           <div className="pb-[12px] ">
             <Typography label="Quick Access" variant="h4-dark" center />

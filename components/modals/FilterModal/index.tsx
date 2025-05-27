@@ -22,13 +22,11 @@ const filters = [
 ];
 
 export default function FilterModal(props: PopUpProps) {
-
   useEffect(() => {
-    if(props.open){
-      props.setSelected([...props.filters])
+    if (props.open) {
+      props.setSelected([...props.filters]);
     }
-  }, [props.open, props.filters])
-
+  }, [props.open, props.filters, props.setSelected]);
 
   function handleFilterSelect(status) {
     return props.setSelected(prev =>

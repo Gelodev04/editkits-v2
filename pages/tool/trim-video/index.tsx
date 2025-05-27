@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { FaPlay } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
 import UploadFileModal from '@/components/modals/UploadFileModal';
 import { outputQualityList, videoType } from '@/lib/constants';
 import { VideoUpload } from '@/components/VideoUpload';
-import { useEffect } from 'react';
 import {
   HiOutlineClock,
   HiOutlineVideoCamera,
@@ -84,7 +82,7 @@ export default function TrimVideo() {
   };
 
   // Reset states when uploading starts
-  useEffect(() => {
+  React.useEffect(() => {
     if (isUploading) {
       setFileId(null);
       // Immediately clear any data to prevent old thumbnails from showing
@@ -111,7 +109,7 @@ export default function TrimVideo() {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isUploading) return;
     const interval = setInterval(() => {
       console.log(data);
@@ -127,7 +125,7 @@ export default function TrimVideo() {
     return () => clearInterval(interval);
   }, [data, refetch, fileId, isUploading]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!jobId) return;
 
     const interval = setInterval(() => {

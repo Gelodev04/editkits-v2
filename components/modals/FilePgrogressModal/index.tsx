@@ -40,7 +40,6 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
     }
   }, [data]);
 
-
   const pollFileStatus = useCallback(async () => {
     if (!fileId) return;
 
@@ -339,7 +338,6 @@ export default function FileProgressModal({ progressModal, setProgressModal, dat
                                 </button>
                                 <button
                                   onClick={async () => {
-
                                     if (url) {
                                       console.log('Video URL:', url);
                                       setVideo(url);

@@ -61,7 +61,7 @@ export default function Header() {
       setType('Log In');
       setAuthModal(true);
     }
-  }, []);
+  }, [router.query]);
 
   const mainContentMargin = isMobileOpen
     ? 'ml-0'

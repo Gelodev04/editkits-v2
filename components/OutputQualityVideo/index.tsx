@@ -1,17 +1,16 @@
-import { outputQualityList, videoType } from "@/lib/constants";
+import { outputQualityList, videoType } from '@/lib/constants';
 
 type OutputQualityVideoType = {
-    file : any,
-    isUploading : boolean,
-    fetchedData : any,
-    outputQuality : any,
-    setOutputQuality : any,
-    videoContainer : any,
-    setVideoContainer : any
-}
+  file: any;
+  isUploading: boolean;
+  fetchedData: any;
+  outputQuality: any;
+  setOutputQuality: any;
+  videoContainer: any;
+  setVideoContainer: any;
+};
 
-
-export default function OutputQualityVideo(props : OutputQualityVideoType) {
+export default function OutputQualityVideo(props: OutputQualityVideoType) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
       <div className="w-full">

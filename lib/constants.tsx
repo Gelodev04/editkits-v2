@@ -44,63 +44,72 @@ export const videoTools = [
     name: 'Overlay Image on Video',
     icon: OverlayVideo,
     icon_hover: OverlayVideoHover,
-    description: 'Add logos, watermarks, or custom graphics to your videos. Great for branding, tutorials, or visual enhancements.',
+    description:
+      'Add logos, watermarks, or custom graphics to your videos. Great for branding, tutorials, or visual enhancements.',
   },
   {
     name: 'Rotate/Flip Video',
     icon: Rotate,
     icon_hover: RotateHover,
-    description: 'Rotate videos 90°, 180°, or flip horizontally/vertically. Fix orientation issues or add stylistic effects easily.',
+    description:
+      'Rotate videos 90°, 180°, or flip horizontally/vertically. Fix orientation issues or add stylistic effects easily.',
   },
   {
     name: 'Trim Video',
     icon: Trim,
     icon_hover: TrimHover,
-    description: 'Cut unwanted sections from your video to keep only what matters. Perfect for shortening clips and removing unnecessary content.',
+    description:
+      'Cut unwanted sections from your video to keep only what matters. Perfect for shortening clips and removing unnecessary content.',
   },
   {
     name: 'Speed Up/Down Video',
     icon: Speed,
     icon_hover: SpeedHover,
-    description: 'Control playback speed to create slow motion or time-lapse effects. Adjust video pacing for dramatic or fast-forward visuals.',
+    description:
+      'Control playback speed to create slow motion or time-lapse effects. Adjust video pacing for dramatic or fast-forward visuals.',
   },
   {
     name: 'Resize Video',
     icon: Resize,
     icon_hover: ResizeHover,
-    description: 'Change video resolution and dimensions to fit any platform. Great for optimizing videos for social media, mobile, or web.',
+    description:
+      'Change video resolution and dimensions to fit any platform. Great for optimizing videos for social media, mobile, or web.',
   },
   {
     name: 'Crop Video',
     icon: Crop,
     icon_hover: CropHover,
-    description: 'Remove edges or unwanted parts of your video frame. Ideal for focusing on a subject or resizing for different aspect ratios.',
+    description:
+      'Remove edges or unwanted parts of your video frame. Ideal for focusing on a subject or resizing for different aspect ratios.',
   },
   {
     name: 'Loop Video',
     icon: Loop,
     icon_hover: LoopHover,
-    description: 'Repeat your video multiple times for continuous playback. Useful for creating looping reels, gifs, or background videos.',
+    description:
+      'Repeat your video multiple times for continuous playback. Useful for creating looping reels, gifs, or background videos.',
   },
   {
     name: 'Join Videos/Images',
     icon: Join,
     icon_hover: JoinHover,
-    description: 'Combine multiple videos or images into a single continuous video. Create seamless montages, slideshows, or compilations.',
+    description:
+      'Combine multiple videos or images into a single continuous video. Create seamless montages, slideshows, or compilations.',
   },
   {
     name: 'Compress video',
     icon: OverlayVideo,
     icon_hover: OverlayVideoHover,
-    description: 'Reduce video file size without major quality loss. Perfect for faster uploads, storage savings, and optimized delivery.',
+    description:
+      'Reduce video file size without major quality loss. Perfect for faster uploads, storage savings, and optimized delivery.',
   },
   {
     name: 'Overlay Video on Video',
     icon: OverlayVideo,
     icon_hover: OverlayVideoHover,
-    description: 'Insert one video over another with picture-in-picture effects. Ideal for commentary, reaction videos, or multi-camera views.',
-  }
- 
+    description:
+      'Insert one video over another with picture-in-picture effects. Ideal for commentary, reaction videos, or multi-camera views.',
+  },
 ];
 
 export const featureCards = [

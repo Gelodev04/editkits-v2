@@ -13,7 +13,7 @@ export default function Hero({ setWaitlistModal }) {
 
   const handleGetStarted = () => {
     if(userInfo){
-      router.push('/dashboard');
+      router.push('/dashboard/job-status');
     } else {
       setWaitlistModal(true);
     }

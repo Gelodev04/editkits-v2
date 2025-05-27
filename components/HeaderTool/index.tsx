@@ -1,8 +1,8 @@
 import { HiOutlineTemplate } from 'react-icons/hi';
 
-type HeaderToolProps = {
-  children?: React.ReactNode;
-};
+interface HeaderToolProps {
+  children: React.ReactNode;
+}
 
 export function HeaderToolInput({ children }: HeaderToolProps) {
   return (

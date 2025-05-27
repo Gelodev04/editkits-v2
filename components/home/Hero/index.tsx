@@ -5,7 +5,7 @@ import { useUserInfo } from '@/hooks/useUserInfo';
 
 import Typography from '@/components/Typography';
 import Button from '@/components/ui/button/Button';
-import HeroImg from '@/public/images/home_hero.png';
+
 
 interface HeroProps {
   onGetStarted: () => void;
@@ -48,7 +48,7 @@ export default function Hero({ onGetStarted }: HeroProps) {
         </div>
         <div className="w-full lg:col-span-6 bg-[url(../public/images/hero_bg.svg)] bg-cover bg-left">
           <Image
-            src={HeroImg}
+            src="/images/home_hero.png"
             width={594}
             height={330}
             alt="hero image"

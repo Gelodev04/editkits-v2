@@ -609,7 +609,11 @@ export default function JobStatus() {
           selected={selectedFilters}
           setSelected={setSelectedFilters}
           onClick={applyFilter}
-          filters={filters}
+          filters={[
+            { label: 'Success', value: 'COMPLETED' },
+            { label: 'In Progress', value: 'IN_PROGRESS' },
+            { label: 'Failed', value: 'FAILED' },
+          ]}
         />
         <VideoPreviewModal
           open={videoPreviewModal}

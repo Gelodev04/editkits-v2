@@ -266,7 +266,7 @@ export default function CropVideo() {
         </div>
 
         <div className="mb-10">
-          <HeaderToolProperties />
+          <HeaderToolProperties children={undefined} />
           <div className="bg-white dark:bg-white/[0.03] p-6 rounded-xl border border-gray-200 dark:border-gray-800">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
               {['x', 'y'].map(key => (
